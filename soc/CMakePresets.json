@@ -1,0 +1,13 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "ghs",
+      "displayName": "GHS Compiler",
+      "generator": "Green Hills MULTI",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "C:/ghs/comp_202514/ccarm.exe"
+      }
+    }
+  ]
+}

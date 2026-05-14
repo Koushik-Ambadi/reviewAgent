@@ -1,0 +1,11 @@
+.venv/
+reviewDemo/
+pycache/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+*.bat
+
+soc/build/

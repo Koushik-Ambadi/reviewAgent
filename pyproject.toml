@@ -1,0 +1,11 @@
+[project]
+name = "repo-review-agent"
+version = "0.1.0"
+description = "Repository structure and compliance review agent"
+requires-python = ">=3.11"
+
+[tool.black]
+line-length = 88
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]

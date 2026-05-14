@@ -1,0 +1,765 @@
+[
+  {
+    "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-freertos\\src\\portable\\GHS\\ARM_CM7\\r0p1\\port.c",
+    "includes": [],
+    "functions_defined": [],
+    "functions_declared": [
+      {
+        "name": "__va_start",
+        "return_type": "void",
+        "line": 155,
+        "is_definition": false
+      },
+      {
+        "name": "__security_init_cookie",
+        "return_type": "void",
+        "line": 342,
+        "is_definition": false
+      },
+      {
+        "name": "__security_check_cookie",
+        "return_type": "void",
+        "line": 351,
+        "is_definition": false
+      },
+      {
+        "name": "__report_gsfailure",
+        "return_type": "void",
+        "line": 352,
+        "is_definition": false
+      },
+      {
+        "name": "_invalid_parameter",
+        "return_type": "void",
+        "line": 348,
+        "is_definition": false
+      },
+      {
+        "name": "_invalid_parameter_noinfo",
+        "return_type": "void",
+        "line": 357,
+        "is_definition": false
+      },
+      {
+        "name": "_invalid_parameter_noinfo_noreturn",
+        "return_type": "void",
+        "line": 358,
+        "is_definition": false
+      },
+      {
+        "name": "_invoke_watson",
+        "return_type": "void",
+        "line": 361,
+        "is_definition": false
+      },
+      {
+        "name": "_errno",
+        "return_type": "int *",
+        "line": 35,
+        "is_definition": false
+      },
+      {
+        "name": "_set_errno",
+        "return_type": "errno_t",
+        "line": 38,
+        "is_definition": false
+      },
+      {
+        "name": "_get_errno",
+        "return_type": "errno_t",
+        "line": 39,
+        "is_definition": false
+      },
+      {
+        "name": "__threadid",
+        "return_type": "unsigned long",
+        "line": 55,
+        "is_definition": false
+      },
+      {
+        "name": "__threadhandle",
+        "return_type": "uintptr_t",
+        "line": 57,
+        "is_definition": false
+      },
+      {
+        "name": "vPortEnterCritical",
+        "return_type": "void",
+        "line": 282,
+        "is_definition": false
+      },
+      {
+        "name": "vPortExitCritical",
+        "return_type": "void",
+        "line": 283,
+        "is_definition": false
+      },
+      {
+        "name": "vPortSuppressTicksAndSleep",
+        "return_type": "void",
+        "line": 302,
+        "is_definition": false
+      },
+      {
+        "name": "vPortValidateInterruptPriority",
+        "return_type": "void",
+        "line": 343,
+        "is_definition": false
+      },
+      {
+        "name": "xPortIsInsideInterrupt",
+        "return_type": "BaseType_t",
+        "line": 356,
+        "is_definition": false
+      },
+      {
+        "name": "vPortRaiseBASEPRI",
+        "return_type": "void",
+        "line": 378,
+        "is_definition": false
+      },
+      {
+        "name": "ulPortRaiseBASEPRI",
+        "return_type": "uint32_t",
+        "line": 395,
+        "is_definition": false
+      },
+      {
+        "name": "vPortSetBASEPRI",
+        "return_type": "void",
+        "line": 416,
+        "is_definition": false
+      },
+      {
+        "name": "pxPortInitialiseStack",
+        "return_type": "StackType_t *",
+        "line": 133,
+        "is_definition": false
+      },
+      {
+        "name": "vPortDefineHeapRegions",
+        "return_type": "void",
+        "line": 170,
+        "is_definition": false
+      },
+      {
+        "name": "vPortGetHeapStats",
+        "return_type": "void",
+        "line": 176,
+        "is_definition": false
+      },
+      {
+        "name": "pvPortMalloc",
+        "return_type": "void *",
+        "line": 181,
+        "is_definition": false
+      },
+      {
+        "name": "pvPortCalloc",
+        "return_type": "void *",
+        "line": 182,
+        "is_definition": false
+      },
+      {
+        "name": "vPortFree",
+        "return_type": "void",
+        "line": 184,
+        "is_definition": false
+      },
+      {
+        "name": "vPortInitialiseBlocks",
+        "return_type": "void",
+        "line": 185,
+        "is_definition": false
+      },
+      {
+        "name": "xPortGetFreeHeapSize",
+        "return_type": "size_t",
+        "line": 186,
+        "is_definition": false
+      },
+      {
+        "name": "xPortGetMinimumEverFreeHeapSize",
+        "return_type": "size_t",
+        "line": 187,
+        "is_definition": false
+      },
+      {
+        "name": "vPortHeapResetState",
+        "return_type": "void",
+        "line": 201,
+        "is_definition": false
+      },
+      {
+        "name": "xPortStartScheduler",
+        "return_type": "BaseType_t",
+        "line": 220,
+        "is_definition": false
+      },
+      {
+        "name": "vPortEndScheduler",
+        "return_type": "void",
+        "line": 227,
+        "is_definition": false
+      },
+      {
+        "name": "vListInitialise",
+        "return_type": "void",
+        "line": 441,
+        "is_definition": false
+      },
+      {
+        "name": "vListInitialiseItem",
+        "return_type": "void",
+        "line": 452,
+        "is_definition": false
+      },
+      {
+        "name": "vListInsert",
+        "return_type": "void",
+        "line": 465,
+        "is_definition": false
+      },
+      {
+        "name": "vListInsertEnd",
+        "return_type": "void",
+        "line": 487,
+        "is_definition": false
+      },
+      {
+        "name": "uxListRemove",
+        "return_type": "UBaseType_t",
+        "line": 503,
+        "is_definition": false
+      },
+      {
+        "name": "xTaskCreateStatic",
+        "return_type": "TaskHandle_t",
+        "line": 509,
+        "is_definition": false
+      },
+      {
+        "name": "vTaskDelete",
+        "return_type": "void",
+        "line": 802,
+        "is_definition": false
+      },
+      {
+        "name": "vTaskDelay",
+        "return_type": "void",
+        "line": 856,
+        "is_definition": false
+      },
+      {
+        "name": "xTaskDelayUntil",
+        "return_type": "BaseType_t",
+        "line": 923,
+        "is_definition": false
+      },
+      {
+        "name": "xTaskAbortDelay",
+        "return_type": "BaseType_t",
+        "line": 967,
+        "is_definition": false
+      },
+      {
+        "name": "uxTaskPriorityGet",
+        "return_type": "UBaseType_t",
+        "line": 1017,
+        "is_definition": false
+      },
+      {
+        "name": "uxTaskPriorityGetFromISR",
+        "return_type": "UBaseType_t",
+        "line": 1027,
+        "is_definition": false
+      },
+      {
+        "name": "uxTaskBasePriorityGet",
+        "return_type": "UBaseType_t",
+        "line": 1048,
+        "is_definition": false
+      },
+      {
+        "name": "uxTaskBasePriorityGetFromISR",
+        "return_type": "UBaseType_t",
+        "line": 1058,
+        "is_definition": false
+      },
+      {
+        "name": "eTaskGetState",
+        "return_type": "eTaskState",
+        "line": 1079,
+        "is_definition": false
+      },
+      {
+        "name": "vTaskPrioritySet",
+        "return_type": "void",
+        "line": 1187,
+        "is_definition": false
+      },
+      {
+        "name": "vTaskSuspend",
+        "return_type": "void",
+        "line": 1241,
+        "is_definition": false
+      },
+      {
+        "name": "vTaskResume",
+        "return_type": "void",
+        "line": 1292,
+        "is_definition": false
+      },
+      {
+        "name": "xTaskResumeFromISR",
+        "return_type": "BaseType_t",
+        "line": 1323,
+        "is_definition": false
+      },
+      {
+        "name": "vTaskStartScheduler",
+        "return_type": "void",
+        "line": 1516,
+        "is_definition": false
+      },
+      {
+        "name": "vTaskEndScheduler",
+        "return_type": "void",
+        "line": 1574,
+        "is_definition": false
+      },
+      {
+        "name": "vTaskSuspendAll",
+        "return_type": "void",
+        "line": 1627,
+        "is_definition": false
+      },
+      {
+        "name": "xTaskResumeAll",
+        "return_type": "BaseType_t",
+        "line": 1683,
+        "is_definition": false
+      },
+      {
+        "name": "xTaskGetTickCount",
+        "return_type": "TickType_t",
+        "line": 1700,
+        "is_definition": false
+      },
+      {
+        "name": "xTaskGetTickCountFromISR",
+        "return_type": "TickType_t",
+        "line": 1718,
+        "is_definition": false
+      },
+      {
+        "name": "uxTaskGetNumberOfTasks",
+        "return_type": "UBaseType_t",
+        "line": 1734,
+        "is_definition": false
+      },
+      {
+        "name": "pcTaskGetName",
+        "return_type": "char *",
+        "line": 1749,
+        "is_definition": false
+      },
+      {
+        "name": "xTaskGetHandle",
+        "return_type": "TaskHandle_t",
+        "line": 1768,
+        "is_definition": false
+      },
+      {
+        "name": "xTaskGetStaticBuffers",
+        "return_type": "BaseType_t",
+        "line": 1796,
+        "is_definition": false
+      },
+      {
+        "name": "uxTaskGetStackHighWaterMark",
+        "return_type": "UBaseType_t",
+        "line": 1829,
+        "is_definition": false
+      },
+      {
+        "name": "uxTaskGetStackHighWaterMark2",
+        "return_type": "StackType_t",
+        "line": 1860,
+        "is_definition": false
+      },
+      {
+        "name": "vApplicationGetIdleTaskMemory",
+        "return_type": "void",
+        "line": 2001,
+        "is_definition": false
+      },
+      {
+        "name": "xTaskGenericNotify",
+        "return_type": "BaseType_t",
+        "line": 2606,
+        "is_definition": false
+      },
+      {
+        "name": "xTaskGenericNotifyFromISR",
+        "return_type": "BaseType_t",
+        "line": 2758,
+        "is_definition": false
+      },
+      {
+        "name": "xTaskGenericNotifyWait",
+        "return_type": "BaseType_t",
+        "line": 2902,
+        "is_definition": false
+      },
+      {
+        "name": "vTaskGenericNotifyGiveFromISR",
+        "return_type": "void",
+        "line": 3068,
+        "is_definition": false
+      },
+      {
+        "name": "ulTaskGenericNotifyTake",
+        "return_type": "uint32_t",
+        "line": 3174,
+        "is_definition": false
+      },
+      {
+        "name": "xTaskGenericNotifyStateClear",
+        "return_type": "BaseType_t",
+        "line": 3239,
+        "is_definition": false
+      },
+      {
+        "name": "ulTaskGenericNotifyValueClear",
+        "return_type": "uint32_t",
+        "line": 3304,
+        "is_definition": false
+      },
+      {
+        "name": "vTaskSetTimeOutState",
+        "return_type": "void",
+        "line": 3326,
+        "is_definition": false
+      },
+      {
+        "name": "xTaskCheckForTimeOut",
+        "return_type": "BaseType_t",
+        "line": 3411,
+        "is_definition": false
+      },
+      {
+        "name": "xTaskCatchUpTicks",
+        "return_type": "BaseType_t",
+        "line": 3440,
+        "is_definition": false
+      },
+      {
+        "name": "vTaskResetState",
+        "return_type": "void",
+        "line": 3454,
+        "is_definition": false
+      },
+      {
+        "name": "xTaskIncrementTick",
+        "return_type": "BaseType_t",
+        "line": 3482,
+        "is_definition": false
+      },
+      {
+        "name": "vTaskPlaceOnEventList",
+        "return_type": "void",
+        "line": 3515,
+        "is_definition": false
+      },
+      {
+        "name": "vTaskPlaceOnUnorderedEventList",
+        "return_type": "void",
+        "line": 3517,
+        "is_definition": false
+      },
+      {
+        "name": "vTaskPlaceOnEventListRestricted",
+        "return_type": "void",
+        "line": 3532,
+        "is_definition": false
+      },
+      {
+        "name": "xTaskRemoveFromEventList",
+        "return_type": "BaseType_t",
+        "line": 3560,
+        "is_definition": false
+      },
+      {
+        "name": "vTaskRemoveFromUnorderedEventList",
+        "return_type": "void",
+        "line": 3561,
+        "is_definition": false
+      },
+      {
+        "name": "vTaskSwitchContext",
+        "return_type": "void",
+        "line": 3573,
+        "is_definition": false
+      },
+      {
+        "name": "uxTaskResetEventItemValue",
+        "return_type": "TickType_t",
+        "line": 3582,
+        "is_definition": false
+      },
+      {
+        "name": "xTaskGetCurrentTaskHandle",
+        "return_type": "TaskHandle_t",
+        "line": 3587,
+        "is_definition": false
+      },
+      {
+        "name": "xTaskGetCurrentTaskHandleForCore",
+        "return_type": "TaskHandle_t",
+        "line": 3592,
+        "is_definition": false
+      },
+      {
+        "name": "vTaskMissedYield",
+        "return_type": "void",
+        "line": 3598,
+        "is_definition": false
+      },
+      {
+        "name": "xTaskGetSchedulerState",
+        "return_type": "BaseType_t",
+        "line": 3604,
+        "is_definition": false
+      },
+      {
+        "name": "xTaskPriorityInherit",
+        "return_type": "BaseType_t",
+        "line": 3610,
+        "is_definition": false
+      },
+      {
+        "name": "xTaskPriorityDisinherit",
+        "return_type": "BaseType_t",
+        "line": 3616,
+        "is_definition": false
+      },
+      {
+        "name": "vTaskPriorityDisinheritAfterTimeout",
+        "return_type": "void",
+        "line": 3626,
+        "is_definition": false
+      },
+      {
+        "name": "pvTaskIncrementMutexHeldCount",
+        "return_type": "TaskHandle_t",
+        "line": 3679,
+        "is_definition": false
+      },
+      {
+        "name": "vTaskInternalSetTimeOutState",
+        "return_type": "void",
+        "line": 3685,
+        "is_definition": false
+      },
+      {
+        "name": "vPortSetupTimerInterrupt",
+        "return_type": "void",
+        "line": 134,
+        "is_definition": false
+      },
+      {
+        "name": "PendSV_Handler",
+        "return_type": "void",
+        "line": 139,
+        "is_definition": false
+      },
+      {
+        "name": "SysTick_Handler",
+        "return_type": "void",
+        "line": 140,
+        "is_definition": false
+      },
+      {
+        "name": "vPortSVCHandler",
+        "return_type": "void",
+        "line": 141,
+        "is_definition": false
+      },
+      {
+        "name": "prvPortStartFirstTask",
+        "return_type": "void",
+        "line": 146,
+        "is_definition": false
+      },
+      {
+        "name": "vPortEnableVFP",
+        "return_type": "void",
+        "line": 151,
+        "is_definition": false
+      },
+      {
+        "name": "prvTaskExitError",
+        "return_type": "void",
+        "line": 156,
+        "is_definition": false
+      },
+      {
+        "name": "pxPortInitialiseStack",
+        "return_type": "StackType_t *",
+        "line": 210,
+        "is_definition": false
+      },
+      {
+        "name": "prvTaskExitError",
+        "return_type": "void",
+        "line": 240,
+        "is_definition": false
+      },
+      {
+        "name": "SVC_Handler",
+        "return_type": "void",
+        "line": 298,
+        "is_definition": false
+      },
+      {
+        "name": "Suspend_Interrupts",
+        "return_type": "void",
+        "line": 299,
+        "is_definition": false
+      },
+      {
+        "name": "Resume_Interrupts",
+        "return_type": "void",
+        "line": 300,
+        "is_definition": false
+      },
+      {
+        "name": "vPortSVCHandler_Internal",
+        "return_type": "void",
+        "line": 302,
+        "is_definition": false
+      },
+      {
+        "name": "vPortSVCHandler",
+        "return_type": "void",
+        "line": 353,
+        "is_definition": false
+      },
+      {
+        "name": "vPortSVCHandler_C",
+        "return_type": "void",
+        "line": 363,
+        "is_definition": false
+      },
+      {
+        "name": "prvPortStartFirstTask",
+        "return_type": "void",
+        "line": 422,
+        "is_definition": false
+      },
+      {
+        "name": "xPortStartScheduler",
+        "return_type": "BaseType_t",
+        "line": 447,
+        "is_definition": false
+      },
+      {
+        "name": "vPortEndScheduler",
+        "return_type": "void",
+        "line": 643,
+        "is_definition": false
+      },
+      {
+        "name": "vPortEnterCritical",
+        "return_type": "void",
+        "line": 651,
+        "is_definition": false
+      },
+      {
+        "name": "vPortExitCritical",
+        "return_type": "void",
+        "line": 672,
+        "is_definition": false
+      },
+      {
+        "name": "PendSV_Handler",
+        "return_type": "void",
+        "line": 688,
+        "is_definition": false
+      },
+      {
+        "name": "SysTick_Handler",
+        "return_type": "void",
+        "line": 762,
+        "is_definition": false
+      },
+      {
+        "name": "vPortSetupTimerInterrupt",
+        "return_type": "void",
+        "line": 1014,
+        "is_definition": false
+      },
+      {
+        "name": "vPortEnableVFP",
+        "return_type": "void",
+        "line": 1088,
+        "is_definition": false
+      },
+      {
+        "name": "vPortValidateInterruptPriority",
+        "return_type": "void",
+        "line": 1102,
+        "is_definition": false
+      }
+    ],
+    "globals": [
+      {
+        "name": "__security_cookie",
+        "type": "uintptr_t",
+        "line": 356
+      },
+      {
+        "name": "uxCriticalNesting",
+        "type": "UBaseType_t[1]",
+        "line": 162
+      },
+      {
+        "name": "flagCheckStartFirstTask",
+        "type": "volatile uint8_t[1]",
+        "line": 163
+      },
+      {
+        "name": "VTABLE",
+        "type": "uint32_t[]",
+        "line": 164
+      },
+      {
+        "name": "ucMaxSysCallPriority",
+        "type": "uint8_t",
+        "line": 194
+      },
+      {
+        "name": "ulMaxPRIGROUPValue",
+        "type": "uint32_t",
+        "line": 195
+      },
+      {
+        "name": "pcInterruptPriorityRegisters",
+        "type": "const volatile uint8_t *const",
+        "line": 196
+      },
+      {
+        "name": "pxCurrentTCB",
+        "type": "volatile void *volatile",
+        "line": 203
+      },
+      {
+        "name": "svc_id",
+        "type": "uint32_t",
+        "line": 296
+      }
+    ],
+    "macros": []
+  }
+]

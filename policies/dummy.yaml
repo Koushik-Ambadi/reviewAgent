@@ -1,0 +1,150 @@
+version: 1
+
+# =========================================================
+# REQUIRED PATHS
+# =========================================================
+required_paths:
+
+  # ---------- VALID ----------
+  - README.md
+  - src/
+  - src/soc.c
+  - src/soc_model.c
+  - app/app.c
+  - docs/
+  - "docs/**/*.docx"
+  - "s32k344-mcal/src/**/*.c"
+  - "s32k344-freertos/src/**/*.c"
+  - "test/unit/**/*.md"
+  - "**/CMakeLists.txt"
+
+  # ---------- INVALID / EDGE ----------
+  - src/main.py
+  - scripts/setup.sh
+  - "**/Dockerfile"
+  - config/settings.yaml
+
+
+# =========================================================
+# FORBIDDEN PATHS
+# =========================================================
+forbidden_paths:
+
+  # ---------- EXISTING (should trigger) ----------
+  - build/
+  - temp/
+  - node_modules/
+  - ".git/**"
+  - "**/*.tmp"
+  - "**/*.bak"
+
+  # ---------- BUILD OUTPUTS ----------
+  - "out/**/*.elf"
+  - "out/**/*.map"
+  - "out/**/*.hex"
+
+  # ---------- NON-EXISTING ----------
+  - "**/*.safe"
+
+
+# =========================================================
+# ALLOWED EXTENSIONS
+# =========================================================
+allowed_extensions:
+
+  # ---------- SOURCE ----------
+  src/: [".c", ".h"]
+
+  # ---------- APPLICATION ----------
+  app/: [".c", ".h"]
+
+  # ---------- DOCS ----------
+  docs/: [".md", ".docx", ".html"]
+
+  # ---------- MCAL ----------
+  s32k344-mcal/src/: [".c", ".h", ".pdf"]
+
+  # ---------- TEST ----------
+  test/: [".md", ".html", ".pdf", ".xlsx"]
+
+
+# =========================================================
+# FORBIDDEN EXTENSIONS
+# =========================================================
+forbidden_extensions:
+
+  # ---------- SOURCE ----------
+  src/: [".exe", ".dll", ".py"]
+
+  # ---------- APP ----------
+  app/: [".java", ".cpp"]
+
+  # ---------- DOCS ----------
+  docs/: [".exe", ".bat"]
+
+  # ---------- BUILD ----------
+  out/: [".o", ".obj", ".dll"]
+
+
+# =========================================================
+# REQUIRED FILE TYPES
+# =========================================================
+required_file_types:
+
+  # ---------- VALID ----------
+  src/: [".c"]
+  docs/: [".docx"]
+  test/unit/: [".md"]
+
+  # ---------- INVALID ----------
+  scripts/: [".ps1"]
+  config/: [".yaml"]
+
+
+# =========================================================
+# TREE RULES
+# =========================================================
+tree_rules:
+
+  max_depth: 12
+  max_total_dirs: 500
+  max_total_files: 10000
+
+
+# =========================================================
+# SIZE RULES
+# =========================================================
+size_rules:
+
+  # ---------- GLOBAL ----------
+  max_file_size_mb: 50
+
+  # ---------- EXTENSION LIMITS ----------
+  extension_limits:
+    ".c": 5
+    ".h": 3
+    ".docx": 20
+    ".html": 10
+    ".map": 50
+
+  # ---------- RECURSIVE PATH LIMITS ----------
+  path_limits:
+    "s32k344-mcal/src/**/*.c": 3
+    "out/**/*.map": 100
+    "docs/**/*.docx": 25
+
+  # ---------- EMPTY FILE CHECK ----------
+  min_file_size_bytes: 1
+
+
+# =========================================================
+# NAMING RULES
+# =========================================================
+naming_rules:
+
+  files:
+    regex: "^[a-zA-Z0-9_\\-.]+$"
+
+  directories:
+    regex: "^[a-zA-Z0-9_\\-]+$"
+

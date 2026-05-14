@@ -1,0 +1,105 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="AIReview-Agent-Collapsible" id="aireview-agent-collapsible">
+    <mxGraphModel dx="2249" dy="840" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="actor" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="Developer / Manager" vertex="1">
+          <mxGeometry height="80" width="40" x="120" y="420" as="geometry" />
+        </mxCell>
+        <mxCell id="agent" parent="1" style="swimlane;rounded=1;html=1;whiteSpace=wrap;horizontal=1;startSize=40;           fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=18;" value="AIReview Agent" vertex="1">
+          <mxGeometry height="560" width="860" x="300" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="llmSection" parent="agent" style="swimlane;rounded=1;html=1;startSize=30;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;" value="LLMs" vertex="1">
+          <mxGeometry height="250" width="220" x="30" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="gpt" parent="llmSection" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;" value="GPT-4 / GPT-5" vertex="1">
+          <mxGeometry height="40" width="140" x="35" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="claude" parent="llmSection" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;" value="Claude" vertex="1">
+          <mxGeometry height="40" width="140" x="35" y="105" as="geometry" />
+        </mxCell>
+        <mxCell id="gemini" parent="llmSection" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;" value="Gemini" vertex="1">
+          <mxGeometry height="40" width="140" x="35" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="brain" parent="agent" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;fontSize=14;" value="Reasoning Engine&#xa;Decision Making&#xa;Flow Control" vertex="1">
+          <mxGeometry height="130" width="190" x="320" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="skillsSection" parent="agent" style="swimlane;rounded=1;html=1;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;" value="Skills" vertex="1">
+          <mxGeometry height="250" width="210" x="610" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="skill1" parent="skillsSection" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;" value="Review" vertex="1">
+          <mxGeometry height="40" width="140" x="30" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="skill2" parent="skillsSection" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;" value="Dev ↔ Manager Sync" vertex="1">
+          <mxGeometry height="40" width="140" x="30" y="105" as="geometry" />
+        </mxCell>
+        <mxCell id="skill3" parent="skillsSection" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;" value="Alerts &amp; Reminders" vertex="1">
+          <mxGeometry height="40" width="140" x="30" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="toolsSection" parent="agent" style="swimlane;rounded=1;html=1;startSize=35;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;" value="Tools &amp; Automation" vertex="1">
+          <mxGeometry height="170" width="520" x="155" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="tool1" parent="toolsSection" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b85450;" value="Folder Structure Check" vertex="1">
+          <mxGeometry height="40" width="180" x="20" y="55" as="geometry" />
+        </mxCell>
+        <mxCell id="tool2" parent="toolsSection" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b85450;" value="Files Availability" vertex="1">
+          <mxGeometry height="40" width="160" x="220" y="55" as="geometry" />
+        </mxCell>
+        <mxCell id="tool3" parent="toolsSection" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b85450;" value="Build Validation" vertex="1">
+          <mxGeometry height="40" width="180" x="20" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="ZasTGOgfD-fhjgb41xZL-7" parent="toolsSection" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b85450;" value="Standards &amp;amp; Requirements" vertex="1">
+          <mxGeometry height="40" width="160" x="220" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="edgeActor" edge="1" parent="1" source="actor" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;html=1;" target="agent">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge1" edge="1" parent="1" source="brain" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="llmSection">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge2" edge="1" parent="1" source="brain" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="skillsSection">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge3" edge="1" parent="1" source="brain" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="toolsSection">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="standards" parent="1" style="swimlane;rounded=1;html=1;startSize=28;fillColor=#fff2cc;           strokeColor=#d6b656;collapsible=1;recursiveResize=0;" value="Review Standards" vertex="1">
+          <mxGeometry height="170" width="290" x="830" y="800" as="geometry" />
+        </mxCell>
+        <mxCell id="std1" parent="standards" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=20;" value="Design / Dev / Testing / Release" vertex="1">
+          <mxGeometry height="20" width="220" x="10" y="38" as="geometry" />
+        </mxCell>
+        <mxCell id="std2" parent="standards" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=20;" value="Variables / Functions / Macros" vertex="1">
+          <mxGeometry height="20" width="220" x="10" y="58" as="geometry" />
+        </mxCell>
+        <mxCell id="std3" parent="standards" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=20;" value="Arrays / Structures / .h Includes" vertex="1">
+          <mxGeometry height="20" width="230" x="10" y="78" as="geometry" />
+        </mxCell>
+        <mxCell id="gitpr" parent="1" style="swimlane;rounded=1;html=1;startSize=28;fillColor=#e1d5e7;           strokeColor=#9673a6;collapsible=1;recursiveResize=0;" value="Git / PR Flow" vertex="1">
+          <mxGeometry height="170" width="310" x="320" y="800" as="geometry">
+            <mxRectangle height="30" width="110" x="1300" y="620" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="git1" parent="gitpr" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=20;" value="Commit Verification" vertex="1">
+          <mxGeometry height="20" width="200" x="15" y="45" as="geometry" />
+        </mxCell>
+        <mxCell id="git2" parent="gitpr" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=20;" value="Bitbucket Status" vertex="1">
+          <mxGeometry height="20" width="200" x="15" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="git3" parent="gitpr" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=20;" value="Trigger PR / Collaborator" vertex="1">
+          <mxGeometry height="20" width="220" x="15" y="95" as="geometry" />
+        </mxCell>
+        <mxCell id="git4" parent="gitpr" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=20;" value="Required Files Validation" vertex="1">
+          <mxGeometry height="20" width="220" x="15" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="ZasTGOgfD-fhjgb41xZL-5" edge="1" parent="1" source="toolsSection" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;" target="gitpr">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ZasTGOgfD-fhjgb41xZL-6" edge="1" parent="1" source="toolsSection" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="standards">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,5616 @@
+[
+  {
+    "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\app\\app.c",
+    "includes": [
+      "app.h",
+      "soc.h"
+    ],
+    "functions_defined": [
+      {
+        "name": "main_init",
+        "return_type": "void",
+        "line": 66,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "main_runtime",
+        "return_type": "void",
+        "line": 72,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "main",
+        "return_type": "int",
+        "line": 98,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Shunt_getcurrent_ibatt",
+        "return_type": "int",
+        "line": 108,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Dukosi_get_voltage",
+        "return_type": "int",
+        "line": 114,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Dukosi_get_temperature",
+        "return_type": "int",
+        "line": 120,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "App_soc_nvm_read",
+        "return_type": "int",
+        "line": 126,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "App_get_battstate",
+        "return_type": "int",
+        "line": 132,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "App_get_init_batt_resttime",
+        "return_type": "int",
+        "line": 138,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "App_get_soc_nvm_importstatus",
+        "return_type": "int",
+        "line": 144,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Dukosi_get_min_max_temperature",
+        "return_type": "int",
+        "line": 150,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Sohc_get_cell_levels",
+        "return_type": "int",
+        "line": 156,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "App_get_batt_sleeptime",
+        "return_type": "int",
+        "line": 162,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "App_soc_nvm_write",
+        "return_type": "int",
+        "line": 168,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Dtcmgr_log_fault",
+        "return_type": "int",
+        "line": 174,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      }
+    ],
+    "functions_declared": [
+      {
+        "name": "main_init",
+        "return_type": "void",
+        "line": 64,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      }
+    ],
+    "globals": [],
+    "macros": [
+      {
+        "name": "__llvm__",
+        "line": 2
+      },
+      {
+        "name": "__clang__",
+        "line": 3
+      },
+      {
+        "name": "__clang_major__",
+        "line": 4
+      },
+      {
+        "name": "__clang_minor__",
+        "line": 5
+      },
+      {
+        "name": "__clang_patchlevel__",
+        "line": 6
+      },
+      {
+        "name": "__clang_version__",
+        "line": 7
+      },
+      {
+        "name": "__ATOMIC_RELAXED",
+        "line": 8
+      },
+      {
+        "name": "__ATOMIC_CONSUME",
+        "line": 9
+      },
+      {
+        "name": "__ATOMIC_ACQUIRE",
+        "line": 10
+      },
+      {
+        "name": "__ATOMIC_RELEASE",
+        "line": 11
+      },
+      {
+        "name": "__ATOMIC_ACQ_REL",
+        "line": 12
+      },
+      {
+        "name": "__ATOMIC_SEQ_CST",
+        "line": 13
+      },
+      {
+        "name": "__MEMORY_SCOPE_SYSTEM",
+        "line": 14
+      },
+      {
+        "name": "__MEMORY_SCOPE_DEVICE",
+        "line": 15
+      },
+      {
+        "name": "__MEMORY_SCOPE_WRKGRP",
+        "line": 16
+      },
+      {
+        "name": "__MEMORY_SCOPE_WVFRNT",
+        "line": 17
+      },
+      {
+        "name": "__MEMORY_SCOPE_SINGLE",
+        "line": 18
+      },
+      {
+        "name": "__MEMORY_SCOPE_CLUSTR",
+        "line": 19
+      },
+      {
+        "name": "__OPENCL_MEMORY_SCOPE_WORK_ITEM",
+        "line": 20
+      },
+      {
+        "name": "__OPENCL_MEMORY_SCOPE_WORK_GROUP",
+        "line": 21
+      },
+      {
+        "name": "__OPENCL_MEMORY_SCOPE_DEVICE",
+        "line": 22
+      },
+      {
+        "name": "__OPENCL_MEMORY_SCOPE_ALL_SVM_DEVICES",
+        "line": 23
+      },
+      {
+        "name": "__OPENCL_MEMORY_SCOPE_SUB_GROUP",
+        "line": 24
+      },
+      {
+        "name": "__FPCLASS_SNAN",
+        "line": 25
+      },
+      {
+        "name": "__FPCLASS_QNAN",
+        "line": 26
+      },
+      {
+        "name": "__FPCLASS_NEGINF",
+        "line": 27
+      },
+      {
+        "name": "__FPCLASS_NEGNORMAL",
+        "line": 28
+      },
+      {
+        "name": "__FPCLASS_NEGSUBNORMAL",
+        "line": 29
+      },
+      {
+        "name": "__FPCLASS_NEGZERO",
+        "line": 30
+      },
+      {
+        "name": "__FPCLASS_POSZERO",
+        "line": 31
+      },
+      {
+        "name": "__FPCLASS_POSSUBNORMAL",
+        "line": 32
+      },
+      {
+        "name": "__FPCLASS_POSNORMAL",
+        "line": 33
+      },
+      {
+        "name": "__FPCLASS_POSINF",
+        "line": 34
+      },
+      {
+        "name": "__PRAGMA_REDEFINE_EXTNAME",
+        "line": 35
+      },
+      {
+        "name": "__VERSION__",
+        "line": 36
+      },
+      {
+        "name": "__OBJC_BOOL_IS_BOOL",
+        "line": 37
+      },
+      {
+        "name": "__CONSTANT_CFSTRINGS__",
+        "line": 38
+      },
+      {
+        "name": "__clang_literal_encoding__",
+        "line": 39
+      },
+      {
+        "name": "__clang_wide_literal_encoding__",
+        "line": 40
+      },
+      {
+        "name": "__ORDER_LITTLE_ENDIAN__",
+        "line": 41
+      },
+      {
+        "name": "__ORDER_BIG_ENDIAN__",
+        "line": 42
+      },
+      {
+        "name": "__ORDER_PDP_ENDIAN__",
+        "line": 43
+      },
+      {
+        "name": "__BYTE_ORDER__",
+        "line": 44
+      },
+      {
+        "name": "__LITTLE_ENDIAN__",
+        "line": 45
+      },
+      {
+        "name": "__CHAR_BIT__",
+        "line": 46
+      },
+      {
+        "name": "__BOOL_WIDTH__",
+        "line": 47
+      },
+      {
+        "name": "__SHRT_WIDTH__",
+        "line": 48
+      },
+      {
+        "name": "__INT_WIDTH__",
+        "line": 49
+      },
+      {
+        "name": "__LONG_WIDTH__",
+        "line": 50
+      },
+      {
+        "name": "__LLONG_WIDTH__",
+        "line": 51
+      },
+      {
+        "name": "__BITINT_MAXWIDTH__",
+        "line": 52
+      },
+      {
+        "name": "__SCHAR_MAX__",
+        "line": 53
+      },
+      {
+        "name": "__SHRT_MAX__",
+        "line": 54
+      },
+      {
+        "name": "__INT_MAX__",
+        "line": 55
+      },
+      {
+        "name": "__LONG_MAX__",
+        "line": 56
+      },
+      {
+        "name": "__LONG_LONG_MAX__",
+        "line": 57
+      },
+      {
+        "name": "__WCHAR_MAX__",
+        "line": 58
+      },
+      {
+        "name": "__WCHAR_WIDTH__",
+        "line": 59
+      },
+      {
+        "name": "__WINT_MAX__",
+        "line": 60
+      },
+      {
+        "name": "__WINT_WIDTH__",
+        "line": 61
+      },
+      {
+        "name": "__INTMAX_MAX__",
+        "line": 62
+      },
+      {
+        "name": "__INTMAX_WIDTH__",
+        "line": 63
+      },
+      {
+        "name": "__SIZE_MAX__",
+        "line": 64
+      },
+      {
+        "name": "__SIZE_WIDTH__",
+        "line": 65
+      },
+      {
+        "name": "__UINTMAX_MAX__",
+        "line": 66
+      },
+      {
+        "name": "__UINTMAX_WIDTH__",
+        "line": 67
+      },
+      {
+        "name": "__PTRDIFF_MAX__",
+        "line": 68
+      },
+      {
+        "name": "__PTRDIFF_WIDTH__",
+        "line": 69
+      },
+      {
+        "name": "__INTPTR_MAX__",
+        "line": 70
+      },
+      {
+        "name": "__INTPTR_WIDTH__",
+        "line": 71
+      },
+      {
+        "name": "__UINTPTR_MAX__",
+        "line": 72
+      },
+      {
+        "name": "__UINTPTR_WIDTH__",
+        "line": 73
+      },
+      {
+        "name": "__SIZEOF_DOUBLE__",
+        "line": 74
+      },
+      {
+        "name": "__SIZEOF_FLOAT__",
+        "line": 75
+      },
+      {
+        "name": "__SIZEOF_INT__",
+        "line": 76
+      },
+      {
+        "name": "__SIZEOF_LONG__",
+        "line": 77
+      },
+      {
+        "name": "__SIZEOF_LONG_DOUBLE__",
+        "line": 78
+      },
+      {
+        "name": "__SIZEOF_LONG_LONG__",
+        "line": 79
+      },
+      {
+        "name": "__SIZEOF_POINTER__",
+        "line": 80
+      },
+      {
+        "name": "__SIZEOF_SHORT__",
+        "line": 81
+      },
+      {
+        "name": "__SIZEOF_PTRDIFF_T__",
+        "line": 82
+      },
+      {
+        "name": "__SIZEOF_SIZE_T__",
+        "line": 83
+      },
+      {
+        "name": "__SIZEOF_WCHAR_T__",
+        "line": 84
+      },
+      {
+        "name": "__SIZEOF_WINT_T__",
+        "line": 85
+      },
+      {
+        "name": "__SIZEOF_INT128__",
+        "line": 86
+      },
+      {
+        "name": "__INTMAX_TYPE__",
+        "line": 87
+      },
+      {
+        "name": "__INTMAX_FMTd__",
+        "line": 88
+      },
+      {
+        "name": "__INTMAX_FMTi__",
+        "line": 89
+      },
+      {
+        "name": "__INTMAX_C_SUFFIX__",
+        "line": 90
+      },
+      {
+        "name": "__INTMAX_C",
+        "line": 91
+      },
+      {
+        "name": "__UINTMAX_TYPE__",
+        "line": 92
+      },
+      {
+        "name": "__UINTMAX_FMTo__",
+        "line": 93
+      },
+      {
+        "name": "__UINTMAX_FMTu__",
+        "line": 94
+      },
+      {
+        "name": "__UINTMAX_FMTx__",
+        "line": 95
+      },
+      {
+        "name": "__UINTMAX_FMTX__",
+        "line": 96
+      },
+      {
+        "name": "__UINTMAX_C_SUFFIX__",
+        "line": 97
+      },
+      {
+        "name": "__UINTMAX_C",
+        "line": 98
+      },
+      {
+        "name": "__PTRDIFF_TYPE__",
+        "line": 99
+      },
+      {
+        "name": "__PTRDIFF_FMTd__",
+        "line": 100
+      },
+      {
+        "name": "__PTRDIFF_FMTi__",
+        "line": 101
+      },
+      {
+        "name": "__INTPTR_TYPE__",
+        "line": 102
+      },
+      {
+        "name": "__INTPTR_FMTd__",
+        "line": 103
+      },
+      {
+        "name": "__INTPTR_FMTi__",
+        "line": 104
+      },
+      {
+        "name": "__SIZE_TYPE__",
+        "line": 105
+      },
+      {
+        "name": "__SIZE_FMTo__",
+        "line": 106
+      },
+      {
+        "name": "__SIZE_FMTu__",
+        "line": 107
+      },
+      {
+        "name": "__SIZE_FMTx__",
+        "line": 108
+      },
+      {
+        "name": "__SIZE_FMTX__",
+        "line": 109
+      },
+      {
+        "name": "__WCHAR_TYPE__",
+        "line": 110
+      },
+      {
+        "name": "__WINT_TYPE__",
+        "line": 111
+      },
+      {
+        "name": "__SIG_ATOMIC_MAX__",
+        "line": 112
+      },
+      {
+        "name": "__SIG_ATOMIC_WIDTH__",
+        "line": 113
+      },
+      {
+        "name": "__CHAR16_TYPE__",
+        "line": 114
+      },
+      {
+        "name": "__CHAR32_TYPE__",
+        "line": 115
+      },
+      {
+        "name": "__UINTPTR_TYPE__",
+        "line": 116
+      },
+      {
+        "name": "__UINTPTR_FMTo__",
+        "line": 117
+      },
+      {
+        "name": "__UINTPTR_FMTu__",
+        "line": 118
+      },
+      {
+        "name": "__UINTPTR_FMTx__",
+        "line": 119
+      },
+      {
+        "name": "__UINTPTR_FMTX__",
+        "line": 120
+      },
+      {
+        "name": "__FLT16_DENORM_MIN__",
+        "line": 121
+      },
+      {
+        "name": "__FLT16_NORM_MAX__",
+        "line": 122
+      },
+      {
+        "name": "__FLT16_HAS_DENORM__",
+        "line": 123
+      },
+      {
+        "name": "__FLT16_DIG__",
+        "line": 124
+      },
+      {
+        "name": "__FLT16_DECIMAL_DIG__",
+        "line": 125
+      },
+      {
+        "name": "__FLT16_EPSILON__",
+        "line": 126
+      },
+      {
+        "name": "__FLT16_HAS_INFINITY__",
+        "line": 127
+      },
+      {
+        "name": "__FLT16_HAS_QUIET_NAN__",
+        "line": 128
+      },
+      {
+        "name": "__FLT16_MANT_DIG__",
+        "line": 129
+      },
+      {
+        "name": "__FLT16_MAX_10_EXP__",
+        "line": 130
+      },
+      {
+        "name": "__FLT16_MAX_EXP__",
+        "line": 131
+      },
+      {
+        "name": "__FLT16_MAX__",
+        "line": 132
+      },
+      {
+        "name": "__FLT16_MIN_10_EXP__",
+        "line": 133
+      },
+      {
+        "name": "__FLT16_MIN_EXP__",
+        "line": 134
+      },
+      {
+        "name": "__FLT16_MIN__",
+        "line": 135
+      },
+      {
+        "name": "__FLT_DENORM_MIN__",
+        "line": 136
+      },
+      {
+        "name": "__FLT_NORM_MAX__",
+        "line": 137
+      },
+      {
+        "name": "__FLT_HAS_DENORM__",
+        "line": 138
+      },
+      {
+        "name": "__FLT_DIG__",
+        "line": 139
+      },
+      {
+        "name": "__FLT_DECIMAL_DIG__",
+        "line": 140
+      },
+      {
+        "name": "__FLT_EPSILON__",
+        "line": 141
+      },
+      {
+        "name": "__FLT_HAS_INFINITY__",
+        "line": 142
+      },
+      {
+        "name": "__FLT_HAS_QUIET_NAN__",
+        "line": 143
+      },
+      {
+        "name": "__FLT_MANT_DIG__",
+        "line": 144
+      },
+      {
+        "name": "__FLT_MAX_10_EXP__",
+        "line": 145
+      },
+      {
+        "name": "__FLT_MAX_EXP__",
+        "line": 146
+      },
+      {
+        "name": "__FLT_MAX__",
+        "line": 147
+      },
+      {
+        "name": "__FLT_MIN_10_EXP__",
+        "line": 148
+      },
+      {
+        "name": "__FLT_MIN_EXP__",
+        "line": 149
+      },
+      {
+        "name": "__FLT_MIN__",
+        "line": 150
+      },
+      {
+        "name": "__DBL_DENORM_MIN__",
+        "line": 151
+      },
+      {
+        "name": "__DBL_NORM_MAX__",
+        "line": 152
+      },
+      {
+        "name": "__DBL_HAS_DENORM__",
+        "line": 153
+      },
+      {
+        "name": "__DBL_DIG__",
+        "line": 154
+      },
+      {
+        "name": "__DBL_DECIMAL_DIG__",
+        "line": 155
+      },
+      {
+        "name": "__DBL_EPSILON__",
+        "line": 156
+      },
+      {
+        "name": "__DBL_HAS_INFINITY__",
+        "line": 157
+      },
+      {
+        "name": "__DBL_HAS_QUIET_NAN__",
+        "line": 158
+      },
+      {
+        "name": "__DBL_MANT_DIG__",
+        "line": 159
+      },
+      {
+        "name": "__DBL_MAX_10_EXP__",
+        "line": 160
+      },
+      {
+        "name": "__DBL_MAX_EXP__",
+        "line": 161
+      },
+      {
+        "name": "__DBL_MAX__",
+        "line": 162
+      },
+      {
+        "name": "__DBL_MIN_10_EXP__",
+        "line": 163
+      },
+      {
+        "name": "__DBL_MIN_EXP__",
+        "line": 164
+      },
+      {
+        "name": "__DBL_MIN__",
+        "line": 165
+      },
+      {
+        "name": "__LDBL_DENORM_MIN__",
+        "line": 166
+      },
+      {
+        "name": "__LDBL_NORM_MAX__",
+        "line": 167
+      },
+      {
+        "name": "__LDBL_HAS_DENORM__",
+        "line": 168
+      },
+      {
+        "name": "__LDBL_DIG__",
+        "line": 169
+      },
+      {
+        "name": "__LDBL_DECIMAL_DIG__",
+        "line": 170
+      },
+      {
+        "name": "__LDBL_EPSILON__",
+        "line": 171
+      },
+      {
+        "name": "__LDBL_HAS_INFINITY__",
+        "line": 172
+      },
+      {
+        "name": "__LDBL_HAS_QUIET_NAN__",
+        "line": 173
+      },
+      {
+        "name": "__LDBL_MANT_DIG__",
+        "line": 174
+      },
+      {
+        "name": "__LDBL_MAX_10_EXP__",
+        "line": 175
+      },
+      {
+        "name": "__LDBL_MAX_EXP__",
+        "line": 176
+      },
+      {
+        "name": "__LDBL_MAX__",
+        "line": 177
+      },
+      {
+        "name": "__LDBL_MIN_10_EXP__",
+        "line": 178
+      },
+      {
+        "name": "__LDBL_MIN_EXP__",
+        "line": 179
+      },
+      {
+        "name": "__LDBL_MIN__",
+        "line": 180
+      },
+      {
+        "name": "__POINTER_WIDTH__",
+        "line": 181
+      },
+      {
+        "name": "__BIGGEST_ALIGNMENT__",
+        "line": 182
+      },
+      {
+        "name": "__WCHAR_UNSIGNED__",
+        "line": 183
+      },
+      {
+        "name": "__WINT_UNSIGNED__",
+        "line": 184
+      },
+      {
+        "name": "__INT8_TYPE__",
+        "line": 185
+      },
+      {
+        "name": "__INT8_FMTd__",
+        "line": 186
+      },
+      {
+        "name": "__INT8_FMTi__",
+        "line": 187
+      },
+      {
+        "name": "__INT8_C_SUFFIX__",
+        "line": 188
+      },
+      {
+        "name": "__INT8_C",
+        "line": 189
+      },
+      {
+        "name": "__INT16_TYPE__",
+        "line": 190
+      },
+      {
+        "name": "__INT16_FMTd__",
+        "line": 191
+      },
+      {
+        "name": "__INT16_FMTi__",
+        "line": 192
+      },
+      {
+        "name": "__INT16_C_SUFFIX__",
+        "line": 193
+      },
+      {
+        "name": "__INT16_C",
+        "line": 194
+      },
+      {
+        "name": "__INT32_TYPE__",
+        "line": 195
+      },
+      {
+        "name": "__INT32_FMTd__",
+        "line": 196
+      },
+      {
+        "name": "__INT32_FMTi__",
+        "line": 197
+      },
+      {
+        "name": "__INT32_C_SUFFIX__",
+        "line": 198
+      },
+      {
+        "name": "__INT32_C",
+        "line": 199
+      },
+      {
+        "name": "__INT64_TYPE__",
+        "line": 200
+      },
+      {
+        "name": "__INT64_FMTd__",
+        "line": 201
+      },
+      {
+        "name": "__INT64_FMTi__",
+        "line": 202
+      },
+      {
+        "name": "__INT64_C_SUFFIX__",
+        "line": 203
+      },
+      {
+        "name": "__INT64_C",
+        "line": 204
+      },
+      {
+        "name": "__UINT8_TYPE__",
+        "line": 205
+      },
+      {
+        "name": "__UINT8_FMTo__",
+        "line": 206
+      },
+      {
+        "name": "__UINT8_FMTu__",
+        "line": 207
+      },
+      {
+        "name": "__UINT8_FMTx__",
+        "line": 208
+      },
+      {
+        "name": "__UINT8_FMTX__",
+        "line": 209
+      },
+      {
+        "name": "__UINT8_C_SUFFIX__",
+        "line": 210
+      },
+      {
+        "name": "__UINT8_C",
+        "line": 211
+      },
+      {
+        "name": "__UINT8_MAX__",
+        "line": 212
+      },
+      {
+        "name": "__INT8_MAX__",
+        "line": 213
+      },
+      {
+        "name": "__UINT16_TYPE__",
+        "line": 214
+      },
+      {
+        "name": "__UINT16_FMTo__",
+        "line": 215
+      },
+      {
+        "name": "__UINT16_FMTu__",
+        "line": 216
+      },
+      {
+        "name": "__UINT16_FMTx__",
+        "line": 217
+      },
+      {
+        "name": "__UINT16_FMTX__",
+        "line": 218
+      },
+      {
+        "name": "__UINT16_C_SUFFIX__",
+        "line": 219
+      },
+      {
+        "name": "__UINT16_C",
+        "line": 220
+      },
+      {
+        "name": "__UINT16_MAX__",
+        "line": 221
+      },
+      {
+        "name": "__INT16_MAX__",
+        "line": 222
+      },
+      {
+        "name": "__UINT32_TYPE__",
+        "line": 223
+      },
+      {
+        "name": "__UINT32_FMTo__",
+        "line": 224
+      },
+      {
+        "name": "__UINT32_FMTu__",
+        "line": 225
+      },
+      {
+        "name": "__UINT32_FMTx__",
+        "line": 226
+      },
+      {
+        "name": "__UINT32_FMTX__",
+        "line": 227
+      },
+      {
+        "name": "__UINT32_C_SUFFIX__",
+        "line": 228
+      },
+      {
+        "name": "__UINT32_C",
+        "line": 229
+      },
+      {
+        "name": "__UINT32_MAX__",
+        "line": 230
+      },
+      {
+        "name": "__INT32_MAX__",
+        "line": 231
+      },
+      {
+        "name": "__UINT64_TYPE__",
+        "line": 232
+      },
+      {
+        "name": "__UINT64_FMTo__",
+        "line": 233
+      },
+      {
+        "name": "__UINT64_FMTu__",
+        "line": 234
+      },
+      {
+        "name": "__UINT64_FMTx__",
+        "line": 235
+      },
+      {
+        "name": "__UINT64_FMTX__",
+        "line": 236
+      },
+      {
+        "name": "__UINT64_C_SUFFIX__",
+        "line": 237
+      },
+      {
+        "name": "__UINT64_C",
+        "line": 238
+      },
+      {
+        "name": "__UINT64_MAX__",
+        "line": 239
+      },
+      {
+        "name": "__INT64_MAX__",
+        "line": 240
+      },
+      {
+        "name": "__INT_LEAST8_TYPE__",
+        "line": 241
+      },
+      {
+        "name": "__INT_LEAST8_MAX__",
+        "line": 242
+      },
+      {
+        "name": "__INT_LEAST8_WIDTH__",
+        "line": 243
+      },
+      {
+        "name": "__INT_LEAST8_FMTd__",
+        "line": 244
+      },
+      {
+        "name": "__INT_LEAST8_FMTi__",
+        "line": 245
+      },
+      {
+        "name": "__UINT_LEAST8_TYPE__",
+        "line": 246
+      },
+      {
+        "name": "__UINT_LEAST8_MAX__",
+        "line": 247
+      },
+      {
+        "name": "__UINT_LEAST8_FMTo__",
+        "line": 248
+      },
+      {
+        "name": "__UINT_LEAST8_FMTu__",
+        "line": 249
+      },
+      {
+        "name": "__UINT_LEAST8_FMTx__",
+        "line": 250
+      },
+      {
+        "name": "__UINT_LEAST8_FMTX__",
+        "line": 251
+      },
+      {
+        "name": "__INT_LEAST16_TYPE__",
+        "line": 252
+      },
+      {
+        "name": "__INT_LEAST16_MAX__",
+        "line": 253
+      },
+      {
+        "name": "__INT_LEAST16_WIDTH__",
+        "line": 254
+      },
+      {
+        "name": "__INT_LEAST16_FMTd__",
+        "line": 255
+      },
+      {
+        "name": "__INT_LEAST16_FMTi__",
+        "line": 256
+      },
+      {
+        "name": "__UINT_LEAST16_TYPE__",
+        "line": 257
+      },
+      {
+        "name": "__UINT_LEAST16_MAX__",
+        "line": 258
+      },
+      {
+        "name": "__UINT_LEAST16_FMTo__",
+        "line": 259
+      },
+      {
+        "name": "__UINT_LEAST16_FMTu__",
+        "line": 260
+      },
+      {
+        "name": "__UINT_LEAST16_FMTx__",
+        "line": 261
+      },
+      {
+        "name": "__UINT_LEAST16_FMTX__",
+        "line": 262
+      },
+      {
+        "name": "__INT_LEAST32_TYPE__",
+        "line": 263
+      },
+      {
+        "name": "__INT_LEAST32_MAX__",
+        "line": 264
+      },
+      {
+        "name": "__INT_LEAST32_WIDTH__",
+        "line": 265
+      },
+      {
+        "name": "__INT_LEAST32_FMTd__",
+        "line": 266
+      },
+      {
+        "name": "__INT_LEAST32_FMTi__",
+        "line": 267
+      },
+      {
+        "name": "__UINT_LEAST32_TYPE__",
+        "line": 268
+      },
+      {
+        "name": "__UINT_LEAST32_MAX__",
+        "line": 269
+      },
+      {
+        "name": "__UINT_LEAST32_FMTo__",
+        "line": 270
+      },
+      {
+        "name": "__UINT_LEAST32_FMTu__",
+        "line": 271
+      },
+      {
+        "name": "__UINT_LEAST32_FMTx__",
+        "line": 272
+      },
+      {
+        "name": "__UINT_LEAST32_FMTX__",
+        "line": 273
+      },
+      {
+        "name": "__INT_LEAST64_TYPE__",
+        "line": 274
+      },
+      {
+        "name": "__INT_LEAST64_MAX__",
+        "line": 275
+      },
+      {
+        "name": "__INT_LEAST64_WIDTH__",
+        "line": 276
+      },
+      {
+        "name": "__INT_LEAST64_FMTd__",
+        "line": 277
+      },
+      {
+        "name": "__INT_LEAST64_FMTi__",
+        "line": 278
+      },
+      {
+        "name": "__UINT_LEAST64_TYPE__",
+        "line": 279
+      },
+      {
+        "name": "__UINT_LEAST64_MAX__",
+        "line": 280
+      },
+      {
+        "name": "__UINT_LEAST64_FMTo__",
+        "line": 281
+      },
+      {
+        "name": "__UINT_LEAST64_FMTu__",
+        "line": 282
+      },
+      {
+        "name": "__UINT_LEAST64_FMTx__",
+        "line": 283
+      },
+      {
+        "name": "__UINT_LEAST64_FMTX__",
+        "line": 284
+      },
+      {
+        "name": "__INT_FAST8_TYPE__",
+        "line": 285
+      },
+      {
+        "name": "__INT_FAST8_MAX__",
+        "line": 286
+      },
+      {
+        "name": "__INT_FAST8_WIDTH__",
+        "line": 287
+      },
+      {
+        "name": "__INT_FAST8_FMTd__",
+        "line": 288
+      },
+      {
+        "name": "__INT_FAST8_FMTi__",
+        "line": 289
+      },
+      {
+        "name": "__UINT_FAST8_TYPE__",
+        "line": 290
+      },
+      {
+        "name": "__UINT_FAST8_MAX__",
+        "line": 291
+      },
+      {
+        "name": "__UINT_FAST8_FMTo__",
+        "line": 292
+      },
+      {
+        "name": "__UINT_FAST8_FMTu__",
+        "line": 293
+      },
+      {
+        "name": "__UINT_FAST8_FMTx__",
+        "line": 294
+      },
+      {
+        "name": "__UINT_FAST8_FMTX__",
+        "line": 295
+      },
+      {
+        "name": "__INT_FAST16_TYPE__",
+        "line": 296
+      },
+      {
+        "name": "__INT_FAST16_MAX__",
+        "line": 297
+      },
+      {
+        "name": "__INT_FAST16_WIDTH__",
+        "line": 298
+      },
+      {
+        "name": "__INT_FAST16_FMTd__",
+        "line": 299
+      },
+      {
+        "name": "__INT_FAST16_FMTi__",
+        "line": 300
+      },
+      {
+        "name": "__UINT_FAST16_TYPE__",
+        "line": 301
+      },
+      {
+        "name": "__UINT_FAST16_MAX__",
+        "line": 302
+      },
+      {
+        "name": "__UINT_FAST16_FMTo__",
+        "line": 303
+      },
+      {
+        "name": "__UINT_FAST16_FMTu__",
+        "line": 304
+      },
+      {
+        "name": "__UINT_FAST16_FMTx__",
+        "line": 305
+      },
+      {
+        "name": "__UINT_FAST16_FMTX__",
+        "line": 306
+      },
+      {
+        "name": "__INT_FAST32_TYPE__",
+        "line": 307
+      },
+      {
+        "name": "__INT_FAST32_MAX__",
+        "line": 308
+      },
+      {
+        "name": "__INT_FAST32_WIDTH__",
+        "line": 309
+      },
+      {
+        "name": "__INT_FAST32_FMTd__",
+        "line": 310
+      },
+      {
+        "name": "__INT_FAST32_FMTi__",
+        "line": 311
+      },
+      {
+        "name": "__UINT_FAST32_TYPE__",
+        "line": 312
+      },
+      {
+        "name": "__UINT_FAST32_MAX__",
+        "line": 313
+      },
+      {
+        "name": "__UINT_FAST32_FMTo__",
+        "line": 314
+      },
+      {
+        "name": "__UINT_FAST32_FMTu__",
+        "line": 315
+      },
+      {
+        "name": "__UINT_FAST32_FMTx__",
+        "line": 316
+      },
+      {
+        "name": "__UINT_FAST32_FMTX__",
+        "line": 317
+      },
+      {
+        "name": "__INT_FAST64_TYPE__",
+        "line": 318
+      },
+      {
+        "name": "__INT_FAST64_MAX__",
+        "line": 319
+      },
+      {
+        "name": "__INT_FAST64_WIDTH__",
+        "line": 320
+      },
+      {
+        "name": "__INT_FAST64_FMTd__",
+        "line": 321
+      },
+      {
+        "name": "__INT_FAST64_FMTi__",
+        "line": 322
+      },
+      {
+        "name": "__UINT_FAST64_TYPE__",
+        "line": 323
+      },
+      {
+        "name": "__UINT_FAST64_MAX__",
+        "line": 324
+      },
+      {
+        "name": "__UINT_FAST64_FMTo__",
+        "line": 325
+      },
+      {
+        "name": "__UINT_FAST64_FMTu__",
+        "line": 326
+      },
+      {
+        "name": "__UINT_FAST64_FMTx__",
+        "line": 327
+      },
+      {
+        "name": "__UINT_FAST64_FMTX__",
+        "line": 328
+      },
+      {
+        "name": "__USER_LABEL_PREFIX__",
+        "line": 329
+      },
+      {
+        "name": "__FINITE_MATH_ONLY__",
+        "line": 330
+      },
+      {
+        "name": "__GCC_DESTRUCTIVE_SIZE",
+        "line": 331
+      },
+      {
+        "name": "__GCC_CONSTRUCTIVE_SIZE",
+        "line": 332
+      },
+      {
+        "name": "__CLANG_ATOMIC_BOOL_LOCK_FREE",
+        "line": 335
+      },
+      {
+        "name": "__CLANG_ATOMIC_CHAR_LOCK_FREE",
+        "line": 336
+      },
+      {
+        "name": "__CLANG_ATOMIC_CHAR16_T_LOCK_FREE",
+        "line": 337
+      },
+      {
+        "name": "__CLANG_ATOMIC_CHAR32_T_LOCK_FREE",
+        "line": 338
+      },
+      {
+        "name": "__CLANG_ATOMIC_WCHAR_T_LOCK_FREE",
+        "line": 339
+      },
+      {
+        "name": "__CLANG_ATOMIC_SHORT_LOCK_FREE",
+        "line": 340
+      },
+      {
+        "name": "__CLANG_ATOMIC_INT_LOCK_FREE",
+        "line": 341
+      },
+      {
+        "name": "__CLANG_ATOMIC_LONG_LOCK_FREE",
+        "line": 342
+      },
+      {
+        "name": "__CLANG_ATOMIC_LLONG_LOCK_FREE",
+        "line": 343
+      },
+      {
+        "name": "__CLANG_ATOMIC_POINTER_LOCK_FREE",
+        "line": 344
+      },
+      {
+        "name": "__NO_INLINE__",
+        "line": 345
+      },
+      {
+        "name": "__PIC__",
+        "line": 346
+      },
+      {
+        "name": "__pic__",
+        "line": 347
+      },
+      {
+        "name": "__FLT_RADIX__",
+        "line": 348
+      },
+      {
+        "name": "__DECIMAL_DIG__",
+        "line": 349
+      },
+      {
+        "name": "__GCC_ASM_FLAG_OUTPUTS__",
+        "line": 350
+      },
+      {
+        "name": "__code_model_small__",
+        "line": 351
+      },
+      {
+        "name": "__amd64__",
+        "line": 352
+      },
+      {
+        "name": "__amd64",
+        "line": 353
+      },
+      {
+        "name": "__x86_64",
+        "line": 354
+      },
+      {
+        "name": "__x86_64__",
+        "line": 355
+      },
+      {
+        "name": "__SEG_GS",
+        "line": 356
+      },
+      {
+        "name": "__SEG_FS",
+        "line": 357
+      },
+      {
+        "name": "__seg_gs",
+        "line": 358
+      },
+      {
+        "name": "__seg_fs",
+        "line": 359
+      },
+      {
+        "name": "__k8",
+        "line": 360
+      },
+      {
+        "name": "__k8__",
+        "line": 361
+      },
+      {
+        "name": "__tune_k8__",
+        "line": 362
+      },
+      {
+        "name": "__REGISTER_PREFIX__",
+        "line": 363
+      },
+      {
+        "name": "__NO_MATH_INLINES",
+        "line": 364
+      },
+      {
+        "name": "__FXSR__",
+        "line": 365
+      },
+      {
+        "name": "__SSE2__",
+        "line": 366
+      },
+      {
+        "name": "__SSE2_MATH__",
+        "line": 367
+      },
+      {
+        "name": "__SSE__",
+        "line": 368
+      },
+      {
+        "name": "__SSE_MATH__",
+        "line": 369
+      },
+      {
+        "name": "__MMX__",
+        "line": 370
+      },
+      {
+        "name": "__GCC_HAVE_SYNC_COMPARE_AND_SWAP_1",
+        "line": 371
+      },
+      {
+        "name": "__GCC_HAVE_SYNC_COMPARE_AND_SWAP_2",
+        "line": 372
+      },
+      {
+        "name": "__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4",
+        "line": 373
+      },
+      {
+        "name": "__GCC_HAVE_SYNC_COMPARE_AND_SWAP_8",
+        "line": 374
+      },
+      {
+        "name": "_WIN32",
+        "line": 375
+      },
+      {
+        "name": "_WIN64",
+        "line": 376
+      },
+      {
+        "name": "_M_FP_CONTRACT",
+        "line": 377
+      },
+      {
+        "name": "_M_FP_PRECISE",
+        "line": 378
+      },
+      {
+        "name": "_MSC_VER",
+        "line": 379
+      },
+      {
+        "name": "_MSC_FULL_VER",
+        "line": 380
+      },
+      {
+        "name": "_MSC_BUILD",
+        "line": 381
+      },
+      {
+        "name": "_CRT_USE_BUILTIN_OFFSETOF",
+        "line": 382
+      },
+      {
+        "name": "_MSC_EXTENSIONS",
+        "line": 383
+      },
+      {
+        "name": "_INTEGRAL_MAX_BITS",
+        "line": 384
+      },
+      {
+        "name": "__STDC_NO_THREADS__",
+        "line": 385
+      },
+      {
+        "name": "_MSVC_EXECUTION_CHARACTER_SET",
+        "line": 386
+      },
+      {
+        "name": "_M_X64",
+        "line": 387
+      },
+      {
+        "name": "_M_AMD64",
+        "line": 388
+      },
+      {
+        "name": "__STDC_HOSTED__",
+        "line": 389
+      },
+      {
+        "name": "__STDC_VERSION__",
+        "line": 390
+      },
+      {
+        "name": "__STDC_UTF_16__",
+        "line": 391
+      },
+      {
+        "name": "__STDC_UTF_32__",
+        "line": 392
+      },
+      {
+        "name": "__STDC_EMBED_NOT_FOUND__",
+        "line": 393
+      },
+      {
+        "name": "__STDC_EMBED_FOUND__",
+        "line": 394
+      },
+      {
+        "name": "__STDC_EMBED_EMPTY__",
+        "line": 395
+      }
+    ]
+  },
+  {
+    "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+    "includes": [
+      "soc.h",
+      "soc_model.h",
+      "string.h"
+    ],
+    "functions_defined": [
+      {
+        "name": "Soc_initialize",
+        "return_type": "void",
+        "line": 59,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_tick",
+        "return_type": "void",
+        "line": 65,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_read_inputs",
+        "return_type": "void",
+        "line": 77,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_read_outputs",
+        "return_type": "void",
+        "line": 204,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_get_batt_resttime",
+        "return_type": "int",
+        "line": 236,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_tau_depolar",
+        "return_type": "int",
+        "line": 251,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_state",
+        "return_type": "int",
+        "line": 266,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_pack_level",
+        "return_type": "int",
+        "line": 281,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_user_level",
+        "return_type": "int",
+        "line": 296,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_min",
+        "return_type": "int",
+        "line": 311,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_max",
+        "return_type": "int",
+        "line": 326,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_reset",
+        "return_type": "int",
+        "line": 341,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_cell_levels",
+        "return_type": "int",
+        "line": 347,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_cell_cc_levels",
+        "return_type": "int",
+        "line": 362,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_cell_ocv_levels",
+        "return_type": "int",
+        "line": 377,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      }
+    ],
+    "functions_declared": [
+      {
+        "name": "Soc_read_inputs",
+        "return_type": "void",
+        "line": 56,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_read_outputs",
+        "return_type": "void",
+        "line": 57,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      }
+    ],
+    "globals": [
+      {
+        "name": "VaSoc_frc_cellStateOfCharge",
+        "type": "int",
+        "line": 32
+      },
+      {
+        "name": "VaSoc_frc_cellStateOfChargeCc",
+        "type": "int",
+        "line": 33
+      },
+      {
+        "name": "VaSoc_frc_cellStateOfChargeOcv",
+        "type": "int",
+        "line": 34
+      },
+      {
+        "name": "VaSoc_ms_tauDepolarization",
+        "type": "int",
+        "line": 35
+      },
+      {
+        "name": "VaSoc_frc_cellStateOfHealth",
+        "type": "int",
+        "line": 36
+      },
+      {
+        "name": "VeSoc_ms_batteryAsleepTime",
+        "type": "uint32_t",
+        "line": 37
+      },
+      {
+        "name": "NaSoc_frc_initialStateOfCharge",
+        "type": "int",
+        "line": 38
+      },
+      {
+        "name": "VeSoc_nu_batteryState",
+        "type": "int",
+        "line": 39
+      },
+      {
+        "name": "VeSoc_A_batteryCurrent",
+        "type": "int",
+        "line": 40
+      },
+      {
+        "name": "NeSoc_bi_nvmImportStatus",
+        "type": "_Bool",
+        "line": 41
+      },
+      {
+        "name": "VeSoc_ms_batteryRestTime",
+        "type": "uint32_t",
+        "line": 42
+      },
+      {
+        "name": "NeSoc_ms_initBatteryRestTime",
+        "type": "uint32_t",
+        "line": 43
+      },
+      {
+        "name": "VeSoc_nu_stateOfChargeState",
+        "type": "Soc_State_t",
+        "line": 44
+      },
+      {
+        "name": "VeSoc_frc_packStateOfCharge",
+        "type": "int",
+        "line": 45
+      },
+      {
+        "name": "VeSoc_frc_userStateOfCharge",
+        "type": "int",
+        "line": 46
+      },
+      {
+        "name": "VeSoc_bi_resetStateOfCharge",
+        "type": "_Bool",
+        "line": 47
+      },
+      {
+        "name": "VeSoc_frc_minimumStateOfCharge",
+        "type": "int",
+        "line": 48
+      },
+      {
+        "name": "VeSoc_frc_maximumStateOfCharge",
+        "type": "int",
+        "line": 49
+      },
+      {
+        "name": "VsSoc_V_cellVoltage",
+        "type": "int",
+        "line": 50
+      },
+      {
+        "name": "VsSoc_degC_cellTemperature",
+        "type": "int",
+        "line": 51
+      },
+      {
+        "name": "VsSoc_degC_minMaxCellTemp",
+        "type": "int",
+        "line": 52
+      },
+      {
+        "name": "VeSoc_bi_lowerStateOfChargeFlt",
+        "type": "_Bool",
+        "line": 53
+      }
+    ],
+    "macros": [
+      {
+        "name": "__llvm__",
+        "line": 2
+      },
+      {
+        "name": "__clang__",
+        "line": 3
+      },
+      {
+        "name": "__clang_major__",
+        "line": 4
+      },
+      {
+        "name": "__clang_minor__",
+        "line": 5
+      },
+      {
+        "name": "__clang_patchlevel__",
+        "line": 6
+      },
+      {
+        "name": "__clang_version__",
+        "line": 7
+      },
+      {
+        "name": "__ATOMIC_RELAXED",
+        "line": 8
+      },
+      {
+        "name": "__ATOMIC_CONSUME",
+        "line": 9
+      },
+      {
+        "name": "__ATOMIC_ACQUIRE",
+        "line": 10
+      },
+      {
+        "name": "__ATOMIC_RELEASE",
+        "line": 11
+      },
+      {
+        "name": "__ATOMIC_ACQ_REL",
+        "line": 12
+      },
+      {
+        "name": "__ATOMIC_SEQ_CST",
+        "line": 13
+      },
+      {
+        "name": "__MEMORY_SCOPE_SYSTEM",
+        "line": 14
+      },
+      {
+        "name": "__MEMORY_SCOPE_DEVICE",
+        "line": 15
+      },
+      {
+        "name": "__MEMORY_SCOPE_WRKGRP",
+        "line": 16
+      },
+      {
+        "name": "__MEMORY_SCOPE_WVFRNT",
+        "line": 17
+      },
+      {
+        "name": "__MEMORY_SCOPE_SINGLE",
+        "line": 18
+      },
+      {
+        "name": "__MEMORY_SCOPE_CLUSTR",
+        "line": 19
+      },
+      {
+        "name": "__OPENCL_MEMORY_SCOPE_WORK_ITEM",
+        "line": 20
+      },
+      {
+        "name": "__OPENCL_MEMORY_SCOPE_WORK_GROUP",
+        "line": 21
+      },
+      {
+        "name": "__OPENCL_MEMORY_SCOPE_DEVICE",
+        "line": 22
+      },
+      {
+        "name": "__OPENCL_MEMORY_SCOPE_ALL_SVM_DEVICES",
+        "line": 23
+      },
+      {
+        "name": "__OPENCL_MEMORY_SCOPE_SUB_GROUP",
+        "line": 24
+      },
+      {
+        "name": "__FPCLASS_SNAN",
+        "line": 25
+      },
+      {
+        "name": "__FPCLASS_QNAN",
+        "line": 26
+      },
+      {
+        "name": "__FPCLASS_NEGINF",
+        "line": 27
+      },
+      {
+        "name": "__FPCLASS_NEGNORMAL",
+        "line": 28
+      },
+      {
+        "name": "__FPCLASS_NEGSUBNORMAL",
+        "line": 29
+      },
+      {
+        "name": "__FPCLASS_NEGZERO",
+        "line": 30
+      },
+      {
+        "name": "__FPCLASS_POSZERO",
+        "line": 31
+      },
+      {
+        "name": "__FPCLASS_POSSUBNORMAL",
+        "line": 32
+      },
+      {
+        "name": "__FPCLASS_POSNORMAL",
+        "line": 33
+      },
+      {
+        "name": "__FPCLASS_POSINF",
+        "line": 34
+      },
+      {
+        "name": "__PRAGMA_REDEFINE_EXTNAME",
+        "line": 35
+      },
+      {
+        "name": "__VERSION__",
+        "line": 36
+      },
+      {
+        "name": "__OBJC_BOOL_IS_BOOL",
+        "line": 37
+      },
+      {
+        "name": "__CONSTANT_CFSTRINGS__",
+        "line": 38
+      },
+      {
+        "name": "__clang_literal_encoding__",
+        "line": 39
+      },
+      {
+        "name": "__clang_wide_literal_encoding__",
+        "line": 40
+      },
+      {
+        "name": "__ORDER_LITTLE_ENDIAN__",
+        "line": 41
+      },
+      {
+        "name": "__ORDER_BIG_ENDIAN__",
+        "line": 42
+      },
+      {
+        "name": "__ORDER_PDP_ENDIAN__",
+        "line": 43
+      },
+      {
+        "name": "__BYTE_ORDER__",
+        "line": 44
+      },
+      {
+        "name": "__LITTLE_ENDIAN__",
+        "line": 45
+      },
+      {
+        "name": "__CHAR_BIT__",
+        "line": 46
+      },
+      {
+        "name": "__BOOL_WIDTH__",
+        "line": 47
+      },
+      {
+        "name": "__SHRT_WIDTH__",
+        "line": 48
+      },
+      {
+        "name": "__INT_WIDTH__",
+        "line": 49
+      },
+      {
+        "name": "__LONG_WIDTH__",
+        "line": 50
+      },
+      {
+        "name": "__LLONG_WIDTH__",
+        "line": 51
+      },
+      {
+        "name": "__BITINT_MAXWIDTH__",
+        "line": 52
+      },
+      {
+        "name": "__SCHAR_MAX__",
+        "line": 53
+      },
+      {
+        "name": "__SHRT_MAX__",
+        "line": 54
+      },
+      {
+        "name": "__INT_MAX__",
+        "line": 55
+      },
+      {
+        "name": "__LONG_MAX__",
+        "line": 56
+      },
+      {
+        "name": "__LONG_LONG_MAX__",
+        "line": 57
+      },
+      {
+        "name": "__WCHAR_MAX__",
+        "line": 58
+      },
+      {
+        "name": "__WCHAR_WIDTH__",
+        "line": 59
+      },
+      {
+        "name": "__WINT_MAX__",
+        "line": 60
+      },
+      {
+        "name": "__WINT_WIDTH__",
+        "line": 61
+      },
+      {
+        "name": "__INTMAX_MAX__",
+        "line": 62
+      },
+      {
+        "name": "__INTMAX_WIDTH__",
+        "line": 63
+      },
+      {
+        "name": "__SIZE_MAX__",
+        "line": 64
+      },
+      {
+        "name": "__SIZE_WIDTH__",
+        "line": 65
+      },
+      {
+        "name": "__UINTMAX_MAX__",
+        "line": 66
+      },
+      {
+        "name": "__UINTMAX_WIDTH__",
+        "line": 67
+      },
+      {
+        "name": "__PTRDIFF_MAX__",
+        "line": 68
+      },
+      {
+        "name": "__PTRDIFF_WIDTH__",
+        "line": 69
+      },
+      {
+        "name": "__INTPTR_MAX__",
+        "line": 70
+      },
+      {
+        "name": "__INTPTR_WIDTH__",
+        "line": 71
+      },
+      {
+        "name": "__UINTPTR_MAX__",
+        "line": 72
+      },
+      {
+        "name": "__UINTPTR_WIDTH__",
+        "line": 73
+      },
+      {
+        "name": "__SIZEOF_DOUBLE__",
+        "line": 74
+      },
+      {
+        "name": "__SIZEOF_FLOAT__",
+        "line": 75
+      },
+      {
+        "name": "__SIZEOF_INT__",
+        "line": 76
+      },
+      {
+        "name": "__SIZEOF_LONG__",
+        "line": 77
+      },
+      {
+        "name": "__SIZEOF_LONG_DOUBLE__",
+        "line": 78
+      },
+      {
+        "name": "__SIZEOF_LONG_LONG__",
+        "line": 79
+      },
+      {
+        "name": "__SIZEOF_POINTER__",
+        "line": 80
+      },
+      {
+        "name": "__SIZEOF_SHORT__",
+        "line": 81
+      },
+      {
+        "name": "__SIZEOF_PTRDIFF_T__",
+        "line": 82
+      },
+      {
+        "name": "__SIZEOF_SIZE_T__",
+        "line": 83
+      },
+      {
+        "name": "__SIZEOF_WCHAR_T__",
+        "line": 84
+      },
+      {
+        "name": "__SIZEOF_WINT_T__",
+        "line": 85
+      },
+      {
+        "name": "__SIZEOF_INT128__",
+        "line": 86
+      },
+      {
+        "name": "__INTMAX_TYPE__",
+        "line": 87
+      },
+      {
+        "name": "__INTMAX_FMTd__",
+        "line": 88
+      },
+      {
+        "name": "__INTMAX_FMTi__",
+        "line": 89
+      },
+      {
+        "name": "__INTMAX_C_SUFFIX__",
+        "line": 90
+      },
+      {
+        "name": "__INTMAX_C",
+        "line": 91
+      },
+      {
+        "name": "__UINTMAX_TYPE__",
+        "line": 92
+      },
+      {
+        "name": "__UINTMAX_FMTo__",
+        "line": 93
+      },
+      {
+        "name": "__UINTMAX_FMTu__",
+        "line": 94
+      },
+      {
+        "name": "__UINTMAX_FMTx__",
+        "line": 95
+      },
+      {
+        "name": "__UINTMAX_FMTX__",
+        "line": 96
+      },
+      {
+        "name": "__UINTMAX_C_SUFFIX__",
+        "line": 97
+      },
+      {
+        "name": "__UINTMAX_C",
+        "line": 98
+      },
+      {
+        "name": "__PTRDIFF_TYPE__",
+        "line": 99
+      },
+      {
+        "name": "__PTRDIFF_FMTd__",
+        "line": 100
+      },
+      {
+        "name": "__PTRDIFF_FMTi__",
+        "line": 101
+      },
+      {
+        "name": "__INTPTR_TYPE__",
+        "line": 102
+      },
+      {
+        "name": "__INTPTR_FMTd__",
+        "line": 103
+      },
+      {
+        "name": "__INTPTR_FMTi__",
+        "line": 104
+      },
+      {
+        "name": "__SIZE_TYPE__",
+        "line": 105
+      },
+      {
+        "name": "__SIZE_FMTo__",
+        "line": 106
+      },
+      {
+        "name": "__SIZE_FMTu__",
+        "line": 107
+      },
+      {
+        "name": "__SIZE_FMTx__",
+        "line": 108
+      },
+      {
+        "name": "__SIZE_FMTX__",
+        "line": 109
+      },
+      {
+        "name": "__WCHAR_TYPE__",
+        "line": 110
+      },
+      {
+        "name": "__WINT_TYPE__",
+        "line": 111
+      },
+      {
+        "name": "__SIG_ATOMIC_MAX__",
+        "line": 112
+      },
+      {
+        "name": "__SIG_ATOMIC_WIDTH__",
+        "line": 113
+      },
+      {
+        "name": "__CHAR16_TYPE__",
+        "line": 114
+      },
+      {
+        "name": "__CHAR32_TYPE__",
+        "line": 115
+      },
+      {
+        "name": "__UINTPTR_TYPE__",
+        "line": 116
+      },
+      {
+        "name": "__UINTPTR_FMTo__",
+        "line": 117
+      },
+      {
+        "name": "__UINTPTR_FMTu__",
+        "line": 118
+      },
+      {
+        "name": "__UINTPTR_FMTx__",
+        "line": 119
+      },
+      {
+        "name": "__UINTPTR_FMTX__",
+        "line": 120
+      },
+      {
+        "name": "__FLT16_DENORM_MIN__",
+        "line": 121
+      },
+      {
+        "name": "__FLT16_NORM_MAX__",
+        "line": 122
+      },
+      {
+        "name": "__FLT16_HAS_DENORM__",
+        "line": 123
+      },
+      {
+        "name": "__FLT16_DIG__",
+        "line": 124
+      },
+      {
+        "name": "__FLT16_DECIMAL_DIG__",
+        "line": 125
+      },
+      {
+        "name": "__FLT16_EPSILON__",
+        "line": 126
+      },
+      {
+        "name": "__FLT16_HAS_INFINITY__",
+        "line": 127
+      },
+      {
+        "name": "__FLT16_HAS_QUIET_NAN__",
+        "line": 128
+      },
+      {
+        "name": "__FLT16_MANT_DIG__",
+        "line": 129
+      },
+      {
+        "name": "__FLT16_MAX_10_EXP__",
+        "line": 130
+      },
+      {
+        "name": "__FLT16_MAX_EXP__",
+        "line": 131
+      },
+      {
+        "name": "__FLT16_MAX__",
+        "line": 132
+      },
+      {
+        "name": "__FLT16_MIN_10_EXP__",
+        "line": 133
+      },
+      {
+        "name": "__FLT16_MIN_EXP__",
+        "line": 134
+      },
+      {
+        "name": "__FLT16_MIN__",
+        "line": 135
+      },
+      {
+        "name": "__FLT_DENORM_MIN__",
+        "line": 136
+      },
+      {
+        "name": "__FLT_NORM_MAX__",
+        "line": 137
+      },
+      {
+        "name": "__FLT_HAS_DENORM__",
+        "line": 138
+      },
+      {
+        "name": "__FLT_DIG__",
+        "line": 139
+      },
+      {
+        "name": "__FLT_DECIMAL_DIG__",
+        "line": 140
+      },
+      {
+        "name": "__FLT_EPSILON__",
+        "line": 141
+      },
+      {
+        "name": "__FLT_HAS_INFINITY__",
+        "line": 142
+      },
+      {
+        "name": "__FLT_HAS_QUIET_NAN__",
+        "line": 143
+      },
+      {
+        "name": "__FLT_MANT_DIG__",
+        "line": 144
+      },
+      {
+        "name": "__FLT_MAX_10_EXP__",
+        "line": 145
+      },
+      {
+        "name": "__FLT_MAX_EXP__",
+        "line": 146
+      },
+      {
+        "name": "__FLT_MAX__",
+        "line": 147
+      },
+      {
+        "name": "__FLT_MIN_10_EXP__",
+        "line": 148
+      },
+      {
+        "name": "__FLT_MIN_EXP__",
+        "line": 149
+      },
+      {
+        "name": "__FLT_MIN__",
+        "line": 150
+      },
+      {
+        "name": "__DBL_DENORM_MIN__",
+        "line": 151
+      },
+      {
+        "name": "__DBL_NORM_MAX__",
+        "line": 152
+      },
+      {
+        "name": "__DBL_HAS_DENORM__",
+        "line": 153
+      },
+      {
+        "name": "__DBL_DIG__",
+        "line": 154
+      },
+      {
+        "name": "__DBL_DECIMAL_DIG__",
+        "line": 155
+      },
+      {
+        "name": "__DBL_EPSILON__",
+        "line": 156
+      },
+      {
+        "name": "__DBL_HAS_INFINITY__",
+        "line": 157
+      },
+      {
+        "name": "__DBL_HAS_QUIET_NAN__",
+        "line": 158
+      },
+      {
+        "name": "__DBL_MANT_DIG__",
+        "line": 159
+      },
+      {
+        "name": "__DBL_MAX_10_EXP__",
+        "line": 160
+      },
+      {
+        "name": "__DBL_MAX_EXP__",
+        "line": 161
+      },
+      {
+        "name": "__DBL_MAX__",
+        "line": 162
+      },
+      {
+        "name": "__DBL_MIN_10_EXP__",
+        "line": 163
+      },
+      {
+        "name": "__DBL_MIN_EXP__",
+        "line": 164
+      },
+      {
+        "name": "__DBL_MIN__",
+        "line": 165
+      },
+      {
+        "name": "__LDBL_DENORM_MIN__",
+        "line": 166
+      },
+      {
+        "name": "__LDBL_NORM_MAX__",
+        "line": 167
+      },
+      {
+        "name": "__LDBL_HAS_DENORM__",
+        "line": 168
+      },
+      {
+        "name": "__LDBL_DIG__",
+        "line": 169
+      },
+      {
+        "name": "__LDBL_DECIMAL_DIG__",
+        "line": 170
+      },
+      {
+        "name": "__LDBL_EPSILON__",
+        "line": 171
+      },
+      {
+        "name": "__LDBL_HAS_INFINITY__",
+        "line": 172
+      },
+      {
+        "name": "__LDBL_HAS_QUIET_NAN__",
+        "line": 173
+      },
+      {
+        "name": "__LDBL_MANT_DIG__",
+        "line": 174
+      },
+      {
+        "name": "__LDBL_MAX_10_EXP__",
+        "line": 175
+      },
+      {
+        "name": "__LDBL_MAX_EXP__",
+        "line": 176
+      },
+      {
+        "name": "__LDBL_MAX__",
+        "line": 177
+      },
+      {
+        "name": "__LDBL_MIN_10_EXP__",
+        "line": 178
+      },
+      {
+        "name": "__LDBL_MIN_EXP__",
+        "line": 179
+      },
+      {
+        "name": "__LDBL_MIN__",
+        "line": 180
+      },
+      {
+        "name": "__POINTER_WIDTH__",
+        "line": 181
+      },
+      {
+        "name": "__BIGGEST_ALIGNMENT__",
+        "line": 182
+      },
+      {
+        "name": "__WCHAR_UNSIGNED__",
+        "line": 183
+      },
+      {
+        "name": "__WINT_UNSIGNED__",
+        "line": 184
+      },
+      {
+        "name": "__INT8_TYPE__",
+        "line": 185
+      },
+      {
+        "name": "__INT8_FMTd__",
+        "line": 186
+      },
+      {
+        "name": "__INT8_FMTi__",
+        "line": 187
+      },
+      {
+        "name": "__INT8_C_SUFFIX__",
+        "line": 188
+      },
+      {
+        "name": "__INT8_C",
+        "line": 189
+      },
+      {
+        "name": "__INT16_TYPE__",
+        "line": 190
+      },
+      {
+        "name": "__INT16_FMTd__",
+        "line": 191
+      },
+      {
+        "name": "__INT16_FMTi__",
+        "line": 192
+      },
+      {
+        "name": "__INT16_C_SUFFIX__",
+        "line": 193
+      },
+      {
+        "name": "__INT16_C",
+        "line": 194
+      },
+      {
+        "name": "__INT32_TYPE__",
+        "line": 195
+      },
+      {
+        "name": "__INT32_FMTd__",
+        "line": 196
+      },
+      {
+        "name": "__INT32_FMTi__",
+        "line": 197
+      },
+      {
+        "name": "__INT32_C_SUFFIX__",
+        "line": 198
+      },
+      {
+        "name": "__INT32_C",
+        "line": 199
+      },
+      {
+        "name": "__INT64_TYPE__",
+        "line": 200
+      },
+      {
+        "name": "__INT64_FMTd__",
+        "line": 201
+      },
+      {
+        "name": "__INT64_FMTi__",
+        "line": 202
+      },
+      {
+        "name": "__INT64_C_SUFFIX__",
+        "line": 203
+      },
+      {
+        "name": "__INT64_C",
+        "line": 204
+      },
+      {
+        "name": "__UINT8_TYPE__",
+        "line": 205
+      },
+      {
+        "name": "__UINT8_FMTo__",
+        "line": 206
+      },
+      {
+        "name": "__UINT8_FMTu__",
+        "line": 207
+      },
+      {
+        "name": "__UINT8_FMTx__",
+        "line": 208
+      },
+      {
+        "name": "__UINT8_FMTX__",
+        "line": 209
+      },
+      {
+        "name": "__UINT8_C_SUFFIX__",
+        "line": 210
+      },
+      {
+        "name": "__UINT8_C",
+        "line": 211
+      },
+      {
+        "name": "__UINT8_MAX__",
+        "line": 212
+      },
+      {
+        "name": "__INT8_MAX__",
+        "line": 213
+      },
+      {
+        "name": "__UINT16_TYPE__",
+        "line": 214
+      },
+      {
+        "name": "__UINT16_FMTo__",
+        "line": 215
+      },
+      {
+        "name": "__UINT16_FMTu__",
+        "line": 216
+      },
+      {
+        "name": "__UINT16_FMTx__",
+        "line": 217
+      },
+      {
+        "name": "__UINT16_FMTX__",
+        "line": 218
+      },
+      {
+        "name": "__UINT16_C_SUFFIX__",
+        "line": 219
+      },
+      {
+        "name": "__UINT16_C",
+        "line": 220
+      },
+      {
+        "name": "__UINT16_MAX__",
+        "line": 221
+      },
+      {
+        "name": "__INT16_MAX__",
+        "line": 222
+      },
+      {
+        "name": "__UINT32_TYPE__",
+        "line": 223
+      },
+      {
+        "name": "__UINT32_FMTo__",
+        "line": 224
+      },
+      {
+        "name": "__UINT32_FMTu__",
+        "line": 225
+      },
+      {
+        "name": "__UINT32_FMTx__",
+        "line": 226
+      },
+      {
+        "name": "__UINT32_FMTX__",
+        "line": 227
+      },
+      {
+        "name": "__UINT32_C_SUFFIX__",
+        "line": 228
+      },
+      {
+        "name": "__UINT32_C",
+        "line": 229
+      },
+      {
+        "name": "__UINT32_MAX__",
+        "line": 230
+      },
+      {
+        "name": "__INT32_MAX__",
+        "line": 231
+      },
+      {
+        "name": "__UINT64_TYPE__",
+        "line": 232
+      },
+      {
+        "name": "__UINT64_FMTo__",
+        "line": 233
+      },
+      {
+        "name": "__UINT64_FMTu__",
+        "line": 234
+      },
+      {
+        "name": "__UINT64_FMTx__",
+        "line": 235
+      },
+      {
+        "name": "__UINT64_FMTX__",
+        "line": 236
+      },
+      {
+        "name": "__UINT64_C_SUFFIX__",
+        "line": 237
+      },
+      {
+        "name": "__UINT64_C",
+        "line": 238
+      },
+      {
+        "name": "__UINT64_MAX__",
+        "line": 239
+      },
+      {
+        "name": "__INT64_MAX__",
+        "line": 240
+      },
+      {
+        "name": "__INT_LEAST8_TYPE__",
+        "line": 241
+      },
+      {
+        "name": "__INT_LEAST8_MAX__",
+        "line": 242
+      },
+      {
+        "name": "__INT_LEAST8_WIDTH__",
+        "line": 243
+      },
+      {
+        "name": "__INT_LEAST8_FMTd__",
+        "line": 244
+      },
+      {
+        "name": "__INT_LEAST8_FMTi__",
+        "line": 245
+      },
+      {
+        "name": "__UINT_LEAST8_TYPE__",
+        "line": 246
+      },
+      {
+        "name": "__UINT_LEAST8_MAX__",
+        "line": 247
+      },
+      {
+        "name": "__UINT_LEAST8_FMTo__",
+        "line": 248
+      },
+      {
+        "name": "__UINT_LEAST8_FMTu__",
+        "line": 249
+      },
+      {
+        "name": "__UINT_LEAST8_FMTx__",
+        "line": 250
+      },
+      {
+        "name": "__UINT_LEAST8_FMTX__",
+        "line": 251
+      },
+      {
+        "name": "__INT_LEAST16_TYPE__",
+        "line": 252
+      },
+      {
+        "name": "__INT_LEAST16_MAX__",
+        "line": 253
+      },
+      {
+        "name": "__INT_LEAST16_WIDTH__",
+        "line": 254
+      },
+      {
+        "name": "__INT_LEAST16_FMTd__",
+        "line": 255
+      },
+      {
+        "name": "__INT_LEAST16_FMTi__",
+        "line": 256
+      },
+      {
+        "name": "__UINT_LEAST16_TYPE__",
+        "line": 257
+      },
+      {
+        "name": "__UINT_LEAST16_MAX__",
+        "line": 258
+      },
+      {
+        "name": "__UINT_LEAST16_FMTo__",
+        "line": 259
+      },
+      {
+        "name": "__UINT_LEAST16_FMTu__",
+        "line": 260
+      },
+      {
+        "name": "__UINT_LEAST16_FMTx__",
+        "line": 261
+      },
+      {
+        "name": "__UINT_LEAST16_FMTX__",
+        "line": 262
+      },
+      {
+        "name": "__INT_LEAST32_TYPE__",
+        "line": 263
+      },
+      {
+        "name": "__INT_LEAST32_MAX__",
+        "line": 264
+      },
+      {
+        "name": "__INT_LEAST32_WIDTH__",
+        "line": 265
+      },
+      {
+        "name": "__INT_LEAST32_FMTd__",
+        "line": 266
+      },
+      {
+        "name": "__INT_LEAST32_FMTi__",
+        "line": 267
+      },
+      {
+        "name": "__UINT_LEAST32_TYPE__",
+        "line": 268
+      },
+      {
+        "name": "__UINT_LEAST32_MAX__",
+        "line": 269
+      },
+      {
+        "name": "__UINT_LEAST32_FMTo__",
+        "line": 270
+      },
+      {
+        "name": "__UINT_LEAST32_FMTu__",
+        "line": 271
+      },
+      {
+        "name": "__UINT_LEAST32_FMTx__",
+        "line": 272
+      },
+      {
+        "name": "__UINT_LEAST32_FMTX__",
+        "line": 273
+      },
+      {
+        "name": "__INT_LEAST64_TYPE__",
+        "line": 274
+      },
+      {
+        "name": "__INT_LEAST64_MAX__",
+        "line": 275
+      },
+      {
+        "name": "__INT_LEAST64_WIDTH__",
+        "line": 276
+      },
+      {
+        "name": "__INT_LEAST64_FMTd__",
+        "line": 277
+      },
+      {
+        "name": "__INT_LEAST64_FMTi__",
+        "line": 278
+      },
+      {
+        "name": "__UINT_LEAST64_TYPE__",
+        "line": 279
+      },
+      {
+        "name": "__UINT_LEAST64_MAX__",
+        "line": 280
+      },
+      {
+        "name": "__UINT_LEAST64_FMTo__",
+        "line": 281
+      },
+      {
+        "name": "__UINT_LEAST64_FMTu__",
+        "line": 282
+      },
+      {
+        "name": "__UINT_LEAST64_FMTx__",
+        "line": 283
+      },
+      {
+        "name": "__UINT_LEAST64_FMTX__",
+        "line": 284
+      },
+      {
+        "name": "__INT_FAST8_TYPE__",
+        "line": 285
+      },
+      {
+        "name": "__INT_FAST8_MAX__",
+        "line": 286
+      },
+      {
+        "name": "__INT_FAST8_WIDTH__",
+        "line": 287
+      },
+      {
+        "name": "__INT_FAST8_FMTd__",
+        "line": 288
+      },
+      {
+        "name": "__INT_FAST8_FMTi__",
+        "line": 289
+      },
+      {
+        "name": "__UINT_FAST8_TYPE__",
+        "line": 290
+      },
+      {
+        "name": "__UINT_FAST8_MAX__",
+        "line": 291
+      },
+      {
+        "name": "__UINT_FAST8_FMTo__",
+        "line": 292
+      },
+      {
+        "name": "__UINT_FAST8_FMTu__",
+        "line": 293
+      },
+      {
+        "name": "__UINT_FAST8_FMTx__",
+        "line": 294
+      },
+      {
+        "name": "__UINT_FAST8_FMTX__",
+        "line": 295
+      },
+      {
+        "name": "__INT_FAST16_TYPE__",
+        "line": 296
+      },
+      {
+        "name": "__INT_FAST16_MAX__",
+        "line": 297
+      },
+      {
+        "name": "__INT_FAST16_WIDTH__",
+        "line": 298
+      },
+      {
+        "name": "__INT_FAST16_FMTd__",
+        "line": 299
+      },
+      {
+        "name": "__INT_FAST16_FMTi__",
+        "line": 300
+      },
+      {
+        "name": "__UINT_FAST16_TYPE__",
+        "line": 301
+      },
+      {
+        "name": "__UINT_FAST16_MAX__",
+        "line": 302
+      },
+      {
+        "name": "__UINT_FAST16_FMTo__",
+        "line": 303
+      },
+      {
+        "name": "__UINT_FAST16_FMTu__",
+        "line": 304
+      },
+      {
+        "name": "__UINT_FAST16_FMTx__",
+        "line": 305
+      },
+      {
+        "name": "__UINT_FAST16_FMTX__",
+        "line": 306
+      },
+      {
+        "name": "__INT_FAST32_TYPE__",
+        "line": 307
+      },
+      {
+        "name": "__INT_FAST32_MAX__",
+        "line": 308
+      },
+      {
+        "name": "__INT_FAST32_WIDTH__",
+        "line": 309
+      },
+      {
+        "name": "__INT_FAST32_FMTd__",
+        "line": 310
+      },
+      {
+        "name": "__INT_FAST32_FMTi__",
+        "line": 311
+      },
+      {
+        "name": "__UINT_FAST32_TYPE__",
+        "line": 312
+      },
+      {
+        "name": "__UINT_FAST32_MAX__",
+        "line": 313
+      },
+      {
+        "name": "__UINT_FAST32_FMTo__",
+        "line": 314
+      },
+      {
+        "name": "__UINT_FAST32_FMTu__",
+        "line": 315
+      },
+      {
+        "name": "__UINT_FAST32_FMTx__",
+        "line": 316
+      },
+      {
+        "name": "__UINT_FAST32_FMTX__",
+        "line": 317
+      },
+      {
+        "name": "__INT_FAST64_TYPE__",
+        "line": 318
+      },
+      {
+        "name": "__INT_FAST64_MAX__",
+        "line": 319
+      },
+      {
+        "name": "__INT_FAST64_WIDTH__",
+        "line": 320
+      },
+      {
+        "name": "__INT_FAST64_FMTd__",
+        "line": 321
+      },
+      {
+        "name": "__INT_FAST64_FMTi__",
+        "line": 322
+      },
+      {
+        "name": "__UINT_FAST64_TYPE__",
+        "line": 323
+      },
+      {
+        "name": "__UINT_FAST64_MAX__",
+        "line": 324
+      },
+      {
+        "name": "__UINT_FAST64_FMTo__",
+        "line": 325
+      },
+      {
+        "name": "__UINT_FAST64_FMTu__",
+        "line": 326
+      },
+      {
+        "name": "__UINT_FAST64_FMTx__",
+        "line": 327
+      },
+      {
+        "name": "__UINT_FAST64_FMTX__",
+        "line": 328
+      },
+      {
+        "name": "__USER_LABEL_PREFIX__",
+        "line": 329
+      },
+      {
+        "name": "__FINITE_MATH_ONLY__",
+        "line": 330
+      },
+      {
+        "name": "__GCC_DESTRUCTIVE_SIZE",
+        "line": 331
+      },
+      {
+        "name": "__GCC_CONSTRUCTIVE_SIZE",
+        "line": 332
+      },
+      {
+        "name": "__CLANG_ATOMIC_BOOL_LOCK_FREE",
+        "line": 335
+      },
+      {
+        "name": "__CLANG_ATOMIC_CHAR_LOCK_FREE",
+        "line": 336
+      },
+      {
+        "name": "__CLANG_ATOMIC_CHAR16_T_LOCK_FREE",
+        "line": 337
+      },
+      {
+        "name": "__CLANG_ATOMIC_CHAR32_T_LOCK_FREE",
+        "line": 338
+      },
+      {
+        "name": "__CLANG_ATOMIC_WCHAR_T_LOCK_FREE",
+        "line": 339
+      },
+      {
+        "name": "__CLANG_ATOMIC_SHORT_LOCK_FREE",
+        "line": 340
+      },
+      {
+        "name": "__CLANG_ATOMIC_INT_LOCK_FREE",
+        "line": 341
+      },
+      {
+        "name": "__CLANG_ATOMIC_LONG_LOCK_FREE",
+        "line": 342
+      },
+      {
+        "name": "__CLANG_ATOMIC_LLONG_LOCK_FREE",
+        "line": 343
+      },
+      {
+        "name": "__CLANG_ATOMIC_POINTER_LOCK_FREE",
+        "line": 344
+      },
+      {
+        "name": "__NO_INLINE__",
+        "line": 345
+      },
+      {
+        "name": "__PIC__",
+        "line": 346
+      },
+      {
+        "name": "__pic__",
+        "line": 347
+      },
+      {
+        "name": "__FLT_RADIX__",
+        "line": 348
+      },
+      {
+        "name": "__DECIMAL_DIG__",
+        "line": 349
+      },
+      {
+        "name": "__GCC_ASM_FLAG_OUTPUTS__",
+        "line": 350
+      },
+      {
+        "name": "__code_model_small__",
+        "line": 351
+      },
+      {
+        "name": "__amd64__",
+        "line": 352
+      },
+      {
+        "name": "__amd64",
+        "line": 353
+      },
+      {
+        "name": "__x86_64",
+        "line": 354
+      },
+      {
+        "name": "__x86_64__",
+        "line": 355
+      },
+      {
+        "name": "__SEG_GS",
+        "line": 356
+      },
+      {
+        "name": "__SEG_FS",
+        "line": 357
+      },
+      {
+        "name": "__seg_gs",
+        "line": 358
+      },
+      {
+        "name": "__seg_fs",
+        "line": 359
+      },
+      {
+        "name": "__k8",
+        "line": 360
+      },
+      {
+        "name": "__k8__",
+        "line": 361
+      },
+      {
+        "name": "__tune_k8__",
+        "line": 362
+      },
+      {
+        "name": "__REGISTER_PREFIX__",
+        "line": 363
+      },
+      {
+        "name": "__NO_MATH_INLINES",
+        "line": 364
+      },
+      {
+        "name": "__FXSR__",
+        "line": 365
+      },
+      {
+        "name": "__SSE2__",
+        "line": 366
+      },
+      {
+        "name": "__SSE2_MATH__",
+        "line": 367
+      },
+      {
+        "name": "__SSE__",
+        "line": 368
+      },
+      {
+        "name": "__SSE_MATH__",
+        "line": 369
+      },
+      {
+        "name": "__MMX__",
+        "line": 370
+      },
+      {
+        "name": "__GCC_HAVE_SYNC_COMPARE_AND_SWAP_1",
+        "line": 371
+      },
+      {
+        "name": "__GCC_HAVE_SYNC_COMPARE_AND_SWAP_2",
+        "line": 372
+      },
+      {
+        "name": "__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4",
+        "line": 373
+      },
+      {
+        "name": "__GCC_HAVE_SYNC_COMPARE_AND_SWAP_8",
+        "line": 374
+      },
+      {
+        "name": "_WIN32",
+        "line": 375
+      },
+      {
+        "name": "_WIN64",
+        "line": 376
+      },
+      {
+        "name": "_M_FP_CONTRACT",
+        "line": 377
+      },
+      {
+        "name": "_M_FP_PRECISE",
+        "line": 378
+      },
+      {
+        "name": "_MSC_VER",
+        "line": 379
+      },
+      {
+        "name": "_MSC_FULL_VER",
+        "line": 380
+      },
+      {
+        "name": "_MSC_BUILD",
+        "line": 381
+      },
+      {
+        "name": "_CRT_USE_BUILTIN_OFFSETOF",
+        "line": 382
+      },
+      {
+        "name": "_MSC_EXTENSIONS",
+        "line": 383
+      },
+      {
+        "name": "_INTEGRAL_MAX_BITS",
+        "line": 384
+      },
+      {
+        "name": "__STDC_NO_THREADS__",
+        "line": 385
+      },
+      {
+        "name": "_MSVC_EXECUTION_CHARACTER_SET",
+        "line": 386
+      },
+      {
+        "name": "_M_X64",
+        "line": 387
+      },
+      {
+        "name": "_M_AMD64",
+        "line": 388
+      },
+      {
+        "name": "__STDC_HOSTED__",
+        "line": 389
+      },
+      {
+        "name": "__STDC_VERSION__",
+        "line": 390
+      },
+      {
+        "name": "__STDC_UTF_16__",
+        "line": 391
+      },
+      {
+        "name": "__STDC_UTF_32__",
+        "line": 392
+      },
+      {
+        "name": "__STDC_EMBED_NOT_FOUND__",
+        "line": 393
+      },
+      {
+        "name": "__STDC_EMBED_FOUND__",
+        "line": 394
+      },
+      {
+        "name": "__STDC_EMBED_EMPTY__",
+        "line": 395
+      }
+    ]
+  },
+  {
+    "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+    "includes": [
+      "soc_model.h",
+      "Platform_Types.h",
+      "stdint.h",
+      "stdbool.h",
+      "math.h",
+      "soc.h",
+      "string.h"
+    ],
+    "functions_defined": [
+      {
+        "name": "look2_iflf_binlca",
+        "return_type": "int",
+        "line": 398,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "plook_u32ff_binca",
+        "return_type": "uint32_t",
+        "line": 540,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "intrp2d_fu32fla",
+        "return_type": "int",
+        "line": 571,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "binsearch_u32f",
+        "return_type": "uint32_t",
+        "line": 616,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "look1_iflf_binlca",
+        "return_type": "int",
+        "line": 644,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_coulombCountingSocCalc_Init",
+        "return_type": "void",
+        "line": 722,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_coulombCountingSocCalc",
+        "return_type": "void",
+        "line": 729,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_ocvBasedSocCalc",
+        "return_type": "void",
+        "line": 805,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_restTimeCalc",
+        "return_type": "void",
+        "line": 858,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_socCorrection",
+        "return_type": "void",
+        "line": 929,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_filterWeightAndReqRestCalc",
+        "return_type": "void",
+        "line": 1012,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_socNormal_Init",
+        "return_type": "void",
+        "line": 1103,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_socNormal",
+        "return_type": "void",
+        "line": 1112,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_socCorrectionOnWake",
+        "return_type": "void",
+        "line": 1248,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_socReset",
+        "return_type": "void",
+        "line": 1326,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_socOutputs",
+        "return_type": "void",
+        "line": 1367,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_task",
+        "return_type": "void",
+        "line": 1879,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_init",
+        "return_type": "void",
+        "line": 2040,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      }
+    ],
+    "functions_declared": [
+      {
+        "name": "look2_iflf_binlca",
+        "return_type": "int",
+        "line": 360,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "plook_u32ff_binca",
+        "return_type": "uint32_t",
+        "line": 363,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "intrp2d_fu32fla",
+        "return_type": "int",
+        "line": 365,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "binsearch_u32f",
+        "return_type": "uint32_t",
+        "line": 367,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "look1_iflf_binlca",
+        "return_type": "int",
+        "line": 369,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_ocvBasedSocCalc",
+        "return_type": "void",
+        "line": 371,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_socCorrection",
+        "return_type": "void",
+        "line": 376,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_filterWeightAndReqRestCalc",
+        "return_type": "void",
+        "line": 384,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_coulombCountingSocCalc_Init",
+        "return_type": "void",
+        "line": 390,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_coulombCountingSocCalc",
+        "return_type": "void",
+        "line": 391,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_restTimeCalc",
+        "return_type": "void",
+        "line": 392,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_socNormal_Init",
+        "return_type": "void",
+        "line": 393,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_socNormal",
+        "return_type": "void",
+        "line": 394,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_socCorrectionOnWake",
+        "return_type": "void",
+        "line": 395,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_socReset",
+        "return_type": "void",
+        "line": 396,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_socOutputs",
+        "return_type": "void",
+        "line": 397,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      }
+    ],
+    "globals": [
+      {
+        "name": "VeSoc_bi_nvmImportStatus",
+        "type": "_Bool",
+        "line": 42
+      },
+      {
+        "name": "VeSoc_A_battCur",
+        "type": "int",
+        "line": 45
+      },
+      {
+        "name": "VaSoc_frc_initialCellSoc",
+        "type": "int",
+        "line": 48
+      },
+      {
+        "name": "VaSoc_V_cellVolt",
+        "type": "int",
+        "line": 51
+      },
+      {
+        "name": "VaSoc_degC_cellTmp",
+        "type": "int",
+        "line": 54
+      },
+      {
+        "name": "VeSoc_degC_minCellTmp",
+        "type": "int",
+        "line": 57
+      },
+      {
+        "name": "VeSoc_degC_maxCellTmp",
+        "type": "int",
+        "line": 60
+      },
+      {
+        "name": "VeSoc_ms_battAsleepTime",
+        "type": "uint32_t",
+        "line": 63
+      },
+      {
+        "name": "VeSoc_ms_initialBattRestTime",
+        "type": "uint32_t",
+        "line": 66
+      },
+      {
+        "name": "VaSoc_frc_cellSohc",
+        "type": "int",
+        "line": 69
+      },
+      {
+        "name": "VeBattsm_nu_battState",
+        "type": "int",
+        "line": 72
+      },
+      {
+        "name": "VaSoc_nu_cellVoltVldt",
+        "type": "int",
+        "line": 73
+      },
+      {
+        "name": "VaSoc_nu_cellTmpVldt",
+        "type": "int",
+        "line": 74
+      },
+      {
+        "name": "VeSoc_bi_socReset",
+        "type": "_Bool",
+        "line": 75
+      },
+      {
+        "name": "VeSoc_ms_battRestTime",
+        "type": "uint32_t",
+        "line": 76
+      },
+      {
+        "name": "VaSoc_frc_cellSocOcv",
+        "type": "int",
+        "line": 79
+      },
+      {
+        "name": "VaSoc_frc_cellSocCc",
+        "type": "int",
+        "line": 80
+      },
+      {
+        "name": "VaSoc_frc_cellSoc",
+        "type": "int",
+        "line": 81
+      },
+      {
+        "name": "VeSoc_frc_userSoc",
+        "type": "int",
+        "line": 84
+      },
+      {
+        "name": "VeSoc_frc_packSoc",
+        "type": "int",
+        "line": 87
+      },
+      {
+        "name": "VeSoc_frc_minCellSoc",
+        "type": "int",
+        "line": 90
+      },
+      {
+        "name": "VeSoc_frc_maxCellSoc",
+        "type": "int",
+        "line": 93
+      },
+      {
+        "name": "VaSoc_ms_tauDepolar",
+        "type": "int",
+        "line": 96
+      },
+      {
+        "name": "VeSoc_nu_socState",
+        "type": "Soc_State_t",
+        "line": 99
+      },
+      {
+        "name": "VeSoc_bi_lowSocFault",
+        "type": "_Bool",
+        "line": 100
+      },
+      {
+        "name": "KaSoc_Ah_capacityLut",
+        "type": "int[13]",
+        "line": 107
+      },
+      {
+        "name": "KaSoc_V_ocvLut",
+        "type": "int[21]",
+        "line": 113
+      },
+      {
+        "name": "KaSoc_degC_tmpLut",
+        "type": "int[13]",
+        "line": 124
+      },
+      {
+        "name": "KaSoc_frc_ocvBasedSocLut",
+        "type": "int[273]",
+        "line": 142
+      },
+      {
+        "name": "KaSoc_frc_socHystVoltLut",
+        "type": "int[273]",
+        "line": 173
+      },
+      {
+        "name": "KaSoc_frc_socLut",
+        "type": "int[21]",
+        "line": 211
+      },
+      {
+        "name": "KaSoc_sec_tauDepolarLut",
+        "type": "int[273]",
+        "line": 225
+      },
+      {
+        "name": "KeSoc_A_restingCurThd",
+        "type": "int",
+        "line": 265
+      },
+      {
+        "name": "KeSoc_V_bodMinCellVolt",
+        "type": "int",
+        "line": 267
+      },
+      {
+        "name": "KeSoc_V_tocAvrgCellVolt",
+        "type": "int",
+        "line": 271
+      },
+      {
+        "name": "KeSoc_V_tocMaxCellVolt",
+        "type": "int",
+        "line": 275
+      },
+      {
+        "name": "KeSoc_bi_enableHystComp",
+        "type": "_Bool",
+        "line": 279
+      },
+      {
+        "name": "KeSoc_frc_BotmOfDchReset",
+        "type": "int",
+        "line": 284
+      },
+      {
+        "name": "KeSoc_frc_lowSocResetThd",
+        "type": "int",
+        "line": 288
+      },
+      {
+        "name": "KeSoc_frc_lowSocSetThd",
+        "type": "int",
+        "line": 289
+      },
+      {
+        "name": "KeSoc_frc_socMaxLim",
+        "type": "int",
+        "line": 290
+      },
+      {
+        "name": "KeSoc_frc_socMinLim",
+        "type": "int",
+        "line": 298
+      },
+      {
+        "name": "KeSoc_frc_topOfChrgReset",
+        "type": "int",
+        "line": 305
+      },
+      {
+        "name": "KeSoc_frc_userSocMaxLim",
+        "type": "int",
+        "line": 309
+      },
+      {
+        "name": "KeSoc_frc_userSocMinLim",
+        "type": "int",
+        "line": 311
+      },
+      {
+        "name": "KeSoc_nu_epsValue",
+        "type": "int",
+        "line": 313
+      },
+      {
+        "name": "KeSoc_nu_restTauFactor",
+        "type": "int",
+        "line": 314
+      },
+      {
+        "name": "KeSoc_sec_sampleTime",
+        "type": "int",
+        "line": 318
+      },
+      {
+        "name": "KeSoc_sec_socBodSetTime",
+        "type": "int",
+        "line": 325
+      },
+      {
+        "name": "KeSoc_sec_socTocSetTime",
+        "type": "int",
+        "line": 329
+      },
+      {
+        "name": "soc_ConstP",
+        "type": "const ConstP_soc_T",
+        "line": 335
+      },
+      {
+        "name": "soc_B",
+        "type": "B_soc_T",
+        "line": 356
+      },
+      {
+        "name": "soc_DW",
+        "type": "DW_soc_T",
+        "line": 359
+      }
+    ],
+    "macros": [
+      {
+        "name": "__llvm__",
+        "line": 2
+      },
+      {
+        "name": "__clang__",
+        "line": 3
+      },
+      {
+        "name": "__clang_major__",
+        "line": 4
+      },
+      {
+        "name": "__clang_minor__",
+        "line": 5
+      },
+      {
+        "name": "__clang_patchlevel__",
+        "line": 6
+      },
+      {
+        "name": "__clang_version__",
+        "line": 7
+      },
+      {
+        "name": "__ATOMIC_RELAXED",
+        "line": 8
+      },
+      {
+        "name": "__ATOMIC_CONSUME",
+        "line": 9
+      },
+      {
+        "name": "__ATOMIC_ACQUIRE",
+        "line": 10
+      },
+      {
+        "name": "__ATOMIC_RELEASE",
+        "line": 11
+      },
+      {
+        "name": "__ATOMIC_ACQ_REL",
+        "line": 12
+      },
+      {
+        "name": "__ATOMIC_SEQ_CST",
+        "line": 13
+      },
+      {
+        "name": "__MEMORY_SCOPE_SYSTEM",
+        "line": 14
+      },
+      {
+        "name": "__MEMORY_SCOPE_DEVICE",
+        "line": 15
+      },
+      {
+        "name": "__MEMORY_SCOPE_WRKGRP",
+        "line": 16
+      },
+      {
+        "name": "__MEMORY_SCOPE_WVFRNT",
+        "line": 17
+      },
+      {
+        "name": "__MEMORY_SCOPE_SINGLE",
+        "line": 18
+      },
+      {
+        "name": "__MEMORY_SCOPE_CLUSTR",
+        "line": 19
+      },
+      {
+        "name": "__OPENCL_MEMORY_SCOPE_WORK_ITEM",
+        "line": 20
+      },
+      {
+        "name": "__OPENCL_MEMORY_SCOPE_WORK_GROUP",
+        "line": 21
+      },
+      {
+        "name": "__OPENCL_MEMORY_SCOPE_DEVICE",
+        "line": 22
+      },
+      {
+        "name": "__OPENCL_MEMORY_SCOPE_ALL_SVM_DEVICES",
+        "line": 23
+      },
+      {
+        "name": "__OPENCL_MEMORY_SCOPE_SUB_GROUP",
+        "line": 24
+      },
+      {
+        "name": "__FPCLASS_SNAN",
+        "line": 25
+      },
+      {
+        "name": "__FPCLASS_QNAN",
+        "line": 26
+      },
+      {
+        "name": "__FPCLASS_NEGINF",
+        "line": 27
+      },
+      {
+        "name": "__FPCLASS_NEGNORMAL",
+        "line": 28
+      },
+      {
+        "name": "__FPCLASS_NEGSUBNORMAL",
+        "line": 29
+      },
+      {
+        "name": "__FPCLASS_NEGZERO",
+        "line": 30
+      },
+      {
+        "name": "__FPCLASS_POSZERO",
+        "line": 31
+      },
+      {
+        "name": "__FPCLASS_POSSUBNORMAL",
+        "line": 32
+      },
+      {
+        "name": "__FPCLASS_POSNORMAL",
+        "line": 33
+      },
+      {
+        "name": "__FPCLASS_POSINF",
+        "line": 34
+      },
+      {
+        "name": "__PRAGMA_REDEFINE_EXTNAME",
+        "line": 35
+      },
+      {
+        "name": "__VERSION__",
+        "line": 36
+      },
+      {
+        "name": "__OBJC_BOOL_IS_BOOL",
+        "line": 37
+      },
+      {
+        "name": "__CONSTANT_CFSTRINGS__",
+        "line": 38
+      },
+      {
+        "name": "__clang_literal_encoding__",
+        "line": 39
+      },
+      {
+        "name": "__clang_wide_literal_encoding__",
+        "line": 40
+      },
+      {
+        "name": "__ORDER_LITTLE_ENDIAN__",
+        "line": 41
+      },
+      {
+        "name": "__ORDER_BIG_ENDIAN__",
+        "line": 42
+      },
+      {
+        "name": "__ORDER_PDP_ENDIAN__",
+        "line": 43
+      },
+      {
+        "name": "__BYTE_ORDER__",
+        "line": 44
+      },
+      {
+        "name": "__LITTLE_ENDIAN__",
+        "line": 45
+      },
+      {
+        "name": "__CHAR_BIT__",
+        "line": 46
+      },
+      {
+        "name": "__BOOL_WIDTH__",
+        "line": 47
+      },
+      {
+        "name": "__SHRT_WIDTH__",
+        "line": 48
+      },
+      {
+        "name": "__INT_WIDTH__",
+        "line": 49
+      },
+      {
+        "name": "__LONG_WIDTH__",
+        "line": 50
+      },
+      {
+        "name": "__LLONG_WIDTH__",
+        "line": 51
+      },
+      {
+        "name": "__BITINT_MAXWIDTH__",
+        "line": 52
+      },
+      {
+        "name": "__SCHAR_MAX__",
+        "line": 53
+      },
+      {
+        "name": "__SHRT_MAX__",
+        "line": 54
+      },
+      {
+        "name": "__INT_MAX__",
+        "line": 55
+      },
+      {
+        "name": "__LONG_MAX__",
+        "line": 56
+      },
+      {
+        "name": "__LONG_LONG_MAX__",
+        "line": 57
+      },
+      {
+        "name": "__WCHAR_MAX__",
+        "line": 58
+      },
+      {
+        "name": "__WCHAR_WIDTH__",
+        "line": 59
+      },
+      {
+        "name": "__WINT_MAX__",
+        "line": 60
+      },
+      {
+        "name": "__WINT_WIDTH__",
+        "line": 61
+      },
+      {
+        "name": "__INTMAX_MAX__",
+        "line": 62
+      },
+      {
+        "name": "__INTMAX_WIDTH__",
+        "line": 63
+      },
+      {
+        "name": "__SIZE_MAX__",
+        "line": 64
+      },
+      {
+        "name": "__SIZE_WIDTH__",
+        "line": 65
+      },
+      {
+        "name": "__UINTMAX_MAX__",
+        "line": 66
+      },
+      {
+        "name": "__UINTMAX_WIDTH__",
+        "line": 67
+      },
+      {
+        "name": "__PTRDIFF_MAX__",
+        "line": 68
+      },
+      {
+        "name": "__PTRDIFF_WIDTH__",
+        "line": 69
+      },
+      {
+        "name": "__INTPTR_MAX__",
+        "line": 70
+      },
+      {
+        "name": "__INTPTR_WIDTH__",
+        "line": 71
+      },
+      {
+        "name": "__UINTPTR_MAX__",
+        "line": 72
+      },
+      {
+        "name": "__UINTPTR_WIDTH__",
+        "line": 73
+      },
+      {
+        "name": "__SIZEOF_DOUBLE__",
+        "line": 74
+      },
+      {
+        "name": "__SIZEOF_FLOAT__",
+        "line": 75
+      },
+      {
+        "name": "__SIZEOF_INT__",
+        "line": 76
+      },
+      {
+        "name": "__SIZEOF_LONG__",
+        "line": 77
+      },
+      {
+        "name": "__SIZEOF_LONG_DOUBLE__",
+        "line": 78
+      },
+      {
+        "name": "__SIZEOF_LONG_LONG__",
+        "line": 79
+      },
+      {
+        "name": "__SIZEOF_POINTER__",
+        "line": 80
+      },
+      {
+        "name": "__SIZEOF_SHORT__",
+        "line": 81
+      },
+      {
+        "name": "__SIZEOF_PTRDIFF_T__",
+        "line": 82
+      },
+      {
+        "name": "__SIZEOF_SIZE_T__",
+        "line": 83
+      },
+      {
+        "name": "__SIZEOF_WCHAR_T__",
+        "line": 84
+      },
+      {
+        "name": "__SIZEOF_WINT_T__",
+        "line": 85
+      },
+      {
+        "name": "__SIZEOF_INT128__",
+        "line": 86
+      },
+      {
+        "name": "__INTMAX_TYPE__",
+        "line": 87
+      },
+      {
+        "name": "__INTMAX_FMTd__",
+        "line": 88
+      },
+      {
+        "name": "__INTMAX_FMTi__",
+        "line": 89
+      },
+      {
+        "name": "__INTMAX_C_SUFFIX__",
+        "line": 90
+      },
+      {
+        "name": "__INTMAX_C",
+        "line": 91
+      },
+      {
+        "name": "__UINTMAX_TYPE__",
+        "line": 92
+      },
+      {
+        "name": "__UINTMAX_FMTo__",
+        "line": 93
+      },
+      {
+        "name": "__UINTMAX_FMTu__",
+        "line": 94
+      },
+      {
+        "name": "__UINTMAX_FMTx__",
+        "line": 95
+      },
+      {
+        "name": "__UINTMAX_FMTX__",
+        "line": 96
+      },
+      {
+        "name": "__UINTMAX_C_SUFFIX__",
+        "line": 97
+      },
+      {
+        "name": "__UINTMAX_C",
+        "line": 98
+      },
+      {
+        "name": "__PTRDIFF_TYPE__",
+        "line": 99
+      },
+      {
+        "name": "__PTRDIFF_FMTd__",
+        "line": 100
+      },
+      {
+        "name": "__PTRDIFF_FMTi__",
+        "line": 101
+      },
+      {
+        "name": "__INTPTR_TYPE__",
+        "line": 102
+      },
+      {
+        "name": "__INTPTR_FMTd__",
+        "line": 103
+      },
+      {
+        "name": "__INTPTR_FMTi__",
+        "line": 104
+      },
+      {
+        "name": "__SIZE_TYPE__",
+        "line": 105
+      },
+      {
+        "name": "__SIZE_FMTo__",
+        "line": 106
+      },
+      {
+        "name": "__SIZE_FMTu__",
+        "line": 107
+      },
+      {
+        "name": "__SIZE_FMTx__",
+        "line": 108
+      },
+      {
+        "name": "__SIZE_FMTX__",
+        "line": 109
+      },
+      {
+        "name": "__WCHAR_TYPE__",
+        "line": 110
+      },
+      {
+        "name": "__WINT_TYPE__",
+        "line": 111
+      },
+      {
+        "name": "__SIG_ATOMIC_MAX__",
+        "line": 112
+      },
+      {
+        "name": "__SIG_ATOMIC_WIDTH__",
+        "line": 113
+      },
+      {
+        "name": "__CHAR16_TYPE__",
+        "line": 114
+      },
+      {
+        "name": "__CHAR32_TYPE__",
+        "line": 115
+      },
+      {
+        "name": "__UINTPTR_TYPE__",
+        "line": 116
+      },
+      {
+        "name": "__UINTPTR_FMTo__",
+        "line": 117
+      },
+      {
+        "name": "__UINTPTR_FMTu__",
+        "line": 118
+      },
+      {
+        "name": "__UINTPTR_FMTx__",
+        "line": 119
+      },
+      {
+        "name": "__UINTPTR_FMTX__",
+        "line": 120
+      },
+      {
+        "name": "__FLT16_DENORM_MIN__",
+        "line": 121
+      },
+      {
+        "name": "__FLT16_NORM_MAX__",
+        "line": 122
+      },
+      {
+        "name": "__FLT16_HAS_DENORM__",
+        "line": 123
+      },
+      {
+        "name": "__FLT16_DIG__",
+        "line": 124
+      },
+      {
+        "name": "__FLT16_DECIMAL_DIG__",
+        "line": 125
+      },
+      {
+        "name": "__FLT16_EPSILON__",
+        "line": 126
+      },
+      {
+        "name": "__FLT16_HAS_INFINITY__",
+        "line": 127
+      },
+      {
+        "name": "__FLT16_HAS_QUIET_NAN__",
+        "line": 128
+      },
+      {
+        "name": "__FLT16_MANT_DIG__",
+        "line": 129
+      },
+      {
+        "name": "__FLT16_MAX_10_EXP__",
+        "line": 130
+      },
+      {
+        "name": "__FLT16_MAX_EXP__",
+        "line": 131
+      },
+      {
+        "name": "__FLT16_MAX__",
+        "line": 132
+      },
+      {
+        "name": "__FLT16_MIN_10_EXP__",
+        "line": 133
+      },
+      {
+        "name": "__FLT16_MIN_EXP__",
+        "line": 134
+      },
+      {
+        "name": "__FLT16_MIN__",
+        "line": 135
+      },
+      {
+        "name": "__FLT_DENORM_MIN__",
+        "line": 136
+      },
+      {
+        "name": "__FLT_NORM_MAX__",
+        "line": 137
+      },
+      {
+        "name": "__FLT_HAS_DENORM__",
+        "line": 138
+      },
+      {
+        "name": "__FLT_DIG__",
+        "line": 139
+      },
+      {
+        "name": "__FLT_DECIMAL_DIG__",
+        "line": 140
+      },
+      {
+        "name": "__FLT_EPSILON__",
+        "line": 141
+      },
+      {
+        "name": "__FLT_HAS_INFINITY__",
+        "line": 142
+      },
+      {
+        "name": "__FLT_HAS_QUIET_NAN__",
+        "line": 143
+      },
+      {
+        "name": "__FLT_MANT_DIG__",
+        "line": 144
+      },
+      {
+        "name": "__FLT_MAX_10_EXP__",
+        "line": 145
+      },
+      {
+        "name": "__FLT_MAX_EXP__",
+        "line": 146
+      },
+      {
+        "name": "__FLT_MAX__",
+        "line": 147
+      },
+      {
+        "name": "__FLT_MIN_10_EXP__",
+        "line": 148
+      },
+      {
+        "name": "__FLT_MIN_EXP__",
+        "line": 149
+      },
+      {
+        "name": "__FLT_MIN__",
+        "line": 150
+      },
+      {
+        "name": "__DBL_DENORM_MIN__",
+        "line": 151
+      },
+      {
+        "name": "__DBL_NORM_MAX__",
+        "line": 152
+      },
+      {
+        "name": "__DBL_HAS_DENORM__",
+        "line": 153
+      },
+      {
+        "name": "__DBL_DIG__",
+        "line": 154
+      },
+      {
+        "name": "__DBL_DECIMAL_DIG__",
+        "line": 155
+      },
+      {
+        "name": "__DBL_EPSILON__",
+        "line": 156
+      },
+      {
+        "name": "__DBL_HAS_INFINITY__",
+        "line": 157
+      },
+      {
+        "name": "__DBL_HAS_QUIET_NAN__",
+        "line": 158
+      },
+      {
+        "name": "__DBL_MANT_DIG__",
+        "line": 159
+      },
+      {
+        "name": "__DBL_MAX_10_EXP__",
+        "line": 160
+      },
+      {
+        "name": "__DBL_MAX_EXP__",
+        "line": 161
+      },
+      {
+        "name": "__DBL_MAX__",
+        "line": 162
+      },
+      {
+        "name": "__DBL_MIN_10_EXP__",
+        "line": 163
+      },
+      {
+        "name": "__DBL_MIN_EXP__",
+        "line": 164
+      },
+      {
+        "name": "__DBL_MIN__",
+        "line": 165
+      },
+      {
+        "name": "__LDBL_DENORM_MIN__",
+        "line": 166
+      },
+      {
+        "name": "__LDBL_NORM_MAX__",
+        "line": 167
+      },
+      {
+        "name": "__LDBL_HAS_DENORM__",
+        "line": 168
+      },
+      {
+        "name": "__LDBL_DIG__",
+        "line": 169
+      },
+      {
+        "name": "__LDBL_DECIMAL_DIG__",
+        "line": 170
+      },
+      {
+        "name": "__LDBL_EPSILON__",
+        "line": 171
+      },
+      {
+        "name": "__LDBL_HAS_INFINITY__",
+        "line": 172
+      },
+      {
+        "name": "__LDBL_HAS_QUIET_NAN__",
+        "line": 173
+      },
+      {
+        "name": "__LDBL_MANT_DIG__",
+        "line": 174
+      },
+      {
+        "name": "__LDBL_MAX_10_EXP__",
+        "line": 175
+      },
+      {
+        "name": "__LDBL_MAX_EXP__",
+        "line": 176
+      },
+      {
+        "name": "__LDBL_MAX__",
+        "line": 177
+      },
+      {
+        "name": "__LDBL_MIN_10_EXP__",
+        "line": 178
+      },
+      {
+        "name": "__LDBL_MIN_EXP__",
+        "line": 179
+      },
+      {
+        "name": "__LDBL_MIN__",
+        "line": 180
+      },
+      {
+        "name": "__POINTER_WIDTH__",
+        "line": 181
+      },
+      {
+        "name": "__BIGGEST_ALIGNMENT__",
+        "line": 182
+      },
+      {
+        "name": "__WCHAR_UNSIGNED__",
+        "line": 183
+      },
+      {
+        "name": "__WINT_UNSIGNED__",
+        "line": 184
+      },
+      {
+        "name": "__INT8_TYPE__",
+        "line": 185
+      },
+      {
+        "name": "__INT8_FMTd__",
+        "line": 186
+      },
+      {
+        "name": "__INT8_FMTi__",
+        "line": 187
+      },
+      {
+        "name": "__INT8_C_SUFFIX__",
+        "line": 188
+      },
+      {
+        "name": "__INT8_C",
+        "line": 189
+      },
+      {
+        "name": "__INT16_TYPE__",
+        "line": 190
+      },
+      {
+        "name": "__INT16_FMTd__",
+        "line": 191
+      },
+      {
+        "name": "__INT16_FMTi__",
+        "line": 192
+      },
+      {
+        "name": "__INT16_C_SUFFIX__",
+        "line": 193
+      },
+      {
+        "name": "__INT16_C",
+        "line": 194
+      },
+      {
+        "name": "__INT32_TYPE__",
+        "line": 195
+      },
+      {
+        "name": "__INT32_FMTd__",
+        "line": 196
+      },
+      {
+        "name": "__INT32_FMTi__",
+        "line": 197
+      },
+      {
+        "name": "__INT32_C_SUFFIX__",
+        "line": 198
+      },
+      {
+        "name": "__INT32_C",
+        "line": 199
+      },
+      {
+        "name": "__INT64_TYPE__",
+        "line": 200
+      },
+      {
+        "name": "__INT64_FMTd__",
+        "line": 201
+      },
+      {
+        "name": "__INT64_FMTi__",
+        "line": 202
+      },
+      {
+        "name": "__INT64_C_SUFFIX__",
+        "line": 203
+      },
+      {
+        "name": "__INT64_C",
+        "line": 204
+      },
+      {
+        "name": "__UINT8_TYPE__",
+        "line": 205
+      },
+      {
+        "name": "__UINT8_FMTo__",
+        "line": 206
+      },
+      {
+        "name": "__UINT8_FMTu__",
+        "line": 207
+      },
+      {
+        "name": "__UINT8_FMTx__",
+        "line": 208
+      },
+      {
+        "name": "__UINT8_FMTX__",
+        "line": 209
+      },
+      {
+        "name": "__UINT8_C_SUFFIX__",
+        "line": 210
+      },
+      {
+        "name": "__UINT8_C",
+        "line": 211
+      },
+      {
+        "name": "__UINT8_MAX__",
+        "line": 212
+      },
+      {
+        "name": "__INT8_MAX__",
+        "line": 213
+      },
+      {
+        "name": "__UINT16_TYPE__",
+        "line": 214
+      },
+      {
+        "name": "__UINT16_FMTo__",
+        "line": 215
+      },
+      {
+        "name": "__UINT16_FMTu__",
+        "line": 216
+      },
+      {
+        "name": "__UINT16_FMTx__",
+        "line": 217
+      },
+      {
+        "name": "__UINT16_FMTX__",
+        "line": 218
+      },
+      {
+        "name": "__UINT16_C_SUFFIX__",
+        "line": 219
+      },
+      {
+        "name": "__UINT16_C",
+        "line": 220
+      },
+      {
+        "name": "__UINT16_MAX__",
+        "line": 221
+      },
+      {
+        "name": "__INT16_MAX__",
+        "line": 222
+      },
+      {
+        "name": "__UINT32_TYPE__",
+        "line": 223
+      },
+      {
+        "name": "__UINT32_FMTo__",
+        "line": 224
+      },
+      {
+        "name": "__UINT32_FMTu__",
+        "line": 225
+      },
+      {
+        "name": "__UINT32_FMTx__",
+        "line": 226
+      },
+      {
+        "name": "__UINT32_FMTX__",
+        "line": 227
+      },
+      {
+        "name": "__UINT32_C_SUFFIX__",
+        "line": 228
+      },
+      {
+        "name": "__UINT32_C",
+        "line": 229
+      },
+      {
+        "name": "__UINT32_MAX__",
+        "line": 230
+      },
+      {
+        "name": "__INT32_MAX__",
+        "line": 231
+      },
+      {
+        "name": "__UINT64_TYPE__",
+        "line": 232
+      },
+      {
+        "name": "__UINT64_FMTo__",
+        "line": 233
+      },
+      {
+        "name": "__UINT64_FMTu__",
+        "line": 234
+      },
+      {
+        "name": "__UINT64_FMTx__",
+        "line": 235
+      },
+      {
+        "name": "__UINT64_FMTX__",
+        "line": 236
+      },
+      {
+        "name": "__UINT64_C_SUFFIX__",
+        "line": 237
+      },
+      {
+        "name": "__UINT64_C",
+        "line": 238
+      },
+      {
+        "name": "__UINT64_MAX__",
+        "line": 239
+      },
+      {
+        "name": "__INT64_MAX__",
+        "line": 240
+      },
+      {
+        "name": "__INT_LEAST8_TYPE__",
+        "line": 241
+      },
+      {
+        "name": "__INT_LEAST8_MAX__",
+        "line": 242
+      },
+      {
+        "name": "__INT_LEAST8_WIDTH__",
+        "line": 243
+      },
+      {
+        "name": "__INT_LEAST8_FMTd__",
+        "line": 244
+      },
+      {
+        "name": "__INT_LEAST8_FMTi__",
+        "line": 245
+      },
+      {
+        "name": "__UINT_LEAST8_TYPE__",
+        "line": 246
+      },
+      {
+        "name": "__UINT_LEAST8_MAX__",
+        "line": 247
+      },
+      {
+        "name": "__UINT_LEAST8_FMTo__",
+        "line": 248
+      },
+      {
+        "name": "__UINT_LEAST8_FMTu__",
+        "line": 249
+      },
+      {
+        "name": "__UINT_LEAST8_FMTx__",
+        "line": 250
+      },
+      {
+        "name": "__UINT_LEAST8_FMTX__",
+        "line": 251
+      },
+      {
+        "name": "__INT_LEAST16_TYPE__",
+        "line": 252
+      },
+      {
+        "name": "__INT_LEAST16_MAX__",
+        "line": 253
+      },
+      {
+        "name": "__INT_LEAST16_WIDTH__",
+        "line": 254
+      },
+      {
+        "name": "__INT_LEAST16_FMTd__",
+        "line": 255
+      },
+      {
+        "name": "__INT_LEAST16_FMTi__",
+        "line": 256
+      },
+      {
+        "name": "__UINT_LEAST16_TYPE__",
+        "line": 257
+      },
+      {
+        "name": "__UINT_LEAST16_MAX__",
+        "line": 258
+      },
+      {
+        "name": "__UINT_LEAST16_FMTo__",
+        "line": 259
+      },
+      {
+        "name": "__UINT_LEAST16_FMTu__",
+        "line": 260
+      },
+      {
+        "name": "__UINT_LEAST16_FMTx__",
+        "line": 261
+      },
+      {
+        "name": "__UINT_LEAST16_FMTX__",
+        "line": 262
+      },
+      {
+        "name": "__INT_LEAST32_TYPE__",
+        "line": 263
+      },
+      {
+        "name": "__INT_LEAST32_MAX__",
+        "line": 264
+      },
+      {
+        "name": "__INT_LEAST32_WIDTH__",
+        "line": 265
+      },
+      {
+        "name": "__INT_LEAST32_FMTd__",
+        "line": 266
+      },
+      {
+        "name": "__INT_LEAST32_FMTi__",
+        "line": 267
+      },
+      {
+        "name": "__UINT_LEAST32_TYPE__",
+        "line": 268
+      },
+      {
+        "name": "__UINT_LEAST32_MAX__",
+        "line": 269
+      },
+      {
+        "name": "__UINT_LEAST32_FMTo__",
+        "line": 270
+      },
+      {
+        "name": "__UINT_LEAST32_FMTu__",
+        "line": 271
+      },
+      {
+        "name": "__UINT_LEAST32_FMTx__",
+        "line": 272
+      },
+      {
+        "name": "__UINT_LEAST32_FMTX__",
+        "line": 273
+      },
+      {
+        "name": "__INT_LEAST64_TYPE__",
+        "line": 274
+      },
+      {
+        "name": "__INT_LEAST64_MAX__",
+        "line": 275
+      },
+      {
+        "name": "__INT_LEAST64_WIDTH__",
+        "line": 276
+      },
+      {
+        "name": "__INT_LEAST64_FMTd__",
+        "line": 277
+      },
+      {
+        "name": "__INT_LEAST64_FMTi__",
+        "line": 278
+      },
+      {
+        "name": "__UINT_LEAST64_TYPE__",
+        "line": 279
+      },
+      {
+        "name": "__UINT_LEAST64_MAX__",
+        "line": 280
+      },
+      {
+        "name": "__UINT_LEAST64_FMTo__",
+        "line": 281
+      },
+      {
+        "name": "__UINT_LEAST64_FMTu__",
+        "line": 282
+      },
+      {
+        "name": "__UINT_LEAST64_FMTx__",
+        "line": 283
+      },
+      {
+        "name": "__UINT_LEAST64_FMTX__",
+        "line": 284
+      },
+      {
+        "name": "__INT_FAST8_TYPE__",
+        "line": 285
+      },
+      {
+        "name": "__INT_FAST8_MAX__",
+        "line": 286
+      },
+      {
+        "name": "__INT_FAST8_WIDTH__",
+        "line": 287
+      },
+      {
+        "name": "__INT_FAST8_FMTd__",
+        "line": 288
+      },
+      {
+        "name": "__INT_FAST8_FMTi__",
+        "line": 289
+      },
+      {
+        "name": "__UINT_FAST8_TYPE__",
+        "line": 290
+      },
+      {
+        "name": "__UINT_FAST8_MAX__",
+        "line": 291
+      },
+      {
+        "name": "__UINT_FAST8_FMTo__",
+        "line": 292
+      },
+      {
+        "name": "__UINT_FAST8_FMTu__",
+        "line": 293
+      },
+      {
+        "name": "__UINT_FAST8_FMTx__",
+        "line": 294
+      },
+      {
+        "name": "__UINT_FAST8_FMTX__",
+        "line": 295
+      },
+      {
+        "name": "__INT_FAST16_TYPE__",
+        "line": 296
+      },
+      {
+        "name": "__INT_FAST16_MAX__",
+        "line": 297
+      },
+      {
+        "name": "__INT_FAST16_WIDTH__",
+        "line": 298
+      },
+      {
+        "name": "__INT_FAST16_FMTd__",
+        "line": 299
+      },
+      {
+        "name": "__INT_FAST16_FMTi__",
+        "line": 300
+      },
+      {
+        "name": "__UINT_FAST16_TYPE__",
+        "line": 301
+      },
+      {
+        "name": "__UINT_FAST16_MAX__",
+        "line": 302
+      },
+      {
+        "name": "__UINT_FAST16_FMTo__",
+        "line": 303
+      },
+      {
+        "name": "__UINT_FAST16_FMTu__",
+        "line": 304
+      },
+      {
+        "name": "__UINT_FAST16_FMTx__",
+        "line": 305
+      },
+      {
+        "name": "__UINT_FAST16_FMTX__",
+        "line": 306
+      },
+      {
+        "name": "__INT_FAST32_TYPE__",
+        "line": 307
+      },
+      {
+        "name": "__INT_FAST32_MAX__",
+        "line": 308
+      },
+      {
+        "name": "__INT_FAST32_WIDTH__",
+        "line": 309
+      },
+      {
+        "name": "__INT_FAST32_FMTd__",
+        "line": 310
+      },
+      {
+        "name": "__INT_FAST32_FMTi__",
+        "line": 311
+      },
+      {
+        "name": "__UINT_FAST32_TYPE__",
+        "line": 312
+      },
+      {
+        "name": "__UINT_FAST32_MAX__",
+        "line": 313
+      },
+      {
+        "name": "__UINT_FAST32_FMTo__",
+        "line": 314
+      },
+      {
+        "name": "__UINT_FAST32_FMTu__",
+        "line": 315
+      },
+      {
+        "name": "__UINT_FAST32_FMTx__",
+        "line": 316
+      },
+      {
+        "name": "__UINT_FAST32_FMTX__",
+        "line": 317
+      },
+      {
+        "name": "__INT_FAST64_TYPE__",
+        "line": 318
+      },
+      {
+        "name": "__INT_FAST64_MAX__",
+        "line": 319
+      },
+      {
+        "name": "__INT_FAST64_WIDTH__",
+        "line": 320
+      },
+      {
+        "name": "__INT_FAST64_FMTd__",
+        "line": 321
+      },
+      {
+        "name": "__INT_FAST64_FMTi__",
+        "line": 322
+      },
+      {
+        "name": "__UINT_FAST64_TYPE__",
+        "line": 323
+      },
+      {
+        "name": "__UINT_FAST64_MAX__",
+        "line": 324
+      },
+      {
+        "name": "__UINT_FAST64_FMTo__",
+        "line": 325
+      },
+      {
+        "name": "__UINT_FAST64_FMTu__",
+        "line": 326
+      },
+      {
+        "name": "__UINT_FAST64_FMTx__",
+        "line": 327
+      },
+      {
+        "name": "__UINT_FAST64_FMTX__",
+        "line": 328
+      },
+      {
+        "name": "__USER_LABEL_PREFIX__",
+        "line": 329
+      },
+      {
+        "name": "__FINITE_MATH_ONLY__",
+        "line": 330
+      },
+      {
+        "name": "__GCC_DESTRUCTIVE_SIZE",
+        "line": 331
+      },
+      {
+        "name": "__GCC_CONSTRUCTIVE_SIZE",
+        "line": 332
+      },
+      {
+        "name": "__CLANG_ATOMIC_BOOL_LOCK_FREE",
+        "line": 335
+      },
+      {
+        "name": "__CLANG_ATOMIC_CHAR_LOCK_FREE",
+        "line": 336
+      },
+      {
+        "name": "__CLANG_ATOMIC_CHAR16_T_LOCK_FREE",
+        "line": 337
+      },
+      {
+        "name": "__CLANG_ATOMIC_CHAR32_T_LOCK_FREE",
+        "line": 338
+      },
+      {
+        "name": "__CLANG_ATOMIC_WCHAR_T_LOCK_FREE",
+        "line": 339
+      },
+      {
+        "name": "__CLANG_ATOMIC_SHORT_LOCK_FREE",
+        "line": 340
+      },
+      {
+        "name": "__CLANG_ATOMIC_INT_LOCK_FREE",
+        "line": 341
+      },
+      {
+        "name": "__CLANG_ATOMIC_LONG_LOCK_FREE",
+        "line": 342
+      },
+      {
+        "name": "__CLANG_ATOMIC_LLONG_LOCK_FREE",
+        "line": 343
+      },
+      {
+        "name": "__CLANG_ATOMIC_POINTER_LOCK_FREE",
+        "line": 344
+      },
+      {
+        "name": "__NO_INLINE__",
+        "line": 345
+      },
+      {
+        "name": "__PIC__",
+        "line": 346
+      },
+      {
+        "name": "__pic__",
+        "line": 347
+      },
+      {
+        "name": "__FLT_RADIX__",
+        "line": 348
+      },
+      {
+        "name": "__DECIMAL_DIG__",
+        "line": 349
+      },
+      {
+        "name": "__GCC_ASM_FLAG_OUTPUTS__",
+        "line": 350
+      },
+      {
+        "name": "__code_model_small__",
+        "line": 351
+      },
+      {
+        "name": "__amd64__",
+        "line": 352
+      },
+      {
+        "name": "__amd64",
+        "line": 353
+      },
+      {
+        "name": "__x86_64",
+        "line": 354
+      },
+      {
+        "name": "__x86_64__",
+        "line": 355
+      },
+      {
+        "name": "__SEG_GS",
+        "line": 356
+      },
+      {
+        "name": "__SEG_FS",
+        "line": 357
+      },
+      {
+        "name": "__seg_gs",
+        "line": 358
+      },
+      {
+        "name": "__seg_fs",
+        "line": 359
+      },
+      {
+        "name": "__k8",
+        "line": 360
+      },
+      {
+        "name": "__k8__",
+        "line": 361
+      },
+      {
+        "name": "__tune_k8__",
+        "line": 362
+      },
+      {
+        "name": "__REGISTER_PREFIX__",
+        "line": 363
+      },
+      {
+        "name": "__NO_MATH_INLINES",
+        "line": 364
+      },
+      {
+        "name": "__FXSR__",
+        "line": 365
+      },
+      {
+        "name": "__SSE2__",
+        "line": 366
+      },
+      {
+        "name": "__SSE2_MATH__",
+        "line": 367
+      },
+      {
+        "name": "__SSE__",
+        "line": 368
+      },
+      {
+        "name": "__SSE_MATH__",
+        "line": 369
+      },
+      {
+        "name": "__MMX__",
+        "line": 370
+      },
+      {
+        "name": "__GCC_HAVE_SYNC_COMPARE_AND_SWAP_1",
+        "line": 371
+      },
+      {
+        "name": "__GCC_HAVE_SYNC_COMPARE_AND_SWAP_2",
+        "line": 372
+      },
+      {
+        "name": "__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4",
+        "line": 373
+      },
+      {
+        "name": "__GCC_HAVE_SYNC_COMPARE_AND_SWAP_8",
+        "line": 374
+      },
+      {
+        "name": "_WIN32",
+        "line": 375
+      },
+      {
+        "name": "_WIN64",
+        "line": 376
+      },
+      {
+        "name": "_M_FP_CONTRACT",
+        "line": 377
+      },
+      {
+        "name": "_M_FP_PRECISE",
+        "line": 378
+      },
+      {
+        "name": "_MSC_VER",
+        "line": 379
+      },
+      {
+        "name": "_MSC_FULL_VER",
+        "line": 380
+      },
+      {
+        "name": "_MSC_BUILD",
+        "line": 381
+      },
+      {
+        "name": "_CRT_USE_BUILTIN_OFFSETOF",
+        "line": 382
+      },
+      {
+        "name": "_MSC_EXTENSIONS",
+        "line": 383
+      },
+      {
+        "name": "_INTEGRAL_MAX_BITS",
+        "line": 384
+      },
+      {
+        "name": "__STDC_NO_THREADS__",
+        "line": 385
+      },
+      {
+        "name": "_MSVC_EXECUTION_CHARACTER_SET",
+        "line": 386
+      },
+      {
+        "name": "_M_X64",
+        "line": 387
+      },
+      {
+        "name": "_M_AMD64",
+        "line": 388
+      },
+      {
+        "name": "__STDC_HOSTED__",
+        "line": 389
+      },
+      {
+        "name": "__STDC_VERSION__",
+        "line": 390
+      },
+      {
+        "name": "__STDC_UTF_16__",
+        "line": 391
+      },
+      {
+        "name": "__STDC_UTF_32__",
+        "line": 392
+      },
+      {
+        "name": "__STDC_EMBED_NOT_FOUND__",
+        "line": 393
+      },
+      {
+        "name": "__STDC_EMBED_FOUND__",
+        "line": 394
+      },
+      {
+        "name": "__STDC_EMBED_EMPTY__",
+        "line": 395
+      },
+      {
+        "name": "soc_IN_CORRECTION_ON_WAKE_STATE",
+        "line": 36
+      },
+      {
+        "name": "soc_IN_INIT_STATE",
+        "line": 37
+      },
+      {
+        "name": "soc_IN_NORMAL_STATE",
+        "line": 38
+      },
+      {
+        "name": "soc_IN_RESET_STATE",
+        "line": 39
+      }
+    ]
+  }
+]
