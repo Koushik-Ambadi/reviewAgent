@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
-
 from clang.cindex import Config
+
 
 # ==========================================
 # LLVM LIBCLANG
@@ -35,6 +35,7 @@ TARGET_FOLDERS = [
     (REPO_ROOT / "src").resolve()
 ]
 
+
 # ==========================================
 # INIT
 # ==========================================
@@ -53,8 +54,9 @@ index = Index.create()
 
 compdb = CompilationDatabase.fromDirectory(COMPILE_DB_DIR)
 
+
 # ==========================================
-# ARG SANITIZER (KEEP AS IS)
+# ARG SANITIZER
 # ==========================================
 
 def sanitize_args(args):
@@ -83,6 +85,7 @@ def sanitize_args(args):
     ])
 
     return cleaned
+
 
 
 # ==========================================
@@ -116,8 +119,10 @@ def extract_symbols(file_path):
         print(f"FAILED PARSE: {e}")
         return None
 
+
+
     # ======================================
-    # EXPANDED RESULT STRUCTURE
+    # RESULT STRUCTURE
     # ======================================
 
     result = {
@@ -130,16 +135,14 @@ def extract_symbols(file_path):
         "functions_declared": [],
 
         "globals": [],
-        "locals": [],              # NEW
-        "parameters": [],          # NEW
+        "locals": [],
+        "parameters": [],
 
-        "structs": [],             # NEW
-        "struct_fields": [],       # NEW
+        # parent-child hierarchy
+        "structs": [],
+        "enums": [],
 
-        "enums": [],               # NEW
-        "enum_constants": [],      # NEW
-
-        "typedefs": [],            # NEW
+        "typedefs": [],
 
         "macros": []
     }
@@ -154,17 +157,54 @@ def extract_symbols(file_path):
     return result
 
 
+
 # ==========================================
-# AST WALKER (SAFE EXTENSION)
+# HELPER: IS USER MACRO
+# ==========================================
+
+def is_user_macro(node):
+
+    if not node.location.file:
+        return False
+
+    macro_file = Path(str(node.location.file)).resolve()
+
+    # must be inside repo
+    try:
+        macro_file.relative_to(REPO_ROOT)
+    except ValueError:
+        return False
+
+    name = node.spelling
+
+    # compiler/internal macros
+    if name.startswith("__"):
+        return False
+
+    # reserved/private macros
+    if name.startswith("_"):
+        return False
+
+    return True
+
+
+
+# ==========================================
+# AST WALKER
 # ==========================================
 
 def walk_ast(node, result, source_file):
 
+
+
     if node.location.file:
 
-        current_file = str(Path(str(node.location.file)).resolve())
+        current_file = Path(str(node.location.file)).resolve()
 
-        if current_file != source_file:
+        # Skip files outside repo
+        try:
+            current_file.relative_to(REPO_ROOT)
+        except ValueError:
             return
 
     # ======================================
@@ -172,7 +212,9 @@ def walk_ast(node, result, source_file):
     # ======================================
 
     if node.kind == CursorKind.INCLUSION_DIRECTIVE:
+
         result["includes"].append(node.displayname)
+
 
     # ======================================
     # FUNCTIONS
@@ -193,8 +235,10 @@ def walk_ast(node, result, source_file):
         else:
             result["functions_declared"].append(function_data)
 
+
+
     # ======================================
-    # GLOBAL VARIABLES
+    # VARIABLES
     # ======================================
 
     elif node.kind == CursorKind.VAR_DECL:
@@ -210,13 +254,14 @@ def walk_ast(node, result, source_file):
         if parent == CursorKind.TRANSLATION_UNIT:
             result["globals"].append(var_data)
         else:
-            result["locals"].append(var_data)   # NEW
+            result["locals"].append(var_data)
 
     # ======================================
     # PARAMETERS
     # ======================================
 
     elif node.kind == CursorKind.PARM_DECL:
+
         result["parameters"].append({
             "name": node.spelling,
             "type": node.type.spelling,
@@ -224,49 +269,62 @@ def walk_ast(node, result, source_file):
         })
 
     # ======================================
-    # STRUCTS
+    # STRUCTS + FIELDS
     # ======================================
 
     elif node.kind == CursorKind.STRUCT_DECL:
+
         if node.spelling:
-            result["structs"].append({
+
+            struct_data = {
                 "name": node.spelling,
-                "line": node.location.line
-            })
+                "line": node.location.line,
+                "fields": []
+            }
+
+            for child in node.get_children():
+
+                if child.kind == CursorKind.FIELD_DECL:
+
+                    struct_data["fields"].append({
+                        "name": child.spelling,
+                        "type": child.type.spelling,
+                        "line": child.location.line
+                    })
+
+            result["structs"].append(struct_data)
 
     # ======================================
-    # STRUCT FIELDS
-    # ======================================
-
-    elif node.kind == CursorKind.FIELD_DECL:
-        result["struct_fields"].append({
-            "name": node.spelling,
-            "type": node.type.spelling,
-            "line": node.location.line
-        })
-
-    # ======================================
-    # ENUMS
+    # ENUMS + CONSTANTS
     # ======================================
 
     elif node.kind == CursorKind.ENUM_DECL:
-        if node.spelling:
-            result["enums"].append({
-                "name": node.spelling,
-                "line": node.location.line
-            })
 
-    elif node.kind == CursorKind.ENUM_CONSTANT_DECL:
-        result["enum_constants"].append({
-            "name": node.spelling,
-            "line": node.location.line
-        })
+        if node.spelling:
+
+            enum_data = {
+                "name": node.spelling,
+                "line": node.location.line,
+                "constants": []
+            }
+
+            for child in node.get_children():
+
+                if child.kind == CursorKind.ENUM_CONSTANT_DECL:
+
+                    enum_data["constants"].append({
+                        "name": child.spelling,
+                        "line": child.location.line
+                    })
+
+            result["enums"].append(enum_data)
 
     # ======================================
     # TYPEDEFS
     # ======================================
 
     elif node.kind == CursorKind.TYPEDEF_DECL:
+
         result["typedefs"].append({
             "name": node.spelling,
             "type": node.type.spelling,
@@ -278,10 +336,13 @@ def walk_ast(node, result, source_file):
     # ======================================
 
     elif node.kind == CursorKind.MACRO_DEFINITION:
-        result["macros"].append({
-            "name": node.spelling,
-            "line": node.location.line
-        })
+
+        if is_user_macro(node):
+
+            result["macros"].append({
+                "name": node.spelling,
+                "line": node.location.line
+            })
 
     # ======================================
     # RECURSION
@@ -329,7 +390,6 @@ for entry in compile_data:
 
     if result:
         all_results.append(result)
-
 
 # ==========================================
 # SAVE
