@@ -68,7 +68,50 @@ compdb = CompilationDatabase.fromDirectory(COMPILE_DB_DIR)
 def sanitize_args(args):
 
     cleaned = []
+
     skip_next = False
+
+    # flags that take a value after them
+    consume_next = {
+        "-o",
+        "-MF",
+        "-MT",
+        "-MQ",
+        "--output",
+    }
+
+    # unsupported embedded/compiler-specific flags
+    skip_prefixes = (
+        "--cpu=",
+        "-mcpu=",
+        "-mfpu=",
+        "-mfloat-abi=",
+        "--target=",
+        "-fshort-enums",
+        "-fshort-wchar",
+        "--specs=",
+        "-ffreestanding",
+        "-fno-common",
+        "-fmessage-length=",
+        "-fcyclomatic-complexity",
+        "-fstack-usage",
+        "--diag_suppress",
+        "--diag_warning",
+        "--diag_error",
+        "--gcc",
+        "--gnu",
+        "--abi",
+        "--thumb",
+    )
+
+    # exact flags to skip
+    skip_exact = {
+        "-c",
+        "-MD",
+        "-MMD",
+        "-MP",
+        "-Winvalid-pch",
+    }
 
     for arg in args:
 
@@ -76,23 +119,25 @@ def sanitize_args(args):
             skip_next = False
             continue
 
-        if arg == "-o":
+        if arg in consume_next:
             skip_next = True
             continue
 
-        if arg in ["-c", "-MD", "-MF"]:
+        if arg in skip_exact:
+            continue
+
+        if arg.startswith(skip_prefixes):
             continue
 
         cleaned.append(arg)
 
+    # force language
     cleaned.extend([
         "-x", "c",
         "-std=c99"
     ])
 
     return cleaned
-
-
 
 # ==========================================
 # EXTRACTOR
@@ -246,8 +291,9 @@ def walk_ast(node, result, source_file):
     # ======================================
     # VARIABLES
     # ======================================
-
     elif node.kind == CursorKind.VAR_DECL:
+
+        import re
 
         parent = node.semantic_parent.kind
 
@@ -255,22 +301,71 @@ def walk_ast(node, result, source_file):
 
         raw_declaration = " ".join(tokens)
 
+        # =====================================
+        # RECOVER ARRAY DECLARATION TEXT
+        # =====================================
+
+        full_decl = raw_declaration
+
+        try:
+
+            with open(source_file, "r", encoding="utf-8") as f:
+                lines = f.readlines()
+
+            line_text = lines[node.location.line - 1].strip()
+
+            m = re.search(
+                rf"\b{re.escape(node.spelling)}((?:\s*\[[^\]]*\])*)",
+                line_text
+            )
+
+            if m:
+                suffix = m.group(1) or ""
+                full_decl = raw_declaration + suffix
+
+        except Exception:
+            pass
+
+        # =====================================
+        # ARRAY SUFFIXES
+        # =====================================
+
+        array_suffixes = re.findall(
+            r"\[[^\]]*\]",
+            full_decl
+        )
+
+        # =====================================
+        # MINIMAL RAW STRUCTURE
+        # =====================================
+
         var_data = {
+
+            # variable identifier
             "name": node.spelling,
-            "type": node.type.spelling,
+
+            # original declaration text
+            "raw_declaration": full_decl,
+
+            # raw array dimensions
+            "array_suffixes": array_suffixes,
+
+            # source location
             "line": node.location.line,
 
-            # raw tokens
-            "tokens": tokens,
-
-            # complete declaration text
-            "raw_declaration": raw_declaration
+            # static / extern etc.
+            "storage_class": str(node.storage_class)
         }
 
         if parent == CursorKind.TRANSLATION_UNIT:
             result["globals"].append(var_data)
         else:
             result["locals"].append(var_data)
+
+
+
+
+
 
 
 
