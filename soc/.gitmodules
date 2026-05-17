@@ -1,0 +1,12 @@
+[submodule "absdef"]
+	path = absdef
+	url = git@bitbucket.org:americanbatterysolutions/absdef.git
+[submodule "s32k344-freertos"]
+	path = s32k344-freertos
+	url = git@bitbucket.org:americanbatterysolutions/s32k344-freertos.git
+[submodule "s32k344-mcal"]
+	path = s32k344-mcal
+	url = git@bitbucket.org:americanbatterysolutions/s32k344-mcal.git
+[submodule "test/unit/vcast-setup"]
+	path = test/unit/vcast-setup
+	url = git@bitbucket.org:americanbatterysolutions/vcast-setup.git
