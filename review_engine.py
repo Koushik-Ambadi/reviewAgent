@@ -1,7 +1,13 @@
 import json
 from pathlib import Path
-from clang.cindex import Config
-
+from clang.cindex import (
+    Index,
+    CursorKind,
+    CompilationDatabase,
+    TranslationUnit,
+    TypeKind,
+    Config
+)
 
 # ==========================================
 # LLVM LIBCLANG
@@ -245,16 +251,32 @@ def walk_ast(node, result, source_file):
 
         parent = node.semantic_parent.kind
 
+        tokens = [tok.spelling for tok in node.get_tokens()]
+
+        raw_declaration = " ".join(tokens)
+
         var_data = {
             "name": node.spelling,
             "type": node.type.spelling,
-            "line": node.location.line
+            "line": node.location.line,
+
+            # raw tokens
+            "tokens": tokens,
+
+            # complete declaration text
+            "raw_declaration": raw_declaration
         }
 
         if parent == CursorKind.TRANSLATION_UNIT:
             result["globals"].append(var_data)
         else:
             result["locals"].append(var_data)
+
+
+
+
+
+
 
     # ======================================
     # PARAMETERS
@@ -339,9 +361,62 @@ def walk_ast(node, result, source_file):
 
         if is_user_macro(node):
 
+            tokens = list(node.get_tokens())
+
+            replacement = ""
+
+            if len(tokens) > 1:
+                replacement = " ".join(
+                    tok.spelling for tok in tokens[1:]
+                )
+
+            macro_type = "conditional"
+
+            # ----------------------------------
+            # FUNCTION MACRO DETECTION
+            # ----------------------------------
+
+            # actual function macro:
+            # #define MAX(x) ...
+
+            if (
+                len(tokens) >= 4
+                and tokens[1].spelling == "("
+            ):
+
+                close_idx = None
+
+                for i in range(2, len(tokens)):
+                    if tokens[i].spelling == ")":
+                        close_idx = i
+                        break
+
+                if close_idx is not None:
+
+                    param_tokens = tokens[2:close_idx]
+
+                    # valid param list contains only:
+                    # identifiers and commas
+
+                    is_param_list = all(
+                        tok.kind.name == "IDENTIFIER"
+                        or tok.spelling == ","
+                        for tok in param_tokens
+                    )
+
+                    if is_param_list:
+                        macro_type = "function"
+                    else:
+                        macro_type = "value"
+
+            elif len(tokens) > 1:
+                macro_type = "value"
+
             result["macros"].append({
                 "name": node.spelling,
-                "line": node.location.line
+                "line": node.location.line,
+                "type": macro_type,
+                "replacement": replacement
             })
 
     # ======================================

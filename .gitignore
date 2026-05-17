@@ -1,4 +1,5 @@
 .venv/
+.vscode/
 reviewDemo/
 pycache/
 __pycache__/
@@ -9,3 +10,7 @@ __pycache__/
 *.bat
 
 soc/build/
+soc/src/
+soc/review_results.json
+soc/src/soc.c
+.gitignore
