@@ -9,8 +9,5 @@ __pycache__/
 *.log
 *.bat
 
-soc/build/
-soc/src/
-soc/review_results.json
-soc/src/soc.c
+soc/
 .gitignore

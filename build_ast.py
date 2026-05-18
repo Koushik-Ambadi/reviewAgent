@@ -344,6 +344,8 @@ def walk_ast(node, result, source_file):
             # variable identifier
             "name": node.spelling,
 
+            "type": node.type.spelling,
+
             # original declaration text
             "raw_declaration": full_decl,
 
