@@ -1,0 +1,67 @@
+runtime:
+  source_path: soc
+  policy_path: policies/default.yaml
+  output_report_filename: review_report.json
+  review_results_filename: review_results.json
+
+ast:
+  libclang_path: C:/Program Files/LLVM/bin/libclang.dll
+  compile_db_dir: build
+  target_folders:
+    - src
+  target_extensions:
+    - .c
+    - .h
+  force_language: c
+  language_standard: c99
+  parse_options:
+    - PARSE_DETAILED_PROCESSING_RECORD
+  sanitize:
+    consume_next:
+      - -o
+      - -MF
+      - -MT
+      - -MQ
+      - --output
+      - -Xclang
+    skip_prefixes:
+      - --cpu=
+      - -mcpu=
+      - -mfpu=
+      - -mfloat-abi=
+      - --target=
+      - -fshort-enums
+      - -fshort-wchar
+      - --specs=
+      - -ffreestanding
+      - -fno-common
+      - -fmessage-length=
+      - -fcyclomatic-complexity
+      - -fstack-usage
+      - --diag_suppress
+      - --diag_warning
+      - --diag_error
+      - --misra_
+      - --gcc
+      - --gnu
+      - --abi
+      - --thumb
+    skip_exact:
+      - -c
+      - -MD
+      - -MMD
+      - -MP
+      - -Winvalid-pch
+      - -gcodeview
+
+code_review:
+  function_name_pattern: ^[A-Z][a-z]*(_[a-z]+)+$
+  macro_name_pattern: ^[A-Z]+(_[A-Z]+)*$
+  excluded_function_patterns:
+    - ^look\d_
+    - ^plook_
+    - ^intrp
+    - ^binsearch_
+  excluded_macro_patterns:
+    - ^{module}_IN_
+  macro_value_type: value

@@ -2,7 +2,10 @@
 
 from pathlib import Path
 
-from models import FileNode
+try:
+    from .models import FileNode
+except ImportError:  # pragma: no cover
+    from models import FileNode
 
 
 def build_tree(root: Path) -> list[FileNode]:

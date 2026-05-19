@@ -1,0 +1,1912 @@
+{
+  "metadata": {
+    "repo_url": "https://github.com/demo/soc-project",
+    "module_name": "soc",
+    "generated_at": "2026-05-19T13:28:16.873286+00:00",
+    "source_path": "C:\\Users\\koushik\\Desktop\\review\\soc",
+    "policy_path": "C:\\Users\\koushik\\Desktop\\review\\policies\\default.yaml",
+    "review_results_path": "C:\\Users\\koushik\\Desktop\\review\\soc\\review_results.json",
+    "report_output_path": "C:\\Users\\koushik\\Desktop\\review\\review_report.json"
+  },
+  "ingestion": {
+    "source_kind": "local_directory",
+    "source_path": "C:\\Users\\koushik\\Desktop\\review\\soc",
+    "compile_db_dir": "C:\\Users\\koushik\\Desktop\\review\\soc\\build",
+    "target_folders": [
+      "C:\\Users\\koushik\\Desktop\\review\\soc\\src"
+    ]
+  },
+  "ast": {
+    "status": "success",
+    "processed_files": 2,
+    "compile_db_path": "C:\\Users\\koushik\\Desktop\\review\\soc\\build\\compile_commands.json",
+    "output_path": "C:\\Users\\koushik\\Desktop\\review\\soc\\review_results.json",
+    "review_results_exists": true,
+    "error": null
+  },
+  "summary": {
+    "failed": 29,
+    "exception": 9,
+    "passed": 153,
+    "total": 191,
+    "overall_status": "failed"
+  },
+  "body": {
+    "failed": [
+      "Missing required directory: node_modules/",
+      "Missing required directory: temp/",
+      "Missing required directory: tests/",
+      "Missing required path: dummy_file.txt",
+      "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Invalid function name: Soc_coulombCountingSocCalc_Init",
+      "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Invalid function name: Soc_coulombCountingSocCalc",
+      "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Invalid function name: Soc_ocvBasedSocCalc",
+      "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Invalid function name: Soc_restTimeCalc",
+      "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Invalid function name: Soc_socCorrection",
+      "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Invalid function name: Soc_filterWeightAndReqRestCalc",
+      "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Invalid function name: Soc_socNormal_Init",
+      "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Invalid function name: Soc_socNormal",
+      "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Invalid function name: Soc_socCorrectionOnWake",
+      "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Invalid function name: Soc_socReset",
+      "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Invalid function name: Soc_socOutputs",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Invalid macro name: CPU_TYPE_8",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Invalid macro name: CPU_TYPE_16",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Invalid macro name: CPU_TYPE_32",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Invalid macro name: CPU_TYPE_64",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Invalid macro name: SOC_NUM_OF_CELLS_I32",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Invalid macro name: CPU_TYPE_8",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Invalid macro name: CPU_TYPE_16",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Invalid macro name: CPU_TYPE_32",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Invalid macro name: CPU_TYPE_64",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Invalid macro name: SOC_NUM_OF_CELLS_I32",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> KaSoc_Ah_capacityLut uses raw numeric array size [13]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> KaSoc_Ah_capacityLut uses raw numeric array size [13]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> KaSoc_frc_ocvBasedSocLut uses raw numeric array size [273]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> KaSoc_frc_ocvBasedSocLut uses raw numeric array size [273]"
+    ],
+    "exception": [
+      "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> look2_iflf_binlca skipped (excluded pattern)",
+      "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> plook_u32ff_binca skipped (excluded pattern)",
+      "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> intrp2d_fu32fla skipped (excluded pattern)",
+      "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> binsearch_u32f skipped (excluded pattern)",
+      "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> look1_iflf_binlca skipped (excluded pattern)",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> soc_IN_CORRECTION_ON_WAKE_STATE skipped (excluded pattern)",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> soc_IN_INIT_STATE skipped (excluded pattern)",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> soc_IN_NORMAL_STATE skipped (excluded pattern)",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> soc_IN_RESET_STATE skipped (excluded pattern)"
+    ],
+    "passed": [
+      "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Soc_initialize passed validation",
+      "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Soc_tick passed validation",
+      "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Soc_read_inputs passed validation",
+      "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Soc_read_outputs passed validation",
+      "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Soc_get_batt_resttime passed validation",
+      "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Soc_get_tau_depolar passed validation",
+      "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Soc_get_state passed validation",
+      "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Soc_get_pack_level passed validation",
+      "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Soc_get_user_level passed validation",
+      "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Soc_get_min passed validation",
+      "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Soc_get_max passed validation",
+      "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Soc_reset passed validation",
+      "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Soc_get_cell_levels passed validation",
+      "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Soc_get_cell_cc_levels passed validation",
+      "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Soc_get_cell_ocv_levels passed validation",
+      "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Soc_task passed validation",
+      "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Soc_init passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> PLATFORM_VENDOR_ID passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> PLATFORM_AR_RELEASE_MAJOR_VERSION passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> PLATFORM_AR_RELEASE_MINOR_VERSION passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> PLATFORM_AR_RELEASE_REVISION_VERSION passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> PLATFORM_SW_MAJOR_VERSION passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> PLATFORM_SW_MINOR_VERSION passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> PLATFORM_SW_PATCH_VERSION passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> MSB_FIRST passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> LSB_FIRST passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> HIGH_BYTE_FIRST passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> LOW_BYTE_FIRST passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> TRUE passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> FALSE passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> DUKOSI_NUMBER_OF_CELLS passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> ABS_AH_TO_COULOMB passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> ABS_SEC_TO_MILLISEC passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_CELLS_IN_PARALLEL passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_GET_CURRENT passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_GET_NVM_IMPORT_STATUS passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_GET_CELL_VOLTAGES passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_GET_CELL_TEMPERATURES passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_NVM_READ passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_GET_REST_TIME passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_GET_BMS_MODE passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_GET_MIN_MAX_CELL_TEMPERATURE passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_GET_CELL_SOHC_LEVELS passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_GET_BATT_ASLEEP_TIME passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_NVM_WRITE passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_GET_LOG_FAULT passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_BATSM_DT passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_DUKOSI_VOLT_DT passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_DUKOSI_TEMP_DT passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_DUKOSI_TEMP_RES_DT passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_NUM_OF_CELLS passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_LUT_SOC_ARRAY_SIZE passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_LUT_TEMP_ARRAY_SIZE passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> PLATFORM_VENDOR_ID passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> PLATFORM_AR_RELEASE_MAJOR_VERSION passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> PLATFORM_AR_RELEASE_MINOR_VERSION passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> PLATFORM_AR_RELEASE_REVISION_VERSION passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> PLATFORM_SW_MAJOR_VERSION passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> PLATFORM_SW_MINOR_VERSION passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> PLATFORM_SW_PATCH_VERSION passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> MSB_FIRST passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> LSB_FIRST passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> HIGH_BYTE_FIRST passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> LOW_BYTE_FIRST passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> TRUE passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> FALSE passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_LUT_SOC_ARRAY_SIZE passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_LUT_TEMP_ARRAY_SIZE passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> DUKOSI_NUMBER_OF_CELLS passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> ABS_AH_TO_COULOMB passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> ABS_SEC_TO_MILLISEC passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_CELLS_IN_PARALLEL passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_GET_CURRENT passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_GET_NVM_IMPORT_STATUS passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_GET_CELL_VOLTAGES passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_GET_CELL_TEMPERATURES passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_NVM_READ passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_GET_REST_TIME passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_GET_BMS_MODE passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_GET_MIN_MAX_CELL_TEMPERATURE passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_GET_CELL_SOHC_LEVELS passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_GET_BATT_ASLEEP_TIME passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_NVM_WRITE passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_GET_LOG_FAULT passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_BATSM_DT passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_DUKOSI_VOLT_DT passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_DUKOSI_TEMP_DT passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_DUKOSI_TEMP_RES_DT passed validation",
+      "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_NUM_OF_CELLS passed validation",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_frc_initialCellSoc uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_V_cellVolt uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_degC_cellTmp uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_frc_cellSohc uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_nu_cellVoltVldt uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_nu_cellTmpVldt uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_frc_cellSocOcv uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_frc_cellSocCc uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_frc_cellSoc uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_ms_tauDepolar uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_frc_cellStateOfCharge uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_frc_cellStateOfCharge uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_frc_cellStateOfChargeCc uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_frc_cellStateOfChargeCc uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_frc_cellStateOfChargeOcv uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_frc_cellStateOfChargeOcv uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_ms_tauDepolarization uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_ms_tauDepolarization uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_frc_cellStateOfHealth uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_frc_cellStateOfHealth uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> NaSoc_frc_initialStateOfCharge uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> NaSoc_frc_initialStateOfCharge uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VsSoc_V_cellVoltage uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VsSoc_V_cellVoltage uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VsSoc_degC_cellTemperature uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VsSoc_degC_cellTemperature uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_frc_initialCellSoc uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_V_cellVolt uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_degC_cellTmp uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_frc_cellSohc uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_nu_cellVoltVldt uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_nu_cellTmpVldt uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_frc_cellSocOcv uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_frc_cellSocCc uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_frc_cellSoc uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_ms_tauDepolar uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_frc_initialCellSoc uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_frc_initialCellSoc uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_V_cellVolt uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_V_cellVolt uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_degC_cellTmp uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_degC_cellTmp uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_frc_cellSohc uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_frc_cellSohc uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_nu_cellVoltVldt uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_nu_cellVoltVldt uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_nu_cellTmpVldt uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_nu_cellTmpVldt uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_frc_cellSocOcv uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_frc_cellSocOcv uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_frc_cellSocCc uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_frc_cellSocCc uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_frc_cellSoc uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_frc_cellSoc uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_ms_tauDepolar uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_ms_tauDepolar uses symbolic array size [SOC_NUM_OF_CELLS]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> KaSoc_V_ocvLut uses symbolic array size [SOC_LUT_SOC_ARRAY_SIZE]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> KaSoc_V_ocvLut uses symbolic array size [SOC_LUT_SOC_ARRAY_SIZE]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> KaSoc_degC_tmpLut uses symbolic array size [SOC_LUT_TEMP_ARRAY_SIZE]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> KaSoc_degC_tmpLut uses symbolic array size [SOC_LUT_TEMP_ARRAY_SIZE]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> KaSoc_frc_socHystVoltLut uses symbolic array size [( SOC_LUT_SOC_ARRAY_SIZE * SOC_LUT_TEMP_ARRAY_SIZE )]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> KaSoc_frc_socLut uses symbolic array size [SOC_LUT_SOC_ARRAY_SIZE]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> KaSoc_frc_socLut uses symbolic array size [SOC_LUT_SOC_ARRAY_SIZE]",
+      "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> KaSoc_sec_tauDepolarLut uses symbolic array size [( SOC_LUT_SOC_ARRAY_SIZE * SOC_LUT_TEMP_ARRAY_SIZE )]"
+    ]
+  },
+  "sections": [
+    {
+      "name": "folder_and_file_structure",
+      "title": "Folder and File Structure",
+      "status": "failed",
+      "summary": {
+        "failed": 4,
+        "exception": 0,
+        "passed": 0
+      },
+      "issues": [
+        {
+          "severity": "HIGH",
+          "rule": "required_paths",
+          "path": "node_modules/",
+          "message": "Missing required directory: node_modules/",
+          "status": "FAILED"
+        },
+        {
+          "severity": "HIGH",
+          "rule": "required_paths",
+          "path": "temp/",
+          "message": "Missing required directory: temp/",
+          "status": "FAILED"
+        },
+        {
+          "severity": "HIGH",
+          "rule": "required_paths",
+          "path": "tests/",
+          "message": "Missing required directory: tests/",
+          "status": "FAILED"
+        },
+        {
+          "severity": "HIGH",
+          "rule": "required_paths",
+          "path": "dummy_file.txt",
+          "message": "Missing required path: dummy_file.txt",
+          "status": "FAILED"
+        }
+      ]
+    },
+    {
+      "name": "ast_review_results",
+      "title": "AST Review Results",
+      "status": "success",
+      "summary": {
+        "status": "success",
+        "processed_files": 2,
+        "compile_db_path": "C:\\Users\\koushik\\Desktop\\review\\soc\\build\\compile_commands.json",
+        "output_path": "C:\\Users\\koushik\\Desktop\\review\\soc\\review_results.json",
+        "review_results_exists": true,
+        "error": null
+      },
+      "issues": [
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\app\\app.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\board\\Siul2_Port_Ip_Cfg.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\board\\Tspc_Port_Ip_Cfg.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\generate\\src\\Adc_Sar_Ip_PBcfg.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\generate\\src\\Axbs_Ip_PBcfg.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\generate\\src\\C40_Ip_Cfg.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\generate\\src\\CDD_Rm_Cfg.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\generate\\src\\CDD_Rm_Ipw_PBcfg.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\generate\\src\\CDD_Rm_PBcfg.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\generate\\src\\Clock_Ip_Cfg.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\generate\\src\\Dma_Ip_Cfg.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\generate\\src\\Dma_Ip_Sa_PBcfg.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\generate\\src\\Dma_Mux_Ip_PBcfg.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\generate\\src\\Fee_Cfg.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\generate\\src\\FlexCAN_Ip_Sa_PBcfg.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\generate\\src\\IntCtrl_Ip_Cfg.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\generate\\src\\Lpspi_Ip_Sa_PBcfg.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\generate\\src\\MemAcc_Cfg.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\generate\\src\\MemAcc_PBcfg.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\generate\\src\\Mem_43_INFLS_Cfg.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\generate\\src\\Mscm_Ip_PBcfg.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\generate\\src\\OsIf_Cfg.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\generate\\src\\Pflash_Ip_Cfg.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\generate\\src\\Pflash_Ip_PBcfg.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\generate\\src\\Pit_Ip_SA_PBcfg.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\generate\\src\\Siul2_Icu_Ip_SA_PBcfg.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\generate\\src\\Stm_Ip_SA_PBcfg.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\generate\\src\\Virt_Wrapper_Ip_PBcfg.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\generate\\src\\Xbic_Ip_PBcfg.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\generate\\src\\Xrdc_Ip_Cfg.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\generate\\src\\Xrdc_Ip_PBcfg.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Adc_Sar_Ip.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Adc_Sar_Ip_Irq.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Axbs_Ip.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\C40_Ip.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\C40_Ip_Ac.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\CDD_Rm.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\CDD_Rm_Ipw.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Cache_Ip.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Cache_Ip_HwAcc_ArmCoreMx.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Clock_Ip.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Clock_Ip_Data.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Clock_Ip_Divider.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Clock_Ip_DividerTrigger.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Clock_Ip_ExtOsc.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Clock_Ip_FracDiv.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Clock_Ip_Frequency.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Clock_Ip_Gate.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Clock_Ip_IntOsc.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Clock_Ip_Irq.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Clock_Ip_Monitor.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Clock_Ip_Pll.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Clock_Ip_ProgFreqSwitch.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Clock_Ip_Selector.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Clock_Ip_Specific.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Det.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Det_stub.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Dma_Ip.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Dma_Ip_Driver_State.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Dma_Ip_Hw_Access.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Dma_Ip_Irq.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Dma_Ip_Multipartition.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Dma_Mux_Ip.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Fee.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\FlexCAN_Ip.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\FlexCAN_Ip_HwAccess.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\FlexCAN_Ip_Irq.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\IntCtrl_Ip.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Lpspi_Ip.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Lpspi_Ip_Irq.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\MemAcc.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\MemAcc_Sema4.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Mem_43_INFLS.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Mem_43_INFLS_Ipw.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Mem_43_INFLS_Software_Semaphore.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Mscm_Ip.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\OsIf_Interrupts.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\OsIf_Software_Semaphore.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\OsIf_Timer.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\OsIf_Timer_System.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\OsIf_Timer_System_Internal_Systick.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Pflash_Ip.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Pit_Ip.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\SchM_Adc.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\SchM_BaseNXP.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\SchM_Can_43_FLEXCAN.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\SchM_Dio.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\SchM_Fee.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\SchM_Gpt.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\SchM_Icu.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\SchM_Mcl.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\SchM_Mcu.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\SchM_MemAcc.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\SchM_Mem_43_INFLS.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\SchM_Port.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\SchM_Rm.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\SchM_Spi.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Sema42_Ip.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Siul2_Dio_Ip.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Siul2_Icu_Ip.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Siul2_Icu_Ip_Irq.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Siul2_Port_Ip.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Stm_Ip.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Tspc_Port_Ip.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Virt_Wrapper_Ip.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Xbic_Ip.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\RTD\\src\\Xrdc_Ip.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\Project_Settings\\Startup_Code\\exceptions.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\Project_Settings\\Startup_Code\\nvic.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\Project_Settings\\Startup_Code\\startup.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\Project_Settings\\Startup_Code\\system.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\Project_Settings\\Startup_Code\\Vector_Table.s",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-mcal\\src\\Project_Settings\\Startup_Code\\startup_cm7.s",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-freertos\\src\\croutine.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-freertos\\src\\event_groups.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-freertos\\src\\list.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-freertos\\src\\queue.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-freertos\\src\\stream_buffer.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-freertos\\src\\tasks.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-freertos\\src\\timers.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-freertos\\src\\portable\\GHS\\ARM_CM7\\r0p1\\port.c",
+          "reason": "outside_target_folder"
+        },
+        {
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\s32k344-freertos\\src\\freertos_hooks\\freertos_hooks.c",
+          "reason": "outside_target_folder"
+        }
+      ]
+    },
+    {
+      "name": "code_review_checks",
+      "title": "Code Review Checks",
+      "status": "failed",
+      "summary": {
+        "failed": 25,
+        "exception": 9,
+        "passed": 153
+      },
+      "issues": [
+        {
+          "status": "PASSED",
+          "rule": "function_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Soc_initialize passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "function_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Soc_tick passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "function_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Soc_read_inputs passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "function_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Soc_read_outputs passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "function_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Soc_get_batt_resttime passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "function_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Soc_get_tau_depolar passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "function_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Soc_get_state passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "function_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Soc_get_pack_level passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "function_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Soc_get_user_level passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "function_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Soc_get_min passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "function_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Soc_get_max passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "function_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Soc_reset passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "function_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Soc_get_cell_levels passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "function_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Soc_get_cell_cc_levels passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "function_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Soc_get_cell_ocv_levels passed validation"
+        },
+        {
+          "status": "EXCEPTION",
+          "rule": "function_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> look2_iflf_binlca skipped (excluded pattern)"
+        },
+        {
+          "status": "EXCEPTION",
+          "rule": "function_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> plook_u32ff_binca skipped (excluded pattern)"
+        },
+        {
+          "status": "EXCEPTION",
+          "rule": "function_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> intrp2d_fu32fla skipped (excluded pattern)"
+        },
+        {
+          "status": "EXCEPTION",
+          "rule": "function_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> binsearch_u32f skipped (excluded pattern)"
+        },
+        {
+          "status": "EXCEPTION",
+          "rule": "function_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> look1_iflf_binlca skipped (excluded pattern)"
+        },
+        {
+          "status": "FAILED",
+          "rule": "function_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Invalid function name: Soc_coulombCountingSocCalc_Init"
+        },
+        {
+          "status": "FAILED",
+          "rule": "function_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Invalid function name: Soc_coulombCountingSocCalc"
+        },
+        {
+          "status": "FAILED",
+          "rule": "function_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Invalid function name: Soc_ocvBasedSocCalc"
+        },
+        {
+          "status": "FAILED",
+          "rule": "function_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Invalid function name: Soc_restTimeCalc"
+        },
+        {
+          "status": "FAILED",
+          "rule": "function_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Invalid function name: Soc_socCorrection"
+        },
+        {
+          "status": "FAILED",
+          "rule": "function_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Invalid function name: Soc_filterWeightAndReqRestCalc"
+        },
+        {
+          "status": "FAILED",
+          "rule": "function_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Invalid function name: Soc_socNormal_Init"
+        },
+        {
+          "status": "FAILED",
+          "rule": "function_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Invalid function name: Soc_socNormal"
+        },
+        {
+          "status": "FAILED",
+          "rule": "function_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Invalid function name: Soc_socCorrectionOnWake"
+        },
+        {
+          "status": "FAILED",
+          "rule": "function_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Invalid function name: Soc_socReset"
+        },
+        {
+          "status": "FAILED",
+          "rule": "function_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Invalid function name: Soc_socOutputs"
+        },
+        {
+          "status": "PASSED",
+          "rule": "function_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Soc_task passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "function_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[FUNCTION] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Soc_init passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> PLATFORM_VENDOR_ID passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> PLATFORM_AR_RELEASE_MAJOR_VERSION passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> PLATFORM_AR_RELEASE_MINOR_VERSION passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> PLATFORM_AR_RELEASE_REVISION_VERSION passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> PLATFORM_SW_MAJOR_VERSION passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> PLATFORM_SW_MINOR_VERSION passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> PLATFORM_SW_PATCH_VERSION passed validation"
+        },
+        {
+          "status": "FAILED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Invalid macro name: CPU_TYPE_8"
+        },
+        {
+          "status": "FAILED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Invalid macro name: CPU_TYPE_16"
+        },
+        {
+          "status": "FAILED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Invalid macro name: CPU_TYPE_32"
+        },
+        {
+          "status": "FAILED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Invalid macro name: CPU_TYPE_64"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> MSB_FIRST passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> LSB_FIRST passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> HIGH_BYTE_FIRST passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> LOW_BYTE_FIRST passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> TRUE passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> FALSE passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> DUKOSI_NUMBER_OF_CELLS passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> ABS_AH_TO_COULOMB passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> ABS_SEC_TO_MILLISEC passed validation"
+        },
+        {
+          "status": "FAILED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> Invalid macro name: SOC_NUM_OF_CELLS_I32"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_CELLS_IN_PARALLEL passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_GET_CURRENT passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_GET_NVM_IMPORT_STATUS passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_GET_CELL_VOLTAGES passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_GET_CELL_TEMPERATURES passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_NVM_READ passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_GET_REST_TIME passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_GET_BMS_MODE passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_GET_MIN_MAX_CELL_TEMPERATURE passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_GET_CELL_SOHC_LEVELS passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_GET_BATT_ASLEEP_TIME passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_NVM_WRITE passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_GET_LOG_FAULT passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_BATSM_DT passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_DUKOSI_VOLT_DT passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_DUKOSI_TEMP_DT passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_DUKOSI_TEMP_RES_DT passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_NUM_OF_CELLS passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_LUT_SOC_ARRAY_SIZE passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> SOC_LUT_TEMP_ARRAY_SIZE passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> PLATFORM_VENDOR_ID passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> PLATFORM_AR_RELEASE_MAJOR_VERSION passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> PLATFORM_AR_RELEASE_MINOR_VERSION passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> PLATFORM_AR_RELEASE_REVISION_VERSION passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> PLATFORM_SW_MAJOR_VERSION passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> PLATFORM_SW_MINOR_VERSION passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> PLATFORM_SW_PATCH_VERSION passed validation"
+        },
+        {
+          "status": "FAILED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Invalid macro name: CPU_TYPE_8"
+        },
+        {
+          "status": "FAILED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Invalid macro name: CPU_TYPE_16"
+        },
+        {
+          "status": "FAILED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Invalid macro name: CPU_TYPE_32"
+        },
+        {
+          "status": "FAILED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Invalid macro name: CPU_TYPE_64"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> MSB_FIRST passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> LSB_FIRST passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> HIGH_BYTE_FIRST passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> LOW_BYTE_FIRST passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> TRUE passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> FALSE passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_LUT_SOC_ARRAY_SIZE passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_LUT_TEMP_ARRAY_SIZE passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> DUKOSI_NUMBER_OF_CELLS passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> ABS_AH_TO_COULOMB passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> ABS_SEC_TO_MILLISEC passed validation"
+        },
+        {
+          "status": "FAILED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> Invalid macro name: SOC_NUM_OF_CELLS_I32"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_CELLS_IN_PARALLEL passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_GET_CURRENT passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_GET_NVM_IMPORT_STATUS passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_GET_CELL_VOLTAGES passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_GET_CELL_TEMPERATURES passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_NVM_READ passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_GET_REST_TIME passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_GET_BMS_MODE passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_GET_MIN_MAX_CELL_TEMPERATURE passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_GET_CELL_SOHC_LEVELS passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_GET_BATT_ASLEEP_TIME passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_NVM_WRITE passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_GET_LOG_FAULT passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_BATSM_DT passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_DUKOSI_VOLT_DT passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_DUKOSI_TEMP_DT passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_DUKOSI_TEMP_RES_DT passed validation"
+        },
+        {
+          "status": "PASSED",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> SOC_NUM_OF_CELLS passed validation"
+        },
+        {
+          "status": "EXCEPTION",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> soc_IN_CORRECTION_ON_WAKE_STATE skipped (excluded pattern)"
+        },
+        {
+          "status": "EXCEPTION",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> soc_IN_INIT_STATE skipped (excluded pattern)"
+        },
+        {
+          "status": "EXCEPTION",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> soc_IN_NORMAL_STATE skipped (excluded pattern)"
+        },
+        {
+          "status": "EXCEPTION",
+          "rule": "macro_names",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[MACRO] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> soc_IN_RESET_STATE skipped (excluded pattern)"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_frc_initialCellSoc uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_V_cellVolt uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_degC_cellTmp uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_frc_cellSohc uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_nu_cellVoltVldt uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_nu_cellTmpVldt uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_frc_cellSocOcv uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_frc_cellSocCc uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_frc_cellSoc uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_ms_tauDepolar uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_frc_cellStateOfCharge uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_frc_cellStateOfCharge uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_frc_cellStateOfChargeCc uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_frc_cellStateOfChargeCc uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_frc_cellStateOfChargeOcv uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_frc_cellStateOfChargeOcv uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_ms_tauDepolarization uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_ms_tauDepolarization uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_frc_cellStateOfHealth uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VaSoc_frc_cellStateOfHealth uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> NaSoc_frc_initialStateOfCharge uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> NaSoc_frc_initialStateOfCharge uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VsSoc_V_cellVoltage uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VsSoc_V_cellVoltage uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VsSoc_degC_cellTemperature uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c -> VsSoc_degC_cellTemperature uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_frc_initialCellSoc uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_V_cellVolt uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_degC_cellTmp uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_frc_cellSohc uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_nu_cellVoltVldt uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_nu_cellTmpVldt uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_frc_cellSocOcv uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_frc_cellSocCc uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_frc_cellSoc uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_ms_tauDepolar uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_frc_initialCellSoc uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_frc_initialCellSoc uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_V_cellVolt uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_V_cellVolt uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_degC_cellTmp uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_degC_cellTmp uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_frc_cellSohc uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_frc_cellSohc uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_nu_cellVoltVldt uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_nu_cellVoltVldt uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_nu_cellTmpVldt uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_nu_cellTmpVldt uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_frc_cellSocOcv uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_frc_cellSocOcv uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_frc_cellSocCc uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_frc_cellSocCc uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_frc_cellSoc uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_frc_cellSoc uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_ms_tauDepolar uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> VaSoc_ms_tauDepolar uses symbolic array size [SOC_NUM_OF_CELLS]"
+        },
+        {
+          "status": "FAILED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> KaSoc_Ah_capacityLut uses raw numeric array size [13]"
+        },
+        {
+          "status": "FAILED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> KaSoc_Ah_capacityLut uses raw numeric array size [13]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> KaSoc_V_ocvLut uses symbolic array size [SOC_LUT_SOC_ARRAY_SIZE]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> KaSoc_V_ocvLut uses symbolic array size [SOC_LUT_SOC_ARRAY_SIZE]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> KaSoc_degC_tmpLut uses symbolic array size [SOC_LUT_TEMP_ARRAY_SIZE]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> KaSoc_degC_tmpLut uses symbolic array size [SOC_LUT_TEMP_ARRAY_SIZE]"
+        },
+        {
+          "status": "FAILED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> KaSoc_frc_ocvBasedSocLut uses raw numeric array size [273]"
+        },
+        {
+          "status": "FAILED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> KaSoc_frc_ocvBasedSocLut uses raw numeric array size [273]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> KaSoc_frc_socHystVoltLut uses symbolic array size [( SOC_LUT_SOC_ARRAY_SIZE * SOC_LUT_TEMP_ARRAY_SIZE )]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> KaSoc_frc_socLut uses symbolic array size [SOC_LUT_SOC_ARRAY_SIZE]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> KaSoc_frc_socLut uses symbolic array size [SOC_LUT_SOC_ARRAY_SIZE]"
+        },
+        {
+          "status": "PASSED",
+          "rule": "array_sizes",
+          "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+          "message": "[ARRAY SIZE] C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c -> KaSoc_sec_tauDepolarLut uses symbolic array size [( SOC_LUT_SOC_ARRAY_SIZE * SOC_LUT_TEMP_ARRAY_SIZE )]"
+        }
+      ]
+    }
+  ]
+}

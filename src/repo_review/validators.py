@@ -1,6 +1,8 @@
-import re
 import pathspec
-from models import ValidationIssue
+try:
+    from .models import ValidationIssue
+except ImportError:  # pragma: no cover
+    from models import ValidationIssue
 
 # =========================================================
 # PATH NORMALIZATION
@@ -333,47 +335,10 @@ def validate_size_rules(nodes, policy):
 
 
 # =========================================================
-# NAMING RULES
-# =========================================================
-
-def validate_naming_rules(nodes, policy):
-    issues = []
-
-    rules = policy.get("naming_rules", {})
-
-    file_regex = rules.get("files", {}).get("regex")
-    dir_regex = rules.get("directories", {}).get("regex")
-
-    for node in nodes:
-        if node.is_dir:
-            if dir_regex and not re.match(dir_regex, node.name):
-                issues.append(
-                    ValidationIssue(
-                        severity="LOW",
-                        rule="naming_rules",
-                        path=node.relative_path,
-                        message="Invalid directory name",
-                    )
-                )
-        else:
-            if file_regex and not re.match(file_regex, node.name):
-                issues.append(
-                    ValidationIssue(
-                        severity="LOW",
-                        rule="naming_rules",
-                        path=node.relative_path,
-                        message="Invalid file name",
-                    )
-                )
-
-    return issues
-
-
-# =========================================================
 # MAIN ENTRY
 # =========================================================
 
-def run_validations(nodes, policy):
+def run_structure_validations(nodes, policy):
     issues = []
 
     issues += validate_required_paths(nodes, policy)
@@ -383,6 +348,11 @@ def run_validations(nodes, policy):
     issues += validate_required_file_types(nodes, policy)
     issues += validate_tree_rules(nodes, policy)
     issues += validate_size_rules(nodes, policy)
-    issues += validate_naming_rules(nodes, policy)
 
     return issues
+
+
+def run_validations(nodes, policy):
+    """Backward-compatible alias for the structure validation pipeline."""
+
+    return run_structure_validations(nodes, policy)
