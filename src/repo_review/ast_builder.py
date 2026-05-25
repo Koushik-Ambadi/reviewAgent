@@ -1,3 +1,5 @@
+# src/repo_review/ast_builder.py
+
 from __future__ import annotations
 
 import json
@@ -244,7 +246,7 @@ def build_ast_review_results(source_path: Path | str, config: dict[str, Any]) ->
     libclang_path = ast_config.get("libclang_path")
     configure_libclang(libclang_path)
 
-    compile_db_dir = source_root / ast_config.get("compile_db_dir", "build")
+    compile_db_dir = Path(ast_config.get("compile_db_dir", "analysis/cmake_build")).resolve()
     compile_db_path = compile_db_dir / "compile_commands.json"
     target_folders = [
         (source_root / folder).resolve() for folder in ast_config.get("target_folders", ["src"])

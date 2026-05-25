@@ -1,0 +1,6412 @@
+[
+  {
+    "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc.c",
+    "includes": [
+      "soc.h",
+      "soc_cfg.h",
+      "app.h",
+      "Platform_Types.h",
+      "stdint.h",
+      "stdbool.h",
+      "stddef.h",
+      "abs_sysdefs.h",
+      "abs_typedefs.h",
+      "float.h",
+      "soc_model.h",
+      "stdbool.h",
+      "stdint.h",
+      "Platform_Types.h",
+      "soc.h",
+      "string.h"
+    ],
+    "functions_defined": [
+      {
+        "name": "Soc_initialize",
+        "return_type": "void",
+        "line": 59,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_tick",
+        "return_type": "void",
+        "line": 65,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_read_inputs",
+        "return_type": "void",
+        "line": 77,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_read_outputs",
+        "return_type": "void",
+        "line": 204,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_get_batt_resttime",
+        "return_type": "status_t",
+        "line": 236,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_tau_depolar",
+        "return_type": "status_t",
+        "line": 251,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_state",
+        "return_type": "status_t",
+        "line": 266,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_pack_level",
+        "return_type": "status_t",
+        "line": 281,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_user_level",
+        "return_type": "status_t",
+        "line": 296,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_min",
+        "return_type": "status_t",
+        "line": 311,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_max",
+        "return_type": "status_t",
+        "line": 326,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_reset",
+        "return_type": "status_t",
+        "line": 341,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_cell_levels",
+        "return_type": "status_t",
+        "line": 347,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_cell_cc_levels",
+        "return_type": "status_t",
+        "line": 362,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_cell_ocv_levels",
+        "return_type": "status_t",
+        "line": 377,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      }
+    ],
+    "functions_declared": [
+      {
+        "name": "Dukosi_get_temperature",
+        "return_type": "status_t",
+        "line": 149,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Dukosi_get_voltage",
+        "return_type": "status_t",
+        "line": 150,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Shunt_getcurrent_ibatt",
+        "return_type": "status_t",
+        "line": 151,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "App_soc_nvm_read",
+        "return_type": "status_t",
+        "line": 152,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "App_get_battstate",
+        "return_type": "status_t",
+        "line": 153,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "App_get_init_batt_resttime",
+        "return_type": "status_t",
+        "line": 154,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "App_get_soc_nvm_importstatus",
+        "return_type": "status_t",
+        "line": 155,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Dukosi_get_min_max_temperature",
+        "return_type": "status_t",
+        "line": 156,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Sohc_get_cell_levels",
+        "return_type": "status_t",
+        "line": 157,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "App_get_batt_sleeptime",
+        "return_type": "status_t",
+        "line": 158,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "App_soc_nvm_write",
+        "return_type": "status_t",
+        "line": 159,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Dtcmgr_log_fault",
+        "return_type": "status_t",
+        "line": 160,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_initialize",
+        "return_type": "void",
+        "line": 37,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_tick",
+        "return_type": "void",
+        "line": 40,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_batt_resttime",
+        "return_type": "status_t",
+        "line": 44,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_tau_depolar",
+        "return_type": "status_t",
+        "line": 45,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_state",
+        "return_type": "status_t",
+        "line": 46,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_pack_level",
+        "return_type": "status_t",
+        "line": 48,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_user_level",
+        "return_type": "status_t",
+        "line": 49,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_min",
+        "return_type": "status_t",
+        "line": 50,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_max",
+        "return_type": "status_t",
+        "line": 51,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_cell_levels",
+        "return_type": "status_t",
+        "line": 52,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_cell_cc_levels",
+        "return_type": "status_t",
+        "line": 53,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_cell_ocv_levels",
+        "return_type": "status_t",
+        "line": 54,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_reset",
+        "return_type": "status_t",
+        "line": 55,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_init",
+        "return_type": "void",
+        "line": 270,
+        "is_definition": false,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "Soc_task",
+        "return_type": "void",
+        "line": 271,
+        "is_definition": false,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "Soc_read_inputs",
+        "return_type": "void",
+        "line": 56,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_read_outputs",
+        "return_type": "void",
+        "line": 57,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      }
+    ],
+    "globals": [
+      {
+        "name": "soc_B",
+        "type": "B_soc_T",
+        "raw_declaration": "extern B_soc_T soc_B",
+        "array_suffixes": [],
+        "line": 191,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "soc_DW",
+        "type": "DW_soc_T",
+        "raw_declaration": "extern DW_soc_T soc_DW",
+        "array_suffixes": [],
+        "line": 194,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "soc_ConstP",
+        "type": "const ConstP_soc_T",
+        "raw_declaration": "extern const ConstP_soc_T soc_ConstP",
+        "array_suffixes": [],
+        "line": 197,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VeSoc_bi_nvmImportStatus",
+        "type": "_Bool",
+        "raw_declaration": "extern bool VeSoc_bi_nvmImportStatus",
+        "array_suffixes": [],
+        "line": 207,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VeSoc_A_battCur",
+        "type": "float32_t",
+        "raw_declaration": "extern float32_t VeSoc_A_battCur",
+        "array_suffixes": [],
+        "line": 210,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VaSoc_frc_initialCellSoc",
+        "type": "float32_t[195]",
+        "raw_declaration": "extern float32_t VaSoc_frc_initialCellSoc [ SOC_NUM_OF_CELLS ]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]"
+        ],
+        "line": 213,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VaSoc_V_cellVolt",
+        "type": "float32_t[195]",
+        "raw_declaration": "extern float32_t VaSoc_V_cellVolt [ SOC_NUM_OF_CELLS ]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]"
+        ],
+        "line": 216,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VaSoc_degC_cellTmp",
+        "type": "float32_t[195]",
+        "raw_declaration": "extern float32_t VaSoc_degC_cellTmp [ SOC_NUM_OF_CELLS ]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]"
+        ],
+        "line": 219,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VeSoc_degC_minCellTmp",
+        "type": "float32_t",
+        "raw_declaration": "extern float32_t VeSoc_degC_minCellTmp",
+        "array_suffixes": [],
+        "line": 222,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VeSoc_degC_maxCellTmp",
+        "type": "float32_t",
+        "raw_declaration": "extern float32_t VeSoc_degC_maxCellTmp",
+        "array_suffixes": [],
+        "line": 225,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VeSoc_ms_battAsleepTime",
+        "type": "uint32_t",
+        "raw_declaration": "extern uint32_t VeSoc_ms_battAsleepTime",
+        "array_suffixes": [],
+        "line": 228,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VeSoc_ms_initialBattRestTime",
+        "type": "uint32_t",
+        "raw_declaration": "extern uint32_t VeSoc_ms_initialBattRestTime",
+        "array_suffixes": [],
+        "line": 231,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VaSoc_frc_cellSohc",
+        "type": "float32_t[195]",
+        "raw_declaration": "extern float32_t VaSoc_frc_cellSohc [ SOC_NUM_OF_CELLS ]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]"
+        ],
+        "line": 234,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VeBattsm_nu_battState",
+        "type": "Battsm_State_t",
+        "raw_declaration": "extern Battsm_State_t VeBattsm_nu_battState",
+        "array_suffixes": [],
+        "line": 237,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VaSoc_nu_cellVoltVldt",
+        "type": "Dukosi_Validity_t[195]",
+        "raw_declaration": "extern Dukosi_Validity_t VaSoc_nu_cellVoltVldt [ SOC_NUM_OF_CELLS ]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]"
+        ],
+        "line": 238,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VaSoc_nu_cellTmpVldt",
+        "type": "Dukosi_Validity_t[195]",
+        "raw_declaration": "extern Dukosi_Validity_t VaSoc_nu_cellTmpVldt [ SOC_NUM_OF_CELLS ]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]"
+        ],
+        "line": 239,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VeSoc_bi_socReset",
+        "type": "_Bool",
+        "raw_declaration": "extern bool VeSoc_bi_socReset",
+        "array_suffixes": [],
+        "line": 240,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VeSoc_ms_battRestTime",
+        "type": "uint32_t",
+        "raw_declaration": "extern uint32_t VeSoc_ms_battRestTime",
+        "array_suffixes": [],
+        "line": 241,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VaSoc_frc_cellSocOcv",
+        "type": "float32_t[195]",
+        "raw_declaration": "extern float32_t VaSoc_frc_cellSocOcv [ SOC_NUM_OF_CELLS ]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]"
+        ],
+        "line": 244,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VaSoc_frc_cellSocCc",
+        "type": "float32_t[195]",
+        "raw_declaration": "extern float32_t VaSoc_frc_cellSocCc [ SOC_NUM_OF_CELLS ]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]"
+        ],
+        "line": 245,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VaSoc_frc_cellSoc",
+        "type": "float32_t[195]",
+        "raw_declaration": "extern float32_t VaSoc_frc_cellSoc [ SOC_NUM_OF_CELLS ]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]"
+        ],
+        "line": 246,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VeSoc_frc_userSoc",
+        "type": "float32_t",
+        "raw_declaration": "extern float32_t VeSoc_frc_userSoc",
+        "array_suffixes": [],
+        "line": 249,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VeSoc_frc_packSoc",
+        "type": "float32_t",
+        "raw_declaration": "extern float32_t VeSoc_frc_packSoc",
+        "array_suffixes": [],
+        "line": 252,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VeSoc_frc_minCellSoc",
+        "type": "float32_t",
+        "raw_declaration": "extern float32_t VeSoc_frc_minCellSoc",
+        "array_suffixes": [],
+        "line": 255,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VeSoc_frc_maxCellSoc",
+        "type": "float32_t",
+        "raw_declaration": "extern float32_t VeSoc_frc_maxCellSoc",
+        "array_suffixes": [],
+        "line": 258,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VaSoc_ms_tauDepolar",
+        "type": "float32_t[195]",
+        "raw_declaration": "extern float32_t VaSoc_ms_tauDepolar [ SOC_NUM_OF_CELLS ]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]"
+        ],
+        "line": 261,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VeSoc_nu_socState",
+        "type": "Soc_State_t",
+        "raw_declaration": "extern Soc_State_t VeSoc_nu_socState",
+        "array_suffixes": [],
+        "line": 264,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VeSoc_bi_lowSocFault",
+        "type": "_Bool",
+        "raw_declaration": "extern bool VeSoc_bi_lowSocFault",
+        "array_suffixes": [],
+        "line": 265,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VaSoc_frc_cellStateOfCharge",
+        "type": "float32_t[195]",
+        "raw_declaration": "static float32_t VaSoc_frc_cellStateOfCharge [ SOC_NUM_OF_CELLS ][SOC_NUM_OF_CELLS]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]",
+          "[SOC_NUM_OF_CELLS]"
+        ],
+        "line": 32,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "VaSoc_frc_cellStateOfChargeCc",
+        "type": "float32_t[195]",
+        "raw_declaration": "static float32_t VaSoc_frc_cellStateOfChargeCc [ SOC_NUM_OF_CELLS ][SOC_NUM_OF_CELLS]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]",
+          "[SOC_NUM_OF_CELLS]"
+        ],
+        "line": 33,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "VaSoc_frc_cellStateOfChargeOcv",
+        "type": "float32_t[195]",
+        "raw_declaration": "static float32_t VaSoc_frc_cellStateOfChargeOcv [ SOC_NUM_OF_CELLS ][SOC_NUM_OF_CELLS]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]",
+          "[SOC_NUM_OF_CELLS]"
+        ],
+        "line": 34,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "VaSoc_ms_tauDepolarization",
+        "type": "float32_t[195]",
+        "raw_declaration": "static float32_t VaSoc_ms_tauDepolarization [ SOC_NUM_OF_CELLS ][SOC_NUM_OF_CELLS]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]",
+          "[SOC_NUM_OF_CELLS]"
+        ],
+        "line": 35,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "VaSoc_frc_cellStateOfHealth",
+        "type": "float32_t[195]",
+        "raw_declaration": "static float32_t VaSoc_frc_cellStateOfHealth [ SOC_NUM_OF_CELLS ][SOC_NUM_OF_CELLS]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]",
+          "[SOC_NUM_OF_CELLS]"
+        ],
+        "line": 36,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "VeSoc_ms_batteryAsleepTime",
+        "type": "uint32_t",
+        "raw_declaration": "static uint32_t VeSoc_ms_batteryAsleepTime",
+        "array_suffixes": [],
+        "line": 37,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "NaSoc_frc_initialStateOfCharge",
+        "type": "float32_t[195]",
+        "raw_declaration": "static float32_t NaSoc_frc_initialStateOfCharge [ SOC_NUM_OF_CELLS ][SOC_NUM_OF_CELLS]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]",
+          "[SOC_NUM_OF_CELLS]"
+        ],
+        "line": 38,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "VeSoc_nu_batteryState",
+        "type": "Battsm_State_t",
+        "raw_declaration": "static SOC_BATSM_DT VeSoc_nu_batteryState",
+        "array_suffixes": [],
+        "line": 39,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "VeSoc_A_batteryCurrent",
+        "type": "float32_t",
+        "raw_declaration": "static float32_t VeSoc_A_batteryCurrent",
+        "array_suffixes": [],
+        "line": 40,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "NeSoc_bi_nvmImportStatus",
+        "type": "_Bool",
+        "raw_declaration": "static bool NeSoc_bi_nvmImportStatus",
+        "array_suffixes": [],
+        "line": 41,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "VeSoc_ms_batteryRestTime",
+        "type": "uint32_t",
+        "raw_declaration": "static uint32_t VeSoc_ms_batteryRestTime",
+        "array_suffixes": [],
+        "line": 42,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "NeSoc_ms_initBatteryRestTime",
+        "type": "uint32_t",
+        "raw_declaration": "static uint32_t NeSoc_ms_initBatteryRestTime",
+        "array_suffixes": [],
+        "line": 43,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "VeSoc_nu_stateOfChargeState",
+        "type": "Soc_State_t",
+        "raw_declaration": "static Soc_State_t VeSoc_nu_stateOfChargeState",
+        "array_suffixes": [],
+        "line": 44,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "VeSoc_frc_packStateOfCharge",
+        "type": "float32_t",
+        "raw_declaration": "static float32_t VeSoc_frc_packStateOfCharge",
+        "array_suffixes": [],
+        "line": 45,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "VeSoc_frc_userStateOfCharge",
+        "type": "float32_t",
+        "raw_declaration": "static float32_t VeSoc_frc_userStateOfCharge",
+        "array_suffixes": [],
+        "line": 46,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "VeSoc_bi_resetStateOfCharge",
+        "type": "_Bool",
+        "raw_declaration": "static bool VeSoc_bi_resetStateOfCharge",
+        "array_suffixes": [],
+        "line": 47,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "VeSoc_frc_minimumStateOfCharge",
+        "type": "float32_t",
+        "raw_declaration": "static float32_t VeSoc_frc_minimumStateOfCharge",
+        "array_suffixes": [],
+        "line": 48,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "VeSoc_frc_maximumStateOfCharge",
+        "type": "float32_t",
+        "raw_declaration": "static float32_t VeSoc_frc_maximumStateOfCharge",
+        "array_suffixes": [],
+        "line": 49,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "VsSoc_V_cellVoltage",
+        "type": "Dukosi_Voltage_t[195]",
+        "raw_declaration": "static SOC_DUKOSI_VOLT_DT VsSoc_V_cellVoltage [ SOC_NUM_OF_CELLS ][SOC_NUM_OF_CELLS]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]",
+          "[SOC_NUM_OF_CELLS]"
+        ],
+        "line": 50,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "VsSoc_degC_cellTemperature",
+        "type": "Dukosi_Temperature_t[195]",
+        "raw_declaration": "static SOC_DUKOSI_TEMP_DT VsSoc_degC_cellTemperature [ SOC_NUM_OF_CELLS ][SOC_NUM_OF_CELLS]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]",
+          "[SOC_NUM_OF_CELLS]"
+        ],
+        "line": 51,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "VsSoc_degC_minMaxCellTemp",
+        "type": "Dukosi_Temperature_result_t",
+        "raw_declaration": "static SOC_DUKOSI_TEMP_RES_DT VsSoc_degC_minMaxCellTemp",
+        "array_suffixes": [],
+        "line": 52,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "VeSoc_bi_lowerStateOfChargeFlt",
+        "type": "_Bool",
+        "raw_declaration": "static bool VeSoc_bi_lowerStateOfChargeFlt",
+        "array_suffixes": [],
+        "line": 53,
+        "storage_class": "StorageClass.STATIC"
+      }
+    ],
+    "locals": [
+      {
+        "name": "cell_idx",
+        "type": "int32_t",
+        "raw_declaration": "int32_t cell_idx = 0",
+        "array_suffixes": [],
+        "line": 79,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "cell_idx",
+        "type": "int32_t",
+        "raw_declaration": "int32_t cell_idx = 0",
+        "array_suffixes": [],
+        "line": 206,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "status",
+        "type": "status_t",
+        "raw_declaration": "status_t status = ABS_PARAM_ERR",
+        "array_suffixes": [],
+        "line": 238,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "status",
+        "type": "status_t",
+        "raw_declaration": "status_t status = ABS_PARAM_ERR",
+        "array_suffixes": [],
+        "line": 253,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "status",
+        "type": "status_t",
+        "raw_declaration": "status_t status = ABS_PARAM_ERR",
+        "array_suffixes": [],
+        "line": 268,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "status",
+        "type": "status_t",
+        "raw_declaration": "status_t status = ABS_PARAM_ERR",
+        "array_suffixes": [],
+        "line": 283,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "status",
+        "type": "status_t",
+        "raw_declaration": "status_t status = ABS_PARAM_ERR",
+        "array_suffixes": [],
+        "line": 298,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "status",
+        "type": "status_t",
+        "raw_declaration": "status_t status = ABS_PARAM_ERR",
+        "array_suffixes": [],
+        "line": 313,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "status",
+        "type": "status_t",
+        "raw_declaration": "status_t status = ABS_PARAM_ERR",
+        "array_suffixes": [],
+        "line": 328,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "status",
+        "type": "status_t",
+        "raw_declaration": "status_t status = ABS_PARAM_ERR",
+        "array_suffixes": [],
+        "line": 349,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "status",
+        "type": "status_t",
+        "raw_declaration": "status_t status = ABS_PARAM_ERR",
+        "array_suffixes": [],
+        "line": 364,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "status",
+        "type": "status_t",
+        "raw_declaration": "status_t status = ABS_PARAM_ERR",
+        "array_suffixes": [],
+        "line": 379,
+        "storage_class": "StorageClass.NONE"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "TempInfo",
+        "type": "Dukosi_Temperature_t *",
+        "line": 149
+      },
+      {
+        "name": "temptype",
+        "type": "Dukosi_Temptype_t",
+        "line": 149
+      },
+      {
+        "name": "Voltage_info",
+        "type": "Dukosi_Voltage_t *",
+        "line": 150
+      },
+      {
+        "name": "current",
+        "type": "float32_t *",
+        "line": 151
+      },
+      {
+        "name": "initsoc",
+        "type": "float32_t *",
+        "line": 152
+      },
+      {
+        "name": "battstate",
+        "type": "Battsm_State_t *",
+        "line": 153
+      },
+      {
+        "name": "initbattresttime",
+        "type": "uint32_t *",
+        "line": 154
+      },
+      {
+        "name": "NVMimportstatus",
+        "type": "_Bool *",
+        "line": 155
+      },
+      {
+        "name": "min_max_temperature",
+        "type": "Dukosi_Temperature_result_t *",
+        "line": 156
+      },
+      {
+        "name": "temptype",
+        "type": "Dukosi_Temptype_t",
+        "line": 156
+      },
+      {
+        "name": "cellsohc",
+        "type": "float32_t *",
+        "line": 157
+      },
+      {
+        "name": "battasleeptime",
+        "type": "uint32_t *",
+        "line": 158
+      },
+      {
+        "name": "socnvm",
+        "type": "float32_t *",
+        "line": 159
+      },
+      {
+        "name": "idx",
+        "type": "Dtcmgr_FaultIndex_t",
+        "line": 160
+      },
+      {
+        "name": "fltStatus",
+        "type": "Dtcmgr_FaultStatus_t",
+        "line": 160
+      },
+      {
+        "name": "battresttime",
+        "type": "uint32_t *",
+        "line": 44
+      },
+      {
+        "name": "taudepolar",
+        "type": "float32_t *",
+        "line": 45
+      },
+      {
+        "name": "socstate",
+        "type": "Soc_State_t *",
+        "line": 46
+      },
+      {
+        "name": "packsoc",
+        "type": "float32_t *",
+        "line": 48
+      },
+      {
+        "name": "usersoc",
+        "type": "float32_t *",
+        "line": 49
+      },
+      {
+        "name": "minsoc",
+        "type": "float32_t *",
+        "line": 50
+      },
+      {
+        "name": "maxsoc",
+        "type": "float32_t *",
+        "line": 51
+      },
+      {
+        "name": "cellsoc",
+        "type": "float32_t *",
+        "line": 52
+      },
+      {
+        "name": "cellsoccc",
+        "type": "float32_t *",
+        "line": 53
+      },
+      {
+        "name": "cellsococv",
+        "type": "float32_t *",
+        "line": 54
+      },
+      {
+        "name": "resetsoc",
+        "type": "_Bool",
+        "line": 55
+      },
+      {
+        "name": "battresttime",
+        "type": "uint32_t *",
+        "line": 236
+      },
+      {
+        "name": "taudepolar",
+        "type": "float32_t *",
+        "line": 251
+      },
+      {
+        "name": "socstate",
+        "type": "Soc_State_t *",
+        "line": 266
+      },
+      {
+        "name": "packsoc",
+        "type": "float32_t *",
+        "line": 281
+      },
+      {
+        "name": "usersoc",
+        "type": "float32_t *",
+        "line": 296
+      },
+      {
+        "name": "minsoc",
+        "type": "float32_t *",
+        "line": 311
+      },
+      {
+        "name": "maxsoc",
+        "type": "float32_t *",
+        "line": 326
+      },
+      {
+        "name": "resetsoc",
+        "type": "_Bool",
+        "line": 341
+      },
+      {
+        "name": "cellsoc",
+        "type": "float32_t *",
+        "line": 347
+      },
+      {
+        "name": "cellsoccc",
+        "type": "float32_t *",
+        "line": 362
+      },
+      {
+        "name": "cellsococv",
+        "type": "float32_t *",
+        "line": 377
+      }
+    ],
+    "structs": [
+      {
+        "name": "Dukosi_Voltage_t",
+        "line": 56,
+        "fields": [
+          {
+            "name": "MeDukosi_nu_cell_ID",
+            "type": "uint16_t",
+            "line": 58
+          },
+          {
+            "name": "MeDukosi_V_voltage",
+            "type": "float32_t",
+            "line": 59
+          },
+          {
+            "name": "MeDukosi_nu_validity",
+            "type": "Dukosi_Validity_t",
+            "line": 60
+          }
+        ]
+      },
+      {
+        "name": "Dukosi_Voltage_t",
+        "line": 56,
+        "fields": [
+          {
+            "name": "MeDukosi_nu_cell_ID",
+            "type": "uint16_t",
+            "line": 58
+          },
+          {
+            "name": "MeDukosi_V_voltage",
+            "type": "float32_t",
+            "line": 59
+          },
+          {
+            "name": "MeDukosi_nu_validity",
+            "type": "Dukosi_Validity_t",
+            "line": 60
+          }
+        ]
+      },
+      {
+        "name": "Dukosi_Temperature_t",
+        "line": 69,
+        "fields": [
+          {
+            "name": "MeDukosi_nu_cell_ID",
+            "type": "uint16_t",
+            "line": 71
+          },
+          {
+            "name": "MeDukosi_degC_temperature",
+            "type": "float32_t",
+            "line": 72
+          },
+          {
+            "name": "MeDukosi_nu_validity",
+            "type": "Dukosi_Validity_t",
+            "line": 73
+          }
+        ]
+      },
+      {
+        "name": "Dukosi_Temperature_t",
+        "line": 69,
+        "fields": [
+          {
+            "name": "MeDukosi_nu_cell_ID",
+            "type": "uint16_t",
+            "line": 71
+          },
+          {
+            "name": "MeDukosi_degC_temperature",
+            "type": "float32_t",
+            "line": 72
+          },
+          {
+            "name": "MeDukosi_nu_validity",
+            "type": "Dukosi_Validity_t",
+            "line": 73
+          }
+        ]
+      },
+      {
+        "name": "Dukosi_Temperature_result_t",
+        "line": 76,
+        "fields": [
+          {
+            "name": "MeDukosi_nu_min_cell_ID",
+            "type": "uint16_t",
+            "line": 78
+          },
+          {
+            "name": "MeDukosi_nu_max_cell_ID",
+            "type": "uint16_t",
+            "line": 79
+          },
+          {
+            "name": "MeDukosi_degC_min_temperature",
+            "type": "float32_t",
+            "line": 80
+          },
+          {
+            "name": "MeDukosi_degC_max_temperature",
+            "type": "float32_t",
+            "line": 81
+          }
+        ]
+      },
+      {
+        "name": "Dukosi_Temperature_result_t",
+        "line": 76,
+        "fields": [
+          {
+            "name": "MeDukosi_nu_min_cell_ID",
+            "type": "uint16_t",
+            "line": 78
+          },
+          {
+            "name": "MeDukosi_nu_max_cell_ID",
+            "type": "uint16_t",
+            "line": 79
+          },
+          {
+            "name": "MeDukosi_degC_min_temperature",
+            "type": "float32_t",
+            "line": 80
+          },
+          {
+            "name": "MeDukosi_degC_max_temperature",
+            "type": "float32_t",
+            "line": 81
+          }
+        ]
+      },
+      {
+        "name": "DW_Soc_socCorrection_T",
+        "line": 115,
+        "fields": [
+          {
+            "name": "UnitDelay_DSTATE",
+            "type": "_Bool",
+            "line": 117
+          }
+        ]
+      },
+      {
+        "name": "DW_Soc_socCorrection_T",
+        "line": 115,
+        "fields": [
+          {
+            "name": "UnitDelay_DSTATE",
+            "type": "_Bool",
+            "line": 117
+          }
+        ]
+      },
+      {
+        "name": "B_soc_T",
+        "line": 122,
+        "fields": [
+          {
+            "name": "LeSoc_ms_restTiAfterSocReset",
+            "type": "uint32_t",
+            "line": 124
+          },
+          {
+            "name": "LeSoc_ms_restTiAfterWakeOnCorrn",
+            "type": "uint32_t",
+            "line": 125
+          },
+          {
+            "name": "LeSoc_ms_battRestTime",
+            "type": "uint32_t",
+            "line": 126
+          },
+          {
+            "name": "OutportBufferForLaSoc_frc_socOc",
+            "type": "float32_t[195]",
+            "line": 127
+          },
+          {
+            "name": "LaSoc_frc_cellSocOcv",
+            "type": "float32_t[195]",
+            "line": 128
+          },
+          {
+            "name": "LaSoc_frc_cellSoc",
+            "type": "float32_t[195]",
+            "line": 129
+          },
+          {
+            "name": "LaSoc_frc_cellSocOcv_gyx2",
+            "type": "float32_t[195]",
+            "line": 130
+          },
+          {
+            "name": "LaSoc_ms_tauDepolar",
+            "type": "float32_t[195]",
+            "line": 131
+          },
+          {
+            "name": "LaSoc_frc_cellSocOcv_kin5",
+            "type": "float32_t[195]",
+            "line": 132
+          },
+          {
+            "name": "LaSoc_frc_cellSocCc",
+            "type": "float32_t[195]",
+            "line": 133
+          },
+          {
+            "name": "LeSoc_nu_socState",
+            "type": "Soc_State_t",
+            "line": 134
+          },
+          {
+            "name": "LeSoc_bi_ccReset",
+            "type": "_Bool",
+            "line": 135
+          },
+          {
+            "name": "LeSoc_bi_socInNormalStateFlg",
+            "type": "_Bool",
+            "line": 136
+          },
+          {
+            "name": "Compare",
+            "type": "_Bool",
+            "line": 137
+          },
+          {
+            "name": "Compare_go2r",
+            "type": "_Bool",
+            "line": 138
+          },
+          {
+            "name": "Compare_f2dn",
+            "type": "_Bool",
+            "line": 139
+          },
+          {
+            "name": "UnitDelay2",
+            "type": "_Bool",
+            "line": 140
+          }
+        ]
+      },
+      {
+        "name": "B_soc_T",
+        "line": 122,
+        "fields": [
+          {
+            "name": "LeSoc_ms_restTiAfterSocReset",
+            "type": "uint32_t",
+            "line": 124
+          },
+          {
+            "name": "LeSoc_ms_restTiAfterWakeOnCorrn",
+            "type": "uint32_t",
+            "line": 125
+          },
+          {
+            "name": "LeSoc_ms_battRestTime",
+            "type": "uint32_t",
+            "line": 126
+          },
+          {
+            "name": "OutportBufferForLaSoc_frc_socOc",
+            "type": "float32_t[195]",
+            "line": 127
+          },
+          {
+            "name": "LaSoc_frc_cellSocOcv",
+            "type": "float32_t[195]",
+            "line": 128
+          },
+          {
+            "name": "LaSoc_frc_cellSoc",
+            "type": "float32_t[195]",
+            "line": 129
+          },
+          {
+            "name": "LaSoc_frc_cellSocOcv_gyx2",
+            "type": "float32_t[195]",
+            "line": 130
+          },
+          {
+            "name": "LaSoc_ms_tauDepolar",
+            "type": "float32_t[195]",
+            "line": 131
+          },
+          {
+            "name": "LaSoc_frc_cellSocOcv_kin5",
+            "type": "float32_t[195]",
+            "line": 132
+          },
+          {
+            "name": "LaSoc_frc_cellSocCc",
+            "type": "float32_t[195]",
+            "line": 133
+          },
+          {
+            "name": "LeSoc_nu_socState",
+            "type": "Soc_State_t",
+            "line": 134
+          },
+          {
+            "name": "LeSoc_bi_ccReset",
+            "type": "_Bool",
+            "line": 135
+          },
+          {
+            "name": "LeSoc_bi_socInNormalStateFlg",
+            "type": "_Bool",
+            "line": 136
+          },
+          {
+            "name": "Compare",
+            "type": "_Bool",
+            "line": 137
+          },
+          {
+            "name": "Compare_go2r",
+            "type": "_Bool",
+            "line": 138
+          },
+          {
+            "name": "Compare_f2dn",
+            "type": "_Bool",
+            "line": 139
+          },
+          {
+            "name": "UnitDelay2",
+            "type": "_Bool",
+            "line": 140
+          }
+        ]
+      },
+      {
+        "name": "DW_soc_T",
+        "line": 145,
+        "fields": [
+          {
+            "name": "UnitDelay_DSTATE",
+            "type": "float32_t[195]",
+            "line": 147
+          },
+          {
+            "name": "UnitDelay1_DSTATE",
+            "type": "float32_t[195]",
+            "line": 148
+          },
+          {
+            "name": "UnitDelay_DSTATE_lxmr",
+            "type": "float32_t",
+            "line": 149
+          },
+          {
+            "name": "UnitDelay_DSTATE_gguj",
+            "type": "float32_t",
+            "line": 150
+          },
+          {
+            "name": "UnitDelay_DSTATE_fcnr",
+            "type": "float32_t[195]",
+            "line": 151
+          },
+          {
+            "name": "UnitDelay3_DSTATE",
+            "type": "float32_t[195]",
+            "line": 152
+          },
+          {
+            "name": "UnitDelay4_DSTATE",
+            "type": "float32_t[195]",
+            "line": 153
+          },
+          {
+            "name": "UnitDelay2_DSTATE",
+            "type": "float32_t",
+            "line": 154
+          },
+          {
+            "name": "Integrator_DSTATE",
+            "type": "float32_t",
+            "line": 155
+          },
+          {
+            "name": "UnitDelay3_DSTATE_hjte",
+            "type": "_Bool",
+            "line": 156
+          },
+          {
+            "name": "UnitDelay4_DSTATE_dlsb",
+            "type": "_Bool",
+            "line": 157
+          },
+          {
+            "name": "UnitDelay8_DSTATE",
+            "type": "_Bool",
+            "line": 158
+          },
+          {
+            "name": "UnitDelay_DSTATE_pzjh",
+            "type": "_Bool",
+            "line": 159
+          },
+          {
+            "name": "UnitDelay1_DSTATE_fjxo",
+            "type": "_Bool",
+            "line": 160
+          },
+          {
+            "name": "UnitDelay2_DSTATE_mulm",
+            "type": "_Bool",
+            "line": 161
+          },
+          {
+            "name": "Integrator_PrevResetState",
+            "type": "int8_t",
+            "line": 162
+          },
+          {
+            "name": "is_active_c3_soc",
+            "type": "uint8_t",
+            "line": 163
+          },
+          {
+            "name": "is_c3_soc",
+            "type": "uint8_t",
+            "line": 164
+          },
+          {
+            "name": "SocCorrection_SubSys_gqbb",
+            "type": "DW_Soc_socCorrection_T",
+            "line": 165
+          },
+          {
+            "name": "SocCorrection_SubSys",
+            "type": "DW_Soc_socCorrection_T",
+            "line": 166
+          }
+        ]
+      },
+      {
+        "name": "DW_soc_T",
+        "line": 145,
+        "fields": [
+          {
+            "name": "UnitDelay_DSTATE",
+            "type": "float32_t[195]",
+            "line": 147
+          },
+          {
+            "name": "UnitDelay1_DSTATE",
+            "type": "float32_t[195]",
+            "line": 148
+          },
+          {
+            "name": "UnitDelay_DSTATE_lxmr",
+            "type": "float32_t",
+            "line": 149
+          },
+          {
+            "name": "UnitDelay_DSTATE_gguj",
+            "type": "float32_t",
+            "line": 150
+          },
+          {
+            "name": "UnitDelay_DSTATE_fcnr",
+            "type": "float32_t[195]",
+            "line": 151
+          },
+          {
+            "name": "UnitDelay3_DSTATE",
+            "type": "float32_t[195]",
+            "line": 152
+          },
+          {
+            "name": "UnitDelay4_DSTATE",
+            "type": "float32_t[195]",
+            "line": 153
+          },
+          {
+            "name": "UnitDelay2_DSTATE",
+            "type": "float32_t",
+            "line": 154
+          },
+          {
+            "name": "Integrator_DSTATE",
+            "type": "float32_t",
+            "line": 155
+          },
+          {
+            "name": "UnitDelay3_DSTATE_hjte",
+            "type": "_Bool",
+            "line": 156
+          },
+          {
+            "name": "UnitDelay4_DSTATE_dlsb",
+            "type": "_Bool",
+            "line": 157
+          },
+          {
+            "name": "UnitDelay8_DSTATE",
+            "type": "_Bool",
+            "line": 158
+          },
+          {
+            "name": "UnitDelay_DSTATE_pzjh",
+            "type": "_Bool",
+            "line": 159
+          },
+          {
+            "name": "UnitDelay1_DSTATE_fjxo",
+            "type": "_Bool",
+            "line": 160
+          },
+          {
+            "name": "UnitDelay2_DSTATE_mulm",
+            "type": "_Bool",
+            "line": 161
+          },
+          {
+            "name": "Integrator_PrevResetState",
+            "type": "int8_t",
+            "line": 162
+          },
+          {
+            "name": "is_active_c3_soc",
+            "type": "uint8_t",
+            "line": 163
+          },
+          {
+            "name": "is_c3_soc",
+            "type": "uint8_t",
+            "line": 164
+          },
+          {
+            "name": "SocCorrection_SubSys_gqbb",
+            "type": "DW_Soc_socCorrection_T",
+            "line": 165
+          },
+          {
+            "name": "SocCorrection_SubSys",
+            "type": "DW_Soc_socCorrection_T",
+            "line": 166
+          }
+        ]
+      },
+      {
+        "name": "ConstP_soc_T",
+        "line": 171,
+        "fields": [
+          {
+            "name": "pooled7",
+            "type": "uint32_t[2]",
+            "line": 186
+          }
+        ]
+      },
+      {
+        "name": "ConstP_soc_T",
+        "line": 171,
+        "fields": [
+          {
+            "name": "pooled7",
+            "type": "uint32_t[2]",
+            "line": 186
+          }
+        ]
+      }
+    ],
+    "enums": [
+      {
+        "name": "status_t",
+        "line": 41,
+        "constants": [
+          {
+            "name": "ABS_OK",
+            "line": 44
+          },
+          {
+            "name": "ABS_N_OK",
+            "line": 46
+          },
+          {
+            "name": "ABS_PARAM_ERR",
+            "line": 48
+          },
+          {
+            "name": "ABS_INTERFACE_FAIL",
+            "line": 50
+          }
+        ]
+      },
+      {
+        "name": "status_t",
+        "line": 41,
+        "constants": [
+          {
+            "name": "ABS_OK",
+            "line": 44
+          },
+          {
+            "name": "ABS_N_OK",
+            "line": 46
+          },
+          {
+            "name": "ABS_PARAM_ERR",
+            "line": 48
+          },
+          {
+            "name": "ABS_INTERFACE_FAIL",
+            "line": 50
+          }
+        ]
+      },
+      {
+        "name": "Dukosi_Validity_t",
+        "line": 49,
+        "constants": [
+          {
+            "name": "DUKOSI_DATA_INIT",
+            "line": 51
+          },
+          {
+            "name": "DUKOSI_DATA_VALID",
+            "line": 52
+          },
+          {
+            "name": "DUKOSI_DATA_INVALID",
+            "line": 53
+          }
+        ]
+      },
+      {
+        "name": "Dukosi_Validity_t",
+        "line": 49,
+        "constants": [
+          {
+            "name": "DUKOSI_DATA_INIT",
+            "line": 51
+          },
+          {
+            "name": "DUKOSI_DATA_VALID",
+            "line": 52
+          },
+          {
+            "name": "DUKOSI_DATA_INVALID",
+            "line": 53
+          }
+        ]
+      },
+      {
+        "name": "Dukosi_Temptype_t",
+        "line": 63,
+        "constants": [
+          {
+            "name": "DUKOSI_TEMP1",
+            "line": 65
+          },
+          {
+            "name": "DUKOSI_TEMP2",
+            "line": 66
+          }
+        ]
+      },
+      {
+        "name": "Dukosi_Temptype_t",
+        "line": 63,
+        "constants": [
+          {
+            "name": "DUKOSI_TEMP1",
+            "line": 65
+          },
+          {
+            "name": "DUKOSI_TEMP2",
+            "line": 66
+          }
+        ]
+      },
+      {
+        "name": "Battsm_State_t",
+        "line": 85,
+        "constants": [
+          {
+            "name": "BATTSM_STATE_STANDBY_INIT",
+            "line": 87
+          },
+          {
+            "name": "BATTSM_STATE_STANDBY_NOT_READY",
+            "line": 88
+          },
+          {
+            "name": "BATTSM_STATE_STANDBY_READY",
+            "line": 89
+          },
+          {
+            "name": "BATTSM_STATE_PREPARE_BUS_PRECHG",
+            "line": 90
+          },
+          {
+            "name": "BATTSM_STATE_PREPARE_BUS_EXT_ISOLATION_CHK",
+            "line": 91
+          },
+          {
+            "name": "BATTSM_STATE_DRIVE",
+            "line": 92
+          },
+          {
+            "name": "BATTSM_STATE_CHARGE",
+            "line": 93
+          },
+          {
+            "name": "BATTSM_STATE_SUPPORT",
+            "line": 94
+          },
+          {
+            "name": "BATTSM_STATE_DSNG_BUS_WAIT_FOR_CHK",
+            "line": 95
+          },
+          {
+            "name": "BATTSM_STATE_DSNG_BUS_CNTC_WLD_CHK",
+            "line": 96
+          },
+          {
+            "name": "BATTSM_STATE_FASTCHARGE",
+            "line": 97
+          }
+        ]
+      },
+      {
+        "name": "Battsm_State_t",
+        "line": 85,
+        "constants": [
+          {
+            "name": "BATTSM_STATE_STANDBY_INIT",
+            "line": 87
+          },
+          {
+            "name": "BATTSM_STATE_STANDBY_NOT_READY",
+            "line": 88
+          },
+          {
+            "name": "BATTSM_STATE_STANDBY_READY",
+            "line": 89
+          },
+          {
+            "name": "BATTSM_STATE_PREPARE_BUS_PRECHG",
+            "line": 90
+          },
+          {
+            "name": "BATTSM_STATE_PREPARE_BUS_EXT_ISOLATION_CHK",
+            "line": 91
+          },
+          {
+            "name": "BATTSM_STATE_DRIVE",
+            "line": 92
+          },
+          {
+            "name": "BATTSM_STATE_CHARGE",
+            "line": 93
+          },
+          {
+            "name": "BATTSM_STATE_SUPPORT",
+            "line": 94
+          },
+          {
+            "name": "BATTSM_STATE_DSNG_BUS_WAIT_FOR_CHK",
+            "line": 95
+          },
+          {
+            "name": "BATTSM_STATE_DSNG_BUS_CNTC_WLD_CHK",
+            "line": 96
+          },
+          {
+            "name": "BATTSM_STATE_FASTCHARGE",
+            "line": 97
+          }
+        ]
+      },
+      {
+        "name": "Dtcmgr_FaultIndex_t",
+        "line": 101,
+        "constants": [
+          {
+            "name": "DTCMGR_FAULT_1",
+            "line": 103
+          },
+          {
+            "name": "DTCMGR_FAULT_2",
+            "line": 104
+          },
+          {
+            "name": "DTCMGR_NEG_DC_CON_STUCK_OPEN",
+            "line": 105
+          },
+          {
+            "name": "DTCMGR_POS_DC_CON_STUCK_OPEN",
+            "line": 106
+          },
+          {
+            "name": "DTCMGR_NEG_DC_CON_WELDED",
+            "line": 107
+          },
+          {
+            "name": "DTCMGR_POS_DC_CON_WELDED",
+            "line": 108
+          },
+          {
+            "name": "DTCMGR_PRECHARGE_TIMEOUT",
+            "line": 109
+          },
+          {
+            "name": "DTCMGR_PRECHARGE_OVERCURRENT",
+            "line": 110
+          },
+          {
+            "name": "DTCMGR_PRECHARGE_FAIL_CONTACTOR",
+            "line": 111
+          },
+          {
+            "name": "DTCMGR_PRECHARGE_FAIL_RESISTOR",
+            "line": 112
+          },
+          {
+            "name": "DTCMGR_UNINTENDED_OPEN_CONTACTOR",
+            "line": 113
+          },
+          {
+            "name": "DTCMGR_POWER_LIMIT_FAULT",
+            "line": 114
+          },
+          {
+            "name": "DTCMGR_LOWER_SOE_FAULT",
+            "line": 115
+          },
+          {
+            "name": "DTCMGR_PACK_SOHC_FAULT",
+            "line": 116
+          },
+          {
+            "name": "DTCMGR_PACK_SOHR_FAULT",
+            "line": 117
+          },
+          {
+            "name": "DTCMGR_LOWER_SOC_FAULT",
+            "line": 118
+          },
+          {
+            "name": "DTCMGR_FAULT_TOTAL",
+            "line": 120
+          }
+        ]
+      },
+      {
+        "name": "Dtcmgr_FaultIndex_t",
+        "line": 101,
+        "constants": [
+          {
+            "name": "DTCMGR_FAULT_1",
+            "line": 103
+          },
+          {
+            "name": "DTCMGR_FAULT_2",
+            "line": 104
+          },
+          {
+            "name": "DTCMGR_NEG_DC_CON_STUCK_OPEN",
+            "line": 105
+          },
+          {
+            "name": "DTCMGR_POS_DC_CON_STUCK_OPEN",
+            "line": 106
+          },
+          {
+            "name": "DTCMGR_NEG_DC_CON_WELDED",
+            "line": 107
+          },
+          {
+            "name": "DTCMGR_POS_DC_CON_WELDED",
+            "line": 108
+          },
+          {
+            "name": "DTCMGR_PRECHARGE_TIMEOUT",
+            "line": 109
+          },
+          {
+            "name": "DTCMGR_PRECHARGE_OVERCURRENT",
+            "line": 110
+          },
+          {
+            "name": "DTCMGR_PRECHARGE_FAIL_CONTACTOR",
+            "line": 111
+          },
+          {
+            "name": "DTCMGR_PRECHARGE_FAIL_RESISTOR",
+            "line": 112
+          },
+          {
+            "name": "DTCMGR_UNINTENDED_OPEN_CONTACTOR",
+            "line": 113
+          },
+          {
+            "name": "DTCMGR_POWER_LIMIT_FAULT",
+            "line": 114
+          },
+          {
+            "name": "DTCMGR_LOWER_SOE_FAULT",
+            "line": 115
+          },
+          {
+            "name": "DTCMGR_PACK_SOHC_FAULT",
+            "line": 116
+          },
+          {
+            "name": "DTCMGR_PACK_SOHR_FAULT",
+            "line": 117
+          },
+          {
+            "name": "DTCMGR_LOWER_SOC_FAULT",
+            "line": 118
+          },
+          {
+            "name": "DTCMGR_FAULT_TOTAL",
+            "line": 120
+          }
+        ]
+      },
+      {
+        "name": "Dtcmgr_FaultStatus_t",
+        "line": 124,
+        "constants": [
+          {
+            "name": "DTCMGR_FAULT_UNKNOWN",
+            "line": 126
+          },
+          {
+            "name": "DTCMGR_FAULT_CLR",
+            "line": 127
+          },
+          {
+            "name": "DTCMGR_FAULT_SET",
+            "line": 128
+          }
+        ]
+      },
+      {
+        "name": "Dtcmgr_FaultStatus_t",
+        "line": 124,
+        "constants": [
+          {
+            "name": "DTCMGR_FAULT_UNKNOWN",
+            "line": 126
+          },
+          {
+            "name": "DTCMGR_FAULT_CLR",
+            "line": 127
+          },
+          {
+            "name": "DTCMGR_FAULT_SET",
+            "line": 128
+          }
+        ]
+      },
+      {
+        "name": "Soc_State_t",
+        "line": 28,
+        "constants": [
+          {
+            "name": "SOC_STATE_INIT",
+            "line": 30
+          },
+          {
+            "name": "SOC_STATE_RESET",
+            "line": 31
+          },
+          {
+            "name": "SOC_STATE_CORRECTION_ON_WAKE",
+            "line": 32
+          },
+          {
+            "name": "SOC_STATE_NORMAL",
+            "line": 33
+          }
+        ]
+      },
+      {
+        "name": "Soc_State_t",
+        "line": 28,
+        "constants": [
+          {
+            "name": "SOC_STATE_INIT",
+            "line": 30
+          },
+          {
+            "name": "SOC_STATE_RESET",
+            "line": 31
+          },
+          {
+            "name": "SOC_STATE_CORRECTION_ON_WAKE",
+            "line": 32
+          },
+          {
+            "name": "SOC_STATE_NORMAL",
+            "line": 33
+          }
+        ]
+      }
+    ],
+    "typedefs": [
+      {
+        "name": "boolean",
+        "type": "boolean",
+        "line": 571
+      },
+      {
+        "name": "uint8",
+        "type": "uint8",
+        "line": 579
+      },
+      {
+        "name": "uint16",
+        "type": "uint16",
+        "line": 586
+      },
+      {
+        "name": "uint32",
+        "type": "uint32",
+        "line": 593
+      },
+      {
+        "name": "uint64",
+        "type": "uint64",
+        "line": 600
+      },
+      {
+        "name": "sint8",
+        "type": "sint8",
+        "line": 608
+      },
+      {
+        "name": "sint16",
+        "type": "sint16",
+        "line": 615
+      },
+      {
+        "name": "sint32",
+        "type": "sint32",
+        "line": 622
+      },
+      {
+        "name": "sint64",
+        "type": "sint64",
+        "line": 629
+      },
+      {
+        "name": "uint8_least",
+        "type": "uint8_least",
+        "line": 636
+      },
+      {
+        "name": "uint16_least",
+        "type": "uint16_least",
+        "line": 643
+      },
+      {
+        "name": "uint32_least",
+        "type": "uint32_least",
+        "line": 650
+      },
+      {
+        "name": "sint8_least",
+        "type": "sint8_least",
+        "line": 657
+      },
+      {
+        "name": "sint16_least",
+        "type": "sint16_least",
+        "line": 664
+      },
+      {
+        "name": "sint32_least",
+        "type": "sint32_least",
+        "line": 671
+      },
+      {
+        "name": "float32",
+        "type": "float32",
+        "line": 677
+      },
+      {
+        "name": "float64",
+        "type": "float64",
+        "line": 683
+      },
+      {
+        "name": "status_t",
+        "type": "status_t",
+        "line": 51
+      },
+      {
+        "name": "float32_t",
+        "type": "float32_t",
+        "line": 45
+      },
+      {
+        "name": "float32_t_must_be_4_bytes",
+        "type": "float32_t_must_be_4_bytes",
+        "line": 56
+      },
+      {
+        "name": "float64_t",
+        "type": "float64_t",
+        "line": 59
+      },
+      {
+        "name": "float64_t_must_be_8_bytes",
+        "type": "float64_t_must_be_8_bytes",
+        "line": 70
+      },
+      {
+        "name": "Dukosi_Validity_t",
+        "type": "Dukosi_Validity_t",
+        "line": 54
+      },
+      {
+        "name": "Dukosi_Voltage_t",
+        "type": "Dukosi_Voltage_t",
+        "line": 61
+      },
+      {
+        "name": "Dukosi_Temptype_t",
+        "type": "Dukosi_Temptype_t",
+        "line": 67
+      },
+      {
+        "name": "Dukosi_Temperature_t",
+        "type": "Dukosi_Temperature_t",
+        "line": 74
+      },
+      {
+        "name": "Dukosi_Temperature_result_t",
+        "type": "Dukosi_Temperature_result_t",
+        "line": 82
+      },
+      {
+        "name": "Battsm_State_t",
+        "type": "Battsm_State_t",
+        "line": 98
+      },
+      {
+        "name": "Dtcmgr_FaultIndex_t",
+        "type": "Dtcmgr_FaultIndex_t",
+        "line": 121
+      },
+      {
+        "name": "Dtcmgr_FaultStatus_t",
+        "type": "Dtcmgr_FaultStatus_t",
+        "line": 129
+      },
+      {
+        "name": "Soc_State_t",
+        "type": "Soc_State_t",
+        "line": 34
+      },
+      {
+        "name": "DW_Soc_socCorrection_T",
+        "type": "DW_Soc_socCorrection_T",
+        "line": 119
+      },
+      {
+        "name": "B_soc_T",
+        "type": "B_soc_T",
+        "line": 142
+      },
+      {
+        "name": "DW_soc_T",
+        "type": "DW_soc_T",
+        "line": 168
+      },
+      {
+        "name": "ConstP_soc_T",
+        "type": "ConstP_soc_T",
+        "line": 188
+      }
+    ],
+    "macros": [
+      {
+        "name": "SOC_H",
+        "line": 2,
+        "type": "conditional",
+        "replacement": ""
+      },
+      {
+        "name": "SOC_CFG_H",
+        "line": 2,
+        "type": "conditional",
+        "replacement": ""
+      },
+      {
+        "name": "APP_H",
+        "line": 2,
+        "type": "conditional",
+        "replacement": ""
+      },
+      {
+        "name": "PLATFORM_TYPES_H",
+        "line": 43,
+        "type": "conditional",
+        "replacement": ""
+      },
+      {
+        "name": "PLATFORM_VENDOR_ID",
+        "line": 64,
+        "type": "value",
+        "replacement": "43"
+      },
+      {
+        "name": "PLATFORM_AR_RELEASE_MAJOR_VERSION",
+        "line": 65,
+        "type": "value",
+        "replacement": "4"
+      },
+      {
+        "name": "PLATFORM_AR_RELEASE_MINOR_VERSION",
+        "line": 66,
+        "type": "value",
+        "replacement": "7"
+      },
+      {
+        "name": "PLATFORM_AR_RELEASE_REVISION_VERSION",
+        "line": 67,
+        "type": "value",
+        "replacement": "0"
+      },
+      {
+        "name": "PLATFORM_SW_MAJOR_VERSION",
+        "line": 68,
+        "type": "value",
+        "replacement": "6"
+      },
+      {
+        "name": "PLATFORM_SW_MINOR_VERSION",
+        "line": 69,
+        "type": "value",
+        "replacement": "0"
+      },
+      {
+        "name": "PLATFORM_SW_PATCH_VERSION",
+        "line": 70,
+        "type": "value",
+        "replacement": "0"
+      },
+      {
+        "name": "CPU_TYPE_8",
+        "line": 91,
+        "type": "value",
+        "replacement": "8"
+      },
+      {
+        "name": "CPU_TYPE_16",
+        "line": 97,
+        "type": "value",
+        "replacement": "16"
+      },
+      {
+        "name": "CPU_TYPE_32",
+        "line": 103,
+        "type": "value",
+        "replacement": "32"
+      },
+      {
+        "name": "CPU_TYPE_64",
+        "line": 109,
+        "type": "value",
+        "replacement": "64"
+      },
+      {
+        "name": "MSB_FIRST",
+        "line": 115,
+        "type": "value",
+        "replacement": "0"
+      },
+      {
+        "name": "LSB_FIRST",
+        "line": 121,
+        "type": "value",
+        "replacement": "1"
+      },
+      {
+        "name": "HIGH_BYTE_FIRST",
+        "line": 127,
+        "type": "value",
+        "replacement": "0"
+      },
+      {
+        "name": "LOW_BYTE_FIRST",
+        "line": 133,
+        "type": "value",
+        "replacement": "1"
+      },
+      {
+        "name": "CPU_TYPE",
+        "line": 139,
+        "type": "function",
+        "replacement": "( CPU_TYPE_32 )"
+      },
+      {
+        "name": "CPU_BIT_ORDER",
+        "line": 148,
+        "type": "function",
+        "replacement": "( LSB_FIRST )"
+      },
+      {
+        "name": "CPU_BYTE_ORDER",
+        "line": 155,
+        "type": "function",
+        "replacement": "( LOW_BYTE_FIRST )"
+      },
+      {
+        "name": "TRUE",
+        "line": 169,
+        "type": "value",
+        "replacement": "true"
+      },
+      {
+        "name": "FALSE",
+        "line": 185,
+        "type": "value",
+        "replacement": "false"
+      },
+      {
+        "name": "ABS_SYSDEFS_H",
+        "line": 2,
+        "type": "conditional",
+        "replacement": ""
+      },
+      {
+        "name": "ABS_TYPEDEFS_H",
+        "line": 2,
+        "type": "conditional",
+        "replacement": ""
+      },
+      {
+        "name": "DUKOSI_NUMBER_OF_CELLS",
+        "line": 34,
+        "type": "value",
+        "replacement": "( 195u )"
+      },
+      {
+        "name": "ABS_AH_TO_COULOMB",
+        "line": 35,
+        "type": "value",
+        "replacement": "( 3600.0f )"
+      },
+      {
+        "name": "ABS_SEC_TO_MILLISEC",
+        "line": 36,
+        "type": "value",
+        "replacement": "( 1000.0f )"
+      },
+      {
+        "name": "SOC_NUM_OF_CELLS_I32",
+        "line": 31,
+        "type": "value",
+        "replacement": "DUKOSI_NUMBER_OF_CELLS"
+      },
+      {
+        "name": "SOC_CELLS_IN_PARALLEL",
+        "line": 32,
+        "type": "value",
+        "replacement": "( 1u )"
+      },
+      {
+        "name": "SOC_GET_CURRENT",
+        "line": 34,
+        "type": "value",
+        "replacement": "Shunt_getcurrent_ibatt"
+      },
+      {
+        "name": "SOC_GET_NVM_IMPORT_STATUS",
+        "line": 35,
+        "type": "value",
+        "replacement": "App_get_soc_nvm_importstatus"
+      },
+      {
+        "name": "SOC_GET_CELL_VOLTAGES",
+        "line": 36,
+        "type": "value",
+        "replacement": "Dukosi_get_voltage"
+      },
+      {
+        "name": "SOC_GET_CELL_TEMPERATURES",
+        "line": 37,
+        "type": "value",
+        "replacement": "Dukosi_get_temperature"
+      },
+      {
+        "name": "SOC_NVM_READ",
+        "line": 38,
+        "type": "value",
+        "replacement": "App_soc_nvm_read"
+      },
+      {
+        "name": "SOC_GET_REST_TIME",
+        "line": 39,
+        "type": "value",
+        "replacement": "App_get_init_batt_resttime"
+      },
+      {
+        "name": "SOC_GET_BMS_MODE",
+        "line": 40,
+        "type": "value",
+        "replacement": "App_get_battstate"
+      },
+      {
+        "name": "SOC_GET_MIN_MAX_CELL_TEMPERATURE",
+        "line": 41,
+        "type": "value",
+        "replacement": "Dukosi_get_min_max_temperature"
+      },
+      {
+        "name": "SOC_GET_CELL_SOHC_LEVELS",
+        "line": 42,
+        "type": "value",
+        "replacement": "Sohc_get_cell_levels"
+      },
+      {
+        "name": "SOC_GET_BATT_ASLEEP_TIME",
+        "line": 43,
+        "type": "value",
+        "replacement": "App_get_batt_sleeptime"
+      },
+      {
+        "name": "SOC_NVM_WRITE",
+        "line": 44,
+        "type": "value",
+        "replacement": "App_soc_nvm_write"
+      },
+      {
+        "name": "SOC_GET_LOG_FAULT",
+        "line": 45,
+        "type": "value",
+        "replacement": "Dtcmgr_log_fault"
+      },
+      {
+        "name": "SOC_BATSM_DT",
+        "line": 47,
+        "type": "value",
+        "replacement": "Battsm_State_t"
+      },
+      {
+        "name": "SOC_DUKOSI_VOLT_DT",
+        "line": 48,
+        "type": "value",
+        "replacement": "Dukosi_Voltage_t"
+      },
+      {
+        "name": "SOC_DUKOSI_TEMP_DT",
+        "line": 49,
+        "type": "value",
+        "replacement": "Dukosi_Temperature_t"
+      },
+      {
+        "name": "SOC_DUKOSI_TEMP_RES_DT",
+        "line": 50,
+        "type": "value",
+        "replacement": "Dukosi_Temperature_result_t"
+      },
+      {
+        "name": "SOC_NUM_OF_CELLS",
+        "line": 26,
+        "type": "value",
+        "replacement": "( ( int32_t ) SOC_NUM_OF_CELLS_I32 )"
+      },
+      {
+        "name": "soc_model_h_",
+        "line": 2,
+        "type": "conditional",
+        "replacement": ""
+      },
+      {
+        "name": "soc_COMMON_INCLUDES_",
+        "line": 31,
+        "type": "conditional",
+        "replacement": ""
+      },
+      {
+        "name": "SOC_LUT_SOC_ARRAY_SIZE",
+        "line": 40,
+        "type": "value",
+        "replacement": "21"
+      },
+      {
+        "name": "SOC_LUT_TEMP_ARRAY_SIZE",
+        "line": 53,
+        "type": "value",
+        "replacement": "13"
+      }
+    ]
+  },
+  {
+    "file": "C:\\Users\\koushik\\Desktop\\review\\soc\\src\\soc_model.c",
+    "includes": [
+      "soc_model.h",
+      "stdbool.h",
+      "stdint.h",
+      "Platform_Types.h",
+      "stdint.h",
+      "stdbool.h",
+      "stddef.h",
+      "soc.h",
+      "soc_cfg.h",
+      "app.h",
+      "Platform_Types.h",
+      "abs_sysdefs.h",
+      "abs_typedefs.h",
+      "float.h",
+      "Platform_Types.h",
+      "stdint.h",
+      "stdbool.h",
+      "math.h",
+      "soc.h",
+      "string.h"
+    ],
+    "functions_defined": [
+      {
+        "name": "look2_iflf_binlca",
+        "return_type": "float32_t",
+        "line": 398,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "plook_u32ff_binca",
+        "return_type": "uint32_t",
+        "line": 540,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "intrp2d_fu32fla",
+        "return_type": "float32_t",
+        "line": 571,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "binsearch_u32f",
+        "return_type": "uint32_t",
+        "line": 616,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "look1_iflf_binlca",
+        "return_type": "float32_t",
+        "line": 644,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_coulombCountingSocCalc_Init",
+        "return_type": "void",
+        "line": 722,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_coulombCountingSocCalc",
+        "return_type": "void",
+        "line": 729,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_ocvBasedSocCalc",
+        "return_type": "void",
+        "line": 805,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_restTimeCalc",
+        "return_type": "void",
+        "line": 858,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_socCorrection",
+        "return_type": "void",
+        "line": 929,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_filterWeightAndReqRestCalc",
+        "return_type": "void",
+        "line": 1012,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_socNormal_Init",
+        "return_type": "void",
+        "line": 1103,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_socNormal",
+        "return_type": "void",
+        "line": 1112,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_socCorrectionOnWake",
+        "return_type": "void",
+        "line": 1248,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_socReset",
+        "return_type": "void",
+        "line": 1326,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_socOutputs",
+        "return_type": "void",
+        "line": 1367,
+        "is_definition": true,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_task",
+        "return_type": "void",
+        "line": 1879,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_init",
+        "return_type": "void",
+        "line": 2040,
+        "is_definition": true,
+        "storage_class": "StorageClass.NONE"
+      }
+    ],
+    "functions_declared": [
+      {
+        "name": "Dukosi_get_temperature",
+        "return_type": "status_t",
+        "line": 149,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Dukosi_get_voltage",
+        "return_type": "status_t",
+        "line": 150,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Shunt_getcurrent_ibatt",
+        "return_type": "status_t",
+        "line": 151,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "App_soc_nvm_read",
+        "return_type": "status_t",
+        "line": 152,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "App_get_battstate",
+        "return_type": "status_t",
+        "line": 153,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "App_get_init_batt_resttime",
+        "return_type": "status_t",
+        "line": 154,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "App_get_soc_nvm_importstatus",
+        "return_type": "status_t",
+        "line": 155,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Dukosi_get_min_max_temperature",
+        "return_type": "status_t",
+        "line": 156,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Sohc_get_cell_levels",
+        "return_type": "status_t",
+        "line": 157,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "App_get_batt_sleeptime",
+        "return_type": "status_t",
+        "line": 158,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "App_soc_nvm_write",
+        "return_type": "status_t",
+        "line": 159,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Dtcmgr_log_fault",
+        "return_type": "status_t",
+        "line": 160,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_initialize",
+        "return_type": "void",
+        "line": 37,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_tick",
+        "return_type": "void",
+        "line": 40,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_batt_resttime",
+        "return_type": "status_t",
+        "line": 44,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_tau_depolar",
+        "return_type": "status_t",
+        "line": 45,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_state",
+        "return_type": "status_t",
+        "line": 46,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_pack_level",
+        "return_type": "status_t",
+        "line": 48,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_user_level",
+        "return_type": "status_t",
+        "line": 49,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_min",
+        "return_type": "status_t",
+        "line": 50,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_max",
+        "return_type": "status_t",
+        "line": 51,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_cell_levels",
+        "return_type": "status_t",
+        "line": 52,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_cell_cc_levels",
+        "return_type": "status_t",
+        "line": 53,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_get_cell_ocv_levels",
+        "return_type": "status_t",
+        "line": 54,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_reset",
+        "return_type": "status_t",
+        "line": 55,
+        "is_definition": false,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "Soc_init",
+        "return_type": "void",
+        "line": 270,
+        "is_definition": false,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "Soc_task",
+        "return_type": "void",
+        "line": 271,
+        "is_definition": false,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "look2_iflf_binlca",
+        "return_type": "float32_t",
+        "line": 360,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "plook_u32ff_binca",
+        "return_type": "uint32_t",
+        "line": 363,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "intrp2d_fu32fla",
+        "return_type": "float32_t",
+        "line": 365,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "binsearch_u32f",
+        "return_type": "uint32_t",
+        "line": 367,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "look1_iflf_binlca",
+        "return_type": "float32_t",
+        "line": 369,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_ocvBasedSocCalc",
+        "return_type": "void",
+        "line": 371,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_socCorrection",
+        "return_type": "void",
+        "line": 376,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_filterWeightAndReqRestCalc",
+        "return_type": "void",
+        "line": 384,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_coulombCountingSocCalc_Init",
+        "return_type": "void",
+        "line": 390,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_coulombCountingSocCalc",
+        "return_type": "void",
+        "line": 391,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_restTimeCalc",
+        "return_type": "void",
+        "line": 392,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_socNormal_Init",
+        "return_type": "void",
+        "line": 393,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_socNormal",
+        "return_type": "void",
+        "line": 394,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_socCorrectionOnWake",
+        "return_type": "void",
+        "line": 395,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_socReset",
+        "return_type": "void",
+        "line": 396,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "Soc_socOutputs",
+        "return_type": "void",
+        "line": 397,
+        "is_definition": false,
+        "storage_class": "StorageClass.STATIC"
+      }
+    ],
+    "globals": [
+      {
+        "name": "soc_B",
+        "type": "B_soc_T",
+        "raw_declaration": "extern B_soc_T soc_B",
+        "array_suffixes": [],
+        "line": 191,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "soc_DW",
+        "type": "DW_soc_T",
+        "raw_declaration": "extern DW_soc_T soc_DW",
+        "array_suffixes": [],
+        "line": 194,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "soc_ConstP",
+        "type": "const ConstP_soc_T",
+        "raw_declaration": "extern const ConstP_soc_T soc_ConstP",
+        "array_suffixes": [],
+        "line": 197,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VeSoc_bi_nvmImportStatus",
+        "type": "_Bool",
+        "raw_declaration": "extern bool VeSoc_bi_nvmImportStatus",
+        "array_suffixes": [],
+        "line": 207,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VeSoc_A_battCur",
+        "type": "float32_t",
+        "raw_declaration": "extern float32_t VeSoc_A_battCur",
+        "array_suffixes": [],
+        "line": 210,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VaSoc_frc_initialCellSoc",
+        "type": "float32_t[195]",
+        "raw_declaration": "extern float32_t VaSoc_frc_initialCellSoc [ SOC_NUM_OF_CELLS ]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]"
+        ],
+        "line": 213,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VaSoc_V_cellVolt",
+        "type": "float32_t[195]",
+        "raw_declaration": "extern float32_t VaSoc_V_cellVolt [ SOC_NUM_OF_CELLS ]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]"
+        ],
+        "line": 216,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VaSoc_degC_cellTmp",
+        "type": "float32_t[195]",
+        "raw_declaration": "extern float32_t VaSoc_degC_cellTmp [ SOC_NUM_OF_CELLS ]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]"
+        ],
+        "line": 219,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VeSoc_degC_minCellTmp",
+        "type": "float32_t",
+        "raw_declaration": "extern float32_t VeSoc_degC_minCellTmp",
+        "array_suffixes": [],
+        "line": 222,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VeSoc_degC_maxCellTmp",
+        "type": "float32_t",
+        "raw_declaration": "extern float32_t VeSoc_degC_maxCellTmp",
+        "array_suffixes": [],
+        "line": 225,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VeSoc_ms_battAsleepTime",
+        "type": "uint32_t",
+        "raw_declaration": "extern uint32_t VeSoc_ms_battAsleepTime",
+        "array_suffixes": [],
+        "line": 228,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VeSoc_ms_initialBattRestTime",
+        "type": "uint32_t",
+        "raw_declaration": "extern uint32_t VeSoc_ms_initialBattRestTime",
+        "array_suffixes": [],
+        "line": 231,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VaSoc_frc_cellSohc",
+        "type": "float32_t[195]",
+        "raw_declaration": "extern float32_t VaSoc_frc_cellSohc [ SOC_NUM_OF_CELLS ]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]"
+        ],
+        "line": 234,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VeBattsm_nu_battState",
+        "type": "Battsm_State_t",
+        "raw_declaration": "extern Battsm_State_t VeBattsm_nu_battState",
+        "array_suffixes": [],
+        "line": 237,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VaSoc_nu_cellVoltVldt",
+        "type": "Dukosi_Validity_t[195]",
+        "raw_declaration": "extern Dukosi_Validity_t VaSoc_nu_cellVoltVldt [ SOC_NUM_OF_CELLS ]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]"
+        ],
+        "line": 238,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VaSoc_nu_cellTmpVldt",
+        "type": "Dukosi_Validity_t[195]",
+        "raw_declaration": "extern Dukosi_Validity_t VaSoc_nu_cellTmpVldt [ SOC_NUM_OF_CELLS ]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]"
+        ],
+        "line": 239,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VeSoc_bi_socReset",
+        "type": "_Bool",
+        "raw_declaration": "extern bool VeSoc_bi_socReset",
+        "array_suffixes": [],
+        "line": 240,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VeSoc_ms_battRestTime",
+        "type": "uint32_t",
+        "raw_declaration": "extern uint32_t VeSoc_ms_battRestTime",
+        "array_suffixes": [],
+        "line": 241,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VaSoc_frc_cellSocOcv",
+        "type": "float32_t[195]",
+        "raw_declaration": "extern float32_t VaSoc_frc_cellSocOcv [ SOC_NUM_OF_CELLS ]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]"
+        ],
+        "line": 244,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VaSoc_frc_cellSocCc",
+        "type": "float32_t[195]",
+        "raw_declaration": "extern float32_t VaSoc_frc_cellSocCc [ SOC_NUM_OF_CELLS ]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]"
+        ],
+        "line": 245,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VaSoc_frc_cellSoc",
+        "type": "float32_t[195]",
+        "raw_declaration": "extern float32_t VaSoc_frc_cellSoc [ SOC_NUM_OF_CELLS ]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]"
+        ],
+        "line": 246,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VeSoc_frc_userSoc",
+        "type": "float32_t",
+        "raw_declaration": "extern float32_t VeSoc_frc_userSoc",
+        "array_suffixes": [],
+        "line": 249,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VeSoc_frc_packSoc",
+        "type": "float32_t",
+        "raw_declaration": "extern float32_t VeSoc_frc_packSoc",
+        "array_suffixes": [],
+        "line": 252,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VeSoc_frc_minCellSoc",
+        "type": "float32_t",
+        "raw_declaration": "extern float32_t VeSoc_frc_minCellSoc",
+        "array_suffixes": [],
+        "line": 255,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VeSoc_frc_maxCellSoc",
+        "type": "float32_t",
+        "raw_declaration": "extern float32_t VeSoc_frc_maxCellSoc",
+        "array_suffixes": [],
+        "line": 258,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VaSoc_ms_tauDepolar",
+        "type": "float32_t[195]",
+        "raw_declaration": "extern float32_t VaSoc_ms_tauDepolar [ SOC_NUM_OF_CELLS ]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]"
+        ],
+        "line": 261,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VeSoc_nu_socState",
+        "type": "Soc_State_t",
+        "raw_declaration": "extern Soc_State_t VeSoc_nu_socState",
+        "array_suffixes": [],
+        "line": 264,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VeSoc_bi_lowSocFault",
+        "type": "_Bool",
+        "raw_declaration": "extern bool VeSoc_bi_lowSocFault",
+        "array_suffixes": [],
+        "line": 265,
+        "storage_class": "StorageClass.EXTERN"
+      },
+      {
+        "name": "VeSoc_bi_nvmImportStatus",
+        "type": "_Bool",
+        "raw_declaration": "",
+        "array_suffixes": [],
+        "line": 42,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "VeSoc_A_battCur",
+        "type": "float32_t",
+        "raw_declaration": "float32_t VeSoc_A_battCur",
+        "array_suffixes": [],
+        "line": 45,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "VaSoc_frc_initialCellSoc",
+        "type": "float32_t[195]",
+        "raw_declaration": "float32_t VaSoc_frc_initialCellSoc [ SOC_NUM_OF_CELLS ][SOC_NUM_OF_CELLS]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]",
+          "[SOC_NUM_OF_CELLS]"
+        ],
+        "line": 48,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "VaSoc_V_cellVolt",
+        "type": "float32_t[195]",
+        "raw_declaration": "float32_t VaSoc_V_cellVolt [ SOC_NUM_OF_CELLS ][SOC_NUM_OF_CELLS]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]",
+          "[SOC_NUM_OF_CELLS]"
+        ],
+        "line": 51,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "VaSoc_degC_cellTmp",
+        "type": "float32_t[195]",
+        "raw_declaration": "float32_t VaSoc_degC_cellTmp [ SOC_NUM_OF_CELLS ][SOC_NUM_OF_CELLS]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]",
+          "[SOC_NUM_OF_CELLS]"
+        ],
+        "line": 54,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "VeSoc_degC_minCellTmp",
+        "type": "float32_t",
+        "raw_declaration": "float32_t VeSoc_degC_minCellTmp",
+        "array_suffixes": [],
+        "line": 57,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "VeSoc_degC_maxCellTmp",
+        "type": "float32_t",
+        "raw_declaration": "float32_t VeSoc_degC_maxCellTmp",
+        "array_suffixes": [],
+        "line": 60,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "VeSoc_ms_battAsleepTime",
+        "type": "uint32_t",
+        "raw_declaration": "uint32_t VeSoc_ms_battAsleepTime",
+        "array_suffixes": [],
+        "line": 63,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "VeSoc_ms_initialBattRestTime",
+        "type": "uint32_t",
+        "raw_declaration": "uint32_t VeSoc_ms_initialBattRestTime",
+        "array_suffixes": [],
+        "line": 66,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "VaSoc_frc_cellSohc",
+        "type": "float32_t[195]",
+        "raw_declaration": "float32_t VaSoc_frc_cellSohc [ SOC_NUM_OF_CELLS ][SOC_NUM_OF_CELLS]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]",
+          "[SOC_NUM_OF_CELLS]"
+        ],
+        "line": 69,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "VeBattsm_nu_battState",
+        "type": "Battsm_State_t",
+        "raw_declaration": "Battsm_State_t VeBattsm_nu_battState",
+        "array_suffixes": [],
+        "line": 72,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "VaSoc_nu_cellVoltVldt",
+        "type": "Dukosi_Validity_t[195]",
+        "raw_declaration": "Dukosi_Validity_t VaSoc_nu_cellVoltVldt [ SOC_NUM_OF_CELLS ][SOC_NUM_OF_CELLS]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]",
+          "[SOC_NUM_OF_CELLS]"
+        ],
+        "line": 73,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "VaSoc_nu_cellTmpVldt",
+        "type": "Dukosi_Validity_t[195]",
+        "raw_declaration": "Dukosi_Validity_t VaSoc_nu_cellTmpVldt [ SOC_NUM_OF_CELLS ][SOC_NUM_OF_CELLS]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]",
+          "[SOC_NUM_OF_CELLS]"
+        ],
+        "line": 74,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "VeSoc_bi_socReset",
+        "type": "_Bool",
+        "raw_declaration": "",
+        "array_suffixes": [],
+        "line": 75,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "VeSoc_ms_battRestTime",
+        "type": "uint32_t",
+        "raw_declaration": "uint32_t VeSoc_ms_battRestTime",
+        "array_suffixes": [],
+        "line": 76,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "VaSoc_frc_cellSocOcv",
+        "type": "float32_t[195]",
+        "raw_declaration": "float32_t VaSoc_frc_cellSocOcv [ SOC_NUM_OF_CELLS ][SOC_NUM_OF_CELLS]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]",
+          "[SOC_NUM_OF_CELLS]"
+        ],
+        "line": 79,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "VaSoc_frc_cellSocCc",
+        "type": "float32_t[195]",
+        "raw_declaration": "float32_t VaSoc_frc_cellSocCc [ SOC_NUM_OF_CELLS ][SOC_NUM_OF_CELLS]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]",
+          "[SOC_NUM_OF_CELLS]"
+        ],
+        "line": 80,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "VaSoc_frc_cellSoc",
+        "type": "float32_t[195]",
+        "raw_declaration": "float32_t VaSoc_frc_cellSoc [ SOC_NUM_OF_CELLS ][SOC_NUM_OF_CELLS]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]",
+          "[SOC_NUM_OF_CELLS]"
+        ],
+        "line": 81,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "VeSoc_frc_userSoc",
+        "type": "float32_t",
+        "raw_declaration": "float32_t VeSoc_frc_userSoc",
+        "array_suffixes": [],
+        "line": 84,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "VeSoc_frc_packSoc",
+        "type": "float32_t",
+        "raw_declaration": "float32_t VeSoc_frc_packSoc",
+        "array_suffixes": [],
+        "line": 87,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "VeSoc_frc_minCellSoc",
+        "type": "float32_t",
+        "raw_declaration": "float32_t VeSoc_frc_minCellSoc",
+        "array_suffixes": [],
+        "line": 90,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "VeSoc_frc_maxCellSoc",
+        "type": "float32_t",
+        "raw_declaration": "float32_t VeSoc_frc_maxCellSoc",
+        "array_suffixes": [],
+        "line": 93,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "VaSoc_ms_tauDepolar",
+        "type": "float32_t[195]",
+        "raw_declaration": "float32_t VaSoc_ms_tauDepolar [ SOC_NUM_OF_CELLS ][SOC_NUM_OF_CELLS]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]",
+          "[SOC_NUM_OF_CELLS]"
+        ],
+        "line": 96,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "VeSoc_nu_socState",
+        "type": "Soc_State_t",
+        "raw_declaration": "Soc_State_t VeSoc_nu_socState",
+        "array_suffixes": [],
+        "line": 99,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "VeSoc_bi_lowSocFault",
+        "type": "_Bool",
+        "raw_declaration": "",
+        "array_suffixes": [],
+        "line": 100,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "KaSoc_Ah_capacityLut",
+        "type": "float32_t[13]",
+        "raw_declaration": "static float32_t KaSoc_Ah_capacityLut [ 13 ] = { 4.93F , 4.93F , 44.93F , 0.93F , 4.93F , 4.93F , 4.93F , 4.93F , 4.93F , 4.93F , 4.93F , 4.93F , 4.93F }[13]",
+        "array_suffixes": [
+          "[ 13 ]",
+          "[13]"
+        ],
+        "line": 107,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "KaSoc_V_ocvLut",
+        "type": "float32_t[21]",
+        "raw_declaration": "static float32_t KaSoc_V_ocvLut [ SOC_LUT_SOC_ARRAY_SIZE ] = { 3.153F , 3.217F , 3.368F , 3.441F , 3.484F , 3.544F , 3.599F , 3.642F , 3.679F , 3.723F , 3.778F , 3.828F , 3.88F , 3.923F , 3.962F , 4.028F , 4.082F , 4.095F , 4.102F , 4.117F , 4.146F }[SOC_LUT_SOC_ARRAY_SIZE]",
+        "array_suffixes": [
+          "[ SOC_LUT_SOC_ARRAY_SIZE ]",
+          "[SOC_LUT_SOC_ARRAY_SIZE]"
+        ],
+        "line": 113,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "KaSoc_degC_tmpLut",
+        "type": "float32_t[13]",
+        "raw_declaration": "static float32_t KaSoc_degC_tmpLut [ SOC_LUT_TEMP_ARRAY_SIZE ] = { - 35.0F , - 30.0F , - 20.0F , - 10.0F , 0.0F , 10.0F , 20.0F , 25.0F , 30.0F , 40.0F , 50.0F , 55.0F , 60.0F }[SOC_LUT_TEMP_ARRAY_SIZE]",
+        "array_suffixes": [
+          "[ SOC_LUT_TEMP_ARRAY_SIZE ]",
+          "[SOC_LUT_TEMP_ARRAY_SIZE]"
+        ],
+        "line": 124,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "KaSoc_frc_ocvBasedSocLut",
+        "type": "float32_t[273]",
+        "raw_declaration": "static float32_t KaSoc_frc_ocvBasedSocLut [ 273 ] = { 0.0F , 0.05F , 0.1F , 0.15F , 0.2F , 0.25F , 0.3F , 0.35F , 0.4F , 0.45F , 0.5F , 0.55F , 0.6F , 0.65F , 0.7F , 0.75F , 0.8F , 0.85F , 0.9F , 0.95F , 1.0F , 0.0F , 0.05F , 0.1F , 0.15F , 0.2F , 0.25F , 0.3F , 0.35F , 0.4F , 0.45F , 0.5F , 0.55F , 0.6F , 0.65F , 0.7F , 0.75F , 0.8F , 0.85F , 0.9F , 0.95F , 1.0F , 0.0F , 0.05F , 0.1F , 0.15F , 0.2F , 0.25F , 0.3F , 0.35F , 0.4F , 0.45F , 0.5F , 0.55F , 0.6F , 0.65F , 0.7F , 0.75F , 0.8F , 0.85F , 0.9F , 0.95F , 1.0F , 0.0F , 0.05F , 0.1F , 0.15F , 0.2F , 0.25F , 0.3F , 0.35F , 0.4F , 0.45F , 0.5F , 0.55F , 0.6F , 0.65F , 0.7F , 0.75F , 0.8F , 0.85F , 0.9F , 0.95F , 1.0F , 0.0F , 0.05F , 0.1F , 0.15F , 0.2F , 0.25F , 0.3F , 0.35F , 0.4F , 0.45F , 0.5F , 0.55F , 0.6F , 0.65F , 0.7F , 0.75F , 0.8F , 0.85F , 0.9F , 0.95F , 1.0F , 0.0F , 0.05F , 0.1F , 0.15F , 0.2F , 0.25F , 0.3F , 0.35F , 0.4F , 0.45F , 0.5F , 0.55F , 0.6F , 0.65F , 0.7F , 0.75F , 0.8F , 0.85F , 0.9F , 0.95F , 1.0F , 0.0F , 0.05F , 0.1F , 0.15F , 0.2F , 0.25F , 0.3F , 0.35F , 0.4F , 0.45F , 0.5F , 0.55F , 0.6F , 0.65F , 0.7F , 0.75F , 0.8F , 0.85F , 0.9F , 0.95F , 1.0F , 0.0F , 0.05F , 0.1F , 0.15F , 0.2F , 0.25F , 0.3F , 0.35F , 0.4F , 0.45F , 0.5F , 0.55F , 0.6F , 0.65F , 0.7F , 0.75F , 0.8F , 0.85F , 0.9F , 0.95F , 1.0F , 0.0F , 0.05F , 0.1F , 0.15F , 0.2F , 0.25F , 0.3F , 0.35F , 0.4F , 0.45F , 0.5F , 0.55F , 0.6F , 0.65F , 0.7F , 0.75F , 0.8F , 0.85F , 0.9F , 0.95F , 1.0F , 0.0F , 0.05F , 0.1F , 0.15F , 0.2F , 0.25F , 0.3F , 0.35F , 0.4F , 0.45F , 0.5F , 0.55F , 0.6F , 0.65F , 0.7F , 0.75F , 0.8F , 0.85F , 0.9F , 0.95F , 1.0F , 0.0F , 0.05F , 0.1F , 0.15F , 0.2F , 0.25F , 0.3F , 0.35F , 0.4F , 0.45F , 0.5F , 0.55F , 0.6F , 0.65F , 0.7F , 0.75F , 0.8F , 0.85F , 0.9F , 0.95F , 1.0F , 0.0F , 0.05F , 0.1F , 0.15F , 0.2F , 0.25F , 0.3F , 0.35F , 0.4F , 0.45F , 0.5F , 0.55F , 0.6F , 0.65F , 0.7F , 0.75F , 0.8F , 0.85F , 0.9F , 0.95F , 1.0F , 0.0F , 0.05F , 0.1F , 0.15F , 0.2F , 0.25F , 0.3F , 0.35F , 0.4F , 0.45F , 0.5F , 0.55F , 0.6F , 0.65F , 0.7F , 0.75F , 0.8F , 0.85F , 0.9F , 0.95F , 1.0F }[273]",
+        "array_suffixes": [
+          "[ 273 ]",
+          "[273]"
+        ],
+        "line": 142,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "KaSoc_frc_socHystVoltLut",
+        "type": "float32_t[273]",
+        "raw_declaration": "static float32_t KaSoc_frc_socHystVoltLut [ ( SOC_LUT_SOC_ARRAY_SIZE * SOC_LUT_TEMP_ARRAY_SIZE ) ] = { 0.0F , 0.062F , 0.037F , 0.009F , 0.016F , 0.016F , 0.013F , 0.005F , 0.003F , 0.002F , 0.002F , 0.004F , 0.004F , 0.001F , - 0.001F , - 0.004F , 0.001F , 0.002F , 0.002F , 0.0F , 0.0F , 0.0F , 0.062F , 0.037F , 0.009F , 0.016F , 0.016F , 0.013F , 0.005F , 0.003F , 0.002F , 0.002F , 0.004F , 0.004F , 0.001F , - 0.001F , - 0.004F , 0.001F , 0.002F , 0.002F , 0.0F , 0.0F , 0.0F , 0.062F , 0.037F , 0.009F , 0.016F , 0.016F , 0.013F , 0.005F , 0.003F , 0.002F , 0.002F , 0.004F , 0.004F , 0.001F , - 0.001F , - 0.004F , 0.001F , 0.002F , 0.002F , 0.0F , 0.0F , 0.0F , 0.062F , 0.037F , 0.009F , 0.016F , 0.016F , 0.013F , 0.005F , 0.003F , 0.002F , 0.002F , 0.004F , 0.004F , 0.001F , - 0.001F , - 0.004F , 0.001F , 0.002F , 0.002F , 0.0F , 0.0F , 0.0F , 0.062F , 0.037F , 0.009F , 0.016F , 0.016F , 0.013F , 0.005F , 0.003F , 0.002F , 0.002F , 0.004F , 0.004F , 0.001F , - 0.001F , - 0.004F , 0.001F , 0.002F , 0.002F , 0.0F , 0.0F , 0.0F , 0.062F , 0.037F , 0.009F , 0.016F , 0.016F , 0.013F , 0.005F , 0.003F , 0.002F , 0.002F , 0.004F , 0.004F , 0.001F , - 0.001F , - 0.004F , 0.001F , 0.002F , 0.002F , 0.0F , 0.0F , 0.0F , 0.062F , 0.037F , 0.009F , 0.016F , 0.016F , 0.013F , 0.005F , 0.003F , 0.002F , 0.002F , 0.004F , 0.004F , 0.001F , - 0.001F , - 0.004F , 0.001F , 0.002F , 0.002F , 0.0F , 0.0F , 0.0F , 0.062F , 0.037F , 0.009F , 0.016F , 0.016F , 0.013F , 0.005F , 0.003F , 0.002F , 0.002F , 0.004F , 0.004F , 0.001F , - 0.001F , - 0.004F , 0.001F , 0.002F , 0.002F , 0.0F , 0.0F , 0.0F , 0.062F , 0.037F , 0.009F , 0.016F , 0.016F , 0.013F , 0.005F , 0.003F , 0.002F , 0.002F , 0.004F , 0.004F , 0.001F , - 0.001F , - 0.004F , 0.001F , 0.002F , 0.002F , 0.0F , 0.0F , 0.0F , 0.062F , 0.037F , 0.009F , 0.016F , 0.016F , 0.013F , 0.005F , 0.003F , 0.002F , 0.002F , 0.004F , 0.004F , 0.001F , - 0.001F , - 0.004F , 0.001F , 0.002F , 0.002F , 0.0F , 0.0F , 0.0F , 0.062F , 0.037F , 0.009F , 0.016F , 0.016F , 0.013F , 0.005F , 0.003F , 0.002F , 0.002F , 0.004F , 0.004F , 0.001F , - 0.001F , - 0.004F , 0.001F , 0.002F , 0.002F , 0.0F , 0.0F , 0.0F , 0.062F , 0.037F , 0.009F , 0.016F , 0.016F , 0.013F , 0.005F , 0.003F , 0.002F , 0.002F , 0.004F , 0.004F , 0.001F , - 0.001F , - 0.004F , 0.001F , 0.002F , 0.002F , 0.0F , 0.0F , 0.0F , 0.062F , 0.037F , 0.009F , 0.016F , 0.016F , 0.013F , 0.005F , 0.003F , 0.002F , 0.002F , 0.004F , 0.004F , 0.001F , - 0.001F , - 0.004F , 0.001F , 0.002F , 0.002F , 0.0F , 0.0F }",
+        "array_suffixes": [
+          "[ ( SOC_LUT_SOC_ARRAY_SIZE * SOC_LUT_TEMP_ARRAY_SIZE ) ]"
+        ],
+        "line": 173,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "KaSoc_frc_socLut",
+        "type": "float32_t[21]",
+        "raw_declaration": "static float32_t KaSoc_frc_socLut [ SOC_LUT_SOC_ARRAY_SIZE ] = { 0.0F , 0.05F , 0.1F , 0.15F , 0.2F , 0.25F , 0.3F , 0.35F , 0.4F , 0.45F , 0.5F , 0.55F , 0.6F , 0.65F , 0.7F , 0.75F , 0.8F , 0.85F , 0.9F , 0.95F , 1.0F }[SOC_LUT_SOC_ARRAY_SIZE]",
+        "array_suffixes": [
+          "[ SOC_LUT_SOC_ARRAY_SIZE ]",
+          "[SOC_LUT_SOC_ARRAY_SIZE]"
+        ],
+        "line": 211,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "KaSoc_sec_tauDepolarLut",
+        "type": "float32_t[273]",
+        "raw_declaration": "static float32_t KaSoc_sec_tauDepolarLut [ ( SOC_LUT_SOC_ARRAY_SIZE * SOC_LUT_TEMP_ARRAY_SIZE ) ] = { 991.2F , 119.0F , 111.8F , 143.0F , 147.0F , 202.8F , 168.7F , 122.7F , 112.8F , 121.2F , 242.8F , 752.8F , 337.7F , 175.2F , 125.5F , 117.8F , 122.3F , 129.0F , 157.5F , 165.3F , 731.2F , 991.2F , 119.0F , 111.8F , 143.0F , 147.0F , 202.8F , 168.7F , 122.7F , 112.8F , 121.2F , 242.8F , 752.8F , 337.7F , 175.2F , 125.5F , 117.8F , 122.3F , 129.0F , 157.5F , 165.3F , 731.2F , 991.2F , 119.0F , 111.8F , 143.0F , 147.0F , 202.8F , 168.7F , 122.7F , 112.8F , 121.2F , 242.8F , 752.8F , 337.7F , 175.2F , 125.5F , 117.8F , 122.3F , 129.0F , 157.5F , 165.3F , 731.2F , 991.2F , 119.0F , 111.8F , 143.0F , 147.0F , 202.8F , 168.7F , 122.7F , 112.8F , 121.2F , 242.8F , 752.8F , 337.7F , 175.2F , 125.5F , 117.8F , 122.3F , 129.0F , 157.5F , 165.3F , 731.2F , 991.2F , 119.0F , 111.8F , 143.0F , 147.0F , 202.8F , 168.7F , 122.7F , 112.8F , 121.2F , 242.8F , 752.8F , 337.7F , 175.2F , 125.5F , 117.8F , 122.3F , 129.0F , 157.5F , 165.3F , 731.2F , 991.2F , 119.0F , 111.8F , 143.0F , 147.0F , 202.8F , 168.7F , 122.7F , 112.8F , 121.2F , 242.8F , 752.8F , 337.7F , 175.2F , 125.5F , 117.8F , 122.3F , 129.0F , 157.5F , 165.3F , 731.2F , 991.2F , 119.0F , 111.8F , 143.0F , 147.0F , 202.8F , 168.7F , 122.7F , 112.8F , 121.2F , 242.8F , 752.8F , 337.7F , 175.2F , 125.5F , 117.8F , 122.3F , 129.0F , 157.5F , 165.3F , 731.2F , 991.2F , 119.0F , 111.8F , 143.0F , 147.0F , 202.8F , 168.7F , 122.7F , 112.8F , 121.2F , 242.8F , 752.8F , 337.7F , 175.2F , 125.5F , 117.8F , 122.3F , 129.0F , 157.5F , 165.3F , 731.2F , 1151.2F , 132.2F , 103.2F , 132.7F , 117.5F , 172.8F , 165.7F , 117.2F , 105.8F , 104.2F , 185.3F , 637.3F , 254.0F , 123.3F , 105.2F , 108.3F , 114.8F , 122.5F , 154.5F , 184.7F , 451.2F , 1151.2F , 225.5F , 89.3F , 102.7F , 89.3F , 103.5F , 151.0F , 110.2F , 90.2F , 80.8F , 109.7F , 453.0F , 137.6F , 87.8F , 88.7F , 95.5F , 105.7F , 113.5F , 150.2F , 161.8F , 711.2F , 1151.2F , 225.5F , 89.3F , 102.7F , 89.3F , 103.5F , 151.0F , 110.2F , 90.2F , 80.8F , 109.7F , 453.0F , 137.6F , 87.8F , 88.7F , 95.5F , 105.7F , 113.5F , 150.2F , 161.8F , 711.2F , 1131.2F , 498.4F , 84.3F , 92.9F , 80.9F , 92.9F , 154.5F , 103.0F , 82.4F , 73.1F , 92.1F , 371.6F , 114.2F , 81.3F , 83.8F , 92.4F , 102.5F , 109.9F , 149.3F , 161.8F , 731.2F , 1111.2F , 771.2F , 79.2F , 83.0F , 72.5F , 82.3F , 158.0F , 95.7F , 74.5F , 65.3F , 74.5F , 290.2F , 90.7F , 74.8F , 78.8F , 89.2F , 99.2F , 106.2F , 148.3F , 161.8F , 751.2F }",
+        "array_suffixes": [
+          "[ ( SOC_LUT_SOC_ARRAY_SIZE * SOC_LUT_TEMP_ARRAY_SIZE ) ]"
+        ],
+        "line": 225,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "KeSoc_A_restingCurThd",
+        "type": "float32_t",
+        "raw_declaration": "static float32_t KeSoc_A_restingCurThd = 4.0F",
+        "array_suffixes": [],
+        "line": 265,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "KeSoc_V_bodMinCellVolt",
+        "type": "float32_t",
+        "raw_declaration": "static float32_t KeSoc_V_bodMinCellVolt = 2.993F",
+        "array_suffixes": [],
+        "line": 267,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "KeSoc_V_tocAvrgCellVolt",
+        "type": "float32_t",
+        "raw_declaration": "static float32_t KeSoc_V_tocAvrgCellVolt = 4.5F",
+        "array_suffixes": [],
+        "line": 271,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "KeSoc_V_tocMaxCellVolt",
+        "type": "float32_t",
+        "raw_declaration": "static float32_t KeSoc_V_tocMaxCellVolt = 4.5F",
+        "array_suffixes": [],
+        "line": 275,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "KeSoc_bi_enableHystComp",
+        "type": "_Bool",
+        "raw_declaration": "static bool KeSoc_bi_enableHystComp = true",
+        "array_suffixes": [],
+        "line": 279,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "KeSoc_frc_BotmOfDchReset",
+        "type": "float32_t",
+        "raw_declaration": "static float32_t KeSoc_frc_BotmOfDchReset = 0.0F",
+        "array_suffixes": [],
+        "line": 284,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "KeSoc_frc_lowSocResetThd",
+        "type": "float32_t",
+        "raw_declaration": "static float32_t KeSoc_frc_lowSocResetThd = 0.12F",
+        "array_suffixes": [],
+        "line": 288,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "KeSoc_frc_lowSocSetThd",
+        "type": "float32_t",
+        "raw_declaration": "static float32_t KeSoc_frc_lowSocSetThd = 0.1F",
+        "array_suffixes": [],
+        "line": 289,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "KeSoc_frc_socMaxLim",
+        "type": "float32_t",
+        "raw_declaration": "static float32_t KeSoc_frc_socMaxLim = 1.0F",
+        "array_suffixes": [],
+        "line": 290,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "KeSoc_frc_socMinLim",
+        "type": "float32_t",
+        "raw_declaration": "static float32_t KeSoc_frc_socMinLim = 0.0F",
+        "array_suffixes": [],
+        "line": 298,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "KeSoc_frc_topOfChrgReset",
+        "type": "float32_t",
+        "raw_declaration": "static float32_t KeSoc_frc_topOfChrgReset = 1.0F",
+        "array_suffixes": [],
+        "line": 305,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "KeSoc_frc_userSocMaxLim",
+        "type": "float32_t",
+        "raw_declaration": "static float32_t KeSoc_frc_userSocMaxLim = 0.99F",
+        "array_suffixes": [],
+        "line": 309,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "KeSoc_frc_userSocMinLim",
+        "type": "float32_t",
+        "raw_declaration": "static float32_t KeSoc_frc_userSocMinLim = 0.014F",
+        "array_suffixes": [],
+        "line": 311,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "KeSoc_nu_epsValue",
+        "type": "float32_t",
+        "raw_declaration": "static float32_t KeSoc_nu_epsValue = 2.22044605E-16F",
+        "array_suffixes": [],
+        "line": 313,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "KeSoc_nu_restTauFactor",
+        "type": "float32_t",
+        "raw_declaration": "static float32_t KeSoc_nu_restTauFactor = 3.0F",
+        "array_suffixes": [],
+        "line": 314,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "KeSoc_sec_sampleTime",
+        "type": "float32_t",
+        "raw_declaration": "static float32_t KeSoc_sec_sampleTime = 0.01F",
+        "array_suffixes": [],
+        "line": 318,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "KeSoc_sec_socBodSetTime",
+        "type": "float32_t",
+        "raw_declaration": "static float32_t KeSoc_sec_socBodSetTime = 0.0F",
+        "array_suffixes": [],
+        "line": 325,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "KeSoc_sec_socTocSetTime",
+        "type": "float32_t",
+        "raw_declaration": "static float32_t KeSoc_sec_socTocSetTime = 0.0F",
+        "array_suffixes": [],
+        "line": 329,
+        "storage_class": "StorageClass.STATIC"
+      },
+      {
+        "name": "soc_ConstP",
+        "type": "const ConstP_soc_T",
+        "raw_declaration": "const ConstP_soc_T soc_ConstP = { /* Pooled Parameter (Expression: )\r\n     * Referenced by:\r\n     *   '<S12>/HystCompensationLookup'\r\n     *   '<S12>/OcvBasedSocLookupTable'\r\n     *   '<S15>/Tau_2DLookup_MaxTemp'\r\n     *   '<S15>/Tau_2DLookup_MinTemp'\r\n     *   '<S17>/HystCompensationLookup'\r\n     *   '<S17>/OcvBasedSocLookupTable'\r\n     *   '<S19>/Tau_2DLookup_MaxTemp'\r\n     *   '<S19>/Tau_2DLookup_MinTemp'\r\n     *   '<S20>/HystCompensationLookup'\r\n     *   '<S20>/OcvBasedSocLookupTable'\r\n     */ { SOC_LUT_SOC_ARRAY_SIZE - 1 , SOC_LUT_TEMP_ARRAY_SIZE - 1 } }",
+        "array_suffixes": [],
+        "line": 335,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "soc_B",
+        "type": "B_soc_T",
+        "raw_declaration": "B_soc_T soc_B",
+        "array_suffixes": [],
+        "line": 356,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "soc_DW",
+        "type": "DW_soc_T",
+        "raw_declaration": "DW_soc_T soc_DW",
+        "array_suffixes": [],
+        "line": 359,
+        "storage_class": "StorageClass.NONE"
+      }
+    ],
+    "locals": [
+      {
+        "name": "fractions",
+        "type": "float32_t[2]",
+        "raw_declaration": "float32_t fractions [ 2 ][2]",
+        "array_suffixes": [
+          "[ 2 ]",
+          "[2]"
+        ],
+        "line": 402,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "frac",
+        "type": "float32_t",
+        "raw_declaration": "float32_t frac",
+        "array_suffixes": [],
+        "line": 403,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "y",
+        "type": "float32_t",
+        "raw_declaration": "float32_t y",
+        "array_suffixes": [],
+        "line": 404,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "yL_0d0",
+        "type": "float32_t",
+        "raw_declaration": "float32_t yL_0d0",
+        "array_suffixes": [],
+        "line": 405,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "bpIndices",
+        "type": "uint32_t[2]",
+        "raw_declaration": "uint32_t bpIndices [ 2 ][2]",
+        "array_suffixes": [
+          "[ 2 ]",
+          "[2]"
+        ],
+        "line": 406,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "bpIdx",
+        "type": "uint32_t",
+        "raw_declaration": "uint32_t bpIdx",
+        "array_suffixes": [],
+        "line": 407,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "iLeft",
+        "type": "uint32_t",
+        "raw_declaration": "uint32_t iLeft",
+        "array_suffixes": [],
+        "line": 408,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "iRght",
+        "type": "uint32_t",
+        "raw_declaration": "uint32_t iRght",
+        "array_suffixes": [],
+        "line": 409,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "bpIndex",
+        "type": "uint32_t",
+        "raw_declaration": "uint32_t bpIndex",
+        "array_suffixes": [],
+        "line": 543,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "y",
+        "type": "float32_t",
+        "raw_declaration": "float32_t y",
+        "array_suffixes": [],
+        "line": 574,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "yL_0d0",
+        "type": "float32_t",
+        "raw_declaration": "float32_t yL_0d0",
+        "array_suffixes": [],
+        "line": 575,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "offset_1d",
+        "type": "uint32_t",
+        "raw_declaration": "uint32_t offset_1d",
+        "array_suffixes": [],
+        "line": 576,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "bpIdx",
+        "type": "uint32_t",
+        "raw_declaration": "uint32_t bpIdx",
+        "array_suffixes": [],
+        "line": 619,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "bpIndex",
+        "type": "uint32_t",
+        "raw_declaration": "uint32_t bpIndex",
+        "array_suffixes": [],
+        "line": 620,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "iRght",
+        "type": "uint32_t",
+        "raw_declaration": "uint32_t iRght",
+        "array_suffixes": [],
+        "line": 621,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "frac",
+        "type": "float32_t",
+        "raw_declaration": "float32_t frac",
+        "array_suffixes": [],
+        "line": 647,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "y",
+        "type": "float32_t",
+        "raw_declaration": "float32_t y",
+        "array_suffixes": [],
+        "line": 648,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "iLeft",
+        "type": "uint32_t",
+        "raw_declaration": "uint32_t iLeft",
+        "array_suffixes": [],
+        "line": 649,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "bpIdx",
+        "type": "uint32_t",
+        "raw_declaration": "uint32_t bpIdx",
+        "array_suffixes": [],
+        "line": 673,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "iRght",
+        "type": "uint32_t",
+        "raw_declaration": "uint32_t iRght",
+        "array_suffixes": [],
+        "line": 674,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "yL_0d0",
+        "type": "float32_t",
+        "raw_declaration": "float32_t yL_0d0",
+        "array_suffixes": [],
+        "line": 713,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "rtb_Divide",
+        "type": "float32_t",
+        "raw_declaration": "float32_t rtb_Divide",
+        "array_suffixes": [],
+        "line": 731,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "u0",
+        "type": "float32_t",
+        "raw_declaration": "float32_t u0",
+        "array_suffixes": [],
+        "line": 732,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "i",
+        "type": "int32_t",
+        "raw_declaration": "int32_t i",
+        "array_suffixes": [],
+        "line": 733,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "rtb_HystCompensationLookup",
+        "type": "float32_t[195]",
+        "raw_declaration": "float32_t rtb_HystCompensationLookup [ SOC_NUM_OF_CELLS ][SOC_NUM_OF_CELLS]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]",
+          "[SOC_NUM_OF_CELLS]"
+        ],
+        "line": 811,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "rtb_HystCompensationLookup_0",
+        "type": "float32_t",
+        "raw_declaration": "float32_t rtb_HystCompensationLookup_0",
+        "array_suffixes": [],
+        "line": 812,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "iU",
+        "type": "int32_t",
+        "raw_declaration": "int32_t iU",
+        "array_suffixes": [],
+        "line": 813,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "rtb_AND",
+        "type": "_Bool",
+        "raw_declaration": "",
+        "array_suffixes": [],
+        "line": 860,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "rtb_OR1",
+        "type": "_Bool",
+        "raw_declaration": "",
+        "array_suffixes": [],
+        "line": 861,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "k",
+        "type": "int32_t",
+        "raw_declaration": "int32_t k",
+        "array_suffixes": [],
+        "line": 938,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "maxV",
+        "type": "uint32_t",
+        "raw_declaration": "uint32_t maxV",
+        "array_suffixes": [],
+        "line": 939,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "rtb_AND_d4fo",
+        "type": "_Bool",
+        "raw_declaration": "",
+        "array_suffixes": [],
+        "line": 940,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "rtu_LaSoc_nu_filterWeight_0",
+        "type": "float32_t",
+        "raw_declaration": "float32_t rtu_LaSoc_nu_filterWeight_0",
+        "array_suffixes": [],
+        "line": 960,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "u1",
+        "type": "uint32_t",
+        "raw_declaration": "uint32_t u1",
+        "array_suffixes": [],
+        "line": 988,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "fractions",
+        "type": "float32_t[2]",
+        "raw_declaration": "float32_t fractions [ 2 ][2]",
+        "array_suffixes": [
+          "[ 2 ]",
+          "[2]"
+        ],
+        "line": 1019,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "fractions_0",
+        "type": "float32_t[2]",
+        "raw_declaration": "float32_t fractions_0 [ 2 ][2]",
+        "array_suffixes": [
+          "[ 2 ]",
+          "[2]"
+        ],
+        "line": 1020,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "rtb_LaSoc_ms_RequiredRestT_acjj",
+        "type": "float32_t[195]",
+        "raw_declaration": "float32_t rtb_LaSoc_ms_RequiredRestT_acjj [ SOC_NUM_OF_CELLS ][SOC_NUM_OF_CELLS]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]",
+          "[SOC_NUM_OF_CELLS]"
+        ],
+        "line": 1021,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "rtb_Tau_2DLookup_MinTemp",
+        "type": "float32_t[195]",
+        "raw_declaration": "float32_t rtb_Tau_2DLookup_MinTemp [ SOC_NUM_OF_CELLS ][SOC_NUM_OF_CELLS]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]",
+          "[SOC_NUM_OF_CELLS]"
+        ],
+        "line": 1022,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "rtb_LaSoc_ms_tauDepolar",
+        "type": "float32_t",
+        "raw_declaration": "float32_t rtb_LaSoc_ms_tauDepolar",
+        "array_suffixes": [],
+        "line": 1023,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "iU",
+        "type": "int32_t",
+        "raw_declaration": "int32_t iU",
+        "array_suffixes": [],
+        "line": 1024,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "bpIndices",
+        "type": "uint32_t[2]",
+        "raw_declaration": "uint32_t bpIndices [ 2 ][2]",
+        "array_suffixes": [
+          "[ 2 ]",
+          "[2]"
+        ],
+        "line": 1025,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "bpIndices_0",
+        "type": "uint32_t[2]",
+        "raw_declaration": "uint32_t bpIndices_0 [ 2 ][2]",
+        "array_suffixes": [
+          "[ 2 ]",
+          "[2]"
+        ],
+        "line": 1026,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "rtb_LaSoc_nu_filterWeight",
+        "type": "float32_t[195]",
+        "raw_declaration": "float32_t rtb_LaSoc_nu_filterWeight [ SOC_NUM_OF_CELLS ][SOC_NUM_OF_CELLS]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]",
+          "[SOC_NUM_OF_CELLS]"
+        ],
+        "line": 1114,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "i",
+        "type": "int32_t",
+        "raw_declaration": "int32_t i",
+        "array_suffixes": [],
+        "line": 1115,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "rtb_LaSoc_ms_RequiredRestTime",
+        "type": "uint32_t[195]",
+        "raw_declaration": "uint32_t rtb_LaSoc_ms_RequiredRestTime [ SOC_NUM_OF_CELLS ][SOC_NUM_OF_CELLS]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]",
+          "[SOC_NUM_OF_CELLS]"
+        ],
+        "line": 1116,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "rtb_NOT_he13",
+        "type": "_Bool",
+        "raw_declaration": "",
+        "array_suffixes": [],
+        "line": 1117,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "rtb_LaSoc_nu_filterWeight",
+        "type": "float32_t[195]",
+        "raw_declaration": "float32_t rtb_LaSoc_nu_filterWeight [ SOC_NUM_OF_CELLS ][SOC_NUM_OF_CELLS]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]",
+          "[SOC_NUM_OF_CELLS]"
+        ],
+        "line": 1250,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "rtb_LaSoc_ms_RequiredRestTime",
+        "type": "uint32_t[195]",
+        "raw_declaration": "uint32_t rtb_LaSoc_ms_RequiredRestTime [ SOC_NUM_OF_CELLS ][SOC_NUM_OF_CELLS]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]",
+          "[SOC_NUM_OF_CELLS]"
+        ],
+        "line": 1251,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "rtb_OR_huxg",
+        "type": "_Bool",
+        "raw_declaration": "",
+        "array_suffixes": [],
+        "line": 1252,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "i",
+        "type": "int32_t",
+        "raw_declaration": "int32_t i",
+        "array_suffixes": [],
+        "line": 1328,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "rtb_Product_c0pa",
+        "type": "float32_t[195]",
+        "raw_declaration": "float32_t rtb_Product_c0pa [ SOC_NUM_OF_CELLS ][SOC_NUM_OF_CELLS]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]",
+          "[SOC_NUM_OF_CELLS]"
+        ],
+        "line": 1369,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "rtb_Product_dmnf",
+        "type": "float32_t[195]",
+        "raw_declaration": "float32_t rtb_Product_dmnf [ SOC_NUM_OF_CELLS ][SOC_NUM_OF_CELLS]",
+        "array_suffixes": [
+          "[ SOC_NUM_OF_CELLS ]",
+          "[SOC_NUM_OF_CELLS]"
+        ],
+        "line": 1370,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "VaSoc_frc_cellSohc_0",
+        "type": "float32_t",
+        "raw_declaration": "float32_t VaSoc_frc_cellSohc_0",
+        "array_suffixes": [],
+        "line": 1371,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "rtb_Switch_gefl",
+        "type": "float32_t",
+        "raw_declaration": "float32_t rtb_Switch_gefl",
+        "array_suffixes": [],
+        "line": 1372,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "rtb_Switch_m1yp",
+        "type": "float32_t",
+        "raw_declaration": "float32_t rtb_Switch_m1yp",
+        "array_suffixes": [],
+        "line": 1373,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "tmp",
+        "type": "float32_t",
+        "raw_declaration": "float32_t tmp",
+        "array_suffixes": [],
+        "line": 1374,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "k",
+        "type": "int32_t",
+        "raw_declaration": "int32_t k",
+        "array_suffixes": [],
+        "line": 1375,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "rtb_AND",
+        "type": "_Bool",
+        "raw_declaration": "",
+        "array_suffixes": [],
+        "line": 1376,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "rtb_AND_pv5x",
+        "type": "_Bool",
+        "raw_declaration": "",
+        "array_suffixes": [],
+        "line": 1377,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "rtb_Equal7",
+        "type": "_Bool",
+        "raw_declaration": "",
+        "array_suffixes": [],
+        "line": 1378,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "rtb_RelationalOperator_mlrg",
+        "type": "_Bool",
+        "raw_declaration": "",
+        "array_suffixes": [],
+        "line": 1379,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "i",
+        "type": "int32_t",
+        "raw_declaration": "int32_t i",
+        "array_suffixes": [],
+        "line": 1881,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "i",
+        "type": "int32_t",
+        "raw_declaration": "int32_t i",
+        "array_suffixes": [],
+        "line": 2053,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "i",
+        "type": "int32_t",
+        "raw_declaration": "int32_t i",
+        "array_suffixes": [],
+        "line": 2061,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "i",
+        "type": "int32_t",
+        "raw_declaration": "int32_t i",
+        "array_suffixes": [],
+        "line": 2069,
+        "storage_class": "StorageClass.NONE"
+      },
+      {
+        "name": "i",
+        "type": "int32_t",
+        "raw_declaration": "int32_t i",
+        "array_suffixes": [],
+        "line": 2082,
+        "storage_class": "StorageClass.NONE"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "TempInfo",
+        "type": "Dukosi_Temperature_t *",
+        "line": 149
+      },
+      {
+        "name": "temptype",
+        "type": "Dukosi_Temptype_t",
+        "line": 149
+      },
+      {
+        "name": "Voltage_info",
+        "type": "Dukosi_Voltage_t *",
+        "line": 150
+      },
+      {
+        "name": "current",
+        "type": "float32_t *",
+        "line": 151
+      },
+      {
+        "name": "initsoc",
+        "type": "float32_t *",
+        "line": 152
+      },
+      {
+        "name": "battstate",
+        "type": "Battsm_State_t *",
+        "line": 153
+      },
+      {
+        "name": "initbattresttime",
+        "type": "uint32_t *",
+        "line": 154
+      },
+      {
+        "name": "NVMimportstatus",
+        "type": "_Bool *",
+        "line": 155
+      },
+      {
+        "name": "min_max_temperature",
+        "type": "Dukosi_Temperature_result_t *",
+        "line": 156
+      },
+      {
+        "name": "temptype",
+        "type": "Dukosi_Temptype_t",
+        "line": 156
+      },
+      {
+        "name": "cellsohc",
+        "type": "float32_t *",
+        "line": 157
+      },
+      {
+        "name": "battasleeptime",
+        "type": "uint32_t *",
+        "line": 158
+      },
+      {
+        "name": "socnvm",
+        "type": "float32_t *",
+        "line": 159
+      },
+      {
+        "name": "idx",
+        "type": "Dtcmgr_FaultIndex_t",
+        "line": 160
+      },
+      {
+        "name": "fltStatus",
+        "type": "Dtcmgr_FaultStatus_t",
+        "line": 160
+      },
+      {
+        "name": "battresttime",
+        "type": "uint32_t *",
+        "line": 44
+      },
+      {
+        "name": "taudepolar",
+        "type": "float32_t *",
+        "line": 45
+      },
+      {
+        "name": "socstate",
+        "type": "Soc_State_t *",
+        "line": 46
+      },
+      {
+        "name": "packsoc",
+        "type": "float32_t *",
+        "line": 48
+      },
+      {
+        "name": "usersoc",
+        "type": "float32_t *",
+        "line": 49
+      },
+      {
+        "name": "minsoc",
+        "type": "float32_t *",
+        "line": 50
+      },
+      {
+        "name": "maxsoc",
+        "type": "float32_t *",
+        "line": 51
+      },
+      {
+        "name": "cellsoc",
+        "type": "float32_t *",
+        "line": 52
+      },
+      {
+        "name": "cellsoccc",
+        "type": "float32_t *",
+        "line": 53
+      },
+      {
+        "name": "cellsococv",
+        "type": "float32_t *",
+        "line": 54
+      },
+      {
+        "name": "resetsoc",
+        "type": "_Bool",
+        "line": 55
+      },
+      {
+        "name": "u0",
+        "type": "float32_t",
+        "line": 360
+      },
+      {
+        "name": "u1",
+        "type": "float32_t",
+        "line": 360
+      },
+      {
+        "name": "bp0",
+        "type": "const float32_t[]",
+        "line": 361
+      },
+      {
+        "name": "bp1",
+        "type": "const float32_t[]",
+        "line": 361
+      },
+      {
+        "name": "table",
+        "type": "const float32_t[]",
+        "line": 361
+      },
+      {
+        "name": "maxIndex",
+        "type": "const uint32_t[]",
+        "line": 362
+      },
+      {
+        "name": "stride",
+        "type": "uint32_t",
+        "line": 362
+      },
+      {
+        "name": "u",
+        "type": "float32_t",
+        "line": 363
+      },
+      {
+        "name": "bp",
+        "type": "const float32_t[]",
+        "line": 363
+      },
+      {
+        "name": "maxIndex",
+        "type": "uint32_t",
+        "line": 364
+      },
+      {
+        "name": "fraction",
+        "type": "float32_t *",
+        "line": 364
+      },
+      {
+        "name": "bpIndex",
+        "type": "const uint32_t[]",
+        "line": 365
+      },
+      {
+        "name": "frac",
+        "type": "const float32_t[]",
+        "line": 365
+      },
+      {
+        "name": "table",
+        "type": "const float32_t[]",
+        "line": 366
+      },
+      {
+        "name": "stride",
+        "type": "const uint32_t",
+        "line": 366
+      },
+      {
+        "name": "maxIndex",
+        "type": "const uint32_t[]",
+        "line": 366
+      },
+      {
+        "name": "u",
+        "type": "float32_t",
+        "line": 367
+      },
+      {
+        "name": "bp",
+        "type": "const float32_t[]",
+        "line": 367
+      },
+      {
+        "name": "startIndex",
+        "type": "uint32_t",
+        "line": 368
+      },
+      {
+        "name": "maxIndex",
+        "type": "uint32_t",
+        "line": 368
+      },
+      {
+        "name": "u0",
+        "type": "float32_t",
+        "line": 369
+      },
+      {
+        "name": "bp0",
+        "type": "const float32_t[]",
+        "line": 369
+      },
+      {
+        "name": "table",
+        "type": "const float32_t[]",
+        "line": 370
+      },
+      {
+        "name": "maxIndex",
+        "type": "uint32_t",
+        "line": 370
+      },
+      {
+        "name": "rtu_VaSoc_degC_cellTmp",
+        "type": "const float32_t[195]",
+        "line": 372
+      },
+      {
+        "name": "rtu_VaSoc_V_cellVolt",
+        "type": "const float32_t[195]",
+        "line": 373
+      },
+      {
+        "name": "rtu_LaSoc_frc_cellSoc",
+        "type": "const float32_t[195]",
+        "line": 374
+      },
+      {
+        "name": "rty_LaSoc_frc_cellSocOcv",
+        "type": "float32_t[195]",
+        "line": 375
+      },
+      {
+        "name": "rtu_LaSoc_frc_cellSocCc",
+        "type": "const float32_t[195]",
+        "line": 377
+      },
+      {
+        "name": "rtu_LaSoc_frc_cellSocOcv",
+        "type": "const float32_t[195]",
+        "line": 378
+      },
+      {
+        "name": "rtu_LaSoc_nu_filterWeight",
+        "type": "const float32_t[195]",
+        "line": 379
+      },
+      {
+        "name": "rtu_LaSoc_ms_RequiredRestTime",
+        "type": "const uint32_t[195]",
+        "line": 380
+      },
+      {
+        "name": "rtu_LeSoc_ms_battRestTime",
+        "type": "uint32_t",
+        "line": 381
+      },
+      {
+        "name": "rtu_VeSoc_bi_socReset",
+        "type": "_Bool",
+        "line": 381
+      },
+      {
+        "name": "rty_LaSoc_frc_cellSoc",
+        "type": "float32_t[195]",
+        "line": 382
+      },
+      {
+        "name": "rty_LeSoc_bi_socCorrectedFlag",
+        "type": "_Bool *",
+        "line": 382
+      },
+      {
+        "name": "localDW",
+        "type": "DW_Soc_socCorrection_T *",
+        "line": 383
+      },
+      {
+        "name": "rtu_VeSoc_degC_minCellTmp",
+        "type": "float32_t",
+        "line": 384
+      },
+      {
+        "name": "rtu_VeSoc_degC_maxCellTmp",
+        "type": "float32_t",
+        "line": 385
+      },
+      {
+        "name": "rtu_LaSoc_frc_cellSocCc",
+        "type": "const float32_t[195]",
+        "line": 386
+      },
+      {
+        "name": "rty_LaSoc_ms_tauDepolar",
+        "type": "float32_t[195]",
+        "line": 387
+      },
+      {
+        "name": "rty_LaSoc_ms_RequiredRestTime",
+        "type": "uint32_t[195]",
+        "line": 388
+      },
+      {
+        "name": "rty_LaSoc_nu_filterWeight",
+        "type": "float32_t[195]",
+        "line": 389
+      },
+      {
+        "name": "u0",
+        "type": "float32_t",
+        "line": 398
+      },
+      {
+        "name": "u1",
+        "type": "float32_t",
+        "line": 398
+      },
+      {
+        "name": "bp0",
+        "type": "const float32_t[]",
+        "line": 399
+      },
+      {
+        "name": "bp1",
+        "type": "const float32_t[]",
+        "line": 399
+      },
+      {
+        "name": "table",
+        "type": "const float32_t[]",
+        "line": 399
+      },
+      {
+        "name": "maxIndex",
+        "type": "const uint32_t[]",
+        "line": 400
+      },
+      {
+        "name": "stride",
+        "type": "uint32_t",
+        "line": 400
+      },
+      {
+        "name": "u",
+        "type": "float32_t",
+        "line": 540
+      },
+      {
+        "name": "bp",
+        "type": "const float32_t[]",
+        "line": 540
+      },
+      {
+        "name": "maxIndex",
+        "type": "uint32_t",
+        "line": 541
+      },
+      {
+        "name": "fraction",
+        "type": "float32_t *",
+        "line": 541
+      },
+      {
+        "name": "bpIndex",
+        "type": "const uint32_t[]",
+        "line": 571
+      },
+      {
+        "name": "frac",
+        "type": "const float32_t[]",
+        "line": 571
+      },
+      {
+        "name": "table",
+        "type": "const float32_t[]",
+        "line": 572
+      },
+      {
+        "name": "stride",
+        "type": "const uint32_t",
+        "line": 572
+      },
+      {
+        "name": "maxIndex",
+        "type": "const uint32_t[]",
+        "line": 572
+      },
+      {
+        "name": "u",
+        "type": "float32_t",
+        "line": 616
+      },
+      {
+        "name": "bp",
+        "type": "const float32_t[]",
+        "line": 616
+      },
+      {
+        "name": "startIndex",
+        "type": "uint32_t",
+        "line": 617
+      },
+      {
+        "name": "maxIndex",
+        "type": "uint32_t",
+        "line": 617
+      },
+      {
+        "name": "u0",
+        "type": "float32_t",
+        "line": 644
+      },
+      {
+        "name": "bp0",
+        "type": "const float32_t[]",
+        "line": 644
+      },
+      {
+        "name": "table",
+        "type": "const float32_t[]",
+        "line": 645
+      },
+      {
+        "name": "maxIndex",
+        "type": "uint32_t",
+        "line": 645
+      },
+      {
+        "name": "rtu_VaSoc_degC_cellTmp",
+        "type": "const float32_t[195]",
+        "line": 806
+      },
+      {
+        "name": "rtu_VaSoc_V_cellVolt",
+        "type": "const float32_t[195]",
+        "line": 807
+      },
+      {
+        "name": "rtu_LaSoc_frc_cellSoc",
+        "type": "const float32_t[195]",
+        "line": 808
+      },
+      {
+        "name": "rty_LaSoc_frc_cellSocOcv",
+        "type": "float32_t[195]",
+        "line": 809
+      },
+      {
+        "name": "rtu_LaSoc_frc_cellSocCc",
+        "type": "const float32_t[195]",
+        "line": 930
+      },
+      {
+        "name": "rtu_LaSoc_frc_cellSocOcv",
+        "type": "const float32_t[195]",
+        "line": 931
+      },
+      {
+        "name": "rtu_LaSoc_nu_filterWeight",
+        "type": "const float32_t[195]",
+        "line": 932
+      },
+      {
+        "name": "rtu_LaSoc_ms_RequiredRestTime",
+        "type": "const uint32_t[195]",
+        "line": 933
+      },
+      {
+        "name": "rtu_LeSoc_ms_battRestTime",
+        "type": "uint32_t",
+        "line": 934
+      },
+      {
+        "name": "rtu_VeSoc_bi_socReset",
+        "type": "_Bool",
+        "line": 934
+      },
+      {
+        "name": "rty_LaSoc_frc_cellSoc",
+        "type": "float32_t[195]",
+        "line": 935
+      },
+      {
+        "name": "rty_LeSoc_bi_socCorrectedFlag",
+        "type": "_Bool *",
+        "line": 935
+      },
+      {
+        "name": "localDW",
+        "type": "DW_Soc_socCorrection_T *",
+        "line": 936
+      },
+      {
+        "name": "rtu_VeSoc_degC_minCellTmp",
+        "type": "float32_t",
+        "line": 1012
+      },
+      {
+        "name": "rtu_VeSoc_degC_maxCellTmp",
+        "type": "float32_t",
+        "line": 1013
+      },
+      {
+        "name": "rtu_LaSoc_frc_cellSocCc",
+        "type": "const float32_t[195]",
+        "line": 1014
+      },
+      {
+        "name": "rty_LaSoc_ms_tauDepolar",
+        "type": "float32_t[195]",
+        "line": 1015
+      },
+      {
+        "name": "rty_LaSoc_ms_RequiredRestTime",
+        "type": "uint32_t[195]",
+        "line": 1016
+      },
+      {
+        "name": "rty_LaSoc_nu_filterWeight",
+        "type": "float32_t[195]",
+        "line": 1017
+      }
+    ],
+    "structs": [
+      {
+        "name": "Dukosi_Voltage_t",
+        "line": 56,
+        "fields": [
+          {
+            "name": "MeDukosi_nu_cell_ID",
+            "type": "uint16_t",
+            "line": 58
+          },
+          {
+            "name": "MeDukosi_V_voltage",
+            "type": "float32_t",
+            "line": 59
+          },
+          {
+            "name": "MeDukosi_nu_validity",
+            "type": "Dukosi_Validity_t",
+            "line": 60
+          }
+        ]
+      },
+      {
+        "name": "Dukosi_Voltage_t",
+        "line": 56,
+        "fields": [
+          {
+            "name": "MeDukosi_nu_cell_ID",
+            "type": "uint16_t",
+            "line": 58
+          },
+          {
+            "name": "MeDukosi_V_voltage",
+            "type": "float32_t",
+            "line": 59
+          },
+          {
+            "name": "MeDukosi_nu_validity",
+            "type": "Dukosi_Validity_t",
+            "line": 60
+          }
+        ]
+      },
+      {
+        "name": "Dukosi_Temperature_t",
+        "line": 69,
+        "fields": [
+          {
+            "name": "MeDukosi_nu_cell_ID",
+            "type": "uint16_t",
+            "line": 71
+          },
+          {
+            "name": "MeDukosi_degC_temperature",
+            "type": "float32_t",
+            "line": 72
+          },
+          {
+            "name": "MeDukosi_nu_validity",
+            "type": "Dukosi_Validity_t",
+            "line": 73
+          }
+        ]
+      },
+      {
+        "name": "Dukosi_Temperature_t",
+        "line": 69,
+        "fields": [
+          {
+            "name": "MeDukosi_nu_cell_ID",
+            "type": "uint16_t",
+            "line": 71
+          },
+          {
+            "name": "MeDukosi_degC_temperature",
+            "type": "float32_t",
+            "line": 72
+          },
+          {
+            "name": "MeDukosi_nu_validity",
+            "type": "Dukosi_Validity_t",
+            "line": 73
+          }
+        ]
+      },
+      {
+        "name": "Dukosi_Temperature_result_t",
+        "line": 76,
+        "fields": [
+          {
+            "name": "MeDukosi_nu_min_cell_ID",
+            "type": "uint16_t",
+            "line": 78
+          },
+          {
+            "name": "MeDukosi_nu_max_cell_ID",
+            "type": "uint16_t",
+            "line": 79
+          },
+          {
+            "name": "MeDukosi_degC_min_temperature",
+            "type": "float32_t",
+            "line": 80
+          },
+          {
+            "name": "MeDukosi_degC_max_temperature",
+            "type": "float32_t",
+            "line": 81
+          }
+        ]
+      },
+      {
+        "name": "Dukosi_Temperature_result_t",
+        "line": 76,
+        "fields": [
+          {
+            "name": "MeDukosi_nu_min_cell_ID",
+            "type": "uint16_t",
+            "line": 78
+          },
+          {
+            "name": "MeDukosi_nu_max_cell_ID",
+            "type": "uint16_t",
+            "line": 79
+          },
+          {
+            "name": "MeDukosi_degC_min_temperature",
+            "type": "float32_t",
+            "line": 80
+          },
+          {
+            "name": "MeDukosi_degC_max_temperature",
+            "type": "float32_t",
+            "line": 81
+          }
+        ]
+      },
+      {
+        "name": "DW_Soc_socCorrection_T",
+        "line": 115,
+        "fields": [
+          {
+            "name": "UnitDelay_DSTATE",
+            "type": "_Bool",
+            "line": 117
+          }
+        ]
+      },
+      {
+        "name": "DW_Soc_socCorrection_T",
+        "line": 115,
+        "fields": [
+          {
+            "name": "UnitDelay_DSTATE",
+            "type": "_Bool",
+            "line": 117
+          }
+        ]
+      },
+      {
+        "name": "B_soc_T",
+        "line": 122,
+        "fields": [
+          {
+            "name": "LeSoc_ms_restTiAfterSocReset",
+            "type": "uint32_t",
+            "line": 124
+          },
+          {
+            "name": "LeSoc_ms_restTiAfterWakeOnCorrn",
+            "type": "uint32_t",
+            "line": 125
+          },
+          {
+            "name": "LeSoc_ms_battRestTime",
+            "type": "uint32_t",
+            "line": 126
+          },
+          {
+            "name": "OutportBufferForLaSoc_frc_socOc",
+            "type": "float32_t[195]",
+            "line": 127
+          },
+          {
+            "name": "LaSoc_frc_cellSocOcv",
+            "type": "float32_t[195]",
+            "line": 128
+          },
+          {
+            "name": "LaSoc_frc_cellSoc",
+            "type": "float32_t[195]",
+            "line": 129
+          },
+          {
+            "name": "LaSoc_frc_cellSocOcv_gyx2",
+            "type": "float32_t[195]",
+            "line": 130
+          },
+          {
+            "name": "LaSoc_ms_tauDepolar",
+            "type": "float32_t[195]",
+            "line": 131
+          },
+          {
+            "name": "LaSoc_frc_cellSocOcv_kin5",
+            "type": "float32_t[195]",
+            "line": 132
+          },
+          {
+            "name": "LaSoc_frc_cellSocCc",
+            "type": "float32_t[195]",
+            "line": 133
+          },
+          {
+            "name": "LeSoc_nu_socState",
+            "type": "Soc_State_t",
+            "line": 134
+          },
+          {
+            "name": "LeSoc_bi_ccReset",
+            "type": "_Bool",
+            "line": 135
+          },
+          {
+            "name": "LeSoc_bi_socInNormalStateFlg",
+            "type": "_Bool",
+            "line": 136
+          },
+          {
+            "name": "Compare",
+            "type": "_Bool",
+            "line": 137
+          },
+          {
+            "name": "Compare_go2r",
+            "type": "_Bool",
+            "line": 138
+          },
+          {
+            "name": "Compare_f2dn",
+            "type": "_Bool",
+            "line": 139
+          },
+          {
+            "name": "UnitDelay2",
+            "type": "_Bool",
+            "line": 140
+          }
+        ]
+      },
+      {
+        "name": "B_soc_T",
+        "line": 122,
+        "fields": [
+          {
+            "name": "LeSoc_ms_restTiAfterSocReset",
+            "type": "uint32_t",
+            "line": 124
+          },
+          {
+            "name": "LeSoc_ms_restTiAfterWakeOnCorrn",
+            "type": "uint32_t",
+            "line": 125
+          },
+          {
+            "name": "LeSoc_ms_battRestTime",
+            "type": "uint32_t",
+            "line": 126
+          },
+          {
+            "name": "OutportBufferForLaSoc_frc_socOc",
+            "type": "float32_t[195]",
+            "line": 127
+          },
+          {
+            "name": "LaSoc_frc_cellSocOcv",
+            "type": "float32_t[195]",
+            "line": 128
+          },
+          {
+            "name": "LaSoc_frc_cellSoc",
+            "type": "float32_t[195]",
+            "line": 129
+          },
+          {
+            "name": "LaSoc_frc_cellSocOcv_gyx2",
+            "type": "float32_t[195]",
+            "line": 130
+          },
+          {
+            "name": "LaSoc_ms_tauDepolar",
+            "type": "float32_t[195]",
+            "line": 131
+          },
+          {
+            "name": "LaSoc_frc_cellSocOcv_kin5",
+            "type": "float32_t[195]",
+            "line": 132
+          },
+          {
+            "name": "LaSoc_frc_cellSocCc",
+            "type": "float32_t[195]",
+            "line": 133
+          },
+          {
+            "name": "LeSoc_nu_socState",
+            "type": "Soc_State_t",
+            "line": 134
+          },
+          {
+            "name": "LeSoc_bi_ccReset",
+            "type": "_Bool",
+            "line": 135
+          },
+          {
+            "name": "LeSoc_bi_socInNormalStateFlg",
+            "type": "_Bool",
+            "line": 136
+          },
+          {
+            "name": "Compare",
+            "type": "_Bool",
+            "line": 137
+          },
+          {
+            "name": "Compare_go2r",
+            "type": "_Bool",
+            "line": 138
+          },
+          {
+            "name": "Compare_f2dn",
+            "type": "_Bool",
+            "line": 139
+          },
+          {
+            "name": "UnitDelay2",
+            "type": "_Bool",
+            "line": 140
+          }
+        ]
+      },
+      {
+        "name": "DW_soc_T",
+        "line": 145,
+        "fields": [
+          {
+            "name": "UnitDelay_DSTATE",
+            "type": "float32_t[195]",
+            "line": 147
+          },
+          {
+            "name": "UnitDelay1_DSTATE",
+            "type": "float32_t[195]",
+            "line": 148
+          },
+          {
+            "name": "UnitDelay_DSTATE_lxmr",
+            "type": "float32_t",
+            "line": 149
+          },
+          {
+            "name": "UnitDelay_DSTATE_gguj",
+            "type": "float32_t",
+            "line": 150
+          },
+          {
+            "name": "UnitDelay_DSTATE_fcnr",
+            "type": "float32_t[195]",
+            "line": 151
+          },
+          {
+            "name": "UnitDelay3_DSTATE",
+            "type": "float32_t[195]",
+            "line": 152
+          },
+          {
+            "name": "UnitDelay4_DSTATE",
+            "type": "float32_t[195]",
+            "line": 153
+          },
+          {
+            "name": "UnitDelay2_DSTATE",
+            "type": "float32_t",
+            "line": 154
+          },
+          {
+            "name": "Integrator_DSTATE",
+            "type": "float32_t",
+            "line": 155
+          },
+          {
+            "name": "UnitDelay3_DSTATE_hjte",
+            "type": "_Bool",
+            "line": 156
+          },
+          {
+            "name": "UnitDelay4_DSTATE_dlsb",
+            "type": "_Bool",
+            "line": 157
+          },
+          {
+            "name": "UnitDelay8_DSTATE",
+            "type": "_Bool",
+            "line": 158
+          },
+          {
+            "name": "UnitDelay_DSTATE_pzjh",
+            "type": "_Bool",
+            "line": 159
+          },
+          {
+            "name": "UnitDelay1_DSTATE_fjxo",
+            "type": "_Bool",
+            "line": 160
+          },
+          {
+            "name": "UnitDelay2_DSTATE_mulm",
+            "type": "_Bool",
+            "line": 161
+          },
+          {
+            "name": "Integrator_PrevResetState",
+            "type": "int8_t",
+            "line": 162
+          },
+          {
+            "name": "is_active_c3_soc",
+            "type": "uint8_t",
+            "line": 163
+          },
+          {
+            "name": "is_c3_soc",
+            "type": "uint8_t",
+            "line": 164
+          },
+          {
+            "name": "SocCorrection_SubSys_gqbb",
+            "type": "DW_Soc_socCorrection_T",
+            "line": 165
+          },
+          {
+            "name": "SocCorrection_SubSys",
+            "type": "DW_Soc_socCorrection_T",
+            "line": 166
+          }
+        ]
+      },
+      {
+        "name": "DW_soc_T",
+        "line": 145,
+        "fields": [
+          {
+            "name": "UnitDelay_DSTATE",
+            "type": "float32_t[195]",
+            "line": 147
+          },
+          {
+            "name": "UnitDelay1_DSTATE",
+            "type": "float32_t[195]",
+            "line": 148
+          },
+          {
+            "name": "UnitDelay_DSTATE_lxmr",
+            "type": "float32_t",
+            "line": 149
+          },
+          {
+            "name": "UnitDelay_DSTATE_gguj",
+            "type": "float32_t",
+            "line": 150
+          },
+          {
+            "name": "UnitDelay_DSTATE_fcnr",
+            "type": "float32_t[195]",
+            "line": 151
+          },
+          {
+            "name": "UnitDelay3_DSTATE",
+            "type": "float32_t[195]",
+            "line": 152
+          },
+          {
+            "name": "UnitDelay4_DSTATE",
+            "type": "float32_t[195]",
+            "line": 153
+          },
+          {
+            "name": "UnitDelay2_DSTATE",
+            "type": "float32_t",
+            "line": 154
+          },
+          {
+            "name": "Integrator_DSTATE",
+            "type": "float32_t",
+            "line": 155
+          },
+          {
+            "name": "UnitDelay3_DSTATE_hjte",
+            "type": "_Bool",
+            "line": 156
+          },
+          {
+            "name": "UnitDelay4_DSTATE_dlsb",
+            "type": "_Bool",
+            "line": 157
+          },
+          {
+            "name": "UnitDelay8_DSTATE",
+            "type": "_Bool",
+            "line": 158
+          },
+          {
+            "name": "UnitDelay_DSTATE_pzjh",
+            "type": "_Bool",
+            "line": 159
+          },
+          {
+            "name": "UnitDelay1_DSTATE_fjxo",
+            "type": "_Bool",
+            "line": 160
+          },
+          {
+            "name": "UnitDelay2_DSTATE_mulm",
+            "type": "_Bool",
+            "line": 161
+          },
+          {
+            "name": "Integrator_PrevResetState",
+            "type": "int8_t",
+            "line": 162
+          },
+          {
+            "name": "is_active_c3_soc",
+            "type": "uint8_t",
+            "line": 163
+          },
+          {
+            "name": "is_c3_soc",
+            "type": "uint8_t",
+            "line": 164
+          },
+          {
+            "name": "SocCorrection_SubSys_gqbb",
+            "type": "DW_Soc_socCorrection_T",
+            "line": 165
+          },
+          {
+            "name": "SocCorrection_SubSys",
+            "type": "DW_Soc_socCorrection_T",
+            "line": 166
+          }
+        ]
+      },
+      {
+        "name": "ConstP_soc_T",
+        "line": 171,
+        "fields": [
+          {
+            "name": "pooled7",
+            "type": "uint32_t[2]",
+            "line": 186
+          }
+        ]
+      },
+      {
+        "name": "ConstP_soc_T",
+        "line": 171,
+        "fields": [
+          {
+            "name": "pooled7",
+            "type": "uint32_t[2]",
+            "line": 186
+          }
+        ]
+      }
+    ],
+    "enums": [
+      {
+        "name": "status_t",
+        "line": 41,
+        "constants": [
+          {
+            "name": "ABS_OK",
+            "line": 44
+          },
+          {
+            "name": "ABS_N_OK",
+            "line": 46
+          },
+          {
+            "name": "ABS_PARAM_ERR",
+            "line": 48
+          },
+          {
+            "name": "ABS_INTERFACE_FAIL",
+            "line": 50
+          }
+        ]
+      },
+      {
+        "name": "status_t",
+        "line": 41,
+        "constants": [
+          {
+            "name": "ABS_OK",
+            "line": 44
+          },
+          {
+            "name": "ABS_N_OK",
+            "line": 46
+          },
+          {
+            "name": "ABS_PARAM_ERR",
+            "line": 48
+          },
+          {
+            "name": "ABS_INTERFACE_FAIL",
+            "line": 50
+          }
+        ]
+      },
+      {
+        "name": "Dukosi_Validity_t",
+        "line": 49,
+        "constants": [
+          {
+            "name": "DUKOSI_DATA_INIT",
+            "line": 51
+          },
+          {
+            "name": "DUKOSI_DATA_VALID",
+            "line": 52
+          },
+          {
+            "name": "DUKOSI_DATA_INVALID",
+            "line": 53
+          }
+        ]
+      },
+      {
+        "name": "Dukosi_Validity_t",
+        "line": 49,
+        "constants": [
+          {
+            "name": "DUKOSI_DATA_INIT",
+            "line": 51
+          },
+          {
+            "name": "DUKOSI_DATA_VALID",
+            "line": 52
+          },
+          {
+            "name": "DUKOSI_DATA_INVALID",
+            "line": 53
+          }
+        ]
+      },
+      {
+        "name": "Dukosi_Temptype_t",
+        "line": 63,
+        "constants": [
+          {
+            "name": "DUKOSI_TEMP1",
+            "line": 65
+          },
+          {
+            "name": "DUKOSI_TEMP2",
+            "line": 66
+          }
+        ]
+      },
+      {
+        "name": "Dukosi_Temptype_t",
+        "line": 63,
+        "constants": [
+          {
+            "name": "DUKOSI_TEMP1",
+            "line": 65
+          },
+          {
+            "name": "DUKOSI_TEMP2",
+            "line": 66
+          }
+        ]
+      },
+      {
+        "name": "Battsm_State_t",
+        "line": 85,
+        "constants": [
+          {
+            "name": "BATTSM_STATE_STANDBY_INIT",
+            "line": 87
+          },
+          {
+            "name": "BATTSM_STATE_STANDBY_NOT_READY",
+            "line": 88
+          },
+          {
+            "name": "BATTSM_STATE_STANDBY_READY",
+            "line": 89
+          },
+          {
+            "name": "BATTSM_STATE_PREPARE_BUS_PRECHG",
+            "line": 90
+          },
+          {
+            "name": "BATTSM_STATE_PREPARE_BUS_EXT_ISOLATION_CHK",
+            "line": 91
+          },
+          {
+            "name": "BATTSM_STATE_DRIVE",
+            "line": 92
+          },
+          {
+            "name": "BATTSM_STATE_CHARGE",
+            "line": 93
+          },
+          {
+            "name": "BATTSM_STATE_SUPPORT",
+            "line": 94
+          },
+          {
+            "name": "BATTSM_STATE_DSNG_BUS_WAIT_FOR_CHK",
+            "line": 95
+          },
+          {
+            "name": "BATTSM_STATE_DSNG_BUS_CNTC_WLD_CHK",
+            "line": 96
+          },
+          {
+            "name": "BATTSM_STATE_FASTCHARGE",
+            "line": 97
+          }
+        ]
+      },
+      {
+        "name": "Battsm_State_t",
+        "line": 85,
+        "constants": [
+          {
+            "name": "BATTSM_STATE_STANDBY_INIT",
+            "line": 87
+          },
+          {
+            "name": "BATTSM_STATE_STANDBY_NOT_READY",
+            "line": 88
+          },
+          {
+            "name": "BATTSM_STATE_STANDBY_READY",
+            "line": 89
+          },
+          {
+            "name": "BATTSM_STATE_PREPARE_BUS_PRECHG",
+            "line": 90
+          },
+          {
+            "name": "BATTSM_STATE_PREPARE_BUS_EXT_ISOLATION_CHK",
+            "line": 91
+          },
+          {
+            "name": "BATTSM_STATE_DRIVE",
+            "line": 92
+          },
+          {
+            "name": "BATTSM_STATE_CHARGE",
+            "line": 93
+          },
+          {
+            "name": "BATTSM_STATE_SUPPORT",
+            "line": 94
+          },
+          {
+            "name": "BATTSM_STATE_DSNG_BUS_WAIT_FOR_CHK",
+            "line": 95
+          },
+          {
+            "name": "BATTSM_STATE_DSNG_BUS_CNTC_WLD_CHK",
+            "line": 96
+          },
+          {
+            "name": "BATTSM_STATE_FASTCHARGE",
+            "line": 97
+          }
+        ]
+      },
+      {
+        "name": "Dtcmgr_FaultIndex_t",
+        "line": 101,
+        "constants": [
+          {
+            "name": "DTCMGR_FAULT_1",
+            "line": 103
+          },
+          {
+            "name": "DTCMGR_FAULT_2",
+            "line": 104
+          },
+          {
+            "name": "DTCMGR_NEG_DC_CON_STUCK_OPEN",
+            "line": 105
+          },
+          {
+            "name": "DTCMGR_POS_DC_CON_STUCK_OPEN",
+            "line": 106
+          },
+          {
+            "name": "DTCMGR_NEG_DC_CON_WELDED",
+            "line": 107
+          },
+          {
+            "name": "DTCMGR_POS_DC_CON_WELDED",
+            "line": 108
+          },
+          {
+            "name": "DTCMGR_PRECHARGE_TIMEOUT",
+            "line": 109
+          },
+          {
+            "name": "DTCMGR_PRECHARGE_OVERCURRENT",
+            "line": 110
+          },
+          {
+            "name": "DTCMGR_PRECHARGE_FAIL_CONTACTOR",
+            "line": 111
+          },
+          {
+            "name": "DTCMGR_PRECHARGE_FAIL_RESISTOR",
+            "line": 112
+          },
+          {
+            "name": "DTCMGR_UNINTENDED_OPEN_CONTACTOR",
+            "line": 113
+          },
+          {
+            "name": "DTCMGR_POWER_LIMIT_FAULT",
+            "line": 114
+          },
+          {
+            "name": "DTCMGR_LOWER_SOE_FAULT",
+            "line": 115
+          },
+          {
+            "name": "DTCMGR_PACK_SOHC_FAULT",
+            "line": 116
+          },
+          {
+            "name": "DTCMGR_PACK_SOHR_FAULT",
+            "line": 117
+          },
+          {
+            "name": "DTCMGR_LOWER_SOC_FAULT",
+            "line": 118
+          },
+          {
+            "name": "DTCMGR_FAULT_TOTAL",
+            "line": 120
+          }
+        ]
+      },
+      {
+        "name": "Dtcmgr_FaultIndex_t",
+        "line": 101,
+        "constants": [
+          {
+            "name": "DTCMGR_FAULT_1",
+            "line": 103
+          },
+          {
+            "name": "DTCMGR_FAULT_2",
+            "line": 104
+          },
+          {
+            "name": "DTCMGR_NEG_DC_CON_STUCK_OPEN",
+            "line": 105
+          },
+          {
+            "name": "DTCMGR_POS_DC_CON_STUCK_OPEN",
+            "line": 106
+          },
+          {
+            "name": "DTCMGR_NEG_DC_CON_WELDED",
+            "line": 107
+          },
+          {
+            "name": "DTCMGR_POS_DC_CON_WELDED",
+            "line": 108
+          },
+          {
+            "name": "DTCMGR_PRECHARGE_TIMEOUT",
+            "line": 109
+          },
+          {
+            "name": "DTCMGR_PRECHARGE_OVERCURRENT",
+            "line": 110
+          },
+          {
+            "name": "DTCMGR_PRECHARGE_FAIL_CONTACTOR",
+            "line": 111
+          },
+          {
+            "name": "DTCMGR_PRECHARGE_FAIL_RESISTOR",
+            "line": 112
+          },
+          {
+            "name": "DTCMGR_UNINTENDED_OPEN_CONTACTOR",
+            "line": 113
+          },
+          {
+            "name": "DTCMGR_POWER_LIMIT_FAULT",
+            "line": 114
+          },
+          {
+            "name": "DTCMGR_LOWER_SOE_FAULT",
+            "line": 115
+          },
+          {
+            "name": "DTCMGR_PACK_SOHC_FAULT",
+            "line": 116
+          },
+          {
+            "name": "DTCMGR_PACK_SOHR_FAULT",
+            "line": 117
+          },
+          {
+            "name": "DTCMGR_LOWER_SOC_FAULT",
+            "line": 118
+          },
+          {
+            "name": "DTCMGR_FAULT_TOTAL",
+            "line": 120
+          }
+        ]
+      },
+      {
+        "name": "Dtcmgr_FaultStatus_t",
+        "line": 124,
+        "constants": [
+          {
+            "name": "DTCMGR_FAULT_UNKNOWN",
+            "line": 126
+          },
+          {
+            "name": "DTCMGR_FAULT_CLR",
+            "line": 127
+          },
+          {
+            "name": "DTCMGR_FAULT_SET",
+            "line": 128
+          }
+        ]
+      },
+      {
+        "name": "Dtcmgr_FaultStatus_t",
+        "line": 124,
+        "constants": [
+          {
+            "name": "DTCMGR_FAULT_UNKNOWN",
+            "line": 126
+          },
+          {
+            "name": "DTCMGR_FAULT_CLR",
+            "line": 127
+          },
+          {
+            "name": "DTCMGR_FAULT_SET",
+            "line": 128
+          }
+        ]
+      },
+      {
+        "name": "Soc_State_t",
+        "line": 28,
+        "constants": [
+          {
+            "name": "SOC_STATE_INIT",
+            "line": 30
+          },
+          {
+            "name": "SOC_STATE_RESET",
+            "line": 31
+          },
+          {
+            "name": "SOC_STATE_CORRECTION_ON_WAKE",
+            "line": 32
+          },
+          {
+            "name": "SOC_STATE_NORMAL",
+            "line": 33
+          }
+        ]
+      },
+      {
+        "name": "Soc_State_t",
+        "line": 28,
+        "constants": [
+          {
+            "name": "SOC_STATE_INIT",
+            "line": 30
+          },
+          {
+            "name": "SOC_STATE_RESET",
+            "line": 31
+          },
+          {
+            "name": "SOC_STATE_CORRECTION_ON_WAKE",
+            "line": 32
+          },
+          {
+            "name": "SOC_STATE_NORMAL",
+            "line": 33
+          }
+        ]
+      }
+    ],
+    "typedefs": [
+      {
+        "name": "boolean",
+        "type": "boolean",
+        "line": 571
+      },
+      {
+        "name": "uint8",
+        "type": "uint8",
+        "line": 579
+      },
+      {
+        "name": "uint16",
+        "type": "uint16",
+        "line": 586
+      },
+      {
+        "name": "uint32",
+        "type": "uint32",
+        "line": 593
+      },
+      {
+        "name": "uint64",
+        "type": "uint64",
+        "line": 600
+      },
+      {
+        "name": "sint8",
+        "type": "sint8",
+        "line": 608
+      },
+      {
+        "name": "sint16",
+        "type": "sint16",
+        "line": 615
+      },
+      {
+        "name": "sint32",
+        "type": "sint32",
+        "line": 622
+      },
+      {
+        "name": "sint64",
+        "type": "sint64",
+        "line": 629
+      },
+      {
+        "name": "uint8_least",
+        "type": "uint8_least",
+        "line": 636
+      },
+      {
+        "name": "uint16_least",
+        "type": "uint16_least",
+        "line": 643
+      },
+      {
+        "name": "uint32_least",
+        "type": "uint32_least",
+        "line": 650
+      },
+      {
+        "name": "sint8_least",
+        "type": "sint8_least",
+        "line": 657
+      },
+      {
+        "name": "sint16_least",
+        "type": "sint16_least",
+        "line": 664
+      },
+      {
+        "name": "sint32_least",
+        "type": "sint32_least",
+        "line": 671
+      },
+      {
+        "name": "float32",
+        "type": "float32",
+        "line": 677
+      },
+      {
+        "name": "float64",
+        "type": "float64",
+        "line": 683
+      },
+      {
+        "name": "status_t",
+        "type": "status_t",
+        "line": 51
+      },
+      {
+        "name": "float32_t",
+        "type": "float32_t",
+        "line": 45
+      },
+      {
+        "name": "float32_t_must_be_4_bytes",
+        "type": "float32_t_must_be_4_bytes",
+        "line": 56
+      },
+      {
+        "name": "float64_t",
+        "type": "float64_t",
+        "line": 59
+      },
+      {
+        "name": "float64_t_must_be_8_bytes",
+        "type": "float64_t_must_be_8_bytes",
+        "line": 70
+      },
+      {
+        "name": "Dukosi_Validity_t",
+        "type": "Dukosi_Validity_t",
+        "line": 54
+      },
+      {
+        "name": "Dukosi_Voltage_t",
+        "type": "Dukosi_Voltage_t",
+        "line": 61
+      },
+      {
+        "name": "Dukosi_Temptype_t",
+        "type": "Dukosi_Temptype_t",
+        "line": 67
+      },
+      {
+        "name": "Dukosi_Temperature_t",
+        "type": "Dukosi_Temperature_t",
+        "line": 74
+      },
+      {
+        "name": "Dukosi_Temperature_result_t",
+        "type": "Dukosi_Temperature_result_t",
+        "line": 82
+      },
+      {
+        "name": "Battsm_State_t",
+        "type": "Battsm_State_t",
+        "line": 98
+      },
+      {
+        "name": "Dtcmgr_FaultIndex_t",
+        "type": "Dtcmgr_FaultIndex_t",
+        "line": 121
+      },
+      {
+        "name": "Dtcmgr_FaultStatus_t",
+        "type": "Dtcmgr_FaultStatus_t",
+        "line": 129
+      },
+      {
+        "name": "Soc_State_t",
+        "type": "Soc_State_t",
+        "line": 34
+      },
+      {
+        "name": "DW_Soc_socCorrection_T",
+        "type": "DW_Soc_socCorrection_T",
+        "line": 119
+      },
+      {
+        "name": "B_soc_T",
+        "type": "B_soc_T",
+        "line": 142
+      },
+      {
+        "name": "DW_soc_T",
+        "type": "DW_soc_T",
+        "line": 168
+      },
+      {
+        "name": "ConstP_soc_T",
+        "type": "ConstP_soc_T",
+        "line": 188
+      }
+    ],
+    "macros": [
+      {
+        "name": "soc_model_h_",
+        "line": 2,
+        "type": "conditional",
+        "replacement": ""
+      },
+      {
+        "name": "soc_COMMON_INCLUDES_",
+        "line": 31,
+        "type": "conditional",
+        "replacement": ""
+      },
+      {
+        "name": "PLATFORM_TYPES_H",
+        "line": 43,
+        "type": "conditional",
+        "replacement": ""
+      },
+      {
+        "name": "PLATFORM_VENDOR_ID",
+        "line": 64,
+        "type": "value",
+        "replacement": "43"
+      },
+      {
+        "name": "PLATFORM_AR_RELEASE_MAJOR_VERSION",
+        "line": 65,
+        "type": "value",
+        "replacement": "4"
+      },
+      {
+        "name": "PLATFORM_AR_RELEASE_MINOR_VERSION",
+        "line": 66,
+        "type": "value",
+        "replacement": "7"
+      },
+      {
+        "name": "PLATFORM_AR_RELEASE_REVISION_VERSION",
+        "line": 67,
+        "type": "value",
+        "replacement": "0"
+      },
+      {
+        "name": "PLATFORM_SW_MAJOR_VERSION",
+        "line": 68,
+        "type": "value",
+        "replacement": "6"
+      },
+      {
+        "name": "PLATFORM_SW_MINOR_VERSION",
+        "line": 69,
+        "type": "value",
+        "replacement": "0"
+      },
+      {
+        "name": "PLATFORM_SW_PATCH_VERSION",
+        "line": 70,
+        "type": "value",
+        "replacement": "0"
+      },
+      {
+        "name": "CPU_TYPE_8",
+        "line": 91,
+        "type": "value",
+        "replacement": "8"
+      },
+      {
+        "name": "CPU_TYPE_16",
+        "line": 97,
+        "type": "value",
+        "replacement": "16"
+      },
+      {
+        "name": "CPU_TYPE_32",
+        "line": 103,
+        "type": "value",
+        "replacement": "32"
+      },
+      {
+        "name": "CPU_TYPE_64",
+        "line": 109,
+        "type": "value",
+        "replacement": "64"
+      },
+      {
+        "name": "MSB_FIRST",
+        "line": 115,
+        "type": "value",
+        "replacement": "0"
+      },
+      {
+        "name": "LSB_FIRST",
+        "line": 121,
+        "type": "value",
+        "replacement": "1"
+      },
+      {
+        "name": "HIGH_BYTE_FIRST",
+        "line": 127,
+        "type": "value",
+        "replacement": "0"
+      },
+      {
+        "name": "LOW_BYTE_FIRST",
+        "line": 133,
+        "type": "value",
+        "replacement": "1"
+      },
+      {
+        "name": "CPU_TYPE",
+        "line": 139,
+        "type": "function",
+        "replacement": "( CPU_TYPE_32 )"
+      },
+      {
+        "name": "CPU_BIT_ORDER",
+        "line": 148,
+        "type": "function",
+        "replacement": "( LSB_FIRST )"
+      },
+      {
+        "name": "CPU_BYTE_ORDER",
+        "line": 155,
+        "type": "function",
+        "replacement": "( LOW_BYTE_FIRST )"
+      },
+      {
+        "name": "TRUE",
+        "line": 169,
+        "type": "value",
+        "replacement": "true"
+      },
+      {
+        "name": "FALSE",
+        "line": 185,
+        "type": "value",
+        "replacement": "false"
+      },
+      {
+        "name": "SOC_LUT_SOC_ARRAY_SIZE",
+        "line": 40,
+        "type": "value",
+        "replacement": "21"
+      },
+      {
+        "name": "SOC_LUT_TEMP_ARRAY_SIZE",
+        "line": 53,
+        "type": "value",
+        "replacement": "13"
+      },
+      {
+        "name": "SOC_H",
+        "line": 2,
+        "type": "conditional",
+        "replacement": ""
+      },
+      {
+        "name": "SOC_CFG_H",
+        "line": 2,
+        "type": "conditional",
+        "replacement": ""
+      },
+      {
+        "name": "APP_H",
+        "line": 2,
+        "type": "conditional",
+        "replacement": ""
+      },
+      {
+        "name": "ABS_SYSDEFS_H",
+        "line": 2,
+        "type": "conditional",
+        "replacement": ""
+      },
+      {
+        "name": "ABS_TYPEDEFS_H",
+        "line": 2,
+        "type": "conditional",
+        "replacement": ""
+      },
+      {
+        "name": "DUKOSI_NUMBER_OF_CELLS",
+        "line": 34,
+        "type": "value",
+        "replacement": "( 195u )"
+      },
+      {
+        "name": "ABS_AH_TO_COULOMB",
+        "line": 35,
+        "type": "value",
+        "replacement": "( 3600.0f )"
+      },
+      {
+        "name": "ABS_SEC_TO_MILLISEC",
+        "line": 36,
+        "type": "value",
+        "replacement": "( 1000.0f )"
+      },
+      {
+        "name": "SOC_NUM_OF_CELLS_I32",
+        "line": 31,
+        "type": "value",
+        "replacement": "DUKOSI_NUMBER_OF_CELLS"
+      },
+      {
+        "name": "SOC_CELLS_IN_PARALLEL",
+        "line": 32,
+        "type": "value",
+        "replacement": "( 1u )"
+      },
+      {
+        "name": "SOC_GET_CURRENT",
+        "line": 34,
+        "type": "value",
+        "replacement": "Shunt_getcurrent_ibatt"
+      },
+      {
+        "name": "SOC_GET_NVM_IMPORT_STATUS",
+        "line": 35,
+        "type": "value",
+        "replacement": "App_get_soc_nvm_importstatus"
+      },
+      {
+        "name": "SOC_GET_CELL_VOLTAGES",
+        "line": 36,
+        "type": "value",
+        "replacement": "Dukosi_get_voltage"
+      },
+      {
+        "name": "SOC_GET_CELL_TEMPERATURES",
+        "line": 37,
+        "type": "value",
+        "replacement": "Dukosi_get_temperature"
+      },
+      {
+        "name": "SOC_NVM_READ",
+        "line": 38,
+        "type": "value",
+        "replacement": "App_soc_nvm_read"
+      },
+      {
+        "name": "SOC_GET_REST_TIME",
+        "line": 39,
+        "type": "value",
+        "replacement": "App_get_init_batt_resttime"
+      },
+      {
+        "name": "SOC_GET_BMS_MODE",
+        "line": 40,
+        "type": "value",
+        "replacement": "App_get_battstate"
+      },
+      {
+        "name": "SOC_GET_MIN_MAX_CELL_TEMPERATURE",
+        "line": 41,
+        "type": "value",
+        "replacement": "Dukosi_get_min_max_temperature"
+      },
+      {
+        "name": "SOC_GET_CELL_SOHC_LEVELS",
+        "line": 42,
+        "type": "value",
+        "replacement": "Sohc_get_cell_levels"
+      },
+      {
+        "name": "SOC_GET_BATT_ASLEEP_TIME",
+        "line": 43,
+        "type": "value",
+        "replacement": "App_get_batt_sleeptime"
+      },
+      {
+        "name": "SOC_NVM_WRITE",
+        "line": 44,
+        "type": "value",
+        "replacement": "App_soc_nvm_write"
+      },
+      {
+        "name": "SOC_GET_LOG_FAULT",
+        "line": 45,
+        "type": "value",
+        "replacement": "Dtcmgr_log_fault"
+      },
+      {
+        "name": "SOC_BATSM_DT",
+        "line": 47,
+        "type": "value",
+        "replacement": "Battsm_State_t"
+      },
+      {
+        "name": "SOC_DUKOSI_VOLT_DT",
+        "line": 48,
+        "type": "value",
+        "replacement": "Dukosi_Voltage_t"
+      },
+      {
+        "name": "SOC_DUKOSI_TEMP_DT",
+        "line": 49,
+        "type": "value",
+        "replacement": "Dukosi_Temperature_t"
+      },
+      {
+        "name": "SOC_DUKOSI_TEMP_RES_DT",
+        "line": 50,
+        "type": "value",
+        "replacement": "Dukosi_Temperature_result_t"
+      },
+      {
+        "name": "SOC_NUM_OF_CELLS",
+        "line": 26,
+        "type": "value",
+        "replacement": "( ( int32_t ) SOC_NUM_OF_CELLS_I32 )"
+      },
+      {
+        "name": "soc_IN_CORRECTION_ON_WAKE_STATE",
+        "line": 36,
+        "type": "value",
+        "replacement": "( ( uint8_t ) 1U )"
+      },
+      {
+        "name": "soc_IN_INIT_STATE",
+        "line": 37,
+        "type": "value",
+        "replacement": "( ( uint8_t ) 2U )"
+      },
+      {
+        "name": "soc_IN_NORMAL_STATE",
+        "line": 38,
+        "type": "value",
+        "replacement": "( ( uint8_t ) 3U )"
+      },
+      {
+        "name": "soc_IN_RESET_STATE",
+        "line": 39,
+        "type": "value",
+        "replacement": "( ( uint8_t ) 4U )"
+      }
+    ]
+  }
+]

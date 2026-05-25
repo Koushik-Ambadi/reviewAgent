@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="36">
+  <config>
+    <config>
+      <key>VCAST_COVERAGE_SOURCE_FILE_PERSPECTIVE</key>
+      <value>FALSE</value>
+    </config>
+    <base-directories>
+      <key>VCAST_SourceRoot</key>
+      <value>$(VCAST_SRC_BASE)</value>
+    </base-directories>
+    <saved-logs>5</saved-logs>
+    <build-directory-naming-strategy>COMPRESSED</build-directory-naming-strategy>
+  </config>
+  <project-id>1759254670</project-id>
+  <factor-config-options>0</factor-config-options>
+  <compiler>
+    <compiler>
+      <name>Custom_Green_Hills_ARM_NXP_S32K344_iSystems_Debugger_FLASH</name>
+      <config>
+        <config>
+          <key>WHITEBOX</key>
+          <value>YES</value>
+          <key>COVERAGE_TYPE</key>
+          <value>STATEMENT+BRANCH</value>
+          <key>VCAST_OUTPUT_BUFFER_SIZE</key>
+          <value>2000</value>
+          <key>C_COMPILER_CFG_SOURCE</key>
+          <value>PY_CONFIGURATOR</value>
+          <key>C_EXECUTE_CMD</key>
+          <value>Execute_iSystem.bat</value>
+          <key>C_COMPILER_TAG</key>
+          <value>CUSTOM_GHS_S32K344_ISYSTEMS</value>
+          <key>C_COMPILER_HIERARCHY_STRING</key>
+          <value>Custom_Green Hills ARM_NXP_S32K344_iSystems Debugger</value>
+          <key>C_COMPILER_FAMILY_NAME</key>
+          <value>Green_Hills</value>
+          <key>C_COMPILER_PY_ARGS</key>
+          <value>--lang c --target sim --cpu arm</value>
+          <key>C_COMPILER_VERSION_CMD</key>
+          <value>ccarm -V not.here.c</value>
+          <key>C_DEFINE_LIST</key>
+          <value>ENABLE_FPU I_CACHE_ENABLE D_CACHE_ENABLE CPU_S32K344 CPU_CORTEX_M7 MCAL_ENABLE_USER_MODE_SUPPORT USING_OS_FREERTOS VCAST_OUTPUT_VIA_DEBUGGER __noinline=</value>
+          <key>C_LINKER_VERSION_CMD</key>
+          <value>elxr -V</value>
+          <key>C_PREPROCESS_CMD</key>
+          <value>ccarm -E -C -cpu=cortexm7 -keeptempfiles -fpu=vfpv5_d16 -thumb --no_commons -MD -preprocess_assembly_files -list --no_slash_comment -c99 --no_exceptions --gnu_asm --unsigned_fields --unsigned_chars --no_short_enum --ghstd=last --prototype_errors -Wimplicit-int --incorrect_pragma_warnings -Wshadow -Wtrigraphs -Wundef -Onone -dwarf2</value>
+          <key>C_COMPILE_CMD</key>
+          <value>ccarm -c -G -w -cpu=cortexm7 -keeptempfiles -fpu=vfpv5_d16 -thumb --no_commons -MD -preprocess_assembly_files -list --no_slash_comment -c99 --no_exceptions --gnu_asm --unsigned_fields --unsigned_chars --no_short_enum --ghstd=last --prototype_errors -Wimplicit-int --incorrect_pragma_warnings -Wshadow -Wtrigraphs -Wundef -Onone -dwarf2</value>
+          <key>C_COMPILE_EXCLUDE_FLAGS</key>
+          <value>-o^**</value>
+          <key>C_COMPILER_OUTPUT_FLAG</key>
+          <value>-o^</value>
+          <key>C_DEBUG_CMD</key>
+          <value>Execute_iSystem_Debug.bat winIDEA.exe vcast_ut.xjrf</value>
+          <key>C_LINK_CMD</key>
+          <value>ccarm -G -map=vcast.map -MD -I$(VCAST_SRC_BASE)\s32k344-mcal\src\mcal-base\header -I$(VCAST_SRC_BASE)\s32k344-mcal\src\mcal-base\include          -I$(VCAST_SRC_BASE)\s32k344-mcal\src\board -I$(VCAST_SRC_BASE)\s32k344-mcal\src\generate\include -I$(VCAST_SRC_BASE)\s32k344-mcal\src\RTD\include          -I$(VCAST_SRC_BASE)\s32k344-mcal\src\Project_Settings\Startup_Code -I$(VCAST_SRC_BASE)\s32k344-freertos\src\config  -I$(VCAST_SRC_BASE)\s32k344-freertos\src\include -I$(VCAST_SRC_BASE)\s32k344-freertos\src\portable\GHS\ARM_CM7\r0p1 -I$(VCAST_SRC_BASE)\absdef\src -cpu=cortexm7 -keeptempfiles -fpu=vfpv5_d16 -thumb --no_commons -MD --no_slash_comment -c99 --no_exceptions --gnu_asm --unsigned_fields --unsigned_chars          --no_short_enum --ghstd=last --prototype_errors -Wimplicit-int --incorrect_pragma_warnings -Wshadow -Wtrigraphs -Wundef -Onone          -DENABLE_FPU -DI_CACHE_ENABLE -DD_CACHE_ENABLE -DCPU_S32K344 -DCPU_CORTEX_M7 -DMCAL_ENABLE_USER_MODE_SUPPORT -DUSING_OS_FREERTOS          -g -dwarf2 -Wl,-keep=C40_Ip_AccessCode -map -keepmap -Mn          -nostartfiles -larch -lstartup -lind_sd -LC:\ghs\comp_202514\lib\thumb2 -fsingle -T $(VCAST_SRC_BASE)\s32k344-mcal\src\Project_Settings\Linker_files\linker_flash_s32k344.ld -e Reset_Handler -u VTABLE -hex=vcast.hex  -l$(VCAST_SRC_BASE)\out\build\ghs\s32k344-mcal\src\libs32k344mcal.a -l$(VCAST_SRC_BASE)\out\build\ghs\s32k344-freertos\src\libos_s32k344.a -top_project          $(VCAST_SRC_BASE)\out\build\ghs\abs-core.top.gpj</value>
+          <key>C_OUTPUT_FLAG</key>
+          <value>-o^</value>
+          <key>C_EDG_FLAGS</key>
+          <value>-w --c --ghs --ghs_version=arm --c99</value>
+          <key>EXECUTABLE_EXTENSION</key>
+          <value>.elf</value>
+          <key>VCAST_ENVIRONMENT_FILES</key>
+          <value>$(VCAST_SUPPORT_FILES)\Execute_iSystem.bat,$(VCAST_SUPPORT_FILES)\Execute_iSystem_Debug.bat,$(VCAST_SUPPORT_FILES)\vcast_isystems.py,$(VCAST_SUPPORT_FILES)\vcast_ut.slo,$(VCAST_SUPPORT_FILES)\vcast_ut.xjrf,$(VCAST_SUPPORT_FILES)\vcast_ut.xqrf</value>
+          <key>VCAST_REPOSITORY</key>
+          <value>$(VCAST_PROJ_BASE)\requirements</value>
+          <key>VCAST_PREPROCESS_PREINCLUDE</key>
+          <value>$(VECTORCAST_DIR)/DATA/green_hills/intrinsics.h</value>
+          <key>VCAST_ASSEMBLY_FILE_EXTENSIONS</key>
+          <value>s</value>
+          <key>ASM_FUNCS_BEHAVE_AS_INLINES</key>
+          <value>TRUE</value>
+          <key>VCAST_COVERAGE_FOR_AGGREGATE_INIT</key>
+          <value>FALSE</value>
+          <key>VCAST_COMPILER_SUPPORTS_CPP_CASTS</key>
+          <value>TRUE</value>
+          <key>VCAST_SBF_LIBRARY_STUBS</key>
+          <value>FALSE</value>
+          <key>VCAST_DISABLE_CPP_EXCEPTIONS</key>
+          <value>TRUE</value>
+          <key>VCAST_REMOVE_PREPROCESSOR_COMMENTS</key>
+          <value>FALSE</value>
+          <key>VCAST_USE_COMPOUND_FOR_BATCH</key>
+          <value>TRUE</value>
+          <key>VCAST_NO_MALLOC</key>
+          <value>TRUE</value>
+          <key>VCAST_BUFFER_OUTPUT</key>
+          <value>TRUE</value>
+          <key>VCAST_HAS_LONGLONG</key>
+          <value>TRUE</value>
+          <key>VCAST_NO_STDIN</key>
+          <value>TRUE</value>
+          <key>VCAST_TYPEOF_OPERATOR</key>
+          <value>TRUE</value>
+        </config>
+        <enabled>0</enabled>
+      </config>
+    </compiler>
+    <testsuite name="TestSuite">
+      <config>
+        <search-directory type="LIBRARY_INCLUDE_DIR">$(VCAST_SourceRoot)\absdef\src</search-directory>
+        <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\app</search-directory>
+        <search-directory type="LIBRARY_INCLUDE_DIR">$(VCAST_SourceRoot)\s32k344-freertos\src</search-directory>
+        <search-directory type="LIBRARY_INCLUDE_DIR">$(VCAST_SourceRoot)\s32k344-freertos\src\config</search-directory>
+        <search-directory type="LIBRARY_INCLUDE_DIR">$(VCAST_SourceRoot)\s32k344-freertos\src\include</search-directory>
+        <search-directory type="LIBRARY_INCLUDE_DIR">$(VCAST_SourceRoot)\s32k344-freertos\src\portable\GHS\ARM_CM7\r0p1</search-directory>
+        <search-directory type="LIBRARY_INCLUDE_DIR">$(VCAST_SourceRoot)\s32k344-freertos\src\portable\MemMang</search-directory>
+        <search-directory type="TYPE_HANDLED_SOURCE_DIR">$(VCAST_SourceRoot)\s32k344-mcal\src\Project_Settings\Startup_Code</search-directory>
+        <search-directory type="TYPE_HANDLED_SOURCE_DIR">$(VCAST_SourceRoot)\s32k344-mcal\src\RTD\include</search-directory>
+        <search-directory type="TYPE_HANDLED_SOURCE_DIR">$(VCAST_SourceRoot)\s32k344-mcal\src\RTD\src</search-directory>
+        <search-directory type="TYPE_HANDLED_SOURCE_DIR">$(VCAST_SourceRoot)\s32k344-mcal\src\board</search-directory>
+        <search-directory type="TYPE_HANDLED_SOURCE_DIR">$(VCAST_SourceRoot)\s32k344-mcal\src\generate\include</search-directory>
+        <search-directory type="TYPE_HANDLED_SOURCE_DIR">$(VCAST_SourceRoot)\s32k344-mcal\src\generate\src</search-directory>
+        <search-directory type="TYPE_HANDLED_SOURCE_DIR">$(VCAST_SourceRoot)\s32k344-mcal\src\mcal-base\header</search-directory>
+        <search-directory type="TYPE_HANDLED_SOURCE_DIR">$(VCAST_SourceRoot)\s32k344-mcal\src\mcal-base\include</search-directory>
+        <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\src</search-directory>
+        <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\bs_cfg</search-directory>
+      </config>
+    </testsuite>
+  </compiler>
+  <compiler>
+    <compiler>
+      <name>Custom_Green_Hills_ARM_NXP_S32K344_iSystems_Debugger_RAM</name>
+      <config>
+        <config>
+          <key>WHITEBOX</key>
+          <value>YES</value>
+          <key>COVERAGE_TYPE</key>
+          <value>STATEMENT+BRANCH</value>
+          <key>VCAST_OUTPUT_BUFFER_SIZE</key>
+          <value>2000</value>
+          <key>VCAST_MAX_HEAP_SIZE</key>
+          <value>81920</value>
+          <key>C_EXECUTE_CMD</key>
+          <value>Execute_iSystem.bat</value>
+          <key>C_COMPILER_TAG</key>
+          <value>ARM_GH_SIM</value>
+          <key>C_COMPILER_HIERARCHY_STRING</key>
+          <value>Custom_Green Hills ARM_NXP_S32K344_iSystems Debugger</value>
+          <key>C_DEFINE_LIST</key>
+          <value>ENABLE_FPU I_CACHE_ENABLE D_CACHE_ENABLE CPU_S32K344 CPU_CORTEX_M7 MCAL_ENABLE_USER_MODE_SUPPORT USING_OS_FREERTOS VCAST_OUTPUT_VIA_DEBUGGER __noinline=</value>
+          <key>C_PREPROCESS_CMD</key>
+          <value>ccarm -E -C -MD -G -Odebug -bsp s32k3,344 -fpu=vfpv5_d16 -thumb -align8 -dwarf2 -c99 --gnu_asm</value>
+          <key>C_COMPILE_CMD</key>
+          <value>ccarm -c -g -MD -G -Odebug -bsp s32k3,344 -fpu=vfpv5_d16 -thumb -align8 -dwarf2 -c99 --gnu_asm</value>
+          <key>C_DEBUG_CMD</key>
+          <value>Execute_iSystem_Debug.bat winIDEA.exe vcast_ut.xjrf</value>
+          <key>C_LINK_CMD</key>
+          <value>ccarm -G -map=vcast.map -MD -Odebug -bsp s32k3,344 -fpu=vfpv5_d16 -thumb -align8 -dwarf2 -c99 --gnu_asm standalone_ram.ld</value>
+          <key>C_EDG_FLAGS</key>
+          <value>-w --c --ghs --ghs_version=arm --c99</value>
+          <key>EXECUTABLE_EXTENSION</key>
+          <value>.elf</value>
+          <key>VCAST_ENVIRONMENT_FILES</key>
+          <value>$(VCAST_SUPPORT_FILES)\Execute_iSystem.bat,$(VCAST_SUPPORT_FILES)\Execute_iSystem_Debug.bat,$(VCAST_SUPPORT_FILES)\standalone_ram.ld,$(VCAST_SUPPORT_FILES)\vcast_isystems.py,$(VCAST_SUPPORT_FILES)\vcast_ut.slo,$(VCAST_SUPPORT_FILES)\vcast_ut.xjrf,$(VCAST_SUPPORT_FILES)\vcast_ut.xqrf</value>
+          <key>VCAST_USE_COMPOUND_FOR_BATCH</key>
+          <value>TRUE</value>
+          <key>VCAST_NO_MALLOC</key>
+          <value>TRUE</value>
+          <key>VCAST_BUFFER_OUTPUT</key>
+          <value>TRUE</value>
+          <key>VCAST_NO_STDIN</key>
+          <value>TRUE</value>
+        </config>
+      </config>
+    </compiler>
+    <testsuite name="TestSuite">
+      <config>
+        <search-directory type="LIBRARY_INCLUDE_DIR">$(VCAST_SourceRoot)\absdef\src</search-directory>
+        <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\app</search-directory>
+        <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\s32k344-freertos\src</search-directory>
+        <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\s32k344-freertos\src\config</search-directory>
+        <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\s32k344-freertos\src\include</search-directory>
+        <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\s32k344-freertos\src\portable\GHS\ARM_CM7\r0p1</search-directory>
+        <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\s32k344-freertos\src\portable\MemMang</search-directory>
+        <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\s32k344-mcal\src\Project_Settings\Startup_Code</search-directory>
+        <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\s32k344-mcal\src\RTD\include</search-directory>
+        <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\s32k344-mcal\src\RTD\src</search-directory>
+        <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\s32k344-mcal\src\board</search-directory>
+        <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\s32k344-mcal\src\generate\include</search-directory>
+        <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\s32k344-mcal\src\generate\src</search-directory>
+        <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\s32k344-mcal\src\mcal-base\header</search-directory>
+        <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\s32k344-mcal\src\mcal-base\include</search-directory>
+        <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\src</search-directory>
+        <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\bs_cfg</search-directory>
+      </config>
+    </testsuite>
+  </compiler>
+  <compiler>
+    <compiler>
+      <name>PC_Based_Testing</name>
+      <config>
+        <config>
+          <key>COVERAGE_TYPE</key>
+          <value>STATEMENT+BRANCH</value>
+          <key>C_COMPILER_TAG</key>
+          <value>BUILTIN_MINGW_C</value>
+          <key>C_DEFINE_LIST</key>
+          <value>ENABLE_FPU I_CACHE_ENABLE D_CACHE_ENABLE CPU_S32K344 CPU_CORTEX_M7 MCAL_ENABLE_USER_MODE_SUPPORT USING_OS_FREERTOS VCAST_OUTPUT_VIA_DEBUGGER __noinline=</value>
+        </config>
+      </config>
+    </compiler>
+    <testsuite name="TestSuite">
+      <config>
+        <search-directory type="LIBRARY_INCLUDE_DIR">$(VCAST_SourceRoot)\absdef\src</search-directory>
+        <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\app</search-directory>
+        <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\s32k344-freertos\src</search-directory>
+        <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\s32k344-freertos\src\config</search-directory>
+        <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\s32k344-freertos\src\include</search-directory>
+        <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\s32k344-freertos\src\portable\GHS\ARM_CM7\r0p1</search-directory>
+        <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\s32k344-freertos\src\portable\MemMang</search-directory>
+        <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\s32k344-mcal\src\Project_Settings\Startup_Code</search-directory>
+        <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\s32k344-mcal\src\RTD\include</search-directory>
+        <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\s32k344-mcal\src\RTD\src</search-directory>
+        <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\s32k344-mcal\src\board</search-directory>
+        <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\s32k344-mcal\src\generate\include</search-directory>
+        <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\s32k344-mcal\src\generate\src</search-directory>
+        <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\s32k344-mcal\src\mcal-base\header</search-directory>
+        <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\s32k344-mcal\src\mcal-base\include</search-directory>
+        <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\src</search-directory>
+        <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\bs_cfg</search-directory>
+      </config>
+    </testsuite>
+  </compiler>
+</project>

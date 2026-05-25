@@ -37,8 +37,33 @@
 /* Exported data define */
 
 /* Definition for custom storage class: Define */
-#define SOC_LUT_SOC_ARRAY_SIZE         21                       
-#define SOC_LUT_TEMP_ARRAY_SIZE        13                       
+#define SOC_LUT_SOC_ARRAY_SIZE         21                        /* Referenced by:
+                                                                  * '<S12>/HystCompensationLookup'
+                                                                  * '<S12>/OcvBasedSocLookupTable'
+                                                                  * '<S15>/Tau_2DLookup_MaxTemp'
+                                                                  * '<S15>/Tau_2DLookup_MinTemp'
+                                                                  * '<S17>/HystCompensationLookup'
+                                                                  * '<S17>/OcvBasedSocLookupTable'
+                                                                  * '<S19>/Tau_2DLookup_MaxTemp'
+                                                                  * '<S19>/Tau_2DLookup_MinTemp'
+                                                                  * '<S20>/HystCompensationLookup'
+                                                                  * '<S20>/OcvBasedSocLookupTable'
+                                                                  * SOC array breakpoint array size
+                                                                  */
+#define SOC_LUT_TEMP_ARRAY_SIZE        13                        /* Referenced by:
+                                                                  * '<S11>/1-D Lookup Table'
+                                                                  * '<S12>/HystCompensationLookup'
+                                                                  * '<S12>/OcvBasedSocLookupTable'
+                                                                  * '<S15>/Tau_2DLookup_MaxTemp'
+                                                                  * '<S15>/Tau_2DLookup_MinTemp'
+                                                                  * '<S17>/HystCompensationLookup'
+                                                                  * '<S17>/OcvBasedSocLookupTable'
+                                                                  * '<S19>/Tau_2DLookup_MaxTemp'
+                                                                  * '<S19>/Tau_2DLookup_MinTemp'
+                                                                  * '<S20>/HystCompensationLookup'
+                                                                  * '<S20>/OcvBasedSocLookupTable'
+                                                                  * Temperature array breakpoint array size
+                                                                  */
 
 /* Includes for objects with custom storage classes */
 #include "soc.h"

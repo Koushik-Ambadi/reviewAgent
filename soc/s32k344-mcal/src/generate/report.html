@@ -1,0 +1,1449 @@
+<html>
+    <title>S32K344 Resource Allocation report</title>
+    <head>
+    <style>
+        html, body {
+            position: relative;
+            min-height: 100%;
+            height: 100%;
+        }
+
+        html {
+            position: relative;
+            margin: 16px;
+            padding: 0;
+            min-height: 100%;
+        }
+
+        body {
+            font-family: 'RobotoDraft', 'Roboto', 'Helvetica Neue, Helvetica, Arial', sans-serif;
+            font-style: normal;
+            font-weight: 300;
+            font-size: 14px;
+            line-height: 16px;
+            letter-spacing: 0.01rem;
+            color: #212121;
+            background-color: #f5f5f5;
+
+        -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+        .shadow-z-1 {
+            -webkit-box-shadow: 0 1px 3px 0 rgba(0,0,0,.12),
+            0 1px 2px 0 rgba(0,0,0,.24);
+            -moz-box-shadow:    0 1px 3px 0 rgba(0,0,0,.12),
+            0 1px 2px 0 rgba(0,0,0,.24);
+            box-shadow:         0 1px 3px 0 rgba(0,0,0,.12),
+            0 1px 2px 0 rgba(0,0,0,.24);
+        }
+
+        .table-head
+        {
+            position: sticky;
+            top: 0px;
+            z-index: 100;
+            margin-bottom : 10px;
+            background-color: white;
+        }
+
+        .table-head-decoration > th:hover
+        {
+            text-decoration : underline;
+            color : Orange;
+        }
+
+        .table {
+            font-size : 12px;
+            margin-bottom: 2rem;
+            background-color: #fff;
+            min-width: 100%;
+        }
+
+        .table-legend {
+            margin-bottom: 2rem;
+            background-color: #fff;
+            position: absolute;
+            right: 0px;
+            padding-right : 3rem;
+        }
+
+        .table > thead > tr > th, .table > thead > tr > td, .table > tbody > tr > th, .table > tbody > tr > td, .table > tfoot > tr > th, .table > tfoot > tr > td {
+            text-align: center;
+            padding: 6px;
+            vertical-align: top;
+            border-top: 0;
+        }
+        .table > thead > tr > th {
+            font-weight: 100;
+            color: #757575;
+            vertical-align: bottom;
+            border-bottom: 1px solid rgba(0,0,0,0.12);
+        }
+        .table > caption + thead > tr:first-child > th, .table > caption + thead > tr:first-child > td, .table > colgroup + thead > tr:first-child > th, .table > colgroup + thead > tr:first-child > td, .table > thead:first-child > tr:first-child > th, .table > thead:first-child > tr:first-child > td {
+            border-top: 0;
+            position: absolute;
+            width: 8em;
+            margin-left: -8em;
+        }
+        .table > tbody + tbody {
+            border-top: 1px solid rgba(0,0,0,0.12);
+        }
+        .table .table {
+            background-color: #fff;
+        }
+        .table .no-border {
+            border: 0;
+        }
+        .table-condensed > thead > tr > th, .table-condensed > thead > tr > td, .table-condensed > tbody > tr > th, .table-condensed > tbody > tr > td, .table-condensed > tfoot > tr > th, .table-condensed > tfoot > tr > td {
+            padding: 0.8rem;
+        }
+        .table-bordered {
+            border: 0;
+        }
+        .table-bordered > thead > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > th, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > th, .table-bordered > tfoot > tr > td {
+            border: 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .table-bordered > thead > tr > th, .table-bordered > thead > tr > td {
+            border-bottom-width: 2px;
+        }
+        .table-hover > tbody > tr:hover > td, .table-hover > tbody > tr:hover > th {
+            background-color: rgba(0,0,0,0.12);
+        }
+
+        .tables-container
+        {
+            padding-bottom : 1rem;
+        }
+
+        .banner-parent
+        {
+            padding : 0.5rem 0.5rem;
+            background : white;
+            margin-bottom : 1rem;
+        }
+
+        .filter-parent
+        {
+            padding : 2rem 1rem;
+            background : white;
+            margin-bottom : 2rem;
+        }
+
+        .banner-button
+        {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-bottom : 2rem;
+            float : left;
+            margin-right : 1rem;
+            min-width : 1rem;
+        }
+
+        .banner-button-hover
+        {
+            background-color:   #FFA500; /* Orange */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-bottom : 2rem;
+            float : left;
+            margin-right : 1rem;
+        }
+
+        .filter-unallocated-button
+        {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-bottom : 2rem;
+            float : right;
+            margin-right : 1rem;
+        }
+
+        .filter-unallocated-button-hover
+        {
+            background-color:   #FFA500; /* Orange */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-bottom : 2rem;
+            float : right;
+            margin-right : 1rem;
+        }
+
+        .banner-text
+        {
+            font-family: 'RobotoDraft', 'Roboto', 'Helvetica Neue, Helvetica, Arial', sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 16px;
+            line-height: 16px;
+            letter-spacing: 0.01rem;
+        }
+
+        .legend-text
+        {
+            font-family: 'RobotoDraft', 'Roboto', 'Helvetica Neue, Helvetica, Arial', sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 16px;
+            line-height: 16px;
+            letter-spacing: 0.01rem;
+            text-align: right;
+            padding-right: 30rem;
+        }
+
+        .banner-links-parent
+        {
+            background : white;
+            margin-bottom : 4rem;
+            padding: 1rem 1rem;
+        }
+
+        .links-parent
+        {
+            background : white;
+            margin-bottom : 1rem;
+            float : left;
+        }
+
+        .links-header
+        {
+            font-family: 'RobotoDraft', 'Roboto', 'Helvetica Neue, Helvetica, Arial', sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 16px;
+            line-height: 16px;
+            letter-spacing: 0.01rem;
+        }
+
+        .links-text
+        {
+            font-family: 'RobotoDraft', 'Roboto', 'Helvetica Neue, Helvetica, Arial', sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 16px;
+            line-height: 16px;
+            letter-spacing: 0.01rem;
+            margin-right : 0.2rem;
+        }
+
+        .button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-bottom : 2rem;
+            margin-left: 0.5rem;
+        }
+
+        .FilteringText {
+            font-family: 'RobotoDraft', 'Roboto', 'Helvetica Neue, Helvetica, Arial', sans-serif;
+            font-style: normal;
+            font-weight: 300;
+            font-size: 14px;
+            line-height: 16px;
+            letter-spacing: 0.01rem;
+        }
+
+        .FilteringTextLarger {
+            font-family: 'RobotoDraft', 'Roboto', 'Helvetica Neue, Helvetica, Arial', sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 16px;
+            line-height: 16px;
+            letter-spacing: 0.01rem;
+        }
+
+        .summary {
+            padding-bottom : 25rem;
+            background : white;
+            margin-bottom : 2rem;
+        }
+
+        .summary-text {
+            padding : 1rem;
+            background : white;
+            margin-bottom : 2rem;
+            float : left;
+        }
+
+        .summary-legend {
+            padding-top : 5rem;
+            background : white;
+        }
+
+        .logo-parent {
+            padding : 1rem;
+            background : white;
+            margin-bottom : 2rem;
+        }
+
+        .logo-image {
+            max-width: 100%;
+            height: auto;
+            float : left;
+            margin-right : 1rem;
+        }
+
+        .logo-text {
+            font-family: 'RobotoDraft', 'Roboto', 'Helvetica Neue, Helvetica, Arial', sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 20px;
+            line-height: 16px;
+            letter-spacing: 0.01rem;
+        }
+
+        .back_to_top_div
+        {
+            position:fixed;
+            top:97%;
+            left:2%;
+        }
+
+        .back_to_top {
+            background-color: #6495ED; /* Blue */
+            border: none;
+            color: white;
+            padding: 3px 3px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 12px;
+            margin-bottom : 2rem;
+            margin-left: 0.5rem;
+            opacity :35%;
+        }
+
+        .context-menu {
+            background-color: gray;
+            border: 2px;
+            position : absolute;
+            width : auto;
+            left : 0px;
+            top : 0px;
+            padding : 5px;
+        }
+    </style>
+    <script type="text/javascript"/>
+
+        var mem_descriptor_arr = [];
+        var master_descriptor_arr = [];
+        var periph_descriptor_arr = [];
+        var total_masters = 0;
+        var allocated_masters = 0;
+        var unallocated_masters = 0;
+        var multidomain_masters = 0;
+        var total_peripherals = 0;
+        var allocated_peripherals = 0;
+        var unallocated_peripherals = 0;
+        var shared_peripherals = 0;
+        var total_memories = 0;
+        var allocated_memories = 0;
+        var unallocated_memories = 0;
+        var shared_memories = 0;
+        var filters_active = [];
+        var xrdc_support_enabled = true;
+        var debug = true;
+        var peripheralContextActive = false;
+        var hide_unused_masters = false;
+        var master_dict = [];
+        var master_allocation_dict = [];
+        var master_list = 'Xrdc_0_CM7_0, Xrdc_0_eDMA_AHB, Xrdc_0_EMAC_AHB'.split(", ");
+        var peripherals_list = 'Xrdc_0_TRGMUX, Xrdc_0_BCTU, Xrdc_0_EMIOS_0, Xrdc_0_EMIOS_1, Xrdc_0_EMIOS_2, Xrdc_0_LCU_0, Xrdc_0_LCU_1, Xrdc_0_ADC_0, Xrdc_0_ADC_1, Xrdc_0_ADC_2, Xrdc_0_PIT_0, Xrdc_0_PIT_1, Xrdc_0_AXBS, Xrdc_0_System_XBIC, Xrdc_0_Periph_XBIC, Xrdc_0_EDMA, Xrdc_0_EDMA_TCD_0, Xrdc_0_EDMA_TCD_1, Xrdc_0_EDMA_TCD_2, Xrdc_0_EDMA_TCD_3, Xrdc_0_EDMA_TCD_4, Xrdc_0_EDMA_TCD_5, Xrdc_0_EDMA_TCD_6, Xrdc_0_EDMA_TCD_7, Xrdc_0_EDMA_TCD_8, Xrdc_0_EDMA_TCD_9, Xrdc_0_EDMA_TCD_10, Xrdc_0_EDMA_TCD_11, Xrdc_0_Debug_APB_Page0, Xrdc_0_Debug_APB_Page1, Xrdc_0_Debug_APB_Page2, Xrdc_0_Debug_APB_Page3, Xrdc_0_Debug_APB_Paged_Area, Xrdc_0_SDA_AP, Xrdc_0_EIM_0, Xrdc_0_ERM_0, Xrdc_0_MSCM, Xrdc_0_PRAM_0, Xrdc_0_PFC, Xrdc_0_PFC_alt, Xrdc_0_SWT_0, Xrdc_0_STM_0, Xrdc_0_XRDC, Xrdc_0_INTM, Xrdc_0_DMAMUX_0, Xrdc_0_DMAMUX_1, Xrdc_0_RTC, Xrdc_0_MC_RGM, Xrdc_0_SIUL2_VIRTWRAPPER_PDAC0_HSE_B_0, Xrdc_0_SIUL2_VIRTWRAPPER_PDAC0_HSE_B_1, Xrdc_0_SIUL2_VIRTWRAPPER_PDAC1_M7_0_0, Xrdc_0_SIUL2_VIRTWRAPPER_PDAC1_M7_0_1, Xrdc_0_SIUL2_VIRTWRAPPER_PDAC3, Xrdc_0_DCM, Xrdc_0_WKPU, Xrdc_0_CMU_0_5, Xrdc_0_TSPC, Xrdc_0_SIRC, Xrdc_0_SXOSC, Xrdc_0_FIRC, Xrdc_0_FXOSC, Xrdc_0_MC_CGM, Xrdc_0_MC_ME, Xrdc_0_PLL, Xrdc_0_PMC, Xrdc_0_FMU, Xrdc_0_FMU_alt, Xrdc_0_PIT_2, Xrdc_0_FlexCAN_0, Xrdc_0_FlexCAN_1, Xrdc_0_FlexCAN_2, Xrdc_0_FlexCAN_3, Xrdc_0_FlexCAN_4, Xrdc_0_FlexCAN_5, Xrdc_0_FlexIO, Xrdc_0_LPUART_0, Xrdc_0_LPUART_1, Xrdc_0_LPUART_2, Xrdc_0_LPUART_3, Xrdc_0_LPUART_4, Xrdc_0_LPUART_5, Xrdc_0_LPUART_6, Xrdc_0_LPUART_7, Xrdc_0_LPI2C_0, Xrdc_0_LPI2C_1, Xrdc_0_LPSPI_0, Xrdc_0_LPSPI_1, Xrdc_0_LPSPI_2, Xrdc_0_LPSPI_3, Xrdc_0_SAI_0, Xrdc_0_LPCMP_0, Xrdc_0_LPCMP_1, Xrdc_0_TMU, Xrdc_0_CRC, Xrdc_0_FCCU, Xrdc_0_MU_0, Xrdc_0_JDC, Xrdc_0_CONFIGURATION_GPR, Xrdc_0_STCU, Xrdc_0_SELFTEST_GPR, Xrdc_0_TCM_XBIC, Xrdc_0_EDMA_XBIC, Xrdc_0_EDMA_TCD_12, Xrdc_0_EDMA_TCD_13, Xrdc_0_EDMA_TCD_14, Xrdc_0_EDMA_TCD_15, Xrdc_0_EDMA_TCD_16, Xrdc_0_EDMA_TCD_17, Xrdc_0_EDMA_TCD_18, Xrdc_0_EDMA_TCD_19, Xrdc_0_EDMA_TCD_20, Xrdc_0_EDMA_TCD_21, Xrdc_0_EDMA_TCD_22, Xrdc_0_EDMA_TCD_23, Xrdc_0_EDMA_TCD_24, Xrdc_0_EDMA_TCD_25, Xrdc_0_EDMA_TCD_26, Xrdc_0_EDMA_TCD_27, Xrdc_0_EDMA_TCD_28, Xrdc_0_EDMA_TCD_29, Xrdc_0_EDMA_TCD_30, Xrdc_0_EDMA_TCD_31, Xrdc_0_SEMA_42, Xrdc_0_PRAM_1, Xrdc_0_STM_1, Xrdc_0_EMAC, Xrdc_0_LPUART_8, Xrdc_0_LPUART_9, Xrdc_0_LPUART_10, Xrdc_0_LPUART_11, Xrdc_0_LPUART_12, Xrdc_0_LPUART_13, Xrdc_0_LPUART_14, Xrdc_0_LPUART_15, Xrdc_0_LPSPI_4, Xrdc_0_LPSPI_5, Xrdc_0_QuadSPI, Xrdc_0_SAI_1, Xrdc_0_LPCMP_2, Xrdc_0_MU_1'.split(", ");
+        var memories_list = 'Xrdc_0_PFLASH_0, Xrdc_0_PFLASH_1, Xrdc_0_PFLASH_2, Xrdc_0_PFLASH_3, Xrdc_0_PFLASH_WR, Xrdc_0_PRAM0_0, Xrdc_0_PRAM1_0, Xrdc_0_ITCM_backdoor, Xrdc_0_DTCM_backdoor, Xrdc_0_QuadSPI'.split(", ");
+
+        var domainCount = 3;
+        function ConsoleLog(msg)
+        {
+            if(debug)
+            {
+                console.log(msg);
+            }
+        }
+
+        function create_padded_hex(num, len)
+        {
+            var val = num.toString(16).toUpperCase();
+            return "0x" + "0".repeat( len / 4 - val.length) + val;
+        }
+
+        function create_mem_table(tableData, full_memory_list) {
+          var table = document.getElementById('MemoryTable')
+          var row = {};
+          var cell = {};
+
+          header = ["Memory Region", "Descriptor", "Semaphore enable", "Semaphore Number", "Start Address", "End Address"];
+          header_ids = ["mem_Region", "mem_Descriptor", "mem_semaEnable", "mem_semaNumber", "mem_startAddress", "mem_EndAddress"];
+          header_percent = [15, 5, 5, 5, 5, 5];
+
+          var percentage_used = 0;
+
+          for(var i = 0; i < header_percent.length; i++)
+          {
+            percentage_used += header_percent[i];
+          }
+
+          for(var i = 0; i < domainCount; i++)
+          {
+            header.push("DID" + i + " S");
+            header.push("DID" + i + " NS");
+            header_ids.push("mem_DIDS" + i);
+            header_ids.push("mem_DIDNS" + i);
+            header_percent.push((100 - percentage_used)/(2 * domainCount));
+            header_percent.push((100 - percentage_used)/(2 * domainCount));
+          }
+
+          var tableHeader=document.getElementById('MemoryTable-header');
+
+          //row = table.insertRow(-1); // [-1] for last position in Safari
+          for(var i = 0; i < header.length; i++){
+            cell = document.createElement('th');
+            cell.textContent = header[i];
+            cell.id = header_ids[i];
+            cell.style = "width:" + header_percent[i] + "%";
+            tableHeader.appendChild(cell);
+          }
+
+
+          tableData.forEach(function(rowData) {
+            var overlap = false;
+            for (var mem of tableData) {
+                if ((rowData.mrc == mem.mrc) && (rowData.descriptor_number != mem.descriptor_number)) {
+                    if (((mem.start_address <= rowData.start_address) && (rowData.start_address <= mem.end_address))
+                        || ((mem.start_address <= rowData.end_address) && (rowData.end_address <= mem.end_address))
+                        || ((rowData.start_address <= mem.start_address) && (rowData.end_address >= mem.end_address))) {
+                            overlap = true;
+                    }
+                }
+            }
+            row = table.insertRow(-1); // [-1] for last position in Safari
+            cell = row.insertCell();
+            cell.textContent = rowData.mrc.replace(rowData.instance_prefix + "_", rowData.instance_prefix.toUpperCase() + ":");
+            cell.style="text-align:left";
+            cell = row.insertCell();
+            cell.textContent = rowData.descriptor_number;
+            cell = row.insertCell();
+            cell.textContent = rowData.sema4_enable;
+            cell = row.insertCell();
+            cell.textContent = rowData.sema4_number;
+            cell = row.insertCell();
+            cell.textContent = create_padded_hex(rowData.start_address, 40);
+            if (overlap == true) {
+                cell.style="text-align:center; color:#FFA500; font-weight: bold;";
+            }
+            cell = row.insertCell();
+            cell.textContent = create_padded_hex(rowData.end_address, 40);
+            if (overlap == true) {
+                cell.style="text-align:center; color:#FFA500; font-weight: bold;";
+            }
+            rowData.update_rights();
+            var domainsAllocated = 0;
+            for(var i = 0; i < domainCount; i++)
+            {
+                var allocated = false;
+                cell = row.insertCell();
+                cell.textContent = rowData.rights['secure'][i].replace('XRDC_', '');
+
+                if(cell.textContent == 'UNALLOCATED')
+                {
+                    cell.textContent = "U";
+                    cell.style.backgroundColor = "LightCoral";
+                }
+                else if(cell.textContent.includes("READ_ONLY"))
+                {
+                    cell.textContent = "RO";
+                    cell.style.backgroundColor = "orange";
+                }
+                else if(cell.textContent.includes("FULL_ACCESS"))
+                {
+                    cell.textContent = "RW";
+                    cell.style.backgroundColor = "LightGreen";
+                    allocated = true;
+                }
+                else if(cell.textContent.includes("SUPERVISOR_ACCESS_ONLY"))
+                {
+                    cell.textContent = "SRW";
+                    cell.style.backgroundColor = "Turquoise";
+                }
+                else if(cell.textContent.includes("SUPERVISOR_READ_ONLY"))
+                {
+                    cell.textContent = "SRO";
+                    cell.style.backgroundColor = "GoldenRod";
+                }
+                else if(cell.textContent.includes("NO_ACCESS"))
+                {
+                    cell.textContent = "D";
+                    cell.style.backgroundColor = "Crimson";
+                }
+                cell = row.insertCell();
+                cell.textContent = rowData.rights['non_secure'][i].replace('XRDC_', '');
+                if(cell.textContent == 'UNALLOCATED')
+                {
+                    cell.textContent = "U";
+                    cell.style.backgroundColor = "LightCoral";
+                }
+                else if(cell.textContent.includes("READ_ONLY"))
+                {
+                    cell.textContent = "RO";
+                    cell.style.backgroundColor = "orange";
+                }
+                else if(cell.textContent.includes("FULL_ACCESS"))
+                {
+                    cell.textContent = "RW";
+                    cell.style.backgroundColor = "LightGreen";
+                    allocated = true;
+                }
+                else if(cell.textContent.includes("SUPERVISOR_ACCESS_ONLY"))
+                {
+                    cell.textContent = "SRW";
+                    cell.style.backgroundColor = "Turquoise";
+                }
+                else if(cell.textContent.includes("SUPERVISOR_READ_ONLY"))
+                {
+                    cell.textContent = "SRO";
+                    cell.style.backgroundColor = "GoldenRod";
+                }
+                else if(cell.textContent.includes("NO_ACCESS"))
+                {
+                    cell.textContent = "D";
+                    cell.style.backgroundColor = "Crimson";
+                }
+                if(allocated)
+                {
+                    domainsAllocated++;
+                }
+            }
+            if(domainsAllocated > 0)
+            {
+                allocated_memories++;
+            }
+
+            if(domainsAllocated > 1)
+            {
+                row.style.backgroundColor = "orange";
+                shared_memories++;
+            }
+          });
+
+          total_memories = full_memory_list.length;
+
+          full_memory_list.forEach(function(rowData) {
+            if(rowData.trim().length == 0)
+            {
+                //skip
+            }
+            else
+            {
+                if(tableData.find(x => x.mrc == rowData.trim()))
+                {
+                    //skip
+                }
+                else
+                {
+                    unallocated_memories++;
+                    row = table.insertRow(-1); // [-1] for last position in Safari
+                    cell = row.insertCell();
+                    instanceXrdc = rowData.substring(0, rowData.indexOf("_", rowData.indexOf("_")+1)+1);
+                    newValue = instanceXrdc.substring(0, instanceXrdc.lastIndexOf("_"))+":";
+                    cell.textContent = rowData.replace(instanceXrdc, newValue);
+                    cell.textContent += '*';
+                    cell.title = 'Not allocated in the configurator';
+                    cell = row.insertCell();
+                    cell.textContent = 0;
+                    cell = row.insertCell();
+                    cell.textContent = false;
+                    cell = row.insertCell();
+                    cell.textContent = 0;
+                    cell = row.insertCell();
+                    cell.textContent = create_padded_hex(0, 40);
+                    cell = row.insertCell();
+                    cell.textContent = create_padded_hex(0, 40);
+                    for(var i = 0; i < domainCount; i++)
+                    {
+                        cell = row.insertCell();
+                        cell.textContent = "U";
+                        cell.style.backgroundColor = "LightCoral";
+                        cell = row.insertCell();
+                        cell.textContent = "U";
+                        cell.style.backgroundColor = "LightCoral";
+                    }
+                }
+            }
+          });
+
+        }
+
+        function create_peripheral_table(tableData, full_periph_list) {
+          var table = document.getElementById('PeripheralTable')
+          var row = {};
+          var cell = {};
+
+          header = ["Peripheral Name", "Peripheral Slot", "Semaphore enable", "Semaphore Number"];
+          header_ids = ["per_name", "per_slot", "per_semaEnable", "per_semaNumber"];
+          header_percent = [15, 10, 7.5, 7.5];
+
+          var percentage_used = 0;
+
+          for(var i = 0; i < header_percent.length; i++)
+          {
+            percentage_used += header_percent[i];
+          }
+
+          for(var i = 0; i < domainCount; i++)
+          {
+            header.push("DID" + i + " S");
+            header.push("DID" + i + " NS");
+            header_ids.push("per_DIDS" + i);
+            header_ids.push("per_DIDNS" + i);
+            header_percent.push((100 - percentage_used)/(2 * domainCount));
+            header_percent.push((100 - percentage_used)/(2 * domainCount));
+          }
+
+          var tableHeader=document.getElementById('PeripheralTable-header');
+
+
+          //row = table.insertRow(-1); // [-1] for last position in Safari
+          for(var i = 0; i < header.length; i++)
+          {
+            cell = document.createElement('th');
+            cell.textContent = header[i];
+            cell.id = header_ids[i];
+            cell.style = "width:" + header_percent[i] + "%";
+            tableHeader.appendChild(cell);
+          }
+
+          var perNameCell = document.getElementById("per_name");
+          var memNameCell = document.getElementById("mem_Region");
+
+          perNameCell.style.width = memNameCell.style.width;
+
+          var peripheralIndex = 0;
+
+          for(var rowCnt = 0; rowCnt < tableData.length; rowCnt++)
+          {
+            var rowData = tableData[rowCnt];
+            row = table.insertRow(-1); // [-1] for last position in Safari
+            cell = row.insertCell();
+            cell.textContent = rowData.peripheral_slot.replace(rowData.instance_prefix + "_", rowData.instance_prefix.toUpperCase() + ":");
+            cell.style="text-align:left";
+            cell.id = "rowPeriph" + peripheralIndex + "_id" + rowCnt;
+            cell = row.insertCell();
+            cell.textContent = rowData.pdac_number;
+            cell.id = "rowPeriph" + peripheralIndex + "_pdac";
+            cell = row.insertCell();
+            cell.textContent = rowData.sema4_enable;
+            cell.id = "rowPeriph" + peripheralIndex + "_semaEnable";
+            cell = row.insertCell();
+            cell.textContent = rowData.sema4_number;
+            cell.id = "rowPeriph" + peripheralIndex + "_semaValue";
+            rowData.update_rights();
+            var domainsAllocated = 0;
+            for(var i = 0; i < domainCount; i++)
+            {
+                var allocated = false;
+                cell = row.insertCell();
+                cell.textContent = rowData.rights['secure'][i].replace('XRDC_', '');
+
+                if(cell.textContent == 'UNALLOCATED')
+                {
+                    cell.textContent = "U";
+                    cell.style.backgroundColor = "LightCoral";
+                }
+                else if(cell.textContent.includes("SUPERVISOR_ACCESS_ONLY"))
+                {
+                    cell.textContent = "SRW";
+                    cell.style.backgroundColor = "Turquoise";
+                }
+                else if(cell.textContent.includes("SUPERVISOR_READ_ONLY"))
+                {
+                    cell.textContent = "SRO";
+                    cell.style.backgroundColor = "GoldenRod";
+                }
+                else if(cell.textContent.includes("READ_ONLY"))
+                {
+                    cell.textContent = "RO";
+                    cell.style.backgroundColor = "orange";
+                }
+                else if(cell.textContent.includes("FULL_ACCESS"))
+                {
+                    cell.textContent = "RW";
+                    cell.style.backgroundColor = "LightGreen";
+                    allocated = true;
+                }
+                else if(cell.textContent.includes("NO_ACCESS"))
+                {
+                    cell.textContent = "D";
+                    cell.style.backgroundColor = "Crimson";
+                }
+                cell.id = "rowPeriph" + peripheralIndex + "_domain" + i + "_S";
+                cell = row.insertCell();
+                cell.textContent = rowData.rights['non_secure'][i].replace('XRDC_', '');
+                if(cell.textContent == 'UNALLOCATED')
+                {
+                    cell.textContent = "U";
+                    cell.style.backgroundColor = "LightCoral";
+                }
+                else if(cell.textContent.includes("SUPERVISOR_ACCESS_ONLY"))
+                {
+                    cell.textContent = "SRW";
+                    cell.style.backgroundColor = "Turquoise";
+                }
+                else if(cell.textContent.includes("SUPERVISOR_READ_ONLY"))
+                {
+                    cell.textContent = "SRO";
+                    cell.style.backgroundColor = "GoldenRod";
+                }
+                else if(cell.textContent.includes("READ_ONLY"))
+                {
+                    cell.textContent = "RO";
+                    cell.style.backgroundColor = "orange";
+                }
+                else if(cell.textContent.includes("FULL_ACCESS"))
+                {
+                    cell.textContent = "RW";
+                    cell.style.backgroundColor = "LightGreen";
+                    allocated = true;
+                }
+                else if(cell.textContent.includes("NO_ACCESS"))
+                {
+                    cell.textContent = "D";
+                    cell.style.backgroundColor = "Crimson";
+                }
+                cell.id = "rowPeriph" + peripheralIndex + "_domain" + i + "_NS";
+                if(allocated)
+                {
+                    domainsAllocated++;
+                }
+            }
+            if(domainsAllocated > 0)
+            {
+                allocated_peripherals++;
+            }
+            if(domainsAllocated > 1)
+            {
+                row.style.backgroundColor = "orange";
+                shared_peripherals++;
+            }
+            peripheralIndex++;
+          }
+
+          total_peripherals = full_periph_list.length;
+
+          full_periph_list.forEach(function(rowData) {
+            if(tableData.find(x => x.peripheral_slot == rowData.trim()))
+            {
+                //skip
+            }
+            else
+            {
+                unallocated_peripherals++;
+                row = table.insertRow(-1); // [-1] for last position in Safari
+                cell = row.insertCell();
+                instanceXrdc = rowData.substring(0, rowData.indexOf("_", rowData.indexOf("_")+1)+1);
+                newValue = instanceXrdc.substring(0, instanceXrdc.lastIndexOf("_"))+":";
+                cell.textContent = rowData.replace(instanceXrdc, newValue);
+                cell.textContent += '*';
+                cell.title = 'Not allocated in the configurator';
+                cell.id = "rowPeriph" + peripheralIndex + "_id_undefined";
+                cell = row.insertCell();
+                cell.textContent = "0"; // UPDATE with correct PDAC
+                cell.id = "rowPeriph" + peripheralIndex + "_pdac";
+                cell = row.insertCell();
+                cell.textContent = false;
+                cell.id = "rowPeriph" + peripheralIndex + "_semaEnable";
+                cell = row.insertCell();
+                cell.textContent = 0;
+                cell.id = "rowPeriph" + peripheralIndex + "_semaNumber";
+                for(var i = 0; i < domainCount; i++)
+                {
+                    cell = row.insertCell();
+                    cell.textContent = "U";
+                    cell.style.backgroundColor = "LightCoral";
+                    cell.id = "rowPeriph" + peripheralIndex + "_domain" + i + "_S";
+                    cell = row.insertCell();
+                    cell.textContent = "U";
+                    cell.style.backgroundColor = "LightCoral";
+                    cell.id = "rowPeriph" + peripheralIndex + "_domain" + i + "_NS";
+                }
+                peripheralIndex++;
+            }
+          });
+        }
+
+        function filter_memory_table(table, did)
+        {
+            var offset = 6;
+            var rows = table.getElementsByTagName("tr");
+            for(var row = 0; row < rows.length; row++)
+            {
+                var match = [];
+                for(var i = 0; i < did.length; i++)
+                {
+                    var cellSecured = rows[row].getElementsByTagName("td")[offset + 2 * did[i]];
+                    var cellNonSecured = rows[row].getElementsByTagName("td")[offset + 2 * did[i] + 1];
+                    ConsoleLog(cellSecured.textContent);
+                    ConsoleLog(cellNonSecured.textContent);
+                    if((cellSecured.textContent == 'U') && (cellNonSecured.textContent == 'U'))
+                    {
+                    }
+                    else if((cellSecured.textContent == 'D') && (cellNonSecured.textContent == 'D'))
+                    {
+                        match.push(did[i]);
+                    }
+                    else
+                    {
+                        match.push(did[i]);
+                    }
+                }
+                if(match.length == 0)
+                {
+                    ConsoleLog("Hiding row : " + row);
+                    rows[row].style.display = "none";
+                }
+                else
+                {
+                    ConsoleLog("Showing row : " + row);
+                    rows[row].style.display = "";
+                }
+            }
+        }
+
+        function filter_peripheral_table(table, did)
+        {
+            var offset = 4;
+            var rows = table.getElementsByTagName("tr");
+            for(var row = 0; row < rows.length; row++)
+            {
+                var match = [];
+                for(var i = 0; i < did.length; i++)
+                {
+                    var cellSecured = rows[row].getElementsByTagName("td")[offset + 2 * did[i]];
+                    var cellNonSecured = rows[row].getElementsByTagName("td")[offset + 2 * did[i] + 1];
+                    ConsoleLog(cellSecured.textContent);
+                    ConsoleLog(cellNonSecured.textContent);
+                    if((cellSecured.textContent == 'U') && (cellNonSecured.textContent == 'U'))
+                    {
+                    }
+                    else if((cellSecured.textContent == 'D') && (cellNonSecured.textContent == 'D'))
+                    {
+                        match.push(did[i]);
+                    }
+                    else
+                    {
+                        match.push(did[i]);
+                    }
+                }
+                if(match.length == 0)
+                {
+                    ConsoleLog("Hiding row : " + row);
+                    rows[row].style.display = "none";
+                }
+                else
+                {
+                    ConsoleLog("Showing row : " + row);
+                    rows[row].style.display = "";
+                }
+            }
+        }
+
+        function filter_domain_table(table, did)
+        {
+            var offset = 1;
+            var rows = table.getElementsByTagName("tr");
+            for(var row = 0; row < rows.length; row++)
+            {
+                var master_name = rows[row].getElementsByTagName("td")[0].textContent;
+                var match = false;
+                for(var i = 0; i < did.length; i++)
+                {
+                    var domain = rows[row].getElementsByTagName("td")[offset + did[i]];
+                    if(domain.textContent != '-')
+                    {
+                        match = true;
+                    }
+                }
+                if(hide_unused_masters)
+                {
+                    if(master_allocation_dict[master_name] == undefined)
+                    {
+                        rows[row].style.display = "none";
+                    }
+                }
+                if(!match)
+                {
+                    rows[row].style.display = "none";
+                }
+                else
+                {
+                    rows[row].style.display = "";
+                }
+            }
+        }
+
+        function reset_domain_table(table)
+        {
+            var offset = 1;
+            var rows = table.getElementsByTagName("tr");
+            for(var row = 0; row < rows.length; row++)
+            {
+                ConsoleLog("Showing row : " + row);
+                rows[row].style.display = "";
+            }
+        }
+
+        function reset_memory_table(table)
+        {
+            var offset = 6;
+            var rows = table.getElementsByTagName("tr");
+            for(var row = 0; row < rows.length; row++)
+            {
+                ConsoleLog("Showing row : " + row);
+                rows[row].style.display = "";
+
+            }
+        }
+
+        function reset_peripheral_table(table)
+        {
+            var offset = 3;
+            var rows = table.getElementsByTagName("tr");
+            for(var row = 0; row < rows.length; row++)
+            {
+                ConsoleLog("Showing row : " + row);
+                rows[row].style.display = "";
+            }
+        }
+
+        function callback_did(event, item)
+        {
+            var id = event.target.id;
+            ConsoleLog(id);
+            if(peripheralContextActive)
+            {
+                peripheralContextActive = false;
+                var ctx_menu = document.getElementById("peripheralContextMenu");
+                ctx_menu.style.visibility = "hidden";
+            }
+
+            if(id.includes("_DID"))
+            {
+                var did = Number(id.substr(id.lastIndexOf('_DID') + 4, 2));
+                if(filters_active.includes(did))
+                {
+                    var index = filters_active.indexOf(did);
+                    filters_active.splice(index, 1);
+                }
+                else
+                {
+                    filters_active.push(did);
+                }
+                filter_memory_table(document.getElementById("MemoryTable"), filters_active);
+                filter_domain_table(document.getElementById("MasterTable"), filters_active);
+                filter_peripheral_table(document.getElementById("PeripheralTable"), filters_active);
+
+                if(filters_active.length > 0)
+                {
+                    banner = document.getElementById('filter-hidden');
+                    var newText = document.getElementById('FilterText');
+                    if(newText != undefined)
+                    {
+                        banner.removeChild(newText);
+                    }
+
+                    var newButton = document.getElementById('clearButton');
+                    if(newButton != undefined)
+                    {
+                        banner.removeChild(newButton);
+                    }
+
+                    newButton = document.createElement('button');
+                    newButton.id = 'clearButton';
+                    newButton.className = "banner-button";
+                    newButton.textContent = "Clear filter";
+                    newButton.addEventListener('click', clearButtonClick);
+                    newButton.addEventListener('mouseover', clearButtonOver);
+                    newButton.addEventListener('mouseout', clearButtonOut);
+                    newText = document.createElement('p');
+                    newText.id = "FilterText";
+                    newText.className = "banner-text";
+                    newText.textContent = 'Filtering resources allocated to domain ID: ' + filters_active;
+                    banner.appendChild(newButton);
+                    banner.appendChild(newText);
+
+                    banner.className = "banner-parent";
+                }
+                else
+                {
+                    clearButtonClick();
+                }
+
+                //document.getElementById('FilterText').style.visibility = 'visible';
+            }
+        }
+
+        function rightClick(event, id)
+        {
+            peripheralContextActive = true;
+            //if(id.startsWith("rowPeriph"))
+            //{
+            //  if(id.includes("_domain"))
+            //  {
+            //      event.preventDefault();
+            //      var ctx_menu = document.getElementById("peripheralContextMenu");
+            //      ctx_menu.style.top = event.pageY - 10;
+            //      ctx_menu.style.left = event.pageX - 10;
+            //      ctx_menu.style.visibility = "";
+            //  }
+            //}
+        }
+
+        function clearButtonClick()
+        {
+            filters_active = [];
+
+            if(hide_unused_masters)
+            {
+                var temp_filtered_list = new Array(domainCount);
+                for(var cnt = 0; cnt < domainCount; cnt++)
+                {
+                    temp_filtered_list[cnt] = cnt;
+                }
+                filter_domain_table(document.getElementById("MasterTable"), temp_filtered_list);
+                filter_peripheral_table(document.getElementById("PeripheralTable"), temp_filtered_list);
+                filter_memory_table(document.getElementById("MemoryTable"), temp_filtered_list);
+            }
+            else
+            {
+                reset_domain_table(document.getElementById("MasterTable"));
+                reset_peripheral_table(document.getElementById("PeripheralTable"));
+                reset_memory_table(document.getElementById("MemoryTable"));
+            }
+
+            banner = document.getElementById('filter-hidden');
+            banner.removeChild(document.getElementById('clearButton'));
+            banner.removeChild(document.getElementById('FilterText'));
+        }
+
+        function clearButtonOver()
+        {
+            ConsoleLog("hover");
+            document.getElementById("clearButton").className="banner-button-hover";
+        }
+
+        function clearButtonOut()
+        {
+            ConsoleLog("hover");
+            document.getElementById("clearButton").className = "banner-button";
+        }
+
+        function filterButtonClick()
+        {
+            if(hide_unused_masters)
+            {
+                document.getElementById('filterButton').textContent = "Hide unallocated items";
+                if(filters_active.length > 0)
+                {
+                    filter_domain_table(document.getElementById("MasterTable"), filters_active);
+                    filter_peripheral_table(document.getElementById("PeripheralTable"), filters_active);
+                    filter_memory_table(document.getElementById("MemoryTable"), filters_active);
+                }
+                else
+                {
+                    reset_domain_table(document.getElementById("MasterTable"));
+                    reset_peripheral_table(document.getElementById("PeripheralTable"));
+                    reset_memory_table(document.getElementById("MemoryTable"));
+                }
+            }
+            else
+            {
+                document.getElementById('filterButton').textContent = "Show unallocated items";
+                if(filters_active.length > 0)
+                {
+                    filter_domain_table(document.getElementById("MasterTable"), filters_active);
+                    filter_peripheral_table(document.getElementById("PeripheralTable"), filters_active);
+                    filter_memory_table(document.getElementById("MemoryTable"), filters_active);
+                }
+                else
+                {
+                    var temp_filtered_list = new Array(domainCount);
+                    for(var cnt = 0; cnt < domainCount; cnt++)
+                    {
+                        temp_filtered_list[cnt] = cnt;
+                    }
+                    filter_domain_table(document.getElementById("MasterTable"), temp_filtered_list);
+                    filter_peripheral_table(document.getElementById("PeripheralTable"), temp_filtered_list);
+                    filter_memory_table(document.getElementById("MemoryTable"), temp_filtered_list);
+                }
+            }
+
+            hide_unused_masters = !hide_unused_masters;
+
+        }
+
+        function filterButtonOver()
+        {
+            ConsoleLog("hover");
+            document.getElementById("filterButton").className="filter-unallocated-button-hover";
+        }
+
+        function filterButtonOut()
+        {
+            ConsoleLog("hover");
+            document.getElementById("filterButton").className = "filter-unallocated-button";
+        }
+
+        function callback_mouse_over(item)
+        {
+            var node = document.getElementById(item);
+            if(item.includes("_DID_"))
+            {
+                var did = Number(item.substr(item.lastIndexOf('_') + 1, 2));
+                var master = item.replace('rowDid_', '');
+                master = master.substr(0, master.lastIndexOf('_DID_'));
+                var tooltipContents = 'Click me to see resources allocated to domain ' + did + '\n';
+                node.title = tooltipContents;
+            }
+        }
+
+        function callback_mouse_out(item)
+        {
+            var id = event.target.id;
+            if(id.includes("_DID_"))
+            {
+                var tip = document.getElementById('tooltip');
+                event.target.removeChild(tip);
+            }
+        }
+
+        function create_did_table(descriptor_array)
+        {
+            master_list.forEach(function(elem) {
+                master_dict[elem] = new Array(domainCount);
+                total_masters++;
+                for(var cnt = 0; cnt < domainCount; cnt++)
+                {
+                    master_dict[elem][cnt] = new Array(2);
+                    master_dict[elem][cnt][0] = '-';
+                    master_dict[elem][cnt][1] = null;
+                }
+            });
+
+            for (var iter = 0; iter < descriptor_array.length; iter++)
+            {
+                master_dict[descriptor_array[iter].name][descriptor_array[iter].domain_id][0] = 'x';
+                master_dict[descriptor_array[iter].name][descriptor_array[iter].domain_id][1] = iter;
+                master_allocation_dict[descriptor_array[iter].name] = master_dict[descriptor_array[iter].name].flatMap(x => x[1]).filter(x => x != null).length;
+            }
+
+          var table = document.getElementById('MasterTable');
+
+          var row = {};
+          var cell = {};
+
+          header = ["Master"];
+          header_percent = [20];
+
+          var percentage_used = 0;
+
+          for(var i = 0; i < header_percent.length; i++)
+          {
+            percentage_used += header_percent[i];
+          }
+
+          for(var i = 0; i < domainCount; i++)
+          {
+            header.push("DID" + i);
+            header_percent.push((100 - percentage_used)/domainCount);
+          }
+
+          var tableHeader=document.getElementById('MasterTable-header');
+
+          //row = table.insertRow(-1); // [-1] for last position in Safari
+          for(var i = 0; i < header.length; i++) {
+            cell = document.createElement('th');
+            cell.textContent = header[i];
+            cell.id = "didHead_" + header[i];
+            cell.style.width = header_percent[i] + "%";
+            cell.className = "table-head";
+            tableHeader.appendChild(cell);
+          }
+
+          var ordered_masters = [];
+
+          for (var master in master_dict)
+          {
+            ordered_masters.push(master);
+          }
+
+          ordered_masters.sort();
+
+          for(var i = 0; i < ordered_masters.length; i++) {
+            var master = ordered_masters[i];
+            var allocated_to_domains = false;
+            row = table.insertRow(-1); // [-1] for last position in Safari
+            cell = row.insertCell();
+            cell.id = "rowMaster_" + master;
+            cell.style="text-align:left";
+            const regex = /(Xrdc_[A-Za-z0-9]+)_(.*)/;
+            cell.textContent = master.replace(regex, "$1").toUpperCase() +  master.replace(regex," : $2");
+            var domainsAllocated = 0;
+            for(var did = 0; did < domainCount; did++)
+            {
+                cell = row.insertCell();
+                cell.textContent = master_dict[master][did][0];
+                cell.id = "rowDid_" + master + "_DID" + did;
+                if(master_dict[master][did][0] == 'x')
+                {
+                    cell.style.backgroundColor = "LightGreen";
+                    allocated_to_domains = true;
+                    domainsAllocated++;
+                }
+            }
+            if(allocated_to_domains == false)
+            {
+                unallocated_masters++;
+                if(hide_unused_masters)
+                {
+                    row.style.visibility="none";
+                }
+            }
+            else
+            {
+                allocated_masters++;
+            }
+            if(domainsAllocated > 1)
+            {
+                multidomain_masters++;
+            }
+          }
+        }
+
+        function setCallbacks() {
+            document.body.onmousedown = function (e) {
+              e = e || window.event;
+              var elementId = (e.target || e.srcElement).id;
+
+              callback_did(e, elementId);
+
+            }
+
+            document.body.onmouseover = function (e) {
+              e = e || window.event;
+              var elementId = (e.target || e.srcElement).id;
+
+              callback_mouse_over(elementId);
+
+            }
+            document.body.onmouseout = function (e) {
+              e = e || window.event;
+              var elementId = (e.target || e.srcElement).id;
+
+              //callback_mouse_out(elementId);
+
+            }
+
+            document.body.oncontextmenu = function (e) {
+              e = e || window.event;
+              var elementId = (e.target || e.srcElement).id;
+
+              rightClick(e, elementId);
+
+            }
+        }
+
+        window.onload = function() {
+            if(xrdc_support_enabled)
+            {
+                create_mem_table(mem_descriptor_arr, memories_list);
+                create_peripheral_table(periph_descriptor_arr, peripherals_list);
+                create_did_table(master_descriptor_arr);
+                setCallbacks();
+                document.getElementById('total_masters').textContent = "Total masters: " + total_masters;
+                document.getElementById('configured_masters').textContent = "Configured masters: " + allocated_masters;
+                document.getElementById('multidomain_masters').textContent = "Masters with multiple domains: " + multidomain_masters;
+                document.getElementById('unallocated_masters').textContent = "Unallocated Masters: " + unallocated_masters;
+                document.getElementById('total_memories').textContent = "Total Memories: " + total_memories;
+                document.getElementById('configured_memories').textContent = "Configured Memories: " + allocated_memories;
+                document.getElementById('shared_memories').textContent = "Shared Memories: " + shared_memories;
+                document.getElementById('unallocated_memories').textContent = "Unallocated Memories: " + unallocated_memories;
+                document.getElementById('total_peripherals').textContent = "Total Peripherals: " + total_peripherals;
+                document.getElementById('configured_peripherals').textContent = "Configured Peripherals: " + allocated_peripherals;
+                document.getElementById('shared_peripherals').textContent = "Shared Peripherals: " + shared_peripherals;
+                document.getElementById('unallocated_peripherals').textContent = "Unallocated Peripherals: " + unallocated_peripherals;
+
+                filter_hidden = document.getElementById('filter-hidden');
+
+                banner = document.getElementById('banner-links-parent');
+                newFilterButton = document.createElement('button');
+                newFilterButton.id = 'filterButton';
+                newFilterButton.className = "filter-unallocated-button";
+                newFilterButton.textContent = "Hide unallocated items";
+                newFilterButton.addEventListener('click', filterButtonClick);
+                newFilterButton.addEventListener('mouseover', filterButtonOver);
+                newFilterButton.addEventListener('mouseout', filterButtonOut);
+                banner.appendChild(newFilterButton);
+
+                document.getElementById("back_to_top").addEventListener("click", function(){ window.scrollTo(0,0) });
+                document.getElementById("back_to_top").addEventListener("mouseover", function(){ document.getElementById("back_to_top").style = "opacity:100%" });
+                document.getElementById("back_to_top").addEventListener("mouseout", function(){ document.getElementById("back_to_top").style = "opacity:35%" });
+            }
+            else
+            {
+                document.getElementById('summary_title').textContent = 'XRDC support is disabled. Report is empty';
+            }
+        }
+    </script>
+    </head>
+    <body>
+    <div id="logo-parent" class="logo-parent shadow-z-1">
+        <img src="data:image/png;base64,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"  class="logo-image"/>
+        <p class="logo-text" id="logoText">Resource Manager Allocation Report</p>
+    </div>
+
+    <div id="summary" class="summary shadow-z-1">
+        <div id="summary-text" class="summary-text">
+            <p id="summary_title" class="FilteringTextLarger">Summary of resource allocation:</p>
+            <p id="total_masters" class="FilteringText"/>
+            <p id="configured_masters" class="FilteringText"/>
+            <p id="multidomain_masters" class="FilteringText"/>
+            <p id="unallocated_masters" class="FilteringText"/>
+            <p id="total_peripherals" class="FilteringText"/>
+            <p id="configured_peripherals" class="FilteringText"/>
+            <p id="shared_peripherals" class="FilteringText"/>
+            <p id="unallocated_peripherals" class="FilteringText"/>
+            <p id="total_memories" class="FilteringText"/>
+            <p id="configured_memories" class="FilteringText"/>
+            <p id="shared_memories" class="FilteringText"/>
+            <p id="unallocated_memories" class="FilteringText"/>
+        </div>
+        <div id="summary-legend" class="summary-legend">
+            <div class="table-responsive-vertical">
+                <p class="legend-text">Legend</p>
+                <table id="RightsTable" class="table-legend table-mc-light-blue shadow-z-1">
+                    <thead>
+                        <th>Representation</th>
+                        <th>Description</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td bgcolor="LightGreen" style="text-align:center">RW</td>
+                            <td>Read Write</td>
+                        </tr>
+                        <tr>
+                            <td bgcolor="orange" style="text-align:center">RO</td>
+                            <td>Read Only</td>
+                        </tr>
+                        <tr>
+                            <td bgcolor="Crimson" style="text-align:center">D</td>
+                            <td>Access Denied</td>
+                        </tr>
+                        <tr>
+                            <td bgcolor="LightCoral" style="text-align:center">U</td>
+                            <td>Unallocated - Access Denied</td>
+                        </tr>
+                        <tr>
+                            <td bgcolor="GoldenRod" style="text-align:center">SRO</td>
+                            <td>Supervisor read only</td>
+                        </tr>
+                        <tr>
+                            <td bgcolor="Turquoise" style="text-align:center">SRW</td>
+                            <td>Supervisor read write</td>
+                        </tr>
+                        <tr>
+                            <td bgcolor="orange" style="text-align:center">Xrdc_0_GTM</td>
+                            <td>Shared peripheral/memory</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center">Xrdc_0_GTM<b>*</b></td>
+                            <td>Peripheral/Memory is not allocated to any domain</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center">DID<i>n</i> NS</td>
+                            <td>Domain ID <i>n</i> Non Secure Access</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center">DID<i>n</i> S</td>
+                            <td>Domain ID <i>n</i> Secure Access</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center; color:#FFA500; font-weight: bold;">0x34602000</td>
+                            <td>Overlapped memory</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="banner" class="banner-parent shadow-z-1">
+        <div id="banner-links-parent" class="banner-links-parent">
+            <div id="Links" class="links-parent">
+                <p class="links-header">Go to:</p>
+                <a href="#MasterTable-Label" class="links-text">Masters Table</a>
+                <a href="#MemoryTable-Label" class="links-text">Memories Table</a>
+                <a href="#PeripheralTable-Label" class="links-text">Peripherals Table</a>
+            </div>
+        </div>
+        <div id="filter-hidden" class="filter-parent">
+        </div>
+    </div>
+
+    <div id="peripheralContextMenu" class="context-menu" style="visibility:hidden">
+        <p id="peripheralContextMenu_Header">Select item for peripheral</p>
+    </div>
+
+    <div id="tables" class="tables-container">
+        <p class="logo-text" id="MasterTable-Label">Master Allocation</p>
+        <div class="table-responsive-vertical shadow-z-1">
+            <table id="MasterTable" class="table table-hover table-mc-light-blue">
+                <thead id="MasterTable-header" class="table-head table-head-decoration" />
+            </table>
+        </div>
+        <p class="logo-text" id="MemoryTable-Label">Memory Allocation</p>
+        <div class="table-responsive-vertical shadow-z-1">
+            <table id="MemoryTable" class="table table-hover table-mc-light-blue">
+                <thead id="MemoryTable-header" class="table-head"/>
+            </table>
+        </div>
+
+        <p class="logo-text" id="PeripheralTable-Label">Peripheral Allocation</p>
+        <div class="table-responsive-vertical shadow-z-1">
+            <table id="PeripheralTable" class="table table-hover table-mc-light-blue">
+                <thead id="PeripheralTable-header" class="table-head"/>
+            </table>
+        </div>
+        <p>
+    </div>
+    <div id="back_to_top_div" class="back_to_top_div">
+        <button id="back_to_top" class="back_to_top" href="#">Scroll back</button>
+    </div>
+    </body>
+</html>
+

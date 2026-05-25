@@ -6,8 +6,13 @@ set(PROJECT_NAME "soc-component")
 # Need to set path to linker script for toolchain file to work
 set(LINKER_SCRIPT_PATH "${CMAKE_SOURCE_DIR}/s32k344-mcal/src/Project_Settings/Linker_files/linker_flash_s32k344.ld")
 
-#set(TOOLCHAIN_FILE_PATH "${CMAKE_SOURCE_DIR}/absdef/toolchain_cfg/s32k344_ghs_toolchain.cmake")
-#set(CMAKE_TOOLCHAIN_FILE ${TOOLCHAIN_FILE_PATH})
+set(TOOLCHAIN_FILE_PATH "${CMAKE_SOURCE_DIR}/absdef/toolchain_cfg/s32k344_ghs_toolchain.cmake")
+option(AST_ANALYSIS "Enable AST analysis mode" OFF)
+
+if(NOT AST_ANALYSIS)
+    set(TOOLCHAIN_FILE_PATH "${CMAKE_SOURCE_DIR}/absdef/toolchain_cfg/s32k344_ghs_toolchain.cmake")
+    set(CMAKE_TOOLCHAIN_FILE ${TOOLCHAIN_FILE_PATH})
+endif()
 
 # MCU information
 project(${PROJECT_NAME}

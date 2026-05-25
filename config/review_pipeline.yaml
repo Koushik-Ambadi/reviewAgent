@@ -6,7 +6,7 @@ runtime:
 
 ast:
   libclang_path: C:/Program Files/LLVM/bin/libclang.dll
-  compile_db_dir: build
+  compile_db_dir: analysis/cmake_build
   target_folders:
     - src
   target_extensions:
