@@ -1,12 +1,7 @@
-# src/repo_review/structure/required_paths.py
+# src/repo_review/checks/structure/required_paths.py
 
-try:
-    from ...models import ValidationIssue
-except ImportError:  # pragma: no cover
-    from models import ValidationIssue
-
+from .models import ValidationIssue
 from .utils import normalize, match_pattern
-
 
 def validate_required_paths(nodes, policy):
     issues = []

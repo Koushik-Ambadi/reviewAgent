@@ -18,7 +18,7 @@ def run(context: PipelineContext) -> PipelineContext:
     Run repository structure validations.
     """
 
-    source_root = context.ingestion.source_path
+    source_root = context.ingestion.source_root
 
     structure_nodes = build_tree(source_root)
 

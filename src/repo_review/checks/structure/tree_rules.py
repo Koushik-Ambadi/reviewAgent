@@ -1,13 +1,6 @@
-# src/repo_review/structure/tree_rules.py
+# src/repo_review/checks/structure/tree_rules.py
 
-try:
-    from ...models import ValidationIssue
-except ImportError:  # pragma: no cover
-    from models import ValidationIssue
-
-from .utils import normalize, match_pattern
-
-
+from .models import ValidationIssue
 
 def validate_tree_rules(nodes, policy):
     issues = []

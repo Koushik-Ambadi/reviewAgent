@@ -1,8 +1,6 @@
 runtime:
-  source_path: soc
   policy_path: policies/default.yaml
-  output_report_filename: review_report.json
-  review_results_filename: review_results.json
+
 
 ast:
   libclang_path: C:/Program Files/LLVM/bin/libclang.dll

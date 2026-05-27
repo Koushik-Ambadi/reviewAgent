@@ -1,3 +1,4 @@
+# src/repo_review/checks/structure/utils.py
 import pathspec
 
 _pattern_cache = {}

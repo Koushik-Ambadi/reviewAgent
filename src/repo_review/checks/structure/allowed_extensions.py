@@ -1,12 +1,7 @@
-# src/repo_review/structure/allowed_extensions.py
+# src/repo_review/checks/structure/allowed_extensions.py
 
-try:
-    from ...models import ValidationIssue
-except ImportError:  # pragma: no cover
-    from models import ValidationIssue
-
+from .models import ValidationIssue
 from .utils import normalize, match_pattern
-
 
 
 def validate_allowed_extensions(nodes, policy):

@@ -10,7 +10,7 @@ from repo_review.pipeline.pipeline import run_pipeline
 
 def main():
 
-    repo_path = r"C:\Users\koushik\Desktop\review\soc"
+    repo_path = r"C:\Users\koushik\Desktop\soc"
     repo_path = Path(repo_path).resolve()
 
     try:

@@ -1,0 +1,13 @@
+{
+	"InstallScripts" : 
+	[
+		"C:/Users/koushik/Desktop/review/workspace/runs/20260527_223522_f0a9298f/analysis/cmake_build/cmake_install.cmake",
+		"C:/Users/koushik/Desktop/review/workspace/runs/20260527_223522_f0a9298f/analysis/cmake_build/src/cmake_install.cmake",
+		"C:/Users/koushik/Desktop/review/workspace/runs/20260527_223522_f0a9298f/analysis/cmake_build/app/cmake_install.cmake",
+		"C:/Users/koushik/Desktop/review/workspace/runs/20260527_223522_f0a9298f/analysis/cmake_build/absdef/cmake_install.cmake",
+		"C:/Users/koushik/Desktop/review/workspace/runs/20260527_223522_f0a9298f/analysis/cmake_build/bs_cfg/soc_cfg/cmake_install.cmake",
+		"C:/Users/koushik/Desktop/review/workspace/runs/20260527_223522_f0a9298f/analysis/cmake_build/s32k344-mcal/src/cmake_install.cmake",
+		"C:/Users/koushik/Desktop/review/workspace/runs/20260527_223522_f0a9298f/analysis/cmake_build/s32k344-freertos/src/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

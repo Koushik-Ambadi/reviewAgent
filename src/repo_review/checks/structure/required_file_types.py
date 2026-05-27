@@ -1,13 +1,8 @@
-# src/repo_review/structure/required_file_types.py
+# src/repo_review/checks/structure/required_file_types.py
 
 
-try:
-    from ...models import ValidationIssue
-except ImportError:  # pragma: no cover
-    from models import ValidationIssue
-
+from .models import ValidationIssue
 from .utils import normalize, match_pattern
-
 
 def validate_required_file_types(nodes, policy):
     issues = []

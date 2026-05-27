@@ -83,11 +83,13 @@ def extract_symbols(
 
 
 def build_ast_review_results(
-    source_path: Path | str,
+    source_root: Path,
+    compile_db_path: Path,
+    output_path: Path,
     config: dict[str, Any],
 ) -> dict[str, Any]:
 
-    source_root = Path(source_path).resolve()
+    compile_db_dir = compile_db_path.parent
 
     ast_config = config.get("ast", {})
 
@@ -95,14 +97,6 @@ def build_ast_review_results(
 
     configure_libclang(libclang_path)
 
-    compile_db_dir = Path(
-        ast_config.get(
-            "compile_db_dir",
-            "analysis/cmake_build",
-        )
-    ).resolve()
-
-    compile_db_path = compile_db_dir / "compile_commands.json"
 
     target_folders = [
         (source_root / folder).resolve()
@@ -119,13 +113,7 @@ def build_ast_review_results(
         )
     )
 
-    output_path = Path(
-        source_root
-        / config.get("runtime", {}).get(
-            "review_results_filename",
-            "review_results.json",
-        )
-    )
+
 
     artifact = {
         "status": "pending",

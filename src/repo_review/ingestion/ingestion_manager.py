@@ -1,5 +1,4 @@
 # src/repo_review/ingestion/ingestion_manager.py
-
 from __future__ import annotations
 
 from pathlib import Path
@@ -21,7 +20,20 @@ def ingest_source(
         )
 
     if source_type == "zip":
-        return ingest_zip_source(source_path)
+        return ingest_zip_source(
+            source_path=source_path,
+            config=config,
+        )
+
+    if source_type == "git":
+        raise NotImplementedError(
+            "git ingestion not implemented"
+        )
+
+    if source_type == "s3":
+        raise NotImplementedError(
+            "s3 ingestion not implemented"
+        )
 
     raise ValueError(
         f"Unsupported source_type: {source_type}"
