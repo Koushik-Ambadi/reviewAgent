@@ -1,0 +1,128 @@
+{
+  "metadata": {
+    "report_version": "1.0",
+    "repo_url": "local-test-repo",
+    "module_name": "soc",
+    "generated_at": "2026-05-27T07:12:43.656368+00:00",
+    "source_path": "C:\\Users\\koushik\\Desktop\\review\\soc",
+    "policy_path": "C:\\Users\\koushik\\Desktop\\review\\policies\\default.yaml",
+    "review_results_path": "C:\\Users\\koushik\\Desktop\\review\\workspace\\runs\\20260527_124225_6b97bbea\\review_results.json",
+    "report_output_path": "C:\\Users\\koushik\\Desktop\\review\\workspace\\runs\\20260527_124225_6b97bbea\\review_report.json"
+  },
+  "ingestion": {
+    "source_kind": "local_directory",
+    "source_path": "C:\\Users\\koushik\\Desktop\\review\\soc",
+    "compile_db_dir": "C:\\Users\\koushik\\Desktop\\review\\workspace\\runs\\20260527_124225_6b97bbea\\compile_db",
+    "target_folders": [
+      "C:\\Users\\koushik\\Desktop\\review\\soc\\src"
+    ]
+  },
+  "ast": {
+    "status": "missing_compile_db",
+    "processed_files": 0,
+    "compile_db_path": "C:\\Users\\koushik\\Desktop\\review\\soc\\analysis\\compile_commands.json",
+    "output_path": "C:\\Users\\koushik\\Desktop\\review\\soc\\review_results.json",
+    "review_results_exists": false,
+    "error": "Compile database not found: C:\\Users\\koushik\\Desktop\\review\\analysis\\cmake_build\\compile_commands.json"
+  },
+  "summary": {
+    "failed": 6,
+    "exception": 0,
+    "passed": 0,
+    "total": 6,
+    "overall_status": "failed"
+  },
+  "body": {
+    "failed": [
+      "Missing required directory: build/",
+      "Missing required directory: node_modules/",
+      "Missing required directory: temp/",
+      "Missing required directory: tests/",
+      "Missing required directory: dummy_path/",
+      "Missing required path: dummy_file.txt"
+    ],
+    "exception": [],
+    "passed": []
+  },
+  "sections": [
+    {
+      "name": "folder_and_file_structure",
+      "title": "Folder and File Structure",
+      "status": "failed",
+      "summary": {
+        "failed": 6,
+        "exception": 0,
+        "passed": 0
+      },
+      "issues": [
+        {
+          "severity": "HIGH",
+          "rule": "required_paths",
+          "path": "build/",
+          "message": "Missing required directory: build/",
+          "status": "FAILED"
+        },
+        {
+          "severity": "HIGH",
+          "rule": "required_paths",
+          "path": "node_modules/",
+          "message": "Missing required directory: node_modules/",
+          "status": "FAILED"
+        },
+        {
+          "severity": "HIGH",
+          "rule": "required_paths",
+          "path": "temp/",
+          "message": "Missing required directory: temp/",
+          "status": "FAILED"
+        },
+        {
+          "severity": "HIGH",
+          "rule": "required_paths",
+          "path": "tests/",
+          "message": "Missing required directory: tests/",
+          "status": "FAILED"
+        },
+        {
+          "severity": "HIGH",
+          "rule": "required_paths",
+          "path": "dummy_path/",
+          "message": "Missing required directory: dummy_path/",
+          "status": "FAILED"
+        },
+        {
+          "severity": "HIGH",
+          "rule": "required_paths",
+          "path": "dummy_file.txt",
+          "message": "Missing required path: dummy_file.txt",
+          "status": "FAILED"
+        }
+      ]
+    },
+    {
+      "name": "ast_review_results",
+      "title": "AST Review Results",
+      "status": "missing_compile_db",
+      "summary": {
+        "status": "missing_compile_db",
+        "processed_files": 0,
+        "compile_db_path": "C:\\Users\\koushik\\Desktop\\review\\soc\\analysis\\compile_commands.json",
+        "output_path": "C:\\Users\\koushik\\Desktop\\review\\soc\\review_results.json",
+        "review_results_exists": false,
+        "error": "Compile database not found: C:\\Users\\koushik\\Desktop\\review\\analysis\\cmake_build\\compile_commands.json"
+      },
+      "issues": []
+    },
+    {
+      "name": "code_review_checks",
+      "title": "Code Review Checks",
+      "status": "passed",
+      "summary": {
+        "failed": 0,
+        "exception": 0,
+        "passed": 0
+      },
+      "issues": []
+    }
+  ]
+}

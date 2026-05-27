@@ -9,3 +9,6 @@ __pycache__/
 *.log
 soc/.git
 .gitignore
+
+workspace/
+analysis/
