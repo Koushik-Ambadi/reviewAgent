@@ -4,7 +4,7 @@
 from .function_names import validate_function_names
 from .macro_names import validate_macro_names
 from .array_sizes import validate_array_sizes
-
+from .global_variable_names import validate_global_variable_names
 
 def run_validations(
     review_results,
@@ -32,6 +32,13 @@ def run_validations(
 
     results.extend(
         validate_array_sizes(review_results)
+    )
+
+    results.extend(
+        validate_global_variable_names(
+            review_results,
+            rules,
+        )
     )
 
     return results

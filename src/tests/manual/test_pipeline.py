@@ -42,9 +42,6 @@ def main():
         print("Repo URL:", getattr(result, "repo_url", None))
         print("Config Path:", getattr(result, "pipeline_config_path", None))
 
-        print("\nValidation Issues:")
-        for issue in getattr(result, "validation_issues", []):
-            print(issue)
 
     except Exception as e:
 
