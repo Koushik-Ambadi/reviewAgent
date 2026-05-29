@@ -1,5 +1,4 @@
 # src/repo_review/ast/ast_builder.py
-
 from __future__ import annotations
 
 import json
@@ -18,15 +17,23 @@ from .traversal import walk_ast
 from .extractors import is_within_root
 
 
+DEFAULT_TARGET_EXTENSIONS = {
+    ".c",
+    ".h",
+}
+
+
 def extract_symbols(
     file_path: Path,
     repo_root: Path,
     index: Index,
     compdb: CompilationDatabase,
-    ast_config: dict[str, Any],
+    target_folders: list[Path],   # ADD THIS
 ) -> dict[str, Any] | None:
 
-    commands = compdb.getCompileCommands(str(file_path))
+    commands = compdb.getCompileCommands(
+        str(file_path)
+    )
 
     if not commands:
         return None
@@ -37,17 +44,22 @@ def extract_symbols(
 
     if raw_args:
         try:
-            if Path(raw_args[-1]).resolve() == file_path:
+            if (
+                Path(raw_args[-1]).resolve()
+                == file_path
+            ):
                 raw_args = raw_args[:-1]
         except Exception:
             pass
 
     args = sanitize_compile_args(
-        raw_args,
-        ast_config.get("sanitize", {}),
+        raw_args
     )
 
-    parse_options = TranslationUnit.PARSE_DETAILED_PROCESSING_RECORD
+    parse_options = (
+        TranslationUnit
+        .PARSE_DETAILED_PROCESSING_RECORD
+    )
 
     try:
         tu = index.parse(
@@ -77,6 +89,7 @@ def extract_symbols(
         result,
         file_path,
         repo_root,
+        target_folders,   # ADD THIS
     )
 
     return result
@@ -91,34 +104,31 @@ def build_ast_review_results(
 
     compile_db_dir = compile_db_path.parent
 
-    ast_config = config.get("ast", {})
+    configure_libclang()
 
-    libclang_path = ast_config.get("libclang_path")
-
-    configure_libclang(libclang_path)
-
+    analysis_config = config.get(
+        "analysis",
+        {},
+    )
 
     target_folders = [
         (source_root / folder).resolve()
-        for folder in ast_config.get(
-            "target_folders",
+        for folder in analysis_config.get(
+            "source_roots",
             ["src"],
         )
     ]
 
-    target_extensions = set(
-        ast_config.get(
-            "target_extensions",
-            [".c", ".h"],
-        )
+    target_extensions = (
+        DEFAULT_TARGET_EXTENSIONS
     )
-
-
 
     artifact = {
         "status": "pending",
         "source_root": str(source_root),
-        "compile_db_path": str(compile_db_path),
+        "compile_db_path": str(
+            compile_db_path
+        ),
         "output_path": str(output_path),
         "processed_files": 0,
         "skipped_files": [],
@@ -126,16 +136,25 @@ def build_ast_review_results(
     }
 
     if not compile_db_path.exists():
-        artifact["status"] = "missing_compile_db"
-        artifact["error"] = (
-            f"Compile database not found: {compile_db_path}"
+
+        artifact["status"] = (
+            "missing_compile_db"
         )
+
+        artifact["error"] = (
+            "Compile database not found: "
+            f"{compile_db_path}"
+        )
+
         return artifact
 
     index = Index.create()
 
-    compdb = CompilationDatabase.fromDirectory(
-        str(compile_db_dir)
+    compdb = (
+        CompilationDatabase
+        .fromDirectory(
+            str(compile_db_dir)
+        )
     )
 
     with open(
@@ -143,41 +162,63 @@ def build_ast_review_results(
         "r",
         encoding="utf-8",
     ) as f:
+
         compile_data = json.load(f)
 
     processed_files: set[str] = set()
 
-    all_results: list[dict[str, Any]] = []
+    all_results: list[
+        dict[str, Any]
+    ] = []
 
-    skipped_files: list[dict[str, str]] = []
+    skipped_files: list[
+        dict[str, str]
+    ] = []
 
     for entry in compile_data:
-        file_path = Path(entry["file"]).resolve()
+
+        file_path = Path(
+            entry["file"]
+        ).resolve()
 
         if str(file_path) in processed_files:
             continue
 
-        processed_files.add(str(file_path))
+        processed_files.add(
+            str(file_path)
+        )
 
         if not any(
-            is_within_root(file_path, folder)
+            is_within_root(
+                file_path,
+                folder,
+            )
             for folder in target_folders
         ):
+
             skipped_files.append(
                 {
                     "file": str(file_path),
-                    "reason": "outside_target_folder",
+                    "reason":
+                        "outside_target_folder",
                 }
             )
+
             continue
 
-        if file_path.suffix.lower() not in target_extensions:
+        if (
+            file_path.suffix.lower()
+            not in target_extensions
+        ):
+
             skipped_files.append(
                 {
                     "file": str(file_path),
-                    "reason": "unsupported_extension",
+                    "reason":
+                        "unsupported_extension",
                 }
             )
+
             continue
 
         result = extract_symbols(
@@ -185,16 +226,22 @@ def build_ast_review_results(
             source_root,
             index,
             compdb,
-            ast_config,
+            target_folders,
         )
 
         if result:
-            all_results.append(result)
+
+            all_results.append(
+                result
+            )
+
         else:
+
             skipped_files.append(
                 {
                     "file": str(file_path),
-                    "reason": "parse_or_compile_error",
+                    "reason":
+                        "parse_or_compile_error",
                 }
             )
 
@@ -203,6 +250,7 @@ def build_ast_review_results(
         "w",
         encoding="utf-8",
     ) as f:
+
         json.dump(
             all_results,
             f,
@@ -213,10 +261,14 @@ def build_ast_review_results(
     artifact.update(
         {
             "status": "success",
-            "processed_files": len(all_results),
-            "skipped_files": skipped_files,
-            "results": all_results,
-            "written": output_path.exists(),
+            "processed_files":
+                len(all_results),
+            "skipped_files":
+                skipped_files,
+            "results":
+                all_results,
+            "written":
+                output_path.exists(),
         }
     )
 

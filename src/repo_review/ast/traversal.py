@@ -23,6 +23,7 @@ def walk_ast(
     result: dict[str, Any],
     source_file: Path,
     repo_root: Path,
+    target_folders: list[Path],
 ) -> None:
 
     if node.location.file:
@@ -64,10 +65,16 @@ def walk_ast(
     elif node.kind == CursorKind.TYPEDEF_DECL:
         result["typedefs"].append(extract_typedef(node))
 
-    elif node.kind == CursorKind.MACRO_DEFINITION and is_user_macro(
-        node,
-        repo_root,
-    ):
+    elif node.kind == CursorKind.MACRO_DEFINITION:
+        if not node.location.file:
+            return
+
+        macro_file = Path(str(node.location.file)).resolve()
+
+        # ONLY this rule
+        if not any(is_within_root(macro_file, folder) for folder in target_folders):
+            return
+
         result["macros"].append(extract_macro(node))
 
     for child in node.get_children():
@@ -76,4 +83,5 @@ def walk_ast(
             result,
             source_file,
             repo_root,
+            target_folders,
         )
