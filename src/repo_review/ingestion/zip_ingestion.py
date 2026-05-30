@@ -18,10 +18,10 @@ def ingest_zip_source(
         workspace_path
     )
 
-    try:
-        zip_path.unlink()
-    except OSError:
-        pass
+#    try:
+#        zip_path.unlink()
+#     except OSError:
+#        pass
 
     return repo_root
 
