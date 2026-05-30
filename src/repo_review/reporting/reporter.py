@@ -86,7 +86,7 @@ def print_report(
     ):
 
         console.print(
-            f"\n[bold]{section['title']}[/bold] "
+            f"\n[bold]{section['name']}[/bold] "
             f"[{section['status']}]"
         )
 

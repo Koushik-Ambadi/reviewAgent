@@ -9,30 +9,25 @@ class PipelineContext:
 
     # request
     source_path: str | Path
-    module_name: str
-    repo_url: str
-    pipeline_config_path: str | Path
 
-    # configs
-    pipeline_config: dict[str, Any] = field(default_factory=dict)
+    source_type: str = "local"
+    policy_name: str = "default"
+
+    module_name: str = ""
+
+    # loaded runtime objects
     policy: dict[str, Any] = field(default_factory=dict)
 
-    # ingestion
-    ingestion: dict[str, Any] = field(default_factory=dict)
+    # workspace
+    workspace_path: Path | None = None
+    repo_root: Path | None = None
+    analysis_path: Path | None = None
 
-    # structure
-    structure_nodes: list = field(default_factory=list)
     structure_issues: list = field(default_factory=list)
 
-    # compile db
-    compile_db_path: str | None = None
-
-    # ast
-    ast_artifact: dict[str, Any] = field(default_factory=dict)
-    review_results: list = field(default_factory=list)
-
-    # validations
     validation_issues: list = field(default_factory=list)
-
-    # report
     report: dict[str, Any] = field(default_factory=dict)
+
+
+
+    report_path: Path | None = None

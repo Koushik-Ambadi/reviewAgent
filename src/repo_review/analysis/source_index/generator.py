@@ -1,4 +1,4 @@
-# src/repo_review/compilation/generator.py
+# src/repo_review/analysis/source_index/generator.py
 from __future__ import annotations
 
 import shutil
@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any
 
 
-def generate_compile_commands(
+def build_source_index(
     source_root: Path,
     analysis_dir: Path,
     config: dict[str, Any],
@@ -20,9 +20,10 @@ def generate_compile_commands(
 
     build_dir = analysis_dir / "cmake_build"
 
-    output_dir = analysis_dir
-
-    compile_db_path = output_dir / "compile_commands.json"
+    compile_db_path = (
+        build_dir /
+        "compile_commands.json"
+    )
 
 
 
@@ -50,7 +51,6 @@ def generate_compile_commands(
         "status": "pending",
         "source_root": str(source_root),
         "build_dir": str(build_dir),
-        "output_dir": str(output_dir),
         "compile_db_path": str(compile_db_path),
         "generator": generator,
         "error": None,
@@ -70,10 +70,6 @@ def generate_compile_commands(
             exist_ok=True,
         )
 
-        output_dir.mkdir(
-            parents=True,
-            exist_ok=True,
-        )
 
 
 
@@ -107,11 +103,8 @@ def generate_compile_commands(
 
 
 
-        generated_db = build_dir / "compile_commands.json"
 
-
-
-        if not generated_db.exists():
+        if not compile_db_path.exists():
 
             artifact["status"] = "failed"
 
@@ -122,11 +115,6 @@ def generate_compile_commands(
 
 
             return artifact
-
-        shutil.copy2(
-            generated_db,
-            compile_db_path,
-        )
 
 
 

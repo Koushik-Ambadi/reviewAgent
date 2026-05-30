@@ -1,46 +1,34 @@
 # src/repo_review/reporting/serializers.py
-
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
-
-from ..models import ValidationIssue
+from dataclasses import asdict, is_dataclass
 
 
-# =========================================================
-# ISSUE SERIALIZATION
-# =========================================================
+def serialize_issue(item):
 
-def serialize_issue(item: Any) -> dict:
-    """
-    Convert ValidationIssue / pydantic model / dict
-    into plain serializable dictionary.
-    """
+    if isinstance(item, dict):
+        return item
 
-    if isinstance(item, ValidationIssue):
+    if is_dataclass(item):
+        return asdict(item)
 
-        if hasattr(item, "model_dump"):
-            return item.model_dump()
+    if hasattr(item, "model_dump"):
+        return item.model_dump()
 
+    if hasattr(item, "dict"):
         return item.dict()
 
-    return dict(item)
+    return vars(item)
 
 
-def serialize_list(
-    items: list[Any],
-) -> list[dict]:
+def serialize_list(items):
 
     return [
         serialize_issue(item)
         for item in items
     ]
 
-
-# =========================================================
-# PATH SERIALIZATION
-# =========================================================
 
 def serialize_path(
     path: Path | str,

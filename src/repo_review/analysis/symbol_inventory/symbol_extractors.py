@@ -1,6 +1,6 @@
-from __future__ import annotations
-# src/repo_review/ast/extractors.py
+# src/repo_review/analysis/symbol_inventory/symbol_extractors.py
 
+from __future__ import annotations
 import re
 from pathlib import Path
 
@@ -14,22 +14,6 @@ def is_within_root(path: Path, root: Path) -> bool:
     except ValueError:
         return False
 
-
-def is_user_macro(node, repo_root: Path) -> bool:
-    if not node.location.file:
-        return False
-
-    macro_file = Path(str(node.location.file)).resolve()
-
-    if not is_within_root(macro_file, repo_root):
-        return False
-
-    name = node.spelling
-
-    if name.startswith("__") or name.startswith("_"):
-        return False
-
-    return True
 
 
 def extract_function(node):
@@ -178,7 +162,6 @@ def extract_variable(node, source_file: Path):
     # Qualifiers
     #
 
-
     is_const = (
         node.type
         .is_const_qualified()
@@ -193,51 +176,8 @@ def extract_variable(node, source_file: Path):
     # Type metadata
     #
 
-    canonical_type = (
-        node.type
-        .get_canonical()
-        .spelling
-    )
-
     type_kind = (
         node.type.kind.spelling
-    )
-
-    #
-    # Pointer analysis
-    #
-
-    pointer_depth = 0
-
-    clang_type = node.type
-
-    while (
-        clang_type.kind.spelling
-        == "POINTER"
-    ):
-
-        pointer_depth += 1
-
-        clang_type = (
-            clang_type.get_pointee()
-        )
-
-    is_pointer = (
-        pointer_depth > 0
-    )
-
-    #
-    # Qualifiers
-    #
-
-    is_const = (
-        node.type
-        .is_const_qualified()
-    )
-
-    is_volatile = (
-        node.type
-        .is_volatile_qualified()
     )
 
     #
@@ -259,16 +199,6 @@ def extract_variable(node, source_file: Path):
             "",
         )
         .lower()
-    )
-
-
-
-    #
-    # Arrays
-    #
-
-    is_array = bool(
-        array_suffixes
     )
 
     return {
@@ -554,4 +484,3 @@ def extract_macro(node):
         "type": macro_type,
         "replacement": replacement,
     }
-

@@ -1,46 +1,25 @@
 # src/repo_review/pipeline/stages/ingestion_stage.py
-
 from __future__ import annotations
 
 from ..context import PipelineContext
 
-from ...ingestion.local_ingestion import ingest_local_source
-from ...ingestion.config_loader import load_policy
+from ..utils import (
+    create_run_workspace,
+)
+
+from ...ingestion.ingestion_manager import (
+    ingest_source,
+)
 
 
-def run(context: PipelineContext) -> PipelineContext:
-    """
-    Pipeline ingestion stage.
-    Delegates ingestion handling to ingestion subsystem.
-    """
+def run(
+    context: PipelineContext,
+) -> PipelineContext:
 
-    # -----------------------------------------
-    # LOAD PIPELINE CONFIG
-    # -----------------------------------------
-
-    pipeline_config = load_policy(
-        context.pipeline_config_path
-    )
-
-    context.pipeline_config = pipeline_config
-
-    # -----------------------------------------
-    # INGEST SOURCE
-    # -----------------------------------------
-
-    ingestion_context = ingest_local_source(
+    context.repo_root = ingest_source(
+        source_type=context.source_type,
         source_path=context.source_path,
-        config=pipeline_config,
-    )
-
-    context.ingestion = ingestion_context
-
-    # -----------------------------------------
-    # LOAD REVIEW POLICY
-    # -----------------------------------------
-
-    context.policy = load_policy(
-        ingestion_context.policy_path
+        workspace_path=context.workspace_path,
     )
 
     return context

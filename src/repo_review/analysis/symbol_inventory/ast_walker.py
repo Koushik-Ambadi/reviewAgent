@@ -1,3 +1,5 @@
+# src/repo_review/analysis/symbol_inventory/ast_walker.py
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -5,7 +7,7 @@ from typing import Any
 
 from clang.cindex import CursorKind
 
-from repo_review.ast.extractors import (
+from .symbol_extractors import (
     extract_enum,
     extract_function,
     extract_macro,
@@ -13,7 +15,6 @@ from repo_review.ast.extractors import (
     extract_struct,
     extract_typedef,
     extract_variable,
-    is_user_macro,
     is_within_root,
 )
 

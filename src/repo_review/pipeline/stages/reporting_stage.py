@@ -31,14 +31,20 @@ def run(
         context
     )
 
-    output_path = write_report(
-        report,
-        context.ingestion.report_output_path,
+    output_path = (
+        context.workspace_path
+        / "report.json"
     )
 
-    report["metadata"][
-        "report_output_path"
-    ] = str(output_path)
+    output_path = write_report(
+        report,
+        output_path,
+    )
+
+    report["metadata"]["report_path"] = (
+        str(output_path)
+    )
+    context.report_path = output_path
 
     context.report = report
 

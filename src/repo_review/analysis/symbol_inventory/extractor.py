@@ -1,4 +1,4 @@
-# src/repo_review/ast/ast_builder.py
+# src/repo_review/analysis/symbol_inventory/extractor.py
 from __future__ import annotations
 
 import json
@@ -11,16 +11,11 @@ from clang.cindex import (
     TranslationUnit,
 )
 
-from .clang_config import configure_libclang
-from .sanitizers import sanitize_compile_args
-from .traversal import walk_ast
-from .extractors import is_within_root
+from .libclang import configure_libclang
+from .compile_args import sanitize_compile_args
+from .ast_walker import walk_ast
+from .symbol_extractors import is_within_root
 
-
-DEFAULT_TARGET_EXTENSIONS = {
-    ".c",
-    ".h",
-}
 
 
 def extract_symbols(
@@ -95,33 +90,37 @@ def extract_symbols(
     return result
 
 
-def build_ast_review_results(
+def build_symbol_inventory(
     source_root: Path,
     compile_db_path: Path,
     output_path: Path,
-    config: dict[str, Any],
+    policy: dict[str, Any],
 ) -> dict[str, Any]:
 
     compile_db_dir = compile_db_path.parent
 
     configure_libclang()
 
-    analysis_config = config.get(
-        "analysis",
+    ast_policy = policy.get(
+        "ast",
         {},
     )
-
+    
     target_folders = [
         (source_root / folder).resolve()
-        for folder in analysis_config.get(
-            "source_roots",
+        for folder in ast_policy.get(
+            "target_folders",
             ["src"],
         )
-    ]
+    ]    
 
-    target_extensions = (
-        DEFAULT_TARGET_EXTENSIONS
+    target_extensions = set(
+        ast_policy.get(
+            "target_extensions",
+            [".c", ".h"],
+        )
     )
+
 
     artifact = {
         "status": "pending",

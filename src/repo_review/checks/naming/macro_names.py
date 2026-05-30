@@ -2,36 +2,64 @@
 
 import re
 
-from .rules import (
-    merge_rules,
+from .utils import (
     is_excluded_macro,
 )
 
 
-def validate_macro_names(review_results, module_name, rules=None):
+def validate_macro_names(
+    symbols,
+    module_name,
+    naming_policy,
+):
     results = []
-    merged = merge_rules(rules)
-    macro_pattern = re.compile(merged["macro_name_pattern"])
-    value_type = merged.get("macro_value_type", "value")
 
-    for file_review in review_results:
-        file_path = file_review.get("file", "")
-        macros = file_review.get("macros", [])
+    macro_pattern = re.compile(
+        naming_policy["macro_name_pattern"]
+    )
+
+    value_type = naming_policy["macro_value_type"]
+
+    for file_symbols in symbols:
+        file_path = file_symbols.get(
+            "file",
+            "",
+        )
+
+        macros = file_symbols.get(
+            "macros",
+            [],
+        )
 
         for macro in macros:
-            name = macro.get("name", "")
-            macro_type = macro.get("type", "")
+            name = macro.get(
+                "name",
+                "",
+            )
+
+            macro_type = macro.get(
+                "type",
+                "",
+            )
 
             if macro_type != value_type:
                 continue
 
-            if is_excluded_macro(name, module_name, merged):
+            if is_excluded_macro(
+                name,
+                naming_policy["excluded_macro_patterns"],
+                module_name,
+            ):
                 results.append(
                     {
                         "status": "EXCEPTION",
                         "rule": "macro_names",
                         "file": file_path,
-                        "message": f"[MACRO] {file_path} -> {name} skipped (excluded pattern)",
+                        "message": (
+                            f"[MACRO] {file_path} -> "
+                            f"{name} skipped "
+                            f"(excluded pattern)"
+                        ),
                     }
                 )
                 continue
@@ -42,7 +70,10 @@ def validate_macro_names(review_results, module_name, rules=None):
                         "status": "FAILED",
                         "rule": "macro_names",
                         "file": file_path,
-                        "message": f"[MACRO] {file_path} -> Invalid macro name: {name}",
+                        "message": (
+                            f"[MACRO] {file_path} -> "
+                            f"Invalid macro name: {name}"
+                        ),
                     }
                 )
                 continue
@@ -52,7 +83,10 @@ def validate_macro_names(review_results, module_name, rules=None):
                     "status": "PASSED",
                     "rule": "macro_names",
                     "file": file_path,
-                    "message": f"[MACRO] {file_path} -> {name} passed validation",
+                    "message": (
+                        f"[MACRO] {file_path} -> "
+                        f"{name} passed validation"
+                    ),
                 }
             )
 

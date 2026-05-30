@@ -20,11 +20,7 @@ def main():
         # -----------------------------
         context = PipelineContext(
             source_path=str(repo_path),
-            module_name=repo_path.name,          # "soc"
-            repo_url="local-test-repo",         # dummy value
-            pipeline_config_path=r"C:\Users\koushik\Desktop\review\config\review_pipeline.yaml"  # adjust if needed
         )
-
         print("\nINITIAL CONTEXT")
         pprint(context.__dict__)
 

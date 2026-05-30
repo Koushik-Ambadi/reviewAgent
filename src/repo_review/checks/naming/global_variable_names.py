@@ -2,28 +2,43 @@
 
 import re
 
-from .rules import (
-    merge_rules,
+from .utils import (
     is_excluded_global,
 )
 
 
-def validate_global_variable_names(review_results, rules=None):
+def validate_global_variable_names(
+    symbols,
+    naming_policy,
+):
 
     results = []
 
-    merged = merge_rules(rules)
-
     allowed_chars_pattern = re.compile(
-        merged["global_variable_allowed_chars_pattern"]
+        naming_policy[
+            "global_variable_allowed_chars_pattern"
+        ]
     )
 
-    allowed_data_types = merged["global_variable_data_types"]
-    allowed_data_sizes = merged["global_variable_data_sizes"]
-    allowed_modules = merged["global_variable_modules"]
-    allowed_units = merged["global_variable_units"]
+    allowed_data_types = naming_policy[
+        "global_variable_data_types"
+    ]
 
-    max_length = merged["global_variable_name_max_length"]
+    allowed_data_sizes = naming_policy[
+        "global_variable_data_sizes"
+    ]
+
+    allowed_modules = naming_policy[
+        "global_variable_modules"
+    ]
+
+    allowed_units = naming_policy[
+        "global_variable_units"
+    ]
+
+    max_length = naming_policy[
+        "global_variable_name_max_length"
+    ]
 
     #
     # Assumptions / Known Limitations
@@ -44,29 +59,43 @@ def validate_global_variable_names(review_results, rules=None):
     # 7. Validation is structure-based only.
     #
 
-    for file_review in review_results:
+    for file_symbols in symbols:
 
-        file_path = file_review.get("file", "")
+        file_path = file_symbols.get(
+            "file",
+            "",
+        )
 
-        globals_list = file_review.get("globals", [])
-
-        print()
-        print()
+        globals_list = file_symbols.get(
+            "globals",
+            [],
+        )
 
         for global_var in globals_list:
 
-            if results:
-                print(results[-1]["message"], flush=True)
+            name = global_var.get(
+                "name",
+                "",
+            )
 
-            name = global_var.get("name", "")
-            var_type = global_var.get("type", "")
-            line = global_var.get("line", "?")
+            var_type = global_var.get(
+                "type",
+                "",
+            )
+
+            line = global_var.get(
+                "line",
+                "?",
+            )
 
             #
             # Skip generated/system globals
             #
 
-            if is_excluded_global(var_type, merged):
+            if is_excluded_global(
+                var_type,
+                naming_policy["excluded_global_type_patterns"],
+            ):
 
                 results.append(
                     {
@@ -98,7 +127,9 @@ def validate_global_variable_names(review_results, rules=None):
             # Allowed characters
             #
 
-            if not allowed_chars_pattern.fullmatch(name):
+            if not allowed_chars_pattern.fullmatch(
+                name
+            ):
 
                 failures.append(
                     "contains invalid characters"
@@ -124,7 +155,10 @@ def validate_global_variable_names(review_results, rules=None):
 
                 data_type = name[0]
 
-                if data_type not in allowed_data_types:
+                if (
+                    data_type
+                    not in allowed_data_types
+                ):
 
                     failures.append(
                         f"invalid data type '{data_type}'"
@@ -140,7 +174,10 @@ def validate_global_variable_names(review_results, rules=None):
 
                 data_size = name[1]
 
-                if data_size not in allowed_data_sizes:
+                if (
+                    data_size
+                    not in allowed_data_sizes
+                ):
 
                     failures.append(
                         f"invalid data size '{data_size}'"
@@ -150,7 +187,11 @@ def validate_global_variable_names(review_results, rules=None):
             # Remaining after type + size
             #
 
-            remaining = name[2:] if len(name) > 2 else ""
+            remaining = (
+                name[2:]
+                if len(name) > 2
+                else ""
+            )
 
             #
             # Expected:

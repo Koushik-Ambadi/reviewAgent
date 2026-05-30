@@ -2,71 +2,153 @@
 
 import re
 
-from .rules import (
-    merge_rules,
+from .utils import (
     is_excluded_function,
 )
 
-def validate_function_names(review_results, module_name, rules=None):
+
+def validate_function_names(
+    symbols,
+    module_name,
+    naming_policy,
+):
+
     results = []
-    merged = merge_rules(rules)
-    function_pattern = re.compile(merged["function_name_pattern"])
 
-    expected_prefix = module_name[0].upper() + module_name[1:].lower() if module_name else ""
+    function_pattern = re.compile(
+        naming_policy[
+            "function_name_pattern"
+        ]
+    )
 
-    for file_review in review_results:
-        file_path = file_review.get("file", "")
-        functions = file_review.get("functions_defined", [])
+    expected_prefix = (
+        module_name[0].upper()
+        + module_name[1:].lower()
+        if module_name
+        else ""
+    )
+
+    for file_symbols in symbols:
+
+        file_path = file_symbols.get(
+            "file",
+            "",
+        )
+
+        functions = file_symbols.get(
+            "functions_defined",
+            [],
+        )
 
         for function in functions:
-            name = function.get("name", "")
 
-            if is_excluded_function(name, merged):
+            name = function.get(
+                "name",
+                "",
+            )
+
+            if is_excluded_function(
+                name,
+                naming_policy["excluded_function_patterns"],
+            ):
+
                 results.append(
                     {
-                        "status": "EXCEPTION",
-                        "rule": "function_names",
-                        "file": file_path,
-                        "message": f"[FUNCTION] {file_path} -> {name} skipped (excluded pattern)",
+                        "status":
+                            "EXCEPTION",
+
+                        "rule":
+                            "function_names",
+
+                        "file":
+                            file_path,
+
+                        "message":
+                            f"[FUNCTION] "
+                            f"{file_path} -> "
+                            f"{name} skipped "
+                            f"(excluded pattern)",
                     }
                 )
+
                 continue
 
-            if not function_pattern.match(name):
+            if not function_pattern.match(
+                name
+            ):
+
                 results.append(
                     {
-                        "status": "FAILED",
-                        "rule": "function_names",
-                        "file": file_path,
-                        "message": f"[FUNCTION] {file_path} -> Invalid function name: {name}",
+                        "status":
+                            "FAILED",
+
+                        "rule":
+                            "function_names",
+
+                        "file":
+                            file_path,
+
+                        "message":
+                            f"[FUNCTION] "
+                            f"{file_path} -> "
+                            f"Invalid function name: "
+                            f"{name}",
                     }
                 )
+
                 continue
 
-            actual_prefix = name.split("_")[0]
+            actual_prefix = (
+                name.split("_")[0]
+            )
 
-            if expected_prefix and actual_prefix != expected_prefix:
+            if (
+                expected_prefix
+                and
+                actual_prefix
+                != expected_prefix
+            ):
+
                 results.append(
                     {
-                        "status": "FAILED",
-                        "rule": "function_names",
-                        "file": file_path,
-                        "message": (
-                            f"[FUNCTION] {file_path} -> {name} must start with "
-                            f"{expected_prefix}_"
-                        ),
+                        "status":
+                            "FAILED",
+
+                        "rule":
+                            "function_names",
+
+                        "file":
+                            file_path,
+
+                        "message":
+                            (
+                                f"[FUNCTION] "
+                                f"{file_path} -> "
+                                f"{name} must start "
+                                f"with "
+                                f"{expected_prefix}_"
+                            ),
                     }
                 )
+
                 continue
 
             results.append(
                 {
-                    "status": "PASSED",
-                    "rule": "function_names",
-                    "file": file_path,
-                    "message": f"[FUNCTION] {file_path} -> {name} passed validation",
+                    "status":
+                        "PASSED",
+
+                    "rule":
+                        "function_names",
+
+                    "file":
+                        file_path,
+
+                    "message":
+                        f"[FUNCTION] "
+                        f"{file_path} -> "
+                        f"{name} passed validation",
                 }
             )
 
     return results
-

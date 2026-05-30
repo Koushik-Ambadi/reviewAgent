@@ -1,4 +1,4 @@
-# src/repo_review/ast/sanitizers.py
+# src/repo_review/analysis/symbol_inventory/compile_args.py
 
 from __future__ import annotations
 

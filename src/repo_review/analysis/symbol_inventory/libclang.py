@@ -1,4 +1,4 @@
-#src/repo_review/ast/clang_config.py
+#src/repo_review/analysis/symbol_inventory/libclang.py
 
 from pathlib import Path
 
