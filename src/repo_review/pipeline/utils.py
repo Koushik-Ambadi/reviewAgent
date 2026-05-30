@@ -66,8 +66,3 @@ def load_policy(
     ) as f:
         return yaml.safe_load(f)
 
-def extract_module_name(
-    source_path,
-) -> str:
-
-    return Path(source_path).name

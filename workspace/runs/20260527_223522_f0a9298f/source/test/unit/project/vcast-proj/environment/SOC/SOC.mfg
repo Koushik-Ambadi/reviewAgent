@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<manage-config-options version="7">
-  <config>
-    <key>COVERAGE_TYPE</key>
-    <value>STATEMENT+MCDC</value>
-  </config>
-  <search-directory type="TESTABLE_SOURCE_DIR">$(VCAST_SourceRoot)\bs_cfg\soc_cfg</search-directory>
-</manage-config-options>
