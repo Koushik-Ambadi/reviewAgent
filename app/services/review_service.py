@@ -1,8 +1,12 @@
 from pathlib import Path
 from uuid import uuid4
 
+from orchestrator.runner import (
+    prepare_review_run,
+)
+
 from repo_review.review import (
-    run_review_from_zip,
+    run_review,
 )
 
 UPLOAD_DIR = (
@@ -33,10 +37,19 @@ def review_uploaded_zip(
             upload_file.file.read()
         )
 
-    context = (
-        run_review_from_zip(
-            zip_path
-        )
+    (
+        workspace_path,
+        repo_root,
+        module_name,
+    ) = prepare_review_run(
+        source_path=zip_path,
+        source_type="zip",
+    )
+
+    context = run_review(
+        repo_root=repo_root,
+        workspace_path=workspace_path,
+        module_name=module_name,
     )
 
     try:
@@ -44,4 +57,8 @@ def review_uploaded_zip(
     except OSError:
         pass
 
-    return context.report
+    return {
+        "run_id": workspace_path.name,
+        "module_name": module_name,
+        "report": context.report,
+    }

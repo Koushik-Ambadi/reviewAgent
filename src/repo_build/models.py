@@ -1,4 +1,4 @@
-# src/repo_review/repo_build/models.py
+# src/repo_build/models.py
 
 from __future__ import annotations
 

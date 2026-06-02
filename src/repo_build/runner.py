@@ -1,4 +1,4 @@
-# src/repo_review/build/runner.py
+# src/repo_build/runner.py
 
 from __future__ import annotations
 

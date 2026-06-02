@@ -133,8 +133,6 @@ def build_metadata(
         "module_name":
             context.module_name,
 
-        "source_type":
-            context.source_type,
 
         "policy_name":
             context.policy_name,

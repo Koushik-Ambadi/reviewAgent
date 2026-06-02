@@ -331,10 +331,9 @@ html,body{
     margin-bottom:10px;
 }
 
-.exec-card p{
-    color:var(--muted);
-
-    font-size:13px;
+.exec-card p {
+    color: black;
+    font-size: 13px;
 }
 
 /* ========================================================= */
@@ -902,9 +901,7 @@ html,body{
                         Launch Platform
                     </button>
 
-                    <button class="btn">
-                        Enterprise Workflow
-                    </button>
+
                 </div>
 
                 <div class="executive-strip">
@@ -981,6 +978,8 @@ html,body{
         </div>
 
     </section>
+
+    
 
     <!-- ================================================= -->
     <!-- SETUP -->
@@ -1067,19 +1066,61 @@ html,body{
 
             <button
                 class="btn success"
-                disabled
+                onclick="triggerBuild()"
             >
-                Trigger Build (Coming Soon)
+                Trigger Build
             </button>
 
             <button class="btn primary">
-                Raise Pull Request
+                Raise PR (up coming)
             </button>
 
         </div>
 
     </section>
 
+    <!-- ================================================= -->
+    <!-- BUILD REPORT -->
+    <!-- ================================================= -->
+
+    <section id="buildPage" class="page">
+
+        <div class="glass panel">
+
+            <h2>Build Execution</h2>
+
+            <p class="sub">
+                Firmware build output from the active review run.
+            </p>
+
+            <div class="statusbar">
+
+                <span id="buildStatus">
+                    Waiting...
+                </span>
+
+            </div>
+
+            <div
+                id="buildOutput"
+                class="logbox"
+                style="height:650px;"
+            ></div>
+
+            <div class="actions">
+
+                <button
+                    class="btn"
+                    onclick="showReport()"
+                >
+                    Back To Report
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
 </div>
 
 <script>
@@ -1152,6 +1193,9 @@ function showReport(){
     showPage("reportPage");
 }
 
+function showBuild(){
+    showPage("buildPage");
+}
 /* ========================================================= */
 /* LOGGING */
 /* ========================================================= */
@@ -1289,23 +1333,17 @@ async function runPipeline(){
             );
         }
 
-        const report =
-            await response.json();
+const responseData =
+    await response.json();
 
-        setProgress(
-            100,
-            "Completed"
-        );
+window.currentRunId =
+    responseData.run_id;
 
-        pushLog(
-            "Governance report generated successfully."
-        );
+renderReport(
+    responseData.report
+);
 
-        renderReport(
-            report
-        );
-
-        showReport();
+showReport();
 
     }
     catch(error){
@@ -1652,6 +1690,114 @@ function toggleSection(header){
 
     body.classList.toggle("open");
 }
+
+
+async function triggerBuild(){
+
+    if(!window.currentRunId){
+
+        alert(
+            "Run review first."
+        );
+
+        return;
+    }
+
+    showBuild();
+
+    document
+        .getElementById(
+            "buildStatus"
+        )
+        .textContent =
+            "Build Running...";
+
+    document
+        .getElementById(
+            "buildOutput"
+        )
+        .innerHTML =
+            "Starting build...\n";
+
+    try{
+
+        const response =
+            await fetch(
+                `/api/runs/${window.currentRunId}/build`,
+                {
+                    method:"POST"
+                }
+            );
+
+        const result =
+            await response.json();
+
+        const stdout =
+            result.stdout || [];
+
+        const stderr =
+            result.stderr || [];
+
+        const output = [
+
+            "RETURN CODE: "
+            + result.return_code,
+
+            "",
+
+            ...stdout,
+
+            "",
+
+            "================",
+
+            "STDERR",
+
+            "================",
+
+            "",
+
+            ...stderr
+
+        ].join("\n");
+
+        document
+            .getElementById(
+                "buildOutput"
+            )
+            .textContent =
+                output;
+
+        document
+            .getElementById(
+                "buildStatus"
+            )
+            .textContent =
+                result.return_code === 0
+                ? "Build Success"
+                : "Build Failed";
+
+    }
+    catch(error){
+
+        document
+            .getElementById(
+                "buildStatus"
+            )
+            .textContent =
+                "Build Failed";
+
+        document
+            .getElementById(
+                "buildOutput"
+            )
+            .textContent =
+                String(error);
+
+        console.error(error);
+    }
+}
+
 
 </script>
 

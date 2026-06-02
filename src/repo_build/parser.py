@@ -1,4 +1,4 @@
-# src/repo_review/repo_build/parser.py
+# src/repo_build/parser.py
 
 from __future__ import annotations
 

@@ -18,8 +18,10 @@ required_paths:
   - s32k344-freertos/
   - s32k344-mcal/
   - src/
-  - temp/
-  - tests/
+  - src/{module}.c
+  - src/{module}.h
+  - src/{module}_model.c
+  - src/{module}_model.h
   - .clang-format
   - .gitattributes
   - .gitignore
@@ -33,9 +35,6 @@ required_paths:
   - README.md
 
 
-  # ---------- INVALID DUMMY CASES----------
-  - dummy_path/
-  - dummy_file.txt
 
 
 # =========================================================

@@ -10,27 +10,17 @@ from .pipeline.pipeline import (
 
 
 def run_review(
-    source_path,
+    *,
+    repo_root,
+    workspace_path,
+    module_name,
     policy_name="default",
 ):
 
     context = PipelineContext(
-        source_path=source_path,
-        source_type="local",
-        policy_name=policy_name,
-    )
-
-    return run_pipeline(context)
-
-
-def run_review_from_zip(
-    zip_path,
-    policy_name="default",
-):
-
-    context = PipelineContext(
-        source_path=zip_path,
-        source_type="zip",
+        repo_root=repo_root,
+        workspace_path=workspace_path,
+        module_name=module_name,
         policy_name=policy_name,
     )
 
