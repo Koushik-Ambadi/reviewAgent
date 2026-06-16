@@ -26,5 +26,6 @@ def create_run_workspace() -> Path:
         parents=True,
         exist_ok=False,
     )
+    print("WORKSPACE CREATED:", workspace.resolve())
 
     return workspace.resolve()

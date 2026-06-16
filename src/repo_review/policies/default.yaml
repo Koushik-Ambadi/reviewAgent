@@ -49,8 +49,7 @@ ast:
     - .c
     - .h
 
-  libclang_path: >
-    C:/Program Files/LLVM/bin/libclang.dll
+  libclang_path: auto
 
 naming:
 

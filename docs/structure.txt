@@ -1,0 +1,20 @@
+repo-review-agent/
+│
+├── README.md
+├── pyproject.toml
+├── requirements.txt
+├── .gitignore
+├── policies/
+│   └── default.yaml
+│
+├── src/
+│   └── repo_review_agent/
+│       ├── main.py
+│       ├── models.py
+│       ├── config_loader.py
+│       ├── tree_builder.py
+│       ├── validators.py
+│       ├── reporter.py
+│       └── utils.py
+│
+└── sample_repos/

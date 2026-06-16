@@ -17,7 +17,6 @@ class PipelineContext:
     policy: dict[str, Any] = field(default_factory=dict)
 
     # workspace
-    analysis_path: Path | None = None
     module_name: str = ""
 
     structure_issues: list = field(default_factory=list)

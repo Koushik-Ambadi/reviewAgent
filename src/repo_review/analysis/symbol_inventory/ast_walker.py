@@ -5,7 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from clang.cindex import CursorKind
+
 
 from .symbol_extractors import (
     extract_enum,
@@ -26,6 +26,8 @@ def walk_ast(
     repo_root: Path,
     target_folders: list[Path],
 ) -> None:
+    
+    from clang.cindex import CursorKind
 
     if node.location.file:
         current_file = Path(str(node.location.file)).resolve()

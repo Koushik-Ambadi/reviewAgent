@@ -1,0 +1,283 @@
+=========================================================================================
+        EMBEDDED C / FREERTOS CODE VISIBILITY & ELIMINATION MAP (CONSOLIDATED)
+=========================================================================================
+
+| STAGE        | MECHANISM                         | WHAT DISAPPEARS / HIDDEN              | WHY IT HAPPENS                      | EXAMPLE (EMBEDDED / FREERTOS)              |
+|--------------|----------------------------------|---------------------------------------|-------------------------------------|--------------------------------------------|
+| Preprocessor | #if / #ifdef / #ifndef (false)   | Entire code blocks                    | Code never enters compilation       | INCLUDE_vTaskDelay = 0 removes API         |
+| Preprocessor | Macro expands to empty           | Statements replaced with nothing      | Text substitution                   | #define LOG(x) in release build            |
+| Preprocessor | Missing config macro             | Feature paths not compiled            | Build-time feature toggle           | RTOS optional modules disabled             |
+| Preprocessor | Include guards / #pragma once    | Duplicate header content              | Prevent multiple inclusion          | header.h included multiple times           |
+| Preprocessor | Token pasting / macro generation | Generated symbols/code                | Macro rewrites source               | ISR vector macros                          |
+| Preprocessor | Conditional include              | Entire modules/files skipped          | Platform-specific builds            | STM32 vs AVR driver selection              |
+| Compiler AST  | if(0) / constant false branch    | Dead branches                         | Unreachable code proven             | Debug-only blocks removed                  |
+| Compiler AST  | Constant folding                 | Expressions reduced                   | Compile-time evaluation             | 2+3 becomes 5                              |
+| Compiler AST  | Dead code elimination (DCE)      | Unused logic                          | No reachable path                   | Unused switch cases removed                |
+| Compiler AST  | Unused local variables           | Stack/register allocation removed      | No observable effect                | Temporary variables disappear              |
+| Compiler      | Unused static functions          | Entire functions removed              | Internal linkage + no usage         | helper() never called in same file         |
+| Compiler      | Inline expansion                 | Function call disappears              | Replaced with body                  | static inline RTOS helpers                 |
+| Compiler      | Tail-call optimization           | Call stack frame removed              | Jump replaces call                  | recursive-style functions optimized         |
+| Compiler      | Strength reduction               | Expensive ops replaced               | Faster equivalent IR                | x*2 → x<<1                                 |
+| Compiler      | Loop optimization                | Loop rewritten/removed               | Transformation of IR                | memcpy-like loops optimized                |
+| Compiler      | Register allocation              | Variables not emitted                | Stored in registers only            | local temps vanish from assembly           |
+| Compiler      | Address-taken forcing emission   | Function forced to exist             | Symbol required                     | inline func used as pointer                |
+| Linker        | --gc-sections                    | Unreferenced functions/vars          | Symbol graph pruning                | FreeRTOS unused APIs removed               |
+| Linker        | Function/data sections GC        | Whole .text/.data sections removed    | Section-level elimination           | -ffunction-sections used                   |
+| Linker        | Weak symbol resolution           | Default implementations removed       | Strong override wins                | ISR weak handler replaced                  |
+| Linker        | Symbol overriding (ODR)          | One definition discarded              | Only one global symbol allowed      | vApplicationIdleHook override              |
+| Linker        | Static library extraction        | Unused object files not linked        | Archive selection                   | libc.a pulls only required functions       |
+| Linker        | Unused globals removal           | Global variables removed              | No reference path                  | unused flags not present in ELF            |
+| Linker        | Data section stripping           | Constants/lookup tables removed       | Not referenced                     | LUT arrays disappear                        |
+
+=========================================================================================
+                         KEY EMBEDDED DEBUGGING INSIGHT
+=========================================================================================
+
+Code in embedded C can disappear at THREE levels:
+1. BEFORE compilation (preprocessor)
+2. DURING compilation (AST / IR optimization)
+3. AFTER compilation (linker symbol pruning)
+
+=========================================================================================
+
+# ORCH-001 / BUILD-001 Progress Update
+
+## Completed
+
+### Orchestrator Ownership Migration
+
+Moved workspace and ingestion ownership out of `repo_review`.
+
+New responsibility split:
+
+* `orchestrator`
+
+  * run lifecycle
+  * workspace creation
+  * source ingestion
+  * run preparation
+
+* `repo_review`
+
+  * policy loading
+  * policy expansion
+  * structure analysis
+  * source analysis
+  * checks
+  * reporting
+
+* `repo_build`
+
+  * firmware build execution
+  * build result parsing
+
+Review no longer has knowledge of ZIP extraction, source type handling, or workspace provisioning.
+
+---
+
+### Review Contract Simplification
+
+Review execution now receives:
+
+```python
+repo_root
+workspace_path
+module_name
+policy_name
+```
+
+Removed ownership of:
+
+```python
+source_path
+source_type
+zip ingestion
+workspace creation
+```
+
+Review now operates on an already prepared repository workspace.
+
+---
+
+### Policy Expansion
+
+Implemented policy expansion during policy load.
+
+Supported placeholder:
+
+```yaml
+{module}
+```
+
+Example:
+
+```yaml
+src/{module}.c
+```
+
+expands to:
+
+```yaml
+src/soc.c
+```
+
+Expansion occurs immediately after policy load and before review execution.
+
+No additional pipeline stage introduced.
+
+---
+
+### Build Integration
+
+Implemented run-based build execution.
+
+Workflow:
+
+```text
+run_id
+  ↓
+repo_root
+  ↓
+execute_firmware_build()
+  ↓
+cmake-build.bat
+```
+
+Build execution successfully runs against repositories extracted during review.
+
+Verified with firmware project build execution.
+
+---
+
+### API Layer
+
+Added build endpoint:
+
+```http
+POST /api/runs/{run_id}/build
+```
+
+Review endpoint now returns:
+
+```json
+{
+  "run_id": "...",
+  "module_name": "...",
+  "report": {...}
+}
+```
+
+allowing downstream workflow execution without re-upload or re-ingestion.
+
+---
+
+### Frontend
+
+Integrated run-id persistence.
+
+Implemented build trigger flow.
+
+Added dedicated build execution view.
+
+Build output displays:
+
+* return code
+* stdout
+* stderr
+
+directly from build execution response.
+
+---
+
+### Report Rendering Fixes
+
+Resolved issue filtering logic that discarded review findings.
+
+Updated rendering to support review objects based on:
+
+```json
+{
+  "severity": "...",
+  "message": "..."
+}
+```
+
+instead of requiring:
+
+```json
+{
+  "status": "failed"
+}
+```
+
+Review findings now render correctly.
+
+---
+
+## Current Architecture
+
+```text
+Upload ZIP
+    ↓
+orchestrator
+    ↓
+workspace/runs/<run_id>/<module>
+    ↓
+repo_review
+    ↓
+report
+    ↓
+Build Trigger
+    ↓
+repo_build
+    ↓
+cmake-build.bat
+```
+
+Single ingestion.
+
+Single workspace.
+
+Single repository root.
+
+No duplicate extraction.
+
+No duplicate build workspace.
+
+---
+
+## Recommended Next Step
+
+### ORCH-002
+
+Persist lightweight run metadata.
+
+```json
+{
+  "run_id": "...",
+  "module_name": "...",
+  "source_type": "zip"
+}
+```
+
+Purpose:
+
+* deterministic repo resolution
+* build workflow independence
+* future agent workflow support
+* future GitHub / Bitbucket integration
+
+---
+
+## Follow-On Roadmap
+
+1. ORCH-002 Metadata persistence
+2. Build result persistence
+3. Call graph generation
+4. Dependency graph generation
+5. Dead code detection
+6. Architecture artifact generation
+7. GitHub / Bitbucket integration
+8. AI reasoning layer
+
+Primary strategic asset remains the symbol/call graph foundation which will enable impact analysis, architecture review, root-cause analysis, and future agent workflows.

@@ -1,6 +1,5 @@
 # src/repo_review/ingestion/local_ingestion.py
 
-
 from pathlib import Path
 import shutil
 

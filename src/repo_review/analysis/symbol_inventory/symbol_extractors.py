@@ -1,10 +1,7 @@
 # src/repo_review/analysis/symbol_inventory/symbol_extractors.py
-
 from __future__ import annotations
 import re
 from pathlib import Path
-
-from clang.cindex import CursorKind
 
 
 def is_within_root(path: Path, root: Path) -> bool:
@@ -17,6 +14,8 @@ def is_within_root(path: Path, root: Path) -> bool:
 
 
 def extract_function(node):
+
+    from clang.cindex import CursorKind
 
     storage_class = (
         str(node.storage_class)
@@ -243,6 +242,7 @@ def extract_variable(node, source_file: Path):
             storage_class,
     }
 
+
 def extract_parameter(node):
     return {
         "name": node.spelling,
@@ -252,6 +252,8 @@ def extract_parameter(node):
 
 
 def extract_struct(node):
+
+    from clang.cindex import CursorKind
 
     struct_data = {
 
@@ -347,6 +349,8 @@ def extract_struct(node):
 
 
 def extract_enum(node):
+
+    from clang.cindex import CursorKind
 
     enum_data = {
 
@@ -448,6 +452,9 @@ def extract_typedef(node):
 
 
 def extract_macro(node):
+
+    from clang.cindex import CursorKind
+
     tokens = list(node.get_tokens())
 
     replacement = ""

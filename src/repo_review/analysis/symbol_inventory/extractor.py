@@ -1,34 +1,37 @@
 # src/repo_review/analysis/symbol_inventory/extractor.py
+
 from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, TYPE_CHECKING
 
-from clang.cindex import (
-    CompilationDatabase,
-    Index,
-    TranslationUnit,
-)
-
-from .libclang import configure_libclang
+from .libclang_resolver import configure_libclang
 from .compile_args import sanitize_compile_args
 from .ast_walker import walk_ast
 from .symbol_extractors import is_within_root
 
+if TYPE_CHECKING:
+    from clang.cindex import (
+        Index,
+        CompilationDatabase,
+    )
 
+
+def _ensure_libclang() -> None:
+    configure_libclang()
 
 def extract_symbols(
     file_path: Path,
     repo_root: Path,
     index: Index,
     compdb: CompilationDatabase,
-    target_folders: list[Path],   # ADD THIS
+    target_folders: list[Path],
 ) -> dict[str, Any] | None:
 
-    commands = compdb.getCompileCommands(
-        str(file_path)
-    )
+    from clang.cindex import TranslationUnit
+
+    commands = compdb.getCompileCommands(str(file_path))
 
     if not commands:
         return None
@@ -39,21 +42,15 @@ def extract_symbols(
 
     if raw_args:
         try:
-            if (
-                Path(raw_args[-1]).resolve()
-                == file_path
-            ):
+            if Path(raw_args[-1]).resolve() == file_path:
                 raw_args = raw_args[:-1]
         except Exception:
             pass
 
-    args = sanitize_compile_args(
-        raw_args
-    )
+    args = sanitize_compile_args(raw_args)
 
     parse_options = (
-        TranslationUnit
-        .PARSE_DETAILED_PROCESSING_RECORD
+        TranslationUnit.PARSE_DETAILED_PROCESSING_RECORD
     )
 
     try:
@@ -84,35 +81,40 @@ def extract_symbols(
         result,
         file_path,
         repo_root,
-        target_folders,   # ADD THIS
+        target_folders,
     )
 
     return result
 
-
 def build_symbol_inventory(
-    source_root: Path,
-    compile_db_path: Path,
+    repo_root: Path,
+    analysis_dir: Path,
     output_path: Path,
     policy: dict[str, Any],
 ) -> dict[str, Any]:
 
-    compile_db_dir = compile_db_path.parent
+    _ensure_libclang()
 
-    configure_libclang()
-
-    ast_policy = policy.get(
-        "ast",
-        {},
+    from clang.cindex import (
+        Index,
+        CompilationDatabase,
     )
-    
+
+    build_dir = analysis_dir / "cmake_build"
+
+    compile_db_path = (
+        build_dir / "compile_commands.json"
+    )
+
+    ast_policy = policy.get("ast", {})
+
     target_folders = [
-        (source_root / folder).resolve()
+        (repo_root / folder).resolve()
         for folder in ast_policy.get(
             "target_folders",
             ["src"],
         )
-    ]    
+    ]
 
     target_extensions = set(
         ast_policy.get(
@@ -121,13 +123,10 @@ def build_symbol_inventory(
         )
     )
 
-
     artifact = {
         "status": "pending",
-        "source_root": str(source_root),
-        "compile_db_path": str(
-            compile_db_path
-        ),
+        "repo_root": str(repo_root),
+        "compile_db_path": str(compile_db_path),
         "output_path": str(output_path),
         "processed_files": 0,
         "skipped_files": [],
@@ -135,25 +134,19 @@ def build_symbol_inventory(
     }
 
     if not compile_db_path.exists():
-
-        artifact["status"] = (
-            "missing_compile_db"
-        )
-
-        artifact["error"] = (
-            "Compile database not found: "
-            f"{compile_db_path}"
-        )
-
-        return artifact
+        return {
+            **artifact,
+            "status": "missing_compile_db",
+            "error": (
+                f"Compile database not found: "
+                f"{compile_db_path}"
+            ),
+        }
 
     index = Index.create()
 
-    compdb = (
-        CompilationDatabase
-        .fromDirectory(
-            str(compile_db_dir)
-        )
+    compdb = CompilationDatabase.fromDirectory(
+        str(build_dir)
     )
 
     with open(
@@ -161,18 +154,13 @@ def build_symbol_inventory(
         "r",
         encoding="utf-8",
     ) as f:
-
         compile_data = json.load(f)
 
     processed_files: set[str] = set()
 
-    all_results: list[
-        dict[str, Any]
-    ] = []
+    all_results: list[dict[str, Any]] = []
 
-    skipped_files: list[
-        dict[str, str]
-    ] = []
+    skipped_files: list[dict[str, str]] = []
 
     for entry in compile_data:
 
@@ -194,7 +182,6 @@ def build_symbol_inventory(
             )
             for folder in target_folders
         ):
-
             skipped_files.append(
                 {
                     "file": str(file_path),
@@ -202,14 +189,12 @@ def build_symbol_inventory(
                         "outside_target_folder",
                 }
             )
-
             continue
 
         if (
             file_path.suffix.lower()
             not in target_extensions
         ):
-
             skipped_files.append(
                 {
                     "file": str(file_path),
@@ -217,25 +202,19 @@ def build_symbol_inventory(
                         "unsupported_extension",
                 }
             )
-
             continue
 
         result = extract_symbols(
-            file_path,
-            source_root,
-            index,
-            compdb,
-            target_folders,
+            file_path=file_path,
+            repo_root=repo_root,
+            index=index,
+            compdb=compdb,
+            target_folders=target_folders,
         )
 
         if result:
-
-            all_results.append(
-                result
-            )
-
+            all_results.append(result)
         else:
-
             skipped_files.append(
                 {
                     "file": str(file_path),
@@ -249,7 +228,6 @@ def build_symbol_inventory(
         "w",
         encoding="utf-8",
     ) as f:
-
         json.dump(
             all_results,
             f,
@@ -257,18 +235,11 @@ def build_symbol_inventory(
             ensure_ascii=True,
         )
 
-    artifact.update(
-        {
-            "status": "success",
-            "processed_files":
-                len(all_results),
-            "skipped_files":
-                skipped_files,
-            "results":
-                all_results,
-            "written":
-                output_path.exists(),
-        }
-    )
-
-    return artifact
+    return {
+        **artifact,
+        "status": "success",
+        "processed_files": len(all_results),
+        "skipped_files": skipped_files,
+        "results": all_results,
+        "written": output_path.exists(),
+    }

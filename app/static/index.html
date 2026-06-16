@@ -20,8 +20,8 @@
 
     --panel:rgba(255,255,255,.82);
 
-    --text:#374869;
-    --muted:#ffffff;
+    --text:#0f172a;
+    --muted:#64748b;
 
     --line:rgba(15,23,42,.08);
 
@@ -309,31 +309,44 @@ html,body{
 }
 
 .exec-card{
-    padding:22px;
+    padding:24px;
 
-    border-radius:22px;
+    border-radius:20px;
 
-    background:
-        linear-gradient(
-            180deg,
-            rgba(255,255,255,.05),
-            rgba(255,255,255,.02)
-        );
+    background:#ffffff;
 
-    border:1px solid rgba(255,255,255,.08);
+    border:1px solid rgba(15,23,42,.08);
+
+    box-shadow:
+        0 6px 18px rgba(15,23,42,.05);
+
+    transition:.25s ease;
+}
+
+.exec-card:hover{
+    transform:translateY(-3px);
 }
 
 .exec-card h3{
-    color:var(--green);
-
     font-size:34px;
+    font-weight:900;
 
-    margin-bottom:10px;
+    background:
+        linear-gradient(
+            90deg,
+            #14b8a6,
+            #3b82f6
+        );
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+
+    margin-bottom:8px;
 }
 
-.exec-card p {
-    color: black;
-    font-size: 13px;
+.exec-card p{
+    color:#64748b;
+    font-size:13px;
 }
 
 /* ========================================================= */
@@ -341,22 +354,20 @@ html,body{
 /* ========================================================= */
 
 .preview{
-    padding:24px;
+    padding:28px;
 }
 
 .preview-panel{
-    padding:28px;
+    padding:30px;
 
-    border-radius:28px;
+    border-radius:24px;
 
-    background:
-        linear-gradient(
-            180deg,
-            rgba(255,255,255,.08),
-            rgba(255,255,255,.03)
-        );
+    background:#ffffff;
 
-    border:1px solid rgba(255,255,255,.08);
+    border:1px solid rgba(15,23,42,.08);
+
+    box-shadow:
+        0 10px 24px rgba(15,23,42,.05);
 }
 
 .preview-header{
@@ -364,53 +375,77 @@ html,body{
     justify-content:space-between;
     align-items:center;
 
-    margin-bottom:22px;
+    margin-bottom:24px;
 
-    color:var(--muted);
+    color:#0f172a;
 
-    font-size:12px;
-    text-transform:uppercase;
-    letter-spacing:.16em;
+    font-size:13px;
+    font-weight:700;
+
+    border-bottom:1px solid rgba(15,23,42,.08);
+
+    padding-bottom:16px;
 }
 
 .signal{
-    width:10px;
-    height:10px;
+    width:12px;
+    height:12px;
 
     border-radius:50%;
 
-    background:var(--green);
+    background:#10b981;
 
     box-shadow:
-        0 0 18px rgba(16,185,129,.8);
+        0 0 16px rgba(16,185,129,.8);
+
+    animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+
+    0%{
+        transform:scale(1);
+    }
+
+    50%{
+        transform:scale(1.15);
+    }
+
+    100%{
+        transform:scale(1);
+    }
 }
 
 .workflow{
     margin-top:24px;
 
     display:flex;
-    align-items:center;
-    gap:12px;
-
     flex-wrap:wrap;
+    gap:14px;
+    align-items:center;
 }
 
 .wf-node{
     padding:14px 18px;
 
-    border-radius:16px;
+    border-radius:14px;
 
-    background:
-        linear-gradient(
-            180deg,
-            rgba(59,130,246,.18),
-            rgba(255,255,255,.03)
-        );
+    background:#f8fafc;
 
-    border:1px solid rgba(59,130,246,.25);
+    border:1px solid rgba(59,130,246,.18);
+
+    color:#0f172a;
 
     font-size:13px;
     font-weight:700;
+
+    transition:.25s;
+}
+
+.wf-node:hover{
+    transform:translateY(-2px);
+
+    border-color:#3b82f6;
 }
 
 .wf-line{
@@ -421,8 +456,8 @@ html,body{
     background:
         linear-gradient(
             90deg,
-            var(--blue),
-            var(--green)
+            #3b82f6,
+            #14b8a6
         );
 }
 
@@ -517,13 +552,13 @@ html,body{
 
 .progress-wrap{
     width:100%;
-    height:14px;
+    height:12px;
 
     border-radius:999px;
 
     overflow:hidden;
 
-    background:rgba(255,255,255,.05);
+    background:#e2e8f0;
 }
 
 .progress{
@@ -533,8 +568,8 @@ html,body{
     background:
         linear-gradient(
             90deg,
-            var(--blue),
-            var(--green)
+            #3b82f6,
+            #14b8a6
         );
 
     transition:width .3s ease;
@@ -549,11 +584,13 @@ html,body{
 
     padding:16px;
 
-    border-radius:20px;
+    border-radius:18px;
 
-    background:rgba(255,255,255,.03);
+    background:#ffffff;
 
-    border:1px solid rgba(255,255,255,.06);
+    border:1px solid rgba(15,23,42,.08);
+
+    color:#0f172a;
 
     font-family:monospace;
     font-size:13px;
@@ -562,13 +599,15 @@ html,body{
 .log{
     padding:12px;
 
-    border-radius:14px;
+    border-radius:12px;
 
-    background:rgba(59,130,246,.08);
+    background:#f8fafc;
 
-    border:1px solid rgba(59,130,246,.12);
+    border:1px solid rgba(15,23,42,.05);
 
     margin-bottom:10px;
+
+    color:#334155;
 }
 
 /* ========================================================= */
@@ -587,11 +626,14 @@ html,body{
 .metric{
     padding:24px;
 
-    border-radius:24px;
+    border-radius:20px;
 
-    background:rgba(15,23,42,.75);
+    background:#ffffff;
 
-    border:1px solid rgba(255,255,255,.08);
+    border:1px solid rgba(15,23,42,.08);
+
+    box-shadow:
+        0 6px 18px rgba(15,23,42,.05);
 }
 
 .metric .value{
@@ -637,20 +679,6 @@ html,body{
     overflow:hidden;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .section-sub{
     display:flex;
     gap:14px;
@@ -672,19 +700,6 @@ html,body{
     background:rgba(255,255,255,.14);
     border-radius:999px;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .section-header{
     display:flex;
@@ -751,50 +766,52 @@ html,body{
 }
 
 .item{
-    padding:14px;
+    padding:16px;
 
-    border-radius:16px;
+    border-radius:14px;
 
     margin-bottom:12px;
 
-    border-left:4px solid var(--blue);
+    background:#f8fafc;
 
-    background:rgba(255,255,255,.03);
+    color:#0f172a;
+
+    border-left:4px solid #3b82f6;
 
     font-size:13px;
     line-height:1.7;
 }
 
 .item.failed{
-    border-left-color:var(--red);
+    border-left-color:#ef4444;
 
     background:
         linear-gradient(
             90deg,
-            rgba(239,68,68,.15),
-            rgba(255,255,255,.02)
+            rgba(239,68,68,.08),
+            #ffffff
         );
 }
 
 .item.warning{
-    border-left-color:var(--yellow);
+    border-left-color:#f59e0b;
 
     background:
         linear-gradient(
             90deg,
-            rgba(245,158,11,.15),
-            rgba(255,255,255,.02)
+            rgba(245,158,11,.08),
+            #ffffff
         );
 }
 
 .item.passed{
-    border-left-color:var(--green);
+    border-left-color:#10b981;
 
     background:
         linear-gradient(
             90deg,
-            rgba(16,185,129,.15),
-            rgba(255,255,255,.02)
+            rgba(16,185,129,.08),
+            #ffffff
         );
 }
 
@@ -853,7 +870,51 @@ html,body{
     }
 }
 
+
+/* FORCE TEXT VISIBILITY */
+
+.lead,
+.sub,
+.field label,
+.preview-header,
+.preview-header span,
+.panel h2,
+.panel h3,
+.statusbar,
+#statusText,
+#progressText,
+#buildStatus{
+    color:#0f172a !important;
+    -webkit-text-fill-color:#0f172a !important;
+}
+
+.hero-content *,
+.preview *,
+.panel *{
+    text-shadow:none !important;
+}
+
+/* EMERGENCY TEXT FIX */
+
+p.lead,
+p.sub,
+.preview-header,
+.preview-header span,
+.panel h2,
+.field label,
+.statusbar,
+#statusText,
+#progressText,
+#buildStatus{
+    color:#0f172a !important;
+    fill:#0f172a !important;
+    text-shadow:none !important;
+    opacity:1 !important;
+}
+
 </style>
+
+
 </head>
 
 <body>
@@ -882,7 +943,7 @@ html,body{
                     </span>
                 </h1>
 
-                <p class="lead">
+                <p class="lead"style="color:#0f172a !important;">
                     Automate engineering reviews, standards validation,
                     artifact verification, build readiness,
                     and release workflows across the embedded
@@ -934,7 +995,7 @@ html,body{
 
                 <div class="preview-panel">
 
-                    <div class="preview-header">
+                    <div class="preview-header" style="color:#0f172a !important;">
                         <span>AI Governance Runtime</span>
                         <span class="signal"></span>
                     </div>
@@ -991,15 +1052,15 @@ html,body{
 
             <div class="glass panel">
 
-                <h2>Configure AI Review Pipeline</h2>
+                <h2 style="color:#0f172a !important;">Configure AI Review Pipeline</h2>
 
-                <p class="sub">
+                <p class="sub" style="color:#0f172a !important;">
                     Launch the autonomous engineering review workflow
                     against the configured embedded software module.
                 </p>
 
                 <div class="field">
-                    <label>Repository ZIP</label>
+                    <label style="color:#0f172a !important;">Repository ZIP</label>
 
                     <input
                         type="file"

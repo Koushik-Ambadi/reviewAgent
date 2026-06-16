@@ -18,12 +18,13 @@ from .global_variable_names import (
 
 
 def run_naming_checks(
-    analysis_path,
+    workspace_path,
     module_name,
     policy,
 ):
-    symbols_path = (
-        analysis_path
+    symbols_path =(
+        workspace_path
+        / "analysis"
         / "symbols.json"
     )
 
