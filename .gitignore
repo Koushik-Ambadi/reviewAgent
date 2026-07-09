@@ -12,3 +12,7 @@ __pycache__/
 *.zip
 
 runs/
+run.bat
+shuntReview.html
+socReview.html
+.gitignore
