@@ -10,6 +10,10 @@ from app.api.build import (
     router as build_router,
 ) 
 
+from app.api.policy import (
+    router as policy_router,
+)
+
 app = FastAPI(
     title="Review Agent"
 )
@@ -22,6 +26,13 @@ app.include_router(
     build_router,
     prefix="/api",
 )
+
+app.include_router(
+    policy_router,
+    prefix="/api",
+)
+
+
 app.mount(
     "/",
     StaticFiles(
@@ -30,3 +41,4 @@ app.mount(
     ),
     name="static",
 )
+

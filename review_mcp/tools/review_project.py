@@ -8,7 +8,7 @@ from pathlib import Path
 
 from review_mcp.client.review_client import ReviewClient
 from review_mcp.utils.config import REVIEW_API_URL
-
+from review_mcp.utils.review_formatter import optimize_review_response
 
 def review_project(
     repository_path: str,
@@ -45,7 +45,9 @@ def review_project(
 
         client = ReviewClient(REVIEW_API_URL)
 
-        return client.review_zip(zip_path)
+        response = client.review_zip(zip_path)
+        return optimize_review_response(response)
+
 
     finally:
 
