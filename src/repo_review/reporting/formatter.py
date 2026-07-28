@@ -133,6 +133,10 @@ def build_metadata(
         "module_name":
             context.module_name,
 
+        "run_id":
+            context.workspace_path.name,
+
+
 
         "policy_name":
             context.policy_name,

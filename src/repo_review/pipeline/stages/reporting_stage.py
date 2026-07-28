@@ -40,10 +40,7 @@ def run(
         report,
         output_path,
     )
-
-    report["metadata"]["report_path"] = (
-        str(output_path)
-    )
+    
     context.report_path = output_path
 
     context.report = report
