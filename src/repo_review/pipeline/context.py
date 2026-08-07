@@ -3,6 +3,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
+from ..contracts import RunResult
+
 
 @dataclass
 class PipelineContext:
@@ -19,10 +21,10 @@ class PipelineContext:
     # workspace
     module_name: str = ""
 
-    structure_issues: list = field(default_factory=list)
-    validation_issues: list = field(default_factory=list)
+    stage_results: list = field(default_factory=list)
+
     report: dict[str, Any] = field(default_factory=dict)
 
+    diagnostics: list = field(default_factory=list)
 
-
-    report_path: Path | None = None
+    run_result: RunResult | None = None

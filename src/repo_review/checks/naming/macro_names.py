@@ -2,8 +2,12 @@
 
 import re
 
-from .utils import (
-    is_excluded_macro,
+from ...contracts import (
+    CaseResult,
+    CaseStatus,
+    CheckResult,
+    CheckStatus,
+    build_check_summary,
 )
 
 
@@ -12,15 +16,28 @@ def validate_macro_names(
     module_name,
     naming_policy,
 ):
-    results = []
+
+    cases = []
 
     macro_pattern = re.compile(
         naming_policy["macro_name_pattern"]
     )
 
-    value_type = naming_policy["macro_value_type"]
+    value_type = naming_policy[
+        "macro_value_type"
+    ]
+
+    excluded_patterns = [
+        pattern.format(
+            module=module_name.lower()
+        )
+        for pattern in naming_policy[
+            "applicability_exclusions"
+        ]
+    ]
 
     for file_symbols in symbols:
+
         file_path = file_symbols.get(
             "file",
             "",
@@ -32,6 +49,7 @@ def validate_macro_names(
         )
 
         for macro in macros:
+
             name = macro.get(
                 "name",
                 "",
@@ -42,52 +60,94 @@ def validate_macro_names(
                 "",
             )
 
+            line = macro.get(
+                "line",
+                "",
+            )
+
+            location = (
+                f"{file_path}:{line}"
+            )
+
+            #
+            # Only validate configured macro type
+            #
+
             if macro_type != value_type:
                 continue
 
-            if is_excluded_macro(
-                name,
-                naming_policy["excluded_macro_patterns"],
-                module_name,
-            ):
-                results.append(
-                    {
-                        "status": "EXCEPTION",
-                        "rule": "macro_names",
-                        "file": file_path,
-                        "message": (
-                            f"[MACRO] {file_path} -> "
-                            f"{name} skipped "
-                            f"(excluded pattern)"
-                        ),
-                    }
+            #
+            # Excluded macros
+            #
+
+            if any(
+                re.match(
+                    pattern,
+                    name,
                 )
+                for pattern in excluded_patterns
+            ):
+
+                cases.append(
+                    CaseResult(
+                        status=CaseStatus.SKIPPED,
+                        name=name,
+                        location=location,
+                        reasons=[
+                            (
+                                "Macro excluded by "
+                                "applicability policy."
+                            )
+                        ],
+                    )
+                )
+
                 continue
+
+            #
+            # Naming validation
+            #
+
+            reasons = []
 
             if not macro_pattern.match(name):
-                results.append(
-                    {
-                        "status": "FAILED",
-                        "rule": "macro_names",
-                        "file": file_path,
-                        "message": (
-                            f"[MACRO] {file_path} -> "
-                            f"Invalid macro name: {name}"
-                        ),
-                    }
+
+                reasons.append(
+                    (
+                        "Macro name does not match "
+                        "required naming pattern."
+                    )
                 )
-                continue
 
-            results.append(
-                {
-                    "status": "PASSED",
-                    "rule": "macro_names",
-                    "file": file_path,
-                    "message": (
-                        f"[MACRO] {file_path} -> "
-                        f"{name} passed validation"
-                    ),
-                }
-            )
+            #
+            # Final result
+            #
 
-    return results
+            if reasons:
+
+                cases.append(
+                    CaseResult(
+                        status=CaseStatus.FAILED,
+                        name=name,
+                        location=location,
+                        reasons=reasons,
+                    )
+                )
+
+            else:
+
+                cases.append(
+                    CaseResult(
+                        status=CaseStatus.SUCCESS,
+                        name=name,
+                        location=location,
+                        reasons=[],
+                    )
+                )
+
+    return CheckResult(
+        title="Macro Names",
+        status=CheckStatus.COMPLETED,
+        summary=build_check_summary(cases),
+        cases=cases,
+    )

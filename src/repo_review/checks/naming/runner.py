@@ -1,28 +1,18 @@
 # src/repo_review/checks/naming/runner.py
 import json
-from .function_names import (
-    validate_function_names,
-)
 
-from .macro_names import (
-    validate_macro_names,
-)
-
-from .array_sizes import (
-    validate_array_sizes,
-)
-
-from .global_variable_names import (
-    validate_global_variable_names,
-)
+from .array_sizes import validate_array_sizes
+from .function_names import validate_function_names
+from .global_variable_names import validate_global_variable_names
+from .macro_names import validate_macro_names
 
 
 def run_naming_checks(
     workspace_path,
     module_name,
-    policy,
+    naming_policy,
 ):
-    symbols_path =(
+    symbols_path = (
         workspace_path
         / "analysis"
         / "symbols.json"
@@ -33,42 +23,25 @@ def run_naming_checks(
         "r",
         encoding="utf-8",
     ) as f:
-
         symbols = json.load(f)
 
-    naming_policy = policy["naming"]
-
-    results = []
-
-    results.extend(
+    return [
         validate_function_names(
             symbols,
             module_name,
-            naming_policy,
-        )
-    )
-
-    results.extend(
+            naming_policy["function_names"],
+        ),
         validate_macro_names(
             symbols,
             module_name,
-            naming_policy,
-        )
-    )
-
-    results.extend(
+            naming_policy["macro_names"],
+        ),
         validate_array_sizes(
             symbols,
-            naming_policy,
-        )
-    )
-
-    results.extend(
+            naming_policy["array_sizes"],
+        ),
         validate_global_variable_names(
             symbols,
-            naming_policy,
-        )
-    )
-
-    return results
-
+            naming_policy["global_variable_names"],
+        ),
+    ]

@@ -2,8 +2,12 @@
 
 import re
 
-from .utils import (
-    is_excluded_global,
+from ...contracts import (
+    CaseResult,
+    CaseStatus,
+    CheckResult,
+    CheckStatus,
+    build_check_summary,
 )
 
 
@@ -12,52 +16,45 @@ def validate_global_variable_names(
     naming_policy,
 ):
 
-    results = []
+    cases = []
 
     allowed_chars_pattern = re.compile(
         naming_policy[
-            "global_variable_allowed_chars_pattern"
+            "allowed_chars_pattern"
         ]
     )
 
     allowed_data_types = naming_policy[
-        "global_variable_data_types"
+        "data_types"
     ]
 
     allowed_data_sizes = naming_policy[
-        "global_variable_data_sizes"
+        "data_sizes"
     ]
 
     allowed_modules = naming_policy[
-        "global_variable_modules"
+        "modules"
     ]
 
     allowed_units = naming_policy[
-        "global_variable_units"
+        "units"
     ]
 
     max_length = naming_policy[
-        "global_variable_name_max_length"
+        "name_max_length"
     ]
 
-    #
-    # Assumptions / Known Limitations
-    #
-    # 1. data_type assumed to be exactly 1 character
-    #
-    # 2. data_size assumed to be exactly 1 character
-    #
-    # 3. Naming order assumed fixed:
-    #    <type><size><module>_<unit>_<description>
-    #
-    # 4. Description cannot contain underscores
-    #
-    # 5. Description must start lowercase
-    #
-    # 6. Description length fixed to 14-22 chars
-    #
-    # 7. Validation is structure-based only.
-    #
+    excluded_type_patterns = naming_policy[
+        "excluded_type_patterns"
+    ]
+
+    description_min_length = naming_policy[
+        "description_min_length"
+    ]
+
+    description_max_length = naming_policy[
+        "description_max_length"   
+    ]
 
     for file_symbols in symbols:
 
@@ -85,28 +82,38 @@ def validate_global_variable_names(
 
             line = global_var.get(
                 "line",
-                "?",
+                "",
+            )
+
+            location = (
+                f"{file_path}:{line}"
             )
 
             #
-            # Skip generated/system globals
+            # Skip excluded/system globals
             #
 
-            if is_excluded_global(
-                var_type,
-                naming_policy["excluded_global_type_patterns"],
+            if any(
+                re.match(
+                    pattern,
+                    var_type,
+                )
+                for pattern in excluded_type_patterns
             ):
 
-                results.append(
-                    {
-                        "status": "EXCEPTION",
-                        "rule": "global_variable_names",
-                        "file": file_path,
-                        "message": (
-                            f"[GLOBAL] {file_path}:{line} -> "
-                            f"{name} skipped (excluded type)"
-                        ),
-                    }
+                cases.append(
+                    CaseResult(
+                        status=CaseStatus.SKIPPED,
+                        name=name,
+                        location=location,
+                        reasons=[
+                            (
+                                "Excluded global variable "
+                                f"type '{var_type}' "
+                                "by policy."
+                            )
+                        ],
+                    )
                 )
 
                 continue
@@ -120,7 +127,7 @@ def validate_global_variable_names(
             if len(name) > max_length:
 
                 failures.append(
-                    f"exceeds max length ({max_length})"
+                    f"Name exceeds max length ({max_length})."
                 )
 
             #
@@ -132,21 +139,21 @@ def validate_global_variable_names(
             ):
 
                 failures.append(
-                    "contains invalid characters"
+                    "Name contains invalid characters."
                 )
 
             #
-            # Minimum length sanity
+            # Minimum length
             #
 
             if len(name) < 3:
 
                 failures.append(
-                    "too short to parse"
+                    "Name is too short to parse."
                 )
 
             #
-            # Step 1 -> data_type
+            # Data type
             #
 
             data_type = ""
@@ -155,17 +162,17 @@ def validate_global_variable_names(
 
                 data_type = name[0]
 
-                if (
-                    data_type
-                    not in allowed_data_types
-                ):
+                if data_type not in allowed_data_types:
 
                     failures.append(
-                        f"invalid data type '{data_type}'"
+                        (
+                            f"Invalid data type "
+                            f"'{data_type}'."
+                        )
                     )
 
             #
-            # Step 2 -> data_size
+            # Data size
             #
 
             data_size = ""
@@ -174,18 +181,14 @@ def validate_global_variable_names(
 
                 data_size = name[1]
 
-                if (
-                    data_size
-                    not in allowed_data_sizes
-                ):
+                if data_size not in allowed_data_sizes:
 
                     failures.append(
-                        f"invalid data size '{data_size}'"
+                        (
+                            f"Invalid data size "
+                            f"'{data_size}'."
+                        )
                     )
-
-            #
-            # Remaining after type + size
-            #
 
             remaining = (
                 name[2:]
@@ -193,23 +196,20 @@ def validate_global_variable_names(
                 else ""
             )
 
-            #
-            # Expected:
-            # module_unit_description
-            #
-
             parts = remaining.split("_")
+
+            module = ""
+            unit = ""
+            description = ""
 
             if len(parts) != 3:
 
                 failures.append(
-                    "must contain exactly 2 underscores "
-                    "after type/size section"
+                    (
+                        "Expected naming format "
+                        "<type><size><module>_<unit>_<description>."
+                    )
                 )
-
-                module = ""
-                unit = ""
-                description = ""
 
             else:
 
@@ -218,7 +218,7 @@ def validate_global_variable_names(
                 description = parts[2]
 
             #
-            # Step 3 -> module validation
+            # Module
             #
 
             if module:
@@ -226,11 +226,11 @@ def validate_global_variable_names(
                 if module not in allowed_modules:
 
                     failures.append(
-                        f"invalid module '{module}'"
+                        f"Invalid module '{module}'."
                     )
 
             #
-            # Step 4 -> unit validation
+            # Unit
             #
 
             if unit:
@@ -238,90 +238,78 @@ def validate_global_variable_names(
                 if unit not in allowed_units:
 
                     failures.append(
-                        f"invalid unit '{unit}'"
+                        f"Invalid unit '{unit}'."
                     )
 
             #
-            # Step 5 -> description validation
+            # Description
             #
 
             if description:
 
-                #
-                # Must start lowercase
-                #
-
                 if not description[0].islower():
 
                     failures.append(
-                        "description must start "
-                        "with lowercase letter"
+                        "Description must start "
+                        "with lowercase letter."
                     )
-
-                #
-                # Alphanumeric only
-                #
 
                 if not description.isalnum():
 
                     failures.append(
-                        "description must contain "
-                        "only letters and numbers"
+                        (
+                            "Description must contain "
+                            "only letters and numbers."
+                        )
                     )
 
-                #
-                # Length checks
-                #
-
-                if len(description) < 14:
+                if len(description) < description_min_length:
 
                     failures.append(
-                        "description length must be >= 14"
+                        f"Description length must be >= {description_min_length}."
                     )
 
-                if len(description) > 22:
+                if len(description) > description_max_length:
 
                     failures.append(
-                        "description length must be <= 22"
+                        f"Description length must be <= {description_max_length}."
                     )
 
             else:
 
                 failures.append(
-                    "description missing"
+                    "Description missing."
                 )
 
             #
-            # Final result
+            # Final case
             #
 
             if failures:
 
-                results.append(
-                    {
-                        "status": "FAILED",
-                        "rule": "global_variable_names",
-                        "file": file_path,
-                        "message": (
-                            f"[GLOBAL] {file_path}:{line} -> "
-                            f"{name} failed validation: "
-                            + "; ".join(failures)
-                        ),
-                    }
+                cases.append(
+                    CaseResult(
+                        status=CaseStatus.FAILED,
+                        name=name,
+                        location=location,
+                        reasons=failures,
+                    )
                 )
 
             else:
 
-                results.append(
-                    {
-                        "status": "PASSED",
-                        "rule": "global_variable_names",
-                        "file": file_path,
-                        "message": (
-                            f"[GLOBAL] {file_path}:{line} -> "
-                            f"{name} passed validation"
-                        ),
-                    }
+                cases.append(
+                    CaseResult(
+                        status=CaseStatus.SUCCESS,
+                        name=name,
+                        location=location,
+                        reasons=[],
+                    )
                 )
 
-    return results
+    return CheckResult(
+        title="Global Variable Names",
+        status=CheckStatus.COMPLETED,
+        summary=build_check_summary(cases),
+        cases=cases,
+    )

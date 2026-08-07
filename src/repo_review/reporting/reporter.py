@@ -1,36 +1,22 @@
 # src/repo_review/reporting/reporter.py
-
 from __future__ import annotations
 
 import json
-
 from pathlib import Path
-
-from rich.console import Console
 
 from .formatter import (
     build_report_data,
 )
 
-console = Console()
-
-
-# =========================================================
-# FINAL REPORT BUILDER
-# =========================================================
 
 def build_final_report(
     context,
 ) -> dict:
 
     return build_report_data(
-        context
+        context,
     )
 
-
-# =========================================================
-# REPORT WRITER
-# =========================================================
 
 def write_report(
     report: dict,
@@ -48,13 +34,12 @@ def write_report(
         path,
         "w",
         encoding="utf-8",
-    ) as f:
+    ) as file:
 
         json.dump(
             report,
-            f,
+            file,
             indent=2,
-            ensure_ascii=True,
         )
 
     return path

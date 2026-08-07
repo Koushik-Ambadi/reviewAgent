@@ -1,47 +1,12 @@
-# src/repo_review/policies/default.yaml
-version: 1
+version: 2
 
-# =========================================================
-# REQUIRED PATHS
-# =========================================================
-required_paths:
+metadata:
+  name: "ABS Default Policy"
 
-  # ---------- VALID ----------
-  - absdef/
-  - app/
-  - bs_cfg/
-  - build/
-  - cfg/
-  - design/
-  - docs/
-  - node_modules/
-  - s32k344-freertos/
-  - s32k344-mcal/
-  - src/
-  - src/{module}.c
-  - src/{module}.h
-  - src/{module}_model.c
-  - src/{module}_model.h
-  - .clang-format
-  - .gitattributes
-  - .gitignore
-  - .gitmodules
-  - .releasefilelist
-  - build.log
-  - clean-up.bat
-  - cmake-build.bat
-  - CMakeLists.txt
-  - CMakePresets.json
-  - README.md
+reporting:
+  include_passed_cases: true
 
-
-
-
-# =========================================================
-# Symbol Extraction 
-# =========================================================
 ast:
-
   target_folders:
     - src
 
@@ -51,148 +16,202 @@ ast:
 
   libclang_path: auto
 
-naming:
+checks:
 
-  function_name_pattern: "^[A-Z][A-Za-z0-9]*(_[a-z0-9]+)+$"
+  repository_structure:
 
-  excluded_function_patterns:
-    - "^look\\d_"
-    - "^plook_"
-    - "^intrp"
-    - "^binsearch_"
+    required_paths:
 
-  macro_name_pattern: "^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$"
+      # ---------- VALID ----------
+      - absdef/
+      - app/
+      - bs_cfg/
+      - build/
+      - cfg/
+      - design/
+      - docs/
+      - node_modules/
+      - s32k344-freertos/
+      - s32k344-mcal/
+      - src/
+      - src/{module}.c
+      - src/{module}.h
+      - src/{module}_model.c
+      - src/{module}_model.h
+      - .clang-format
+      - .gitattributes
+      - .gitignore
+      - .gitmodules
+      - .releasefilelist
+      - build.log
+      - clean-up.bat
+      - cmake-build.bat
+      - CMakeLists.txt
+      - CMakePresets.json
+      - README.md
 
-  excluded_macro_patterns:
-    - "^{module}_IN_"
+    forbidden_paths: []
 
-  macro_value_type: "value"
+    allowed_extensions: []
 
-  enforce_symbolic_array_sizes: true
+    forbidden_extensions: []
 
-  global_variable_name_max_length: 31
+    required_file_types: []
 
-  global_variable_allowed_chars_pattern: "^[A-Za-z0-9_]+$"
+    tree_rules: []
 
-  global_variable_description_pattern: "^[a-z][A-Za-z0-9]*$"
+    size_rules: []
 
-  excluded_global_type_patterns:
-    - "^B_.*_T$"
-    - "^DW_.*_T$"
-    - "^ConstP_.*_T$"
-    - "^rt[A-Z].*$"
-    - "^Tmp.*$"
+  symbol_naming:
 
-  global_variable_data_types:
-    - C
-    - F
-    - K
-    - N
-    - V
-    - L
-    - M
+    function_names:
 
-  global_variable_data_sizes:
-    - e
-    - a
-    - m
-    - s
-    - t
+      pattern: "^[A-Z][A-Za-z0-9]*(_[a-z0-9]+)+$"
 
-  global_variable_modules:
-    - Adcmgr
-    - Atddrv
-    - Atdif
-    - Auxcon
-    - Balctl
-    - Battsm
-    - Calmgr
-    - Canstk
-    - Cantcv
-    - Cellmdl
-    - Cellmnt
-    - Chrg
-    - Conctl
-    - Coul
-    - Crcmgr
-    - Curlmt
-    - Cvtnsm
-    - Dcfc
-    - Dcmmgr
-    - Dchrg
-    - Didmgr
-    - Dtcmgr
-    - Hall
-    - Htrctl
-    - Hwio
-    - Hvil
-    - Inhibt
-    - Limctl
-    - Nmsm
-    - Nvmdrv
-    - Nvmmgr
-    - Ocp
-    - Otemp
-    - Ovuv
-    - Packsm
-    - Pchrg
-    - Pwrmnt
-    - Pyro
-    - Qrcode
-    - Rtcmgr
-    - Shunt
-    - Soc
-    - Soe
-    - Soh
-    - Sohc
-    - Sohr
-    - Sop
-    - Srs
-    - Sysmgr
-    - Syssm
-    - Therm
-    - Tmpmnt
-    - Udsstk
-    - Uepm
-    - VITDgn
+      applicability_exclusions:
+        - "^look\\d_"
+        - "^plook_"
+        - "^intrp"
+        - "^binsearch_"
 
-  global_variable_units:
-    - A
-    - mA
-    - kA
-    - V
-    - mV
-    - kV
-    - Ah
-    - kAh
-    - Wh
-    - kWh
-    - W
-    - kW
-    - degC
-    - degF
-    - us
-    - ms
-    - sec
-    - hrs
-    - day
-    - Hz
-    - kHz
-    - Ohm
-    - bi
-    - frc
-    - nu
-    - pct
-    - cnt
-    - ix
-    - tau
+    macro_names:
 
-  description_min_length: 14
+      macro_name_pattern: "^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$"
 
-  description_max_length: 22
+      macro_value_type: "value"
 
-  enforce_module_required: true
+      applicability_exclusions:
+        - "^{module}_IN_"
 
-  enforce_unit_required: true
+    array_sizes:
 
-  enforce_description_required: true
+      enforce_symbolic_array_sizes: true
+
+    global_variable_names:
+
+      name_max_length: 31
+
+      allowed_chars_pattern: "^[A-Za-z0-9_]+$"
+
+      description_pattern: "^[a-z][A-Za-z0-9]*$"
+
+      excluded_type_patterns:
+        - "^B_.*_T$"
+        - "^DW_.*_T$"
+        - "^ConstP_.*_T$"
+        - "^rt[A-Z].*$"
+        - "^Tmp.*$"
+
+      data_types:
+        - C
+        - F
+        - K
+        - N
+        - V
+        - L
+        - M
+
+      data_sizes:
+        - e
+        - a
+        - m
+        - s
+        - t
+
+      modules:
+        - Adcmgr
+        - Atddrv
+        - Atdif
+        - Auxcon
+        - Balctl
+        - Battsm
+        - Calmgr
+        - Canstk
+        - Cantcv
+        - Cellmdl
+        - Cellmnt
+        - Chrg
+        - Conctl
+        - Coul
+        - Crcmgr
+        - Curlmt
+        - Cvtnsm
+        - Dcfc
+        - Dcmmgr
+        - Dchrg
+        - Didmgr
+        - Dtcmgr
+        - Hall
+        - Htrctl
+        - Hwio
+        - Hvil
+        - Inhibt
+        - Limctl
+        - Nmsm
+        - Nvmdrv
+        - Nvmmgr
+        - Ocp
+        - Otemp
+        - Ovuv
+        - Packsm
+        - Pchrg
+        - Pwrmnt
+        - Pyro
+        - Qrcode
+        - Rtcmgr
+        - Shunt
+        - Soc
+        - Soe
+        - Soh
+        - Sohc
+        - Sohr
+        - Sop
+        - Srs
+        - Sysmgr
+        - Syssm
+        - Therm
+        - Tmpmnt
+        - Udsstk
+        - Uepm
+        - VITDgn
+
+      units:
+        - A
+        - mA
+        - kA
+        - V
+        - mV
+        - kV
+        - Ah
+        - kAh
+        - Wh
+        - kWh
+        - W
+        - kW
+        - degC
+        - degF
+        - us
+        - ms
+        - sec
+        - hrs
+        - day
+        - Hz
+        - kHz
+        - Ohm
+        - bi
+        - frc
+        - nu
+        - pct
+        - cnt
+        - ix
+        - tau
+
+      description_min_length: 14
+
+      description_max_length: 22
+
+      enforce_module_required: true
+
+      enforce_unit_required: true
+
+      enforce_description_required: true

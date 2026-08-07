@@ -2,33 +2,20 @@
 
 from __future__ import annotations
 
-try:
-    from ..context import PipelineContext
+from ..context import PipelineContext
 
-    from ...reporting.reporter import (
-        build_final_report,
-        write_report,
-    )
-
-except ImportError:  # pragma: no cover
-
-    from context import PipelineContext
-
-    from reporting.reporter import (
-        build_final_report,
-        write_report,
-    )
+from ...reporting.reporter import (
+    build_final_report,
+    write_report,
+)
 
 
 def run(
     context: PipelineContext,
 ) -> PipelineContext:
-    """
-    Reporting orchestration only.
-    """
 
     report = build_final_report(
-        context
+        context,
     )
 
     output_path = (
@@ -36,13 +23,11 @@ def run(
         / "report.json"
     )
 
-    output_path = write_report(
+    context.report_path = write_report(
         report,
         output_path,
     )
-    
-    context.report_path = output_path
 
-    context.report = report
+    context.run_result = report
 
     return context

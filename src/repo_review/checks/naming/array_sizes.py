@@ -1,19 +1,46 @@
 # src/repo_review/checks/naming/array_sizes.py
 
+from ...contracts import (
+    CaseResult,
+    CaseStatus,
+    CheckResult,
+    CheckStatus,
+    build_check_summary,
+)
+
 
 def validate_array_sizes(
     symbols,
     naming_policy,
 ):
 
+    cases = []
+
     enforce_symbolic_sizes = (
-        naming_policy["enforce_symbolic_array_sizes"]
+        naming_policy[
+            "enforce_symbolic_array_sizes"
+        ]
     )
 
     if not enforce_symbolic_sizes:
-        return []
 
-    results = []
+        cases.append(
+            CaseResult(
+                status=CaseStatus.SKIPPED,
+                name="Array Size Check",
+                location="",
+                reasons=[
+                    "Symbolic array size validation disabled by policy."
+                ],
+            )
+        )
+
+        return CheckResult(
+            title="Array Sizes",
+            status=CheckStatus.COMPLETED,
+            summary=build_check_summary(cases),
+            cases=cases,
+        )
 
     for file_symbols in symbols:
 
@@ -51,36 +78,54 @@ def validate_array_sizes(
                     .strip()
                 )
 
+                location = file_path
+
+                if global_var.get("line"):
+
+                    location = (
+                        f"{file_path}:"
+                        f"{global_var['line']}"
+                    )
+
                 if dimension.isdigit():
 
-                    results.append(
-                        {
-                            "status": "FAILED",
-                            "rule": "array_sizes",
-                            "file": file_path,
-                            "message": (
-                                f"[ARRAY SIZE] "
-                                f"{file_path} -> "
-                                f"{name} uses raw numeric "
-                                f"array size [{dimension}]"
-                            ),
-                        }
+                    cases.append(
+                        CaseResult(
+                            status=CaseStatus.FAILED,
+                            name=name,
+                            location=location,
+                            reasons=[
+                                (
+                                    f"Array '{name}' uses "
+                                    f"raw numeric size "
+                                    f"[{dimension}]. "
+                                    "Symbolic constants are "
+                                    "required by policy."
+                                )
+                            ],
+                        )
                     )
 
                 else:
 
-                    results.append(
-                        {
-                            "status": "PASSED",
-                            "rule": "array_sizes",
-                            "file": file_path,
-                            "message": (
-                                f"[ARRAY SIZE] "
-                                f"{file_path} -> "
-                                f"{name} uses symbolic "
-                                f"array size [{dimension}]"
-                            ),
-                        }
+                    cases.append(
+                        CaseResult(
+                            status=CaseStatus.SUCCESS,
+                            name=name,
+                            location=location,
+                            reasons=[
+                                (
+                                    f"Array '{name}' uses "
+                                    f"symbolic size "
+                                    f"[{dimension}]."
+                                )
+                            ],
+                        )
                     )
 
-    return results
+    return CheckResult(
+        title="Array Sizes",
+        status=CheckStatus.COMPLETED,
+        summary=build_check_summary(cases),
+        cases=cases,
+    )
