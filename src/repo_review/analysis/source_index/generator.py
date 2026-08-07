@@ -59,8 +59,9 @@ def build_source_index(
         # FIX: Safe environment (prevents CC=C issue)
         # =====================================================
         env = os.environ.copy()
-        env["CC"] = "/usr/bin/gcc"
-        env["CXX"] = "/usr/bin/g++"
+        if os.name == "posix":
+            env["CC"] = "/usr/bin/gcc"
+            env["CXX"] = "/usr/bin/g++"
 
         # =====================================================
         # BUILD CMAKE COMMAND

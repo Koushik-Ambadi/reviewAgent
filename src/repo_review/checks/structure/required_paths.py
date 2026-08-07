@@ -1,4 +1,5 @@
 # src/repo_review/checks/structure/required_paths.py
+
 from ...contracts import (
     CaseResult,
     CaseStatus,
@@ -15,7 +16,8 @@ from .utils import (
 
 def validate_required_paths(
     nodes,
-    policy,
+    module_name,
+    required_paths,
 ):
 
     cases = []
@@ -32,12 +34,14 @@ def validate_required_paths(
         if n.is_dir
     }
 
-    for required in policy.get(
-        "required_paths",
-        [],
-    ):
+    for required in required_paths:
 
-        req = normalize(required)
+        req = normalize(
+            required.replace(
+                "{module}",
+                module_name,
+            )
+        )
 
         if req.endswith("/"):
 

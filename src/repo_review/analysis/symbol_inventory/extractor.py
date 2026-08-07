@@ -4,17 +4,17 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
-from .libclang_resolver import configure_libclang
-from .compile_args import sanitize_compile_args
 from .ast_walker import walk_ast
+from .compile_args import sanitize_compile_args
+from .libclang_resolver import configure_libclang
 from .symbol_extractors import is_within_root
 
 if TYPE_CHECKING:
     from clang.cindex import (
-        Index,
         CompilationDatabase,
+        Index,
     )
 
 
@@ -62,8 +62,14 @@ def extract_symbols(
     except Exception:
         return None
 
+    
+    relative_file = file_path.resolve().relative_to(
+        repo_root.resolve().parent
+    )
+
+
     result = {
-        "file": str(file_path),
+        "file": relative_file.as_posix(),
         "includes": [],
         "functions_defined": [],
         "functions_declared": [],
@@ -96,8 +102,8 @@ def build_symbol_inventory(
     _ensure_libclang()
 
     from clang.cindex import (
-        Index,
         CompilationDatabase,
+        Index,
     )
 
     build_dir = analysis_dir / "cmake_build"

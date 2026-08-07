@@ -1,5 +1,6 @@
 # src/repo_review/analysis/symbol_inventory/symbol_extractors.py
 from __future__ import annotations
+
 import re
 from pathlib import Path
 

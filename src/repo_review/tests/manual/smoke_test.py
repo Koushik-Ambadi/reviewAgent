@@ -2,8 +2,8 @@ from orchestrator.runner import prepare_review_run
 from repo_review.review import run_review
 
 workspace_path, repo_root, module_name = prepare_review_run(
-    source_path=r"D:/BMS_related_testing_data/bmsAlgo/soe.zip",
-    source_type="zip",   # or whatever your ingestion layer expects
+    source_path=r"D:/BMS_related_testing_data/bmsAlgo/soe",
+    source_type="local",  
 )
 
 context = run_review(
