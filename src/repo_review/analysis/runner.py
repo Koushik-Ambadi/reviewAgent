@@ -1,5 +1,13 @@
 # src/repo_review/analysis/runner.py
+
+
 from pathlib import Path
+
+from ..contracts import (
+    StageResult,
+    StageSummary,
+    StageStatus,
+)
 
 from .source_index.generator import build_source_index
 from .symbol_inventory.extractor import build_symbol_inventory
@@ -9,7 +17,8 @@ def run_analysis(
     repo_root: Path,
     workspace_path: Path,
     policy: dict,
-) -> None:
+) -> StageResult:
+
     analysis_dir = workspace_path / "analysis"
 
     analysis_dir.mkdir(
@@ -43,3 +52,9 @@ def run_analysis(
             symbol_result.get("error")
             or "Failed to generate symbols.json"
         )
+
+    return StageResult(
+        title="Analysis",
+        status=StageStatus.COMPLETED,
+        summary=StageSummary(),
+    )
