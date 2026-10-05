@@ -24,6 +24,7 @@ def run(
 
     stage = StageResult(
         title="Repository Structure",
+        stage_id="repository_structure",
         status=StageStatus.COMPLETED,
         summary=build_stage_summary(
             check_results

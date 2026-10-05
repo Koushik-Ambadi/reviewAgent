@@ -55,6 +55,7 @@ def run_analysis(
 
     return StageResult(
         title="Analysis",
+        stage_id="analysis",
         status=StageStatus.COMPLETED,
         summary=StageSummary(),
     )

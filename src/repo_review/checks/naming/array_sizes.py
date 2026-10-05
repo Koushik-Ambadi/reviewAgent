@@ -37,6 +37,7 @@ def validate_array_sizes(
 
         return CheckResult(
             title="Array Sizes",
+            check_id="array_sizes",
             status=CheckStatus.COMPLETED,
             summary=build_check_summary(cases),
             cases=cases,
@@ -125,6 +126,7 @@ def validate_array_sizes(
 
     return CheckResult(
         title="Array Sizes",
+        check_id="array_sizes",
         status=CheckStatus.COMPLETED,
         summary=build_check_summary(cases),
         cases=cases,

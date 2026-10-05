@@ -31,6 +31,7 @@ def run(
     report = build_final_report(
         context,
     )
+    context.report = report
 
     context.report_path = write_report(
         report,

@@ -24,6 +24,7 @@ def run(
 
     stage = StageResult(
         title="Symbol Naming",
+        stage_id="symbol_naming",
         status=StageStatus.COMPLETED,
         summary=build_stage_summary(check_results),
         checks=check_results,

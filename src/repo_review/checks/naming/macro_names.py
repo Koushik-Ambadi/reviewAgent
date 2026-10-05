@@ -147,6 +147,7 @@ def validate_macro_names(
 
     return CheckResult(
         title="Macro Names",
+        check_id="macro_names",
         status=CheckStatus.COMPLETED,
         summary=build_check_summary(cases),
         cases=cases,

@@ -153,6 +153,7 @@ def validate_type_names(
 
     return CheckResult(
         title="Type Names",
+        check_id="type_names",
         status=CheckStatus.COMPLETED,
         summary=build_check_summary(cases),
         cases=cases,

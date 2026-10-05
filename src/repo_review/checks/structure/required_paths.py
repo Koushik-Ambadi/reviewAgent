@@ -113,6 +113,7 @@ def validate_required_paths(
 
     return CheckResult(
         title="Required Paths",
+        check_id="required_paths",
         status=CheckStatus.COMPLETED,
         summary=build_check_summary(
             cases

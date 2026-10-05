@@ -309,6 +309,7 @@ def validate_global_variable_names(
 
     return CheckResult(
         title="Global Variable Names",
+        check_id="global_variable_names",
         status=CheckStatus.COMPLETED,
         summary=build_check_summary(cases),
         cases=cases,

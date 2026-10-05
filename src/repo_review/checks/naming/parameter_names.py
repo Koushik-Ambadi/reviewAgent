@@ -123,6 +123,7 @@ def validate_parameter_names(
 
     return CheckResult(
         title="Parameter Names",
+        check_id="parameter_names",
         status=CheckStatus.COMPLETED,
         summary=build_check_summary(cases),
         cases=cases,

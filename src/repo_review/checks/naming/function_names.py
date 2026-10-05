@@ -108,6 +108,7 @@ def validate_function_names(
 
     return CheckResult(
         title="Function Names",
+        check_id="function_names",
         status=CheckStatus.COMPLETED,
         summary=build_check_summary(cases),
         cases=cases,

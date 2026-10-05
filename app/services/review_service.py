@@ -71,6 +71,7 @@ def review_uploaded_zip(
         pass
 
     return {
+        "run_id": context.report.get("run_id"),
         "report": context.report,
     }
 
@@ -91,6 +92,9 @@ def build_agent_review_summary(
     - Treat exceptions as skipped/excluded checks.
     - Group code-review failures dynamically by rule.
     """
+    if "stages" in review_report:
+        return summarize_run_result(review_report)
+
     metadata = review_report.get("metadata") or {}
     report_summary = review_report.get("summary") or {}
     sections = review_report.get("sections") or []
@@ -426,6 +430,38 @@ def build_agent_detailed_report(
     - keeps code-review exceptions separate;
     - returns facts only.
     """
+    if "stages" in review_report:
+        validate_run_result(review_report)
+        failed = []
+        skipped = []
+        for stage in review_report["stages"]:
+            for check in stage.get("checks", []):
+                for case in check.get("cases", []):
+                    status = normalize_status(case.get("status"))
+                    row = (
+                        f"{check.get('title', check.get('check_id', 'Check'))}: "
+                        f"{case.get('name', 'Unnamed case')} at "
+                        f"{case.get('location', 'unknown location')}"
+                    )
+                    reasons = case.get("reasons") or []
+                    if reasons:
+                        row += " — " + "; ".join(map(str, reasons))
+                    if status == "FAILED":
+                        failed.append(row)
+                    elif status == "SKIPPED":
+                        skipped.append(row)
+
+        entries = ["FAILED", *failed, "SKIPPED", *skipped]
+        return {
+            "run_id": review_report.get("run_id"),
+            "module": (review_report.get("metadata") or {}).get("module_name"),
+            "policy_name": (review_report.get("metadata") or {}).get("policy_name"),
+            "status": "failed" if failed else "passed",
+            "failure_count": len(failed),
+            "exception_count": len(skipped),
+            "report": "\n".join(entries) if failed or skipped else "No failed or skipped cases were found.",
+        }
+
     validate_review_report(review_report)
 
     metadata = review_report["metadata"]
@@ -1014,6 +1050,40 @@ def validate_review_report(
         raise ValueError(
             "Review report sections must be a list"
         )
+
+
+def validate_run_result(report: Any) -> None:
+    if not isinstance(report, dict):
+        raise ValueError("Run result must be an object")
+    missing = {"run_id", "metadata", "stages"} - report.keys()
+    if missing or not isinstance(report.get("stages"), list):
+        raise ValueError("Invalid RunResult contract")
+
+
+def summarize_run_result(report: dict[str, Any]) -> dict[str, Any]:
+    failed = []
+    skipped = []
+    for stage in report.get("stages", []):
+        for check in stage.get("checks", []):
+            for case in check.get("cases", []):
+                status = normalize_status(case.get("status"))
+                if status == "FAILED":
+                    failed.append(case)
+                elif status == "SKIPPED":
+                    skipped.append(case)
+    metadata = report.get("metadata") or {}
+    return {
+        "run_id": report.get("run_id"),
+        "module": metadata.get("module_name"),
+        "policy_name": metadata.get("policy_name"),
+        "status": "failed" if failed else "passed",
+        "result": build_result_sentence(len(failed), len(skipped)),
+        "summary": [
+            f"{len(failed)} failed case{'s' if len(failed) != 1 else ''}." if failed else "No failed cases.",
+            f"{len(skipped)} skipped case{'s' if len(skipped) != 1 else ''}." if skipped else "No skipped cases.",
+        ],
+        "details_available": bool(report.get("run_id")),
+    }
 
 
 

@@ -129,6 +129,7 @@ def validate_enum_constant_names(
 
     return CheckResult(
         title="Enum Constant Names",
+        check_id="enum_constant_names",
         status=CheckStatus.COMPLETED,
         summary=build_check_summary(cases),
         cases=cases,

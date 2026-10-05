@@ -124,6 +124,7 @@ def validate_local_variable_names(
 
     return CheckResult(
         title="Local Variable Names",
+        check_id="local_variable_names",
         status=CheckStatus.COMPLETED,
         summary=build_check_summary(cases),
         cases=cases,

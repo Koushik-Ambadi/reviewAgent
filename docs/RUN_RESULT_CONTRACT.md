@@ -40,4 +40,17 @@ The JSON files are a file-backed prototype store. A later database-backed store 
 
 ## Implementation status
 
-The Python dataclasses in `src/repo_review/contracts/models.py` define these extension points. The existing report writer and consumers still use the legacy report shape during this contract-freezing phase; migrating those paths is a subsequent phase. The identifier fields default to empty values to keep existing pipeline constructors working until ID assignment is wired through the pipeline. Before consumers rely on IDs, each produced record must receive a stable, non-display-derived identifier.
+The Python dataclasses in `src/repo_review/contracts/models.py` define these extension points. The review writer populates the run and version fields, stage/check IDs come from stable code identifiers, and case IDs are derived from the check identity and case location/name. Default values on the dataclasses keep non-pipeline construction sites working; pipeline-produced review records populate their IDs.
+
+## Review response envelope
+
+`POST /api/review` returns the run identifier beside the canonical report:
+
+```json
+{
+  "run_id": "20261005_...",
+  "report": { "run_id": "20261005_...", "stages": [] }
+}
+```
+
+The persisted `report.json` contains the `RunResult` itself. The API envelope gives clients a direct run key for follow-up actions while keeping report data under `report`.
