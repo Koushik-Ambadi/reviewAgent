@@ -7,13 +7,7 @@ from ...contracts import (
     CheckStatus,
     build_check_summary,
 )
-from .common_identifier import (
-    has_consecutive_underscores,
-    has_leading_underscore,
-    has_trailing_underscore,
-    has_valid_characters,
-    is_within_length,
-)
+from .common_identifier import evaluate_atomic_rules
 
 
 def validate_enum_constant_names(
@@ -22,17 +16,6 @@ def validate_enum_constant_names(
     naming_policy,
 ):
     cases = []
-
-    max_length = naming_policy["max_length"]
-    allowed_characters_pattern = naming_policy[
-        "allowed_characters_pattern"
-    ]
-
-    module_prefix = naming_policy[
-        "module_prefix"
-    ].format(
-        module=module_name.upper()
-    )
 
     for file_symbols in symbols:
         file_path = file_symbols.get("file", "")
@@ -58,61 +41,11 @@ def validate_enum_constant_names(
                     f"{line}"
                 )
 
-                reasons = []
-
-                if not is_within_length(
+                reasons = evaluate_atomic_rules(
                     name,
-                    max_length=max_length,
-                ):
-                    reasons.append(
-                        f"Enum constant name must not exceed "
-                        f"{max_length} characters"
-                    )
-
-                if not has_valid_characters(
-                    name,
-                    allowed_characters_pattern,
-                ):
-                    reasons.append(
-                        "Enum constant name contains invalid characters"
-                    )
-
-                if (
-                    not naming_policy[
-                        "leading_underscore_allowed"
-                    ]
-                    and has_leading_underscore(name)
-                ):
-                    reasons.append(
-                        "Enum constant name must not start with '_'"
-                    )
-
-                if (
-                    not naming_policy[
-                        "consecutive_underscores_allowed"
-                    ]
-                    and has_consecutive_underscores(name)
-                ):
-                    reasons.append(
-                        "Enum constant name must not contain "
-                        "consecutive underscores"
-                    )
-
-                if (
-                    not naming_policy[
-                        "trailing_underscore_allowed"
-                    ]
-                    and has_trailing_underscore(name)
-                ):
-                    reasons.append(
-                        "Enum constant name must not end with '_'"
-                    )
-
-                if not name.startswith(module_prefix):
-                    reasons.append(
-                        f"Enum constant name must start with "
-                        f"'{module_prefix}'"
-                    )
+                    naming_policy["rules"],
+                    context={"module": module_name},
+                )
 
                 cases.append(
                     CaseResult(

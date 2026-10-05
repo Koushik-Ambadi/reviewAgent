@@ -9,34 +9,21 @@ from ...contracts import (
 )
 
 
-_INTEGER_LITERAL = re.compile(
-    r"^[+-]?(?:0[xX][0-9A-Fa-f]+|0[bB][01]+|[0-9]+)"
-    r"(?:[uU](?:[lL]{1,2})?|[lL]{1,2}[uU]?)?$"
-)
-_FLOAT_LITERAL = re.compile(
-    r"^[+-]?(?:(?:[0-9]+\.[0-9]*|\.[0-9]+)(?:[eE][+-]?[0-9]+)?|"
-    r"[0-9]+[eE][+-]?[0-9]+)[fFlL]?$"
-)
-_HEX_FLOAT_LITERAL = re.compile(
-    r"^[+-]?0[xX](?:[0-9A-Fa-f]+(?:\.[0-9A-Fa-f]*)?|\.[0-9A-Fa-f]+)"
-    r"[pP][+-]?[0-9]+[fFlL]?$"
-)
-_IDENTIFIER = re.compile(r"[A-Za-z_][A-Za-z0-9_]*")
-
-
 def validate_array_sizes(
     symbols,
     naming_policy,
 ):
     cases = []
 
-    if not naming_policy["enforce_symbolic_array_sizes"]:
+    rule = naming_policy["rules"][0]
+
+    if not rule.get("enabled", True) or rule.get("mode") != "automatic":
         cases.append(
             CaseResult(
                 status=CaseStatus.SKIPPED,
                 name="Array Size Check",
                 location="",
-                reasons=["Symbolic array size validation is disabled by policy."],
+                reasons=[f"[{rule['id']}] Symbolic array size validation is disabled by policy."],
             )
         )
         return _build_result(cases)
@@ -59,13 +46,13 @@ def validate_array_sizes(
                 if not dimension:
                     status = (
                         CaseStatus.SKIPPED
-                        if naming_policy.get("allow_unspecified_dimensions", True)
+                        if rule.get("allow_unspecified_dimensions", True)
                         else CaseStatus.FAILED
                     )
                     reason = (
-                        "Array dimension is unspecified; symbolic-size validation does not apply."
+                        f"[{rule['id']}] Array dimension is unspecified; policy allows an unspecified dimension."
                         if status == CaseStatus.SKIPPED
-                        else "Array dimension is required by policy."
+                        else f"[{rule['id']}] Array dimension is required by policy."
                     )
                     cases.append(
                         CaseResult(
@@ -79,9 +66,9 @@ def validate_array_sizes(
 
                 normalized = strip_outer_parentheses(dimension)
                 numeric_literal = bool(
-                    _INTEGER_LITERAL.fullmatch(normalized)
-                    or _FLOAT_LITERAL.fullmatch(normalized)
-                    or _HEX_FLOAT_LITERAL.fullmatch(normalized)
+                    re.fullmatch(rule["integer_literal_pattern"], normalized)
+                    or re.fullmatch(rule["float_literal_pattern"], normalized)
+                    or re.fullmatch(rule["hex_float_literal_pattern"], normalized)
                 )
 
                 if numeric_literal:
@@ -91,18 +78,18 @@ def validate_array_sizes(
                             name=name,
                             location=location,
                             reasons=[
-                                f"Array dimension '{dimension}' is a numeric literal; policy requires a symbolic size."
+                                f"[{rule['id']}] {rule['reason'].format(dimension=dimension)}"
                             ],
                         )
                     )
-                elif not _IDENTIFIER.search(normalized):
+                elif not re.search(rule["identifier_pattern"], normalized):
                     cases.append(
                         CaseResult(
                             status=CaseStatus.FAILED,
                             name=name,
                             location=location,
                             reasons=[
-                                f"Array dimension '{dimension}' has no symbolic identifier."
+                                f"[{rule['id']}] {rule['no_identifier_reason'].format(dimension=dimension)}"
                             ],
                         )
                     )

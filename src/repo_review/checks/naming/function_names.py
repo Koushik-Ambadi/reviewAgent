@@ -1,4 +1,4 @@
-# src/repo_review/checks/naming/utils.py
+# src/repo_review/checks/naming/function_names.py
 
 import re
 
@@ -9,6 +9,7 @@ from ...contracts import (
     CheckStatus,
     build_check_summary,
 )
+from .common_identifier import evaluate_atomic_rules
 
 
 def validate_function_names(
@@ -19,20 +20,7 @@ def validate_function_names(
 
     cases = []
 
-    function_pattern = re.compile(
-        naming_policy["pattern"]
-    )
-
-    expected_prefix = (
-        module_name[0].upper()
-        + module_name[1:].lower()
-        if module_name
-        else ""
-    )
-
-    exclusion_patterns = naming_policy[
-        "applicability_exclusions"
-    ]
+    exclusion_patterns = naming_policy.get("applicability_exclusions", [])
 
     for file_symbols in symbols:
 
@@ -67,31 +55,18 @@ def validate_function_names(
                         name=name,
                         location=location,
                         reasons=[
-                            "Excluded by policy",
+                            f"[{naming_policy['exclusion_rule_id']}] {naming_policy['exclusion_reason']}",
                         ],
                     )
                 )
 
                 continue
 
-            reasons = []
-
-            # Validate naming pattern
-            if not function_pattern.match(name):
-                reasons.append(
-                    "Invalid function naming pattern"
-                )
-
-            # Validate module prefix
-            actual_prefix = name.split("_")[0]
-
-            if (
-                expected_prefix
-                and actual_prefix != expected_prefix
-            ):
-                reasons.append(
-                    f"Function must start with '{expected_prefix}_'"
-                )
+            reasons = evaluate_atomic_rules(
+                name,
+                naming_policy["rules"],
+                context={"module": module_name},
+            )
 
             cases.append(
                 CaseResult(

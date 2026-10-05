@@ -1,4 +1,4 @@
-version: 3
+version: 4
 
 metadata:
   name: "ABS Default Policy"
@@ -65,41 +65,183 @@ checks:
   symbol_naming:
 
     function_names:
-
-      pattern: "^[A-Z][A-Za-z0-9]*(_[a-z0-9]+)+$"
-
+      rules:
+        - id: ABS-SCS-16.1.c
+          mode: automatic
+          validator: not_starts_with
+          value: "_"
+          reason: "Function names must not start with an underscore."
+        - id: ABS-SCS-16.1.d
+          mode: automatic
+          validator: max_length
+          limit: 31
+          reason: "Function name is {name_length} characters; the maximum is {limit}."
+        - id: ABS-SCS-16.1.e
+          mode: automatic
+          validator: starts_with
+          value: "{module}_"
+          module_case: title
+          reason: "Function name must start with the configured module prefix '{expected}'."
+        - id: ABS-SCS-16.1.g
+          mode: automatic
+          validator: fullmatch
+          value: "^[A-Z][A-Za-z0-9]*(_[a-z0-9]+)+$"
+          reason: "Use the module prefix followed by lowercase underscore-separated words (letters and digits only)."
+        - id: ABS-SCS-16.1.a
+          mode: manual
+          statement: "A procedure name shall not be a C or C++ keyword."
+        - id: ABS-SCS-16.1.b
+          mode: manual
+          statement: "A procedure name shall not overlap a C Standard Library function name."
+        - id: ABS-SCS-16.1.h
+          mode: manual
+          statement: "The name should describe the procedure purpose; semantic review is required."
+        - id: ABS-SCS-16.1.i
+          mode: manual
+          statement: "Use of set and get function names is encouraged when appropriate."
+        - id: ABS-SCS-16.4.a
+          mode: manual
+          statement: "Thread, task, and process entry-point functions require their configured suffix."
+        - id: ABS-SCS-16.5.b
+          mode: manual
+          statement: "Interrupt service routine names require the '_isr' suffix."
       applicability_exclusions:
         - "^look\\d_"
         - "^plook_"
         - "^intrp"
         - "^binsearch_"
+      exclusion_reason: "Function is excluded by the configured applicability policy."
+      exclusion_rule_id: ABS-POLICY-FUNCTION-EXCLUSION
 
     macro_names:
-
-      allowed_characters_pattern: "^[A-Za-z0-9_]+$"
-
-      uppercase_only: true
-
-      module_prefix: "{module}_"
-
-      consecutive_underscores_allowed: false
-
-      trailing_underscore_allowed: false
-
+      rules:
+        - id: ABS-POLICY-MACRO-CHARACTERS
+          mode: automatic
+          validator: fullmatch
+          value: "^[A-Za-z0-9_]+$"
+          reason: "Macro name may contain only letters, digits, and underscores."
+        - id: ABS-SCS-15.6.a
+          source_ids: [ABS-SCS-16.1.f]
+          mode: automatic
+          validator: uppercase_only
+          reason: "Macro name must use uppercase letters only."
+        - id: ABS-SCS-15.6.b
+          mode: automatic
+          validator: starts_with
+          value: "{module}_"
+          module_case: upper
+          reason: "Macro name must start with the uppercase module prefix '{expected}'."
+        - id: ABS-POLICY-MACRO-DOUBLE-UNDERSCORE
+          mode: automatic
+          validator: not_contains
+          value: "__"
+          reason: "Macro name must not contain consecutive underscores."
+        - id: ABS-POLICY-MACRO-TRAILING-UNDERSCORE
+          mode: automatic
+          validator: not_ends_with
+          value: "_"
+          reason: "Macro name must not end with an underscore."
+        - id: ABS-POLICY-MACRO-DESCRIPTION
+          mode: automatic
+          validator: nonempty_after_prefix
+          value: "{module}_"
+          module_case: upper
+          reason: "Add a descriptive name after the module prefix '{expected}'."
       macro_value_type: "value"
-
       applicability_exclusions:
-        - "^{module}_IN_"
+        - pattern: "^{module}_IN_"
+          id: ABS-POLICY-MACRO-INPUT-EXCLUSION
+          reason: "Input macro is excluded by the configured applicability policy."
+      source_rules:
+        - id: ABS-SCS-11.1.d
+          mode: manual
+          statement: "A macro shall not redefine a C keyword or another language construct."
+        - id: ABS-SCS-15.6.c
+          mode: manual
+          statement: "An object-like macro replacement expression should be parenthesized."
+        - id: ABS-SCS-16.3.a
+          mode: manual
+          statement: "Do not use a function-like macro when a function can provide the same behavior."
+        - id: ABS-SCS-16.3.b.i
+          mode: manual
+          statement: "Parenthesize the entire function-like macro replacement body."
+        - id: ABS-SCS-16.3.b.ii
+          mode: manual
+          statement: "Parenthesize each use of every function-like macro parameter."
+        - id: ABS-SCS-16.3.b.iii
+          mode: manual
+          statement: "Reference each function-like macro parameter no more than once."
+        - id: ABS-SCS-16.3.b.iv
+          mode: manual
+          statement: "Do not transfer control from a function-like macro."
 
     array_sizes:
-
-      enforce_symbolic_array_sizes: true
-
-      allow_unspecified_dimensions: true
+      rules:
+        - id: ABS-POLICY-ARRAY-SYMBOLIC-SIZE
+          mode: automatic
+          validator: symbolic_array_size
+          enabled: true
+          allow_unspecified_dimensions: true
+          integer_literal_pattern: "^[+-]?(?:0[xX][0-9A-Fa-f]+|0[bB][01]+|[0-9]+)(?:[uU](?:[lL]{1,2})?|[lL]{1,2}[uU]?)?$"
+          float_literal_pattern: "^[+-]?(?:(?:[0-9]+\\.[0-9]*|\\.[0-9]+)(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)[fFlL]?$"
+          hex_float_literal_pattern: "^[+-]?0[xX](?:[0-9A-Fa-f]+(?:\\.[0-9A-Fa-f]*)?|\\.[0-9A-Fa-f]+)[pP][+-]?[0-9]+[fFlL]?$"
+          identifier_pattern: "[A-Za-z_][A-Za-z0-9_]*"
+          reason: "Array dimension '{dimension}' is numeric; use a named symbolic size."
+          no_identifier_reason: "Array dimension '{dimension}' has no identifier; use a named symbolic size."
 
     global_variable_names:
 
+      # The explicit segment layout is the project naming grammar consumed by
+      # the validator. Source-derived criteria and unresolved source criteria
+      # are recorded here so no requirement is implicit.
+      layout:
+        data_type_position: 0
+        data_size_position: 1
+        remainder_start: 2
+        module_position: 0
+        unit_position: 1
+        description_position: 2
+        separator: "_"
+        minimum_segment_count: 3
+
+      source_rules:
+        - id: ABS-SCS-17.c
+          mode: automatic
+          statement: "Variable names must not start with an underscore."
+        - id: ABS-SCS-17.d
+          mode: automatic
+          statement: "Variable names must not exceed the configured maximum length."
+        - id: ABS-SCS-17.e
+          mode: automatic
+          statement: "Variable names must contain at least three characters."
+        - id: ABS-SCS-17.f
+          mode: manual
+          statement: "Do not encode a numeric value already specified elsewhere."
+        - id: ABS-SCS-17.g
+          mode: automatic
+          statement: "Separate words according to the configured module, unit, and description grammar."
+        - id: ABS-SCS-17.h
+          mode: manual
+          statement: "Variable names must describe their purpose."
+        - id: ABS-SCS-17.i
+          mode: automatic
+          statement: "Pointer variable names must end with the configured pointer suffix."
+        - id: ABS-SCS-17.j
+          mode: automatic
+          statement: "Pointer-to-pointer names must end with the configured pointer suffix."
+        - id: ABS-SCS-17.a
+          mode: manual
+          statement: "Variable names must not be C or C++ keywords."
+        - id: ABS-SCS-17.b
+          mode: manual
+          statement: "Variable names must not overlap C Standard Library names."
+
+      pointer_suffix: "_ptr"
+      pointer_to_pointer_suffix: "_ptr_ptr"
+      minimum_name_length: 3
+
       name_max_length: 31
+      leading_underscore_allowed: false
 
       allowed_chars_pattern: "^[A-Za-z0-9_]+$"
 
@@ -113,6 +255,7 @@ checks:
         - "^ConstP_.*_T$"
         - "^rt[A-Z].*$"
         - "^Tmp.*$"
+      excluded_type_rule_id: ABS-POLICY-GLOBAL-EXCLUDED-TYPE
 
       data_types:
         - C
@@ -222,6 +365,8 @@ checks:
 
       description_max_length: 22
 
+      description_separator_allowed: false
+
       enforce_module_required: true
 
       enforce_unit_required: true
@@ -229,46 +374,152 @@ checks:
       enforce_description_required: true
 
     type_names:
-      max_length: 31
-      allowed_characters_pattern: "^[A-Za-z0-9_]+$"
-      leading_underscore_allowed: false
-      consecutive_underscores_allowed: false
-      trailing_underscore_allowed: false
-      module_prefix: "{module}_"
-      suffix: "_t"
-      description_required: true
+      rules:
+        - id: ABS-SCS-15.1.a
+          mode: automatic
+          validator: fullmatch
+          value: "^{module}_[A-Za-z][A-Za-z0-9_]*_t$"
+          module_case: title
+          reason: "Type name must use the module prefix, a descriptive name, and the '_t' suffix."
+        - id: ABS-SCS-15.1.a
+          mode: automatic
+          validator: max_length
+          limit: 31
+          reason: "Type name is {name_length} characters; the maximum is {limit}."
+        - id: ABS-POLICY-TYPE-LEADING-UNDERSCORE
+          mode: automatic
+          validator: not_starts_with
+          value: "_"
+          reason: "Type name must not start with an underscore."
+        - id: ABS-POLICY-TYPE-DOUBLE-UNDERSCORE
+          mode: automatic
+          validator: not_contains
+          value: "__"
+          reason: "Type name must not contain consecutive underscores."
+        - id: ABS-POLICY-TYPE-TRAILING-UNDERSCORE
+          mode: automatic
+          validator: not_ends_with
+          value: "_"
+          reason: "Type name must not end with an underscore."
       applicability_exclusions: []
+      source_rules:
+        - id: ABS-SCS-15.1.b
+          mode: manual
+          statement: "Every new struct, union, and enum shall be declared through a typedef."
+        - id: ABS-SCS-15.5.c
+          mode: manual
+          statement: "Structure variables and members shall follow the variable naming conventions."
 
     local_variable_names:
-      min_length: 3
-      max_length: 31
-      allowed_characters_pattern: "^[A-Za-z0-9_]+$"
-      leading_underscore_allowed: false
-      consecutive_underscores_allowed: false
-      trailing_underscore_allowed: false
-      pointer_suffix: "_ptr"
-      pointer_to_pointer_suffix: "_ptr_ptr"
+      rules:
+        - id: ABS-SCS-17.e
+          mode: automatic
+          validator: min_length
+          limit: 3
+          reason: "Variable name is {name_length} characters; the minimum is {limit}."
+        - id: ABS-SCS-17.d
+          mode: automatic
+          validator: max_length
+          limit: 31
+          reason: "Variable name is {name_length} characters; the maximum is {limit}."
+        - id: ABS-SCS-17.c
+          mode: automatic
+          validator: not_starts_with
+          value: "_"
+          reason: "Variable name must not start with an underscore."
+        - id: ABS-SCS-17.g
+          mode: automatic
+          validator: fullmatch
+          value: "^[A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)*$"
+          reason: "Separate variable-name words with underscores; do not use leading, repeated, or trailing underscores."
+        - id: ABS-SCS-17.i
+          mode: automatic
+          validator: pointer_suffix
+          value: "_ptr"
+          when_symbol_type: pointer
+          reason: "Pointer variable name must end with '{expected}'."
+        - id: ABS-SCS-17.j
+          mode: automatic
+          validator: pointer_suffix
+          value: "_ptr_ptr"
+          when_symbol_type: pointer_to_pointer
+          reason: "Pointer-to-pointer variable name must end with '{expected}'."
+        - id: ABS-SCS-17.h
+          mode: manual
+          statement: "Variable name must describe its purpose."
+        - id: ABS-SCS-17.f
+          mode: manual
+          statement: "Do not encode a numeric value already specified elsewhere in the code."
       applicability_exclusions: []
+      source_exemptions:
+        - id: ABS-SCS-17.k
+          mode: manual
+          statement: "Loop counters and local temporary variables are exempt from other variable naming rules but must contain at least three characters."
+      source_rules:
+        - id: ABS-SCS-17.a
+          mode: manual
+          statement: "Variable names must not be C or C++ keywords."
+        - id: ABS-SCS-17.b
+          mode: manual
+          statement: "Variable names must not overlap C Standard Library names."
 
     enum_constant_names:
-      max_length: 31
-      allowed_characters_pattern: "^[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)*$"
-      leading_underscore_allowed: false
-      consecutive_underscores_allowed: false
-      trailing_underscore_allowed: false
-      module_prefix: "{module}_"
-      description_required: true
+      rules:
+        - id: ABS-SCS-15.6.b
+          mode: automatic
+          validator: starts_with
+          value: "{module}_"
+          module_case: upper
+          reason: "Enum constant must start with uppercase module prefix '{expected}'."
+        - id: ABS-POLICY-ENUM-UPPERCASE
+          mode: automatic
+          validator: fullmatch
+          value: "^[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)*$"
+          reason: "Enum constant must use uppercase underscore-separated words."
+        - id: ABS-POLICY-ENUM-MAX-LENGTH
+          mode: automatic
+          validator: max_length
+          limit: 31
+          reason: "Enum constant name is {name_length} characters; the maximum is {limit}."
+        - id: ABS-POLICY-ENUM-LEADING-UNDERSCORE
+          mode: automatic
+          validator: not_starts_with
+          value: "_"
+          reason: "Enum constant name must not start with an underscore."
+        - id: ABS-POLICY-ENUM-DOUBLE-UNDERSCORE
+          mode: automatic
+          validator: not_contains
+          value: "__"
+          reason: "Enum constant name must not contain consecutive underscores."
+        - id: ABS-POLICY-ENUM-TRAILING-UNDERSCORE
+          mode: automatic
+          validator: not_ends_with
+          value: "_"
+          reason: "Enum constant name must not end with an underscore."
+        - id: ABS-POLICY-ENUM-DESCRIPTION
+          mode: automatic
+          validator: nonempty_after_prefix
+          value: "{module}_"
+          module_case: upper
+          reason: "Add a descriptive name after the module prefix '{expected}'."
       applicability_exclusions: []
-      pointer_suffix: "_ptr"
-      pointer_to_pointer_suffix: "_ptr_ptr"
 
     parameter_names:
-      min_length: 3
-      max_length: 31
-      allowed_characters_pattern: "^[A-Za-z0-9_]+$"
-      leading_underscore_allowed: false
-      consecutive_underscores_allowed: false
-      trailing_underscore_allowed: false
-      pointer_suffix: "_ptr"
-      pointer_to_pointer_suffix: "_ptr_ptr"
+      rules:
+        - id: ABS-SCS-17.e
+          mode: automatic
+          validator: min_length
+          limit: 3
+          reason: "Parameter name is {name_length} characters; the minimum is {limit}."
+        - id: ABS-SCS-16.2.e
+          mode: automatic
+          validator: not_empty
+          reason: "Declare a name for every function parameter."
+        - id: ABS-SCS-17.h
+          mode: manual
+          statement: "Parameter name must describe its purpose."
       applicability_exclusions: []
+      source_exemptions:
+        - id: ABS-SCS-17.k
+          mode: manual
+          statement: "Function parameters are exempt from other variable naming rules but must contain at least three characters."

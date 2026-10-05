@@ -47,6 +47,8 @@ def validate_global_variable_names(
     max_length = naming_policy[
         "name_max_length"
     ]
+    min_length = naming_policy["minimum_name_length"]
+    layout = naming_policy["layout"]
 
     excluded_type_patterns = naming_policy[
         "excluded_type_patterns"
@@ -99,7 +101,7 @@ def validate_global_variable_names(
                         status=CaseStatus.FAILED,
                         name=name,
                         location=location,
-                        reasons=["Variable name is missing."],
+                        reasons=["[ABS-SCS-17.e] Variable name is missing."],
                     )
                 )
                 continue
@@ -123,7 +125,7 @@ def validate_global_variable_names(
                         location=location,
                         reasons=[
                             (
-                                "Excluded global variable "
+                                f"[{naming_policy['excluded_type_rule_id']}] Excluded global variable "
                                 f"type '{var_type}' "
                                 "by policy."
                             )
@@ -135,14 +137,43 @@ def validate_global_variable_names(
 
             failures = []
 
+            if not naming_policy["leading_underscore_allowed"] and name.startswith("_"):
+                failures.append(
+                    "[ABS-SCS-17.c] Variable name must not start with an underscore."
+                )
+
+            pointer_count = var_type.count("*")
+            schema_name = name
+            if pointer_count >= 2:
+                pointer_suffix = naming_policy["pointer_to_pointer_suffix"]
+                if name.endswith(pointer_suffix):
+                    schema_name = name[:-len(pointer_suffix)]
+                else:
+                    failures.append(
+                        f"[ABS-SCS-17.j] Pointer-to-pointer name must end with '{pointer_suffix}'."
+                    )
+            elif pointer_count == 1:
+                pointer_suffix = naming_policy["pointer_suffix"]
+                if name.endswith(pointer_suffix):
+                    schema_name = name[:-len(pointer_suffix)]
+                else:
+                    failures.append(
+                        f"[ABS-SCS-17.i] Pointer name must end with '{pointer_suffix}'."
+                    )
+
             #
             # Overall max length
             #
 
+            if len(name) < min_length:
+                failures.append(
+                    f"[ABS-SCS-17.e] Name is shorter than the required {min_length} characters."
+                )
+
             if len(name) > max_length:
 
                 failures.append(
-                    f"Name exceeds max length ({max_length})."
+                    f"[ABS-SCS-17.d] Name exceeds the configured maximum of {max_length} characters."
                 )
 
             #
@@ -154,7 +185,7 @@ def validate_global_variable_names(
             ):
 
                 failures.append(
-                    "Name contains invalid characters."
+                    "[ABS-POLICY-GLOBAL-CHARACTERS] Name contains characters outside the configured identifier pattern."
                 )
 
             #
@@ -162,44 +193,50 @@ def validate_global_variable_names(
             # Data type
             #
 
-            data_type = name[0] if name else ""
+            data_type_position = layout["data_type_position"]
+            data_type = schema_name[data_type_position:data_type_position + 1]
 
             if not data_type:
-                failures.append("Data type code is missing.")
+                failures.append("[ABS-POLICY-GLOBAL-DATA-TYPE] Data type code is missing.")
             elif data_type not in allowed_data_types:
-                failures.append(f"Invalid data type code '{data_type}'.")
+                failures.append(f"[ABS-POLICY-GLOBAL-DATA-TYPE] '{data_type}' is not an allowed data type code.")
 
             #
             # Data size
             #
 
-            data_size = name[1] if len(name) >= 2 else ""
+            data_size_position = layout["data_size_position"]
+            data_size = schema_name[data_size_position:data_size_position + 1]
 
             if not data_size:
-                failures.append("Data size code is missing.")
+                failures.append("[ABS-POLICY-GLOBAL-DATA-SIZE] Data size code is missing.")
             elif data_size not in allowed_data_sizes:
-                failures.append(f"Invalid data size code '{data_size}'.")
+                failures.append(f"[ABS-POLICY-GLOBAL-DATA-SIZE] '{data_size}' is not an allowed data size code.")
 
             remaining = (
-                name[2:]
-                if len(name) > 2
+                schema_name[layout["remainder_start"]:]
+                if len(schema_name) > layout["remainder_start"]
                 else ""
             )
 
-            parts = remaining.split("_") if len(name) >= 2 else []
-            module = parts[0] if parts else ""
-            unit = parts[1] if len(parts) > 1 else ""
-            description_parts = parts[2:] if len(parts) > 2 else []
-            description = "_".join(description_parts)
+            parts = remaining.split(layout["separator"]) if len(schema_name) >= layout["remainder_start"] else []
+            module_position = layout["module_position"]
+            unit_position = layout["unit_position"]
+            description_position = layout["description_position"]
+            module = parts[module_position] if len(parts) > module_position else ""
+            unit = parts[unit_position] if len(parts) > unit_position else ""
+            description_parts = parts[description_position:] if len(parts) > description_position else []
+            separator = layout["separator"]
+            description = separator.join(description_parts)
 
-            if len(parts) < 3:
+            if len(parts) < naming_policy["layout"]["minimum_segment_count"]:
                 failures.append(
-                    "Name must contain module, unit, and description segments separated by underscores."
+                    "[ABS-POLICY-GLOBAL-SEGMENTS] Name must contain module, unit, and description segments separated by underscores."
                 )
 
-            if len(description_parts) > 1:
+            if len(description_parts) > 1 and not naming_policy["description_separator_allowed"]:
                 failures.append(
-                    "Description must not contain underscores; use lowerCamelCase."
+                    f"[ABS-POLICY-GLOBAL-DESCRIPTION] Keep the description as one lowerCamelCase segment without '{separator}'."
                 )
 
             #
@@ -207,18 +244,18 @@ def validate_global_variable_names(
             #
 
             if module and module not in allowed_modules:
-                failures.append(f"Invalid module code '{module}'.")
+                failures.append(f"[ABS-POLICY-GLOBAL-MODULE] '{module}' is not an allowed module code.")
             elif not module and naming_policy.get("enforce_module_required", True):
-                failures.append("Module code is missing.")
+                failures.append("[ABS-POLICY-GLOBAL-MODULE] Module code is required.")
 
             #
             # Unit
             #
 
             if unit and unit not in allowed_units:
-                failures.append(f"Invalid unit code '{unit}'.")
+                failures.append(f"[ABS-POLICY-GLOBAL-UNIT] '{unit}' is not an allowed unit code.")
             elif not unit and naming_policy.get("enforce_unit_required", True):
-                failures.append("Unit code is missing.")
+                failures.append("[ABS-POLICY-GLOBAL-UNIT] Unit code is required.")
 
             #
             # Description
@@ -226,32 +263,32 @@ def validate_global_variable_names(
 
             if description:
                 if (
-                    "_" not in description
+                    separator not in description
                     and not description_allowed_characters_pattern.fullmatch(
                         description
                     )
                 ):
                     failures.append(
-                        "Description may contain only letters and numbers."
+                        "[ABS-POLICY-GLOBAL-DESCRIPTION] Description may contain only letters and numbers."
                     )
 
                 if (
                     naming_policy.get("description_must_start_lowercase", True)
                     and not description[0].islower()
                 ):
-                    failures.append("Description must start with a lowercase letter.")
+                    failures.append("[ABS-POLICY-GLOBAL-DESCRIPTION] Description must start with a lowercase letter.")
 
                 if len(description) < description_min_length:
                     failures.append(
-                        f"Description is shorter than {description_min_length} characters."
+                        f"[ABS-POLICY-GLOBAL-DESCRIPTION] Description is shorter than the configured {description_min_length} characters."
                     )
 
                 if len(description) > description_max_length:
                     failures.append(
-                        f"Description exceeds {description_max_length} characters."
+                        f"[ABS-POLICY-GLOBAL-DESCRIPTION] Description exceeds the configured {description_max_length} characters."
                     )
             elif naming_policy.get("enforce_description_required", True):
-                failures.append("Description is missing.")
+                failures.append("[ABS-POLICY-GLOBAL-DESCRIPTION] Description is required.")
 
             #
             # Final case

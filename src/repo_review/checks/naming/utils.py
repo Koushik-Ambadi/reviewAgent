@@ -19,18 +19,11 @@ def is_excluded_macro(
     patterns: list[str],
     module_name: str,
 ) -> bool:
-
-    expanded = [
-        pattern.format(
-            module=module_name.upper()
-        )
-        for pattern in patterns
-    ]
-
-    return any(
-        re.match(pattern, name)
-        for pattern in expanded
-    )
+    for item in patterns:
+        pattern = item["pattern"] if isinstance(item, dict) else item
+        if re.match(pattern.format(module=module_name.upper()), name):
+            return True
+    return False
 
 
 def is_excluded_global(
