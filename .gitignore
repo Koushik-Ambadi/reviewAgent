@@ -1,6 +1,7 @@
 .venv/
 .vscode/
 reviewDemo/
+skills/
 pycache/
 __pycache__/
 *.pyc
@@ -16,3 +17,4 @@ run.bat
 shuntReview.html
 socReview.html
 .gitignore
+

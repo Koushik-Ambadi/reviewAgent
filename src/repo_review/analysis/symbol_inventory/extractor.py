@@ -64,7 +64,7 @@ def extract_symbols(
 
     
     relative_file = file_path.resolve().relative_to(
-        repo_root.resolve().parent
+        repo_root.resolve()
     )
 
 

@@ -215,3 +215,51 @@ checks:
       enforce_unit_required: true
 
       enforce_description_required: true
+
+    type_names:
+      max_length: 31
+      allowed_characters_pattern: "^[A-Za-z0-9_]+$"
+      leading_underscore_allowed: false
+      consecutive_underscores_allowed: false
+      trailing_underscore_allowed: false
+      module_prefix: "{module}_"
+      suffix: "_t"
+      description_required: true
+      applicability_exclusions: []
+
+    local_variable_names:
+      min_length: 3
+      max_length: 31
+      allowed_characters_pattern: "^[A-Za-z0-9_]+$"
+      leading_underscore_allowed: false
+      consecutive_underscores_allowed: false
+      trailing_underscore_allowed: false
+      pointer_suffix: "_ptr"
+      pointer_to_pointer_suffix: "_ptr_ptr"
+      applicability_exclusions: []      
+
+    enum_constant_names:
+      max_length: 31
+      allowed_characters_pattern: "^[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)*$"
+      leading_underscore_allowed: false
+      consecutive_underscores_allowed: false
+      trailing_underscore_allowed: false
+      module_prefix: "{module}_"
+      description_required: true
+      applicability_exclusions: []
+      pointer_suffix: "_ptr"
+      pointer_to_pointer_suffix: "_ptr_ptr"
+      
+    parameter_names:
+      min_length: 3
+      max_length: 31
+      allowed_characters_pattern: "^[A-Za-z0-9_]+$"
+      leading_underscore_allowed: false
+      consecutive_underscores_allowed: false
+      trailing_underscore_allowed: false
+      pointer_suffix: "_ptr"
+      pointer_to_pointer_suffix: "_ptr_ptr"
+      applicability_exclusions: []
+
+
+      

@@ -18,6 +18,7 @@ class CaseResult:
     status: CaseStatus
     name: str
     location: str
+    case_id: str = ""
     reasons: list[str] = field(default_factory=list)
 
 
@@ -34,6 +35,7 @@ class CheckResult:
     title: str
     status: CheckStatus
     summary: CheckSummary
+    check_id: str = ""
     cases: list[CaseResult] = field(default_factory=list)
 
 
@@ -50,6 +52,7 @@ class StageResult:
     title: str
     status: StageStatus
     summary: StageSummary
+    stage_id: str = ""
     checks: list[CheckResult] = field(default_factory=list)
 
 
@@ -63,7 +66,12 @@ class RunSummary:
 
 @dataclass
 class RunResult:
+    run_id: str = ""
     metadata: dict[str, Any] = field(default_factory=dict)
+    policy_version: str = ""
+    report_version: str = ""
     status: RunStatus = RunStatus.COMPLETED
     summary: RunSummary = field(default_factory=RunSummary)
     stages: list[StageResult] = field(default_factory=list)
+    remediation: list[dict[str, Any]] = field(default_factory=list)
+    build_result: dict[str, Any] = field(default_factory=dict)
