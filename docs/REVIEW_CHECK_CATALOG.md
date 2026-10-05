@@ -258,22 +258,17 @@ Decision: source material conflicts on module abbreviation length (`3–6` vs
 
 ```text
 Function Name
-├── Is not a keyword                                      [PLANNED]
-├── Is not a standard-library function                    [REPO][CONFIG]
-├── Does not start with underscore                        [PLANNED]
-├── Maximum length is 31, unless exempt                   [PLANNED][CONFIG]
-├── Starts with configured module prefix                  [PARTIAL][CONFIG]
-├── Prefix is followed by exactly one underscore          [PLANNED]
-├── First procedure word starts with uppercase letter     [PLANNED]
-├── Remaining words use configured snake-case convention [PLANNED]
-├── Contains no invalid character                         [PLANNED]
-├── Contains no consecutive underscores                  [PLANNED]
-├── Does not end with underscore                          [PLANNED]
+├── Is not a keyword                                      [MANUAL][CONFIG]
+├── Is not a standard-library function                    [MANUAL][CONFIG]
+├── Does not start with underscore                        [EXISTING][CONFIG]
+├── Maximum length is 31, unless exempt                   [EXISTING][CONFIG]
+├── Starts with configured module prefix                  [EXISTING][CONFIG]
+├── Uses lowercase underscore-separated suffix words      [EXISTING][CONFIG]
 ├── Name expresses purpose/action                         [SEMANTIC]
 ├── Noun/verb or question form is appropriate             [SEMANTIC]
 ├── Setter/getter form is used where appropriate          [SEMANTIC]
-├── Thread/task/process entry has required suffix         [PLANNED][CONFIG]
-└── ISR has `_isr` suffix                                 [PLANNED]
+├── Thread/task/process entry has required suffix         [MANUAL][CONFIG]
+└── ISR has `_isr` suffix                                 [MANUAL]
 ```
 
 Rule references: `ABS-SCS-16.1.a`, `ABS-SCS-16.1.b`, `ABS-SCS-16.1.c`,
@@ -281,19 +276,19 @@ Rule references: `ABS-SCS-16.1.a`, `ABS-SCS-16.1.b`, `ABS-SCS-16.1.c`,
 `ABS-SCS-16.1.h`, `ABS-SCS-16.1.i`, `ABS-SCS-16.4.a`,
 `ABS-SCS-16.5.b`.
 
-Current implementation is one policy regex and exclusions. Replace the single
-“invalid naming pattern” failure with the independent reasons above. Generated
-and third-party exemptions must be provenance-based, not name-pattern guesses.
+Every automatic function-name condition is an atomic, policy-declared rule
+with its source rule ID and an actionable failure reason. Keyword and C library
+name collisions, generated/third-party provenance exemptions, and semantic
+purpose remain explicitly marked for manual review in policy; they are not
+silently inferred by the checker.
 
 ### 3.4 Macro and preprocessor names
 
 ```text
 Macro Name
-├── Does not redefine a language keyword                  [PLANNED]
+├── Does not redefine a language keyword                  [MANUAL]
 ├── Uses uppercase letters/digits/underscores only        [EXISTING]
-├── Starts with configured module prefix                  [EXISTING][CONFIG]
-├── Prefix boundary is valid                              [EXISTING]
-├── Contains no invalid character                         [EXISTING]
+├── Starts with configured uppercase module prefix       [EXISTING][CONFIG]
 ├── Contains no consecutive underscores                  [EXISTING]
 ├── Does not end with underscore                          [EXISTING]
 ├── Includes a description after the module prefix        [EXISTING]
@@ -308,14 +303,12 @@ Rule references: `ABS-SCS-11.1.d`, `ABS-SCS-15.6.a`,
 
 ```text
 Type Name
-├── Uses configured module prefix                         [PLANNED][CONFIG]
-├── Contains meaningful description                      [SEMANTIC]
-├── Ends with `_t`                                       [PLANNED]
-├── Maximum length is 31                                 [PLANNED]
+├── Uses module prefix, descriptive name, and `_t`         [EXISTING][CONFIG]
+├── Maximum length is 31                                 [EXISTING][CONFIG]
 ├── Public type uses owning module prefix                 [REPO][CONFIG]
-├── Struct declaration is exposed through typedef        [PLANNED]
-├── Union declaration is exposed through typedef         [PLANNED]
-└── Enum declaration is exposed through typedef          [PLANNED]
+├── Struct declaration is exposed through typedef        [MANUAL]
+├── Union declaration is exposed through typedef         [MANUAL]
+└── Enum declaration is exposed through typedef          [MANUAL]
 ```
 
 Rule references: `ABS-SCS-15.1.a`, `ABS-SCS-15.1.b`,
@@ -326,13 +319,13 @@ Rule references: `ABS-SCS-15.1.a`, `ABS-SCS-15.1.b`,
 ```text
 Variable Name
 ├── Common identifier rules
-├── Minimum length is 3, including counters               [PLANNED]
+├── Minimum length is 3, including counters               [EXISTING][CONFIG]
 ├── Does not embed a numeric value defined elsewhere      [SEMANTIC][REPO]
-├── Uses required word separation                         [DECISION]
+├── Uses configured word separation                      [EXISTING][CONFIG]
 ├── Describes purpose                                     [SEMANTIC]
-├── Pointer ends with `_ptr`                              [PLANNED]
-├── Pointer-to-pointer ends with `_ptr_ptr`               [PLANNED]
-├── Narrow short-name exemption is correctly scoped       [SEMANTIC][CONFIG]
+├── Pointer ends with `_ptr`                              [EXISTING][CONFIG]
+├── Pointer-to-pointer ends with `_ptr_ptr`               [EXISTING][CONFIG]
+├── Narrow short-name exemption is correctly scoped       [MANUAL][CONFIG]
 ├── Global name follows full schema                       [PARTIAL][CONFIG]
 │   ├── Type code is valid                                 [EXISTING][CONFIG]
 │   ├── Size code is valid                                 [EXISTING][CONFIG]
@@ -343,8 +336,8 @@ Variable Name
 │   ├── Description length is 14–22                       [EXISTING][CONFIG]
 │   ├── Description uses selected lower-camel convention  [EXISTING][CONFIG]
 │   └── Total identifier length does not exceed 31        [EXISTING][CONFIG]
-├── Local-variable policy is applied separately           [PLANNED][CONFIG]
-├── Parameter policy is applied separately                [PLANNED][CONFIG]
+├── Local-variable policy is applied separately           [EXISTING][CONFIG]
+├── Parameter policy is applied separately                [EXISTING][CONFIG]
 ├── Return/output-parameter policy is applied separately  [PLANNED][CONFIG]
 ├── Structure-member policy is applied separately         [PLANNED][CONFIG]
 └── Generated/system object exclusion is provenance-based [CONFIG]
@@ -372,7 +365,7 @@ Decisions required before full schema enforcement:
 ```text
 Array Dimension
 ├── Dimension is symbolic rather than raw numeric literal [EXISTING]
-├── Symbol resolves to a declared constant                [PARTIAL][REPO]
+├── Symbol resolves to a declared constant                [PLANNED][REPO]
 ├── Symbol is visible at declaration site                 [PLANNED][REPO]
 ├── Symbol has an integral constant value                 [PLANNED]
 ├── Each multidimensional suffix is checked independently [EXISTING]
@@ -380,12 +373,30 @@ Array Dimension
 ```
 
 The current check reports each global-array dimension separately and identifies
-numeric literals or numeric-only expressions. It does not yet resolve names to
-declarations or establish whether an identifier is a visible integral constant.
+numeric literals or expressions without an identifier. It does not yet resolve
+names to declarations or establish whether an identifier is a visible integral
+constant.
 
 Rule reference: `ABS-SCS-18.4.a` (loop limits) and the current project policy's
 symbolic-array-size extension. The array-size requirement must remain identified
 as project policy unless an exact normative rule is added to the standard.
+
+### 3.8 Policy ownership and source-rule coverage
+
+`src/repo_review/policies/default.yaml` is the executable source for every
+automatic naming criterion, its module placeholder casing, applicability
+exclusions, and failure explanation. Each automatic case reason includes its
+policy/source rule identifier. A rule marked `manual` is recorded for coverage
+but is not evaluated by the naming checker.
+
+The function prefix requirement comes from `ABS-SCS-16.1.e` and expands the
+configured module name in title case for function names. Macro and enum
+constant prefixes come from `ABS-SCS-15.6.b` and expand the module name in
+uppercase. This distinction reflects the examples and policy for each symbol
+kind; no prefix is added by hidden checker logic.
+
+The full rule-by-rule coverage, resolved findings, and remaining manual review
+items are tracked in [POLICY_RULE_AUDIT.md](POLICY_RULE_AUDIT.md).
 
 ---
 
@@ -579,9 +590,9 @@ Aggregate Type
 ├── Communication/hardware structure layout prevents padding [CONFIG][SEMANTIC]
 ├── Bit-field order is explicitly preserved                  [CONFIG][MANUAL]
 ├── Aggregate variables/members follow naming rules           [PLANNED]
-├── Macro/enum constants are uppercase                        [PLANNED]
-├── Macro/enum constants use module prefix                    [PLANNED][CONFIG]
-└── Macro expression is parenthesized                         [DECISION]
+├── Macro/enum constants are uppercase                        [EXISTING][CONFIG]
+├── Macro/enum constants use module prefix                    [EXISTING][CONFIG]
+└── Macro expression is parenthesized                         [MANUAL]
 ```
 
 Rule references: `ABS-SCS-15.5.a`, `ABS-SCS-15.5.b`,
