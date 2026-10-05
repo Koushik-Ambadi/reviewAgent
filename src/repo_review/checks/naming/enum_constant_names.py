@@ -31,7 +31,7 @@ def validate_enum_constant_names(
     module_prefix = naming_policy[
         "module_prefix"
     ].format(
-        module=module_name
+        module=module_name.upper()
     )
 
     for file_symbols in symbols:

@@ -22,7 +22,7 @@ def is_excluded_macro(
 
     expanded = [
         pattern.format(
-            module=module_name.lower()
+            module=module_name.upper()
         )
         for pattern in patterns
     ]

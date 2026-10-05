@@ -24,6 +24,10 @@ def validate_global_variable_names(
         ]
     )
 
+    description_allowed_characters_pattern = re.compile(
+        naming_policy["description_allowed_characters_pattern"]
+    )
+
     allowed_data_types = naming_policy[
         "data_types"
     ]
@@ -53,7 +57,7 @@ def validate_global_variable_names(
     ]
 
     description_max_length = naming_policy[
-        "description_max_length"   
+        "description_max_length"
     ]
 
     for file_symbols in symbols:
@@ -88,6 +92,17 @@ def validate_global_variable_names(
             location = (
                 f"{file_path}:{line}"
             )
+
+            if not name:
+                cases.append(
+                    CaseResult(
+                        status=CaseStatus.FAILED,
+                        name=name,
+                        location=location,
+                        reasons=["Variable name is missing."],
+                    )
+                )
+                continue
 
             #
             # Skip excluded/system globals
@@ -143,52 +158,27 @@ def validate_global_variable_names(
                 )
 
             #
-            # Minimum length
-            #
-
-            if len(name) < 3:
-
-                failures.append(
-                    "Name is too short to parse."
-                )
-
             #
             # Data type
             #
 
-            data_type = ""
+            data_type = name[0] if name else ""
 
-            if len(name) >= 1:
-
-                data_type = name[0]
-
-                if data_type not in allowed_data_types:
-
-                    failures.append(
-                        (
-                            f"Invalid data type "
-                            f"'{data_type}'."
-                        )
-                    )
+            if not data_type:
+                failures.append("Data type code is missing.")
+            elif data_type not in allowed_data_types:
+                failures.append(f"Invalid data type code '{data_type}'.")
 
             #
             # Data size
             #
 
-            data_size = ""
+            data_size = name[1] if len(name) >= 2 else ""
 
-            if len(name) >= 2:
-
-                data_size = name[1]
-
-                if data_size not in allowed_data_sizes:
-
-                    failures.append(
-                        (
-                            f"Invalid data size "
-                            f"'{data_size}'."
-                        )
-                    )
+            if not data_size:
+                failures.append("Data size code is missing.")
+            elif data_size not in allowed_data_sizes:
+                failures.append(f"Invalid data size code '{data_size}'.")
 
             remaining = (
                 name[2:]
@@ -196,90 +186,72 @@ def validate_global_variable_names(
                 else ""
             )
 
-            parts = remaining.split("_")
+            parts = remaining.split("_") if len(name) >= 2 else []
+            module = parts[0] if parts else ""
+            unit = parts[1] if len(parts) > 1 else ""
+            description_parts = parts[2:] if len(parts) > 2 else []
+            description = "_".join(description_parts)
 
-            module = ""
-            unit = ""
-            description = ""
-
-            if len(parts) != 3:
-
+            if len(parts) < 3:
                 failures.append(
-                    (
-                        "Expected naming format "
-                        "<type><size><module>_<unit>_<description>."
-                    )
+                    "Name must contain module, unit, and description segments separated by underscores."
                 )
 
-            else:
-
-                module = parts[0]
-                unit = parts[1]
-                description = parts[2]
+            if len(description_parts) > 1:
+                failures.append(
+                    "Description must not contain underscores; use lowerCamelCase."
+                )
 
             #
             # Module
             #
 
-            if module:
-
-                if module not in allowed_modules:
-
-                    failures.append(
-                        f"Invalid module '{module}'."
-                    )
+            if module and module not in allowed_modules:
+                failures.append(f"Invalid module code '{module}'.")
+            elif not module and naming_policy.get("enforce_module_required", True):
+                failures.append("Module code is missing.")
 
             #
             # Unit
             #
 
-            if unit:
-
-                if unit not in allowed_units:
-
-                    failures.append(
-                        f"Invalid unit '{unit}'."
-                    )
+            if unit and unit not in allowed_units:
+                failures.append(f"Invalid unit code '{unit}'.")
+            elif not unit and naming_policy.get("enforce_unit_required", True):
+                failures.append("Unit code is missing.")
 
             #
             # Description
             #
 
             if description:
-
-                if not description[0].islower():
-
+                if (
+                    "_" not in description
+                    and not description_allowed_characters_pattern.fullmatch(
+                        description
+                    )
+                ):
                     failures.append(
-                        "Description must start "
-                        "with lowercase letter."
+                        "Description may contain only letters and numbers."
                     )
 
-                if not description.isalnum():
-
-                    failures.append(
-                        (
-                            "Description must contain "
-                            "only letters and numbers."
-                        )
-                    )
+                if (
+                    naming_policy.get("description_must_start_lowercase", True)
+                    and not description[0].islower()
+                ):
+                    failures.append("Description must start with a lowercase letter.")
 
                 if len(description) < description_min_length:
-
                     failures.append(
-                        f"Description length must be >= {description_min_length}."
+                        f"Description is shorter than {description_min_length} characters."
                     )
 
                 if len(description) > description_max_length:
-
                     failures.append(
-                        f"Description length must be <= {description_max_length}."
+                        f"Description exceeds {description_max_length} characters."
                     )
-
-            else:
-
-                failures.append(
-                    "Description missing."
-                )
+            elif naming_policy.get("enforce_description_required", True):
+                failures.append("Description is missing.")
 
             #
             # Final case

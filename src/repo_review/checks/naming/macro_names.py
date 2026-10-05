@@ -9,6 +9,7 @@ from ...contracts import (
     CheckStatus,
     build_check_summary,
 )
+from .utils import is_excluded_macro
 
 
 def validate_macro_names(
@@ -19,22 +20,17 @@ def validate_macro_names(
 
     cases = []
 
-    macro_pattern = re.compile(
-        naming_policy["macro_name_pattern"]
+    allowed_characters_pattern = re.compile(
+        naming_policy["allowed_characters_pattern"]
     )
 
     value_type = naming_policy[
         "macro_value_type"
     ]
 
-    excluded_patterns = [
-        pattern.format(
-            module=module_name.lower()
-        )
-        for pattern in naming_policy[
-            "applicability_exclusions"
-        ]
-    ]
+    module_prefix = naming_policy["module_prefix"].format(
+        module=module_name.upper()
+    )
 
     for file_symbols in symbols:
 
@@ -80,12 +76,10 @@ def validate_macro_names(
             # Excluded macros
             #
 
-            if any(
-                re.match(
-                    pattern,
-                    name,
-                )
-                for pattern in excluded_patterns
+            if is_excluded_macro(
+                name,
+                naming_policy["applicability_exclusions"],
+                module_name,
             ):
 
                 cases.append(
@@ -110,14 +104,43 @@ def validate_macro_names(
 
             reasons = []
 
-            if not macro_pattern.match(name):
-
+            if not allowed_characters_pattern.fullmatch(name):
                 reasons.append(
-                    (
-                        "Macro name does not match "
-                        "required naming pattern."
-                    )
+                    "Macro name may contain only letters, digits, and underscores."
                 )
+
+            if naming_policy.get("uppercase_only", True) and any(
+                character.isalpha() and not character.isupper()
+                for character in name
+            ):
+                reasons.append("Macro name must use uppercase letters.")
+
+            if not name.startswith(module_prefix):
+                if name.startswith(module_name.upper()):
+                    reasons.append(
+                        f"Module prefix must be followed by an underscore ('{module_prefix}')."
+                    )
+                else:
+                    reasons.append(
+                        f"Macro name must start with module prefix '{module_prefix}'."
+                    )
+
+            if (
+                not naming_policy.get("consecutive_underscores_allowed", False)
+                and "__" in name
+            ):
+                reasons.append("Macro name must not contain consecutive underscores.")
+
+            if (
+                not naming_policy.get("trailing_underscore_allowed", False)
+                and name.endswith("_")
+            ):
+                reasons.append("Macro name must not end with an underscore.")
+
+            if name.startswith(module_prefix) and not name[
+                len(module_prefix):
+            ].strip("_"):
+                reasons.append("Macro name must include a description after the module prefix.")
 
             #
             # Final result

@@ -1,4 +1,4 @@
-version: 2
+version: 3
 
 metadata:
   name: "ABS Default Policy"
@@ -76,7 +76,15 @@ checks:
 
     macro_names:
 
-      macro_name_pattern: "^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$"
+      allowed_characters_pattern: "^[A-Za-z0-9_]+$"
+
+      uppercase_only: true
+
+      module_prefix: "{module}_"
+
+      consecutive_underscores_allowed: false
+
+      trailing_underscore_allowed: false
 
       macro_value_type: "value"
 
@@ -87,13 +95,17 @@ checks:
 
       enforce_symbolic_array_sizes: true
 
+      allow_unspecified_dimensions: true
+
     global_variable_names:
 
       name_max_length: 31
 
       allowed_chars_pattern: "^[A-Za-z0-9_]+$"
 
-      description_pattern: "^[a-z][A-Za-z0-9]*$"
+      description_allowed_characters_pattern: "^[A-Za-z0-9]+$"
+
+      description_must_start_lowercase: true
 
       excluded_type_patterns:
         - "^B_.*_T$"
@@ -236,7 +248,7 @@ checks:
       trailing_underscore_allowed: false
       pointer_suffix: "_ptr"
       pointer_to_pointer_suffix: "_ptr_ptr"
-      applicability_exclusions: []      
+      applicability_exclusions: []
 
     enum_constant_names:
       max_length: 31
@@ -249,7 +261,7 @@ checks:
       applicability_exclusions: []
       pointer_suffix: "_ptr"
       pointer_to_pointer_suffix: "_ptr_ptr"
-      
+
     parameter_names:
       min_length: 3
       max_length: 31
@@ -260,6 +272,3 @@ checks:
       pointer_suffix: "_ptr"
       pointer_to_pointer_suffix: "_ptr_ptr"
       applicability_exclusions: []
-
-
-      

@@ -19,7 +19,6 @@ def run_pipeline(
 
     context.policy = load_policy(
         policy_name=context.policy_name,
-        module_name=context.module_name,
     )
 
 

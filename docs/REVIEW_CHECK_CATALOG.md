@@ -290,12 +290,13 @@ and third-party exemptions must be provenance-based, not name-pattern guesses.
 ```text
 Macro Name
 ├── Does not redefine a language keyword                  [PLANNED]
-├── Uses uppercase letters/digits/underscores only        [PARTIAL]
-├── Starts with configured module prefix                  [PARTIAL][CONFIG]
-├── Prefix boundary is valid                              [PLANNED]
-├── Contains no invalid character                         [PLANNED]
-├── Contains no consecutive underscores                  [PLANNED]
-├── Does not end with underscore                          [PLANNED]
+├── Uses uppercase letters/digits/underscores only        [EXISTING]
+├── Starts with configured module prefix                  [EXISTING][CONFIG]
+├── Prefix boundary is valid                              [EXISTING]
+├── Contains no invalid character                         [EXISTING]
+├── Contains no consecutive underscores                  [EXISTING]
+├── Does not end with underscore                          [EXISTING]
+├── Includes a description after the module prefix        [EXISTING]
 ├── Header guard matches configured file-derived form     [PLANNED][CONFIG]
 └── Exclusion is explicit and attributable                [CONFIG]
 ```
@@ -333,16 +334,15 @@ Variable Name
 ├── Pointer-to-pointer ends with `_ptr_ptr`               [PLANNED]
 ├── Narrow short-name exemption is correctly scoped       [SEMANTIC][CONFIG]
 ├── Global name follows full schema                       [PARTIAL][CONFIG]
-│   ├── Type code is valid
-│   ├── Size code is valid for the declared type
-│   ├── Module code is configured and valid
-│   ├── First underscore is present in correct position
-│   ├── Unit code is controlled and valid
-│   ├── Second underscore is present in correct position
-│   ├── Description exists
-│   ├── Description length is 14–22
-│   ├── Description uses selected lower-camel convention
-│   └── Total identifier length does not exceed 31
+│   ├── Type code is valid                                 [EXISTING][CONFIG]
+│   ├── Size code is valid                                 [EXISTING][CONFIG]
+│   ├── Module code is configured and valid                [EXISTING][CONFIG]
+│   ├── Exactly two schema separators are present           [EXISTING]
+│   ├── Unit code is controlled and valid                  [EXISTING][CONFIG]
+│   ├── Description exists                                 [EXISTING][CONFIG]
+│   ├── Description length is 14–22                       [EXISTING][CONFIG]
+│   ├── Description uses selected lower-camel convention  [EXISTING][CONFIG]
+│   └── Total identifier length does not exceed 31        [EXISTING][CONFIG]
 ├── Local-variable policy is applied separately           [PLANNED][CONFIG]
 ├── Parameter policy is applied separately                [PLANNED][CONFIG]
 ├── Return/output-parameter policy is applied separately  [PLANNED][CONFIG]
@@ -378,6 +378,10 @@ Array Dimension
 ├── Each multidimensional suffix is checked independently [EXISTING]
 └── Allowed language-defined exceptions are configured    [CONFIG]
 ```
+
+The current check reports each global-array dimension separately and identifies
+numeric literals or numeric-only expressions. It does not yet resolve names to
+declarations or establish whether an identifier is a visible integral constant.
 
 Rule reference: `ABS-SCS-18.4.a` (loop limits) and the current project policy's
 symbolic-array-size extension. The array-size requirement must remain identified
