@@ -1,7 +1,7 @@
 # Run result contract
 
 - Status: living
-- Last reviewed: 2026-10-06 at revision `c603a69`
+- Last reviewed: 2026-10-06
 - Update trigger: serialized result, response envelope, identifier, or persistence
   contract change
 - Related: [`architecture.md`](../engineering/architecture.md),
@@ -41,13 +41,15 @@ Each run is stored under `workspace/runs/<run_id>/`:
 
 ```text
 report.json             Canonical serialized RunResult
+remediation.json        Recorded remediation suggestions for the run
+build.json              Latest serialized build result
 ```
 
-Only `report.json` is currently written by the review pipeline. `remediation`
-and `build_result` are fields on `RunResult`, but the current remediation and
-build paths do not persist separate `remediation.json`, `build.json`, or a
-generated `evidence-report.html`. Those artifacts are future extension points,
-not current capabilities.
+`report.json` remains the canonical `RunResult`. A remediation request appends
+its result to both `remediation.json` and `RunResult.remediation`. A build
+request overwrites `build.json` with the latest result and updates
+`RunResult.build_result`. This keeps follow-up actions attached to the same run
+without making the file layout part of the API contract.
 
 The file is a prototype store. A later manifest/database-backed store should
 preserve or explicitly version the `RunResult` contract so consumers do not
@@ -74,3 +76,29 @@ stage exceptions into `PARTIAL` or `ERROR` results.
 ```
 
 The persisted `report.json` contains the `RunResult` itself. The API envelope gives clients a direct run key for follow-up actions while keeping report data under `report`.
+
+## Follow-up response envelopes
+
+`POST /api/runs/{run_id}/remediations` accepts a failed `check_id`, optionally
+with a failed `case_id`, and returns a provider-independent envelope:
+
+```json
+{
+  "run_id": "20261005_...",
+  "remediation": {
+    "remediation_id": "...",
+    "scope": "check",
+    "check_id": "function_names",
+    "suggestions": []
+  }
+}
+```
+
+The current placeholder provider generates deterministic guidance from failed
+case reasons. A future provider must preserve this response shape.
+
+`POST /api/runs/{run_id}/build` returns the latest serialized build result. It
+includes `format_step`, `build_step`, `return_code`, raw output,
+`important_diagnostics`, `artifact_manifest`, and `intelligence_summary`.
+Formatting is reported as skipped until an uploaded project supplies a formatter
+command or wrapper.

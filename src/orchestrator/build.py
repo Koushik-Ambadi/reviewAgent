@@ -1,14 +1,16 @@
 # src/orchestrator/build.py
 
-import json
 from pathlib import Path
 
 from repo_build.runner import (
     execute_firmware_build,
 )
 
-from orchestrator.config import (
-    WORKSPACE_ROOT,
+from orchestrator.run_store import (
+    get_run_path,
+    load_report,
+    update_report_extension,
+    write_json,
 )
 
 
@@ -16,22 +18,8 @@ def get_repo_root_for_run(
     run_id: str,
 ) -> Path:
 
-    run_path = (
-        WORKSPACE_ROOT
-        / run_id
-    )
-
-    report_path = (
-        run_path
-        / "report.json"
-    )
-
-    with open(
-        report_path,
-        "r",
-        encoding="utf-8",
-    ) as f:
-        report = json.load(f)
+    run_path = get_run_path(run_id)
+    report = load_report(run_id)
 
     module_name = (
         report["metadata"]
@@ -59,6 +47,10 @@ def build_run(
         run_id
     )
 
-    return execute_firmware_build(
-        repo_root
+    build_result = execute_firmware_build(
+        repo_root,
+        run_id=run_id,
     )
+    write_json(get_run_path(run_id) / "build.json", build_result)
+    update_report_extension(run_id, "build_result", build_result)
+    return build_result

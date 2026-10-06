@@ -8,7 +8,10 @@ from app.api.review import (
 )
 from app.api.build import (
     router as build_router,
-) 
+)
+from app.api.remediation import (
+    router as remediation_router,
+)
 
 from app.api.policy import (
     router as policy_router,
@@ -24,6 +27,10 @@ app.include_router(
 )
 app.include_router(
     build_router,
+    prefix="/api",
+)
+app.include_router(
+    remediation_router,
     prefix="/api",
 )
 
