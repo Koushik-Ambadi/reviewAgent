@@ -705,6 +705,18 @@ html,body{
 .case-reasons{margin:8px 0 0 18px;color:#334155}
 .empty-state{padding:24px;text-align:center;color:#64748b;background:#fff;border-radius:16px;grid-column:1/-1}
 
+/* Report workspace */
+.report-page-layout{max-width:1440px;margin:0 auto}
+.report-toolbar{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:18px}
+.report-toolbar h1,.report-toolbar h2{font-size:28px;letter-spacing:-.04em}
+.inline-action{border:1px solid #bfdbfe;background:#eff6ff;color:#1d4ed8;border-radius:9px;padding:8px 10px;font:600 12px 'Inter',sans-serif;cursor:pointer;white-space:nowrap}
+.inline-action:hover{background:#dbeafe}.inline-action:disabled{opacity:.6;cursor:wait}
+.case-row{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:12px;align-items:start}.case-main{min-width:0}.case-title{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.case-actions{grid-column:2;grid-row:1 / span 3}.case-row .case-reasons{margin:8px 0 0}.case-reasons summary{cursor:pointer;color:#475569;font-size:12px}.case-reasons ul{margin:7px 0 0 18px;color:#334155;font-size:13px}.case-reasons li+li{margin-top:4px}
+.drawer-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.26);opacity:0;pointer-events:none;transition:opacity .2s;z-index:20}.drawer-backdrop:not([hidden]){opacity:1;pointer-events:auto}
+.remediation-drawer{position:fixed;right:0;top:0;bottom:0;width:min(520px,100vw);background:#fff;box-shadow:-16px 0 44px rgba(15,23,42,.18);transform:translateX(104%);transition:transform .25s ease;z-index:21;display:flex;flex-direction:column}.remediation-drawer.open{transform:translateX(0)}
+.drawer-header{padding:22px 24px;border-bottom:1px solid #e2e8f0;display:flex;align-items:start;justify-content:space-between;gap:16px}.drawer-header h2{font-size:20px;letter-spacing:-.02em}.drawer-close{border:0;background:#f1f5f9;color:#334155;width:32px;height:32px;border-radius:8px;font-size:20px;cursor:pointer}.drawer-content{padding:24px;overflow:auto}.remediation-result h3{font-size:16px;margin:14px 0 7px}.remediation-result h4{font-size:13px;margin:20px 0 7px}.remediation-result p,.remediation-result li{font-size:13px;line-height:1.55;color:#334155}.remediation-result ul{margin:8px 0 0 18px}.remediation-result li span{display:block;font-size:12px;color:#64748b}.suggestion{border:1px solid #e2e8f0;border-radius:12px;padding:13px;margin-top:9px}.suggestion p{margin-top:5px}
+.build-layout{max-width:1180px;margin:0 auto}.build-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}.build-grid .panel{margin:0}.build-grid h3{font-size:16px;margin-bottom:10px}.build-grid p{color:#475569;font-size:14px;line-height:1.6}.build-config{margin:0 0 16px;display:flex;gap:10px;flex-wrap:wrap}.build-config span{background:#f1f5f9;border-radius:999px;padding:7px 10px;font-size:12px;color:#475569}.build-artifacts li{padding:11px 0;border-bottom:1px solid #eef2f7}.build-artifacts li:last-child{border:0}.build-artifacts strong{display:block;font:12px ui-monospace,monospace;overflow-wrap:anywhere}.build-artifacts span{display:block;font-size:12px;color:#64748b;margin-top:4px}.build-output pre{height:300px;overflow:auto;white-space:pre-wrap;margin:0;font:12px ui-monospace,monospace;color:#334155}.diagnostic-list{margin:0;padding-left:18px}.diagnostic-list li{font:12px ui-monospace,monospace;color:#334155;overflow-wrap:anywhere;margin:7px 0}
+
 .section{
     overflow:hidden;
 }
@@ -869,6 +881,8 @@ html,body{
         grid-template-columns:1fr 1fr;
     }
 
+    .build-grid{grid-template-columns:1fr}
+
     .title{
         font-size:52px;
     }
@@ -888,6 +902,8 @@ html,body{
     .summary{
         grid-template-columns:1fr;
     }
+
+    .report-toolbar{align-items:flex-start;flex-direction:column}
 
     .hero-actions,
     .run-row,
@@ -1151,6 +1167,15 @@ p.sub,
     <!-- ================================================= -->
 
     <section id="reportPage" class="page">
+        <div class="report-page-layout">
+
+        <div class="report-toolbar">
+            <div>
+                <span class="eyebrow">Review run</span>
+                <h2>Governance report</h2>
+            </div>
+            <button class="btn secondary" type="button" onclick="openRemediationDrawer()">Remediations</button>
+        </div>
 
         <div id="reportMetadata" class="report-meta"></div>
 
@@ -1183,9 +1208,11 @@ p.sub,
                 Trigger Build
             </button>
 
-            <button class="btn primary">
-                Raise PR (up coming)
+            <button class="btn primary" type="button" onclick="showPlannedNotice()">
+                Raise PR (coming soon)
             </button>
+
+        </div>
 
         </div>
 
@@ -1196,44 +1223,33 @@ p.sub,
     <!-- ================================================= -->
 
     <section id="buildPage" class="page">
-
-        <div class="glass panel">
-
-            <h2>Build Execution</h2>
-
-            <p class="sub">
-                Firmware build output from the active review run.
-            </p>
-
-            <div class="statusbar">
-
-                <span id="buildStatus">
-                    Waiting...
-                </span>
-
+        <div class="build-layout">
+            <div class="report-toolbar">
+                <div>
+                    <span class="eyebrow">Review run</span>
+                    <h2>Build result</h2>
+                </div>
+                <button class="btn secondary" type="button" onclick="showReport()">Back to report</button>
             </div>
-
-            <div
-                id="buildOutput"
-                class="logbox"
-                style="height:650px;"
-            ></div>
-
-            <div class="actions">
-
-                <button
-                    class="btn"
-                    onclick="showReport()"
-                >
-                    Back To Report
-                </button>
-
-            </div>
-
+            <div id="buildResult" class="build-result"></div>
         </div>
 
     </section>
 </div>
+
+<div id="drawerBackdrop" class="drawer-backdrop" hidden></div>
+<aside id="remediationDrawer" class="remediation-drawer" aria-label="Remediation suggestions" aria-hidden="true">
+    <div class="drawer-header">
+        <div>
+            <span class="eyebrow">Remediation</span>
+            <h2>Suggested fixes</h2>
+        </div>
+        <button class="drawer-close" type="button" aria-label="Close remediation suggestions" onclick="closeRemediationDrawer()">&times;</button>
+    </div>
+    <div id="remediationContent" class="drawer-content">
+        <p class="empty-state">Choose a failed check or case to generate a suggestion.</p>
+    </div>
+</aside>
 
 <script src="/app.js" defer></script>
 

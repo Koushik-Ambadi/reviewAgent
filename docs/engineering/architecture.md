@@ -48,6 +48,7 @@ PipelineContext -> structure -> analysis -> naming -> reporting
   |
   +--> web UI renders stages/checks/cases
   +--> agent endpoints summarize failed/skipped cases
+  |--> remediation endpoint reads failed cases and writes provider output
   `--> build endpoint resolves repo from report metadata and runs batch script
 ```
 
@@ -90,6 +91,7 @@ workspace/runs/        ignored generated run inputs and evidence
 | `POST /api/agent/review` | Multipart `.zip` | Compact failed/skipped summary | `app/api/review.py`, service formatter |
 | `GET /api/agent/review/{run_id}` | Run ID path value | Detailed agent-oriented failure text | `app/api/review.py`, service formatter |
 | `POST /api/runs/{run_id}/build` | Run ID path value | Serialized `BuildResult` | `app/api/build.py` |
+| `POST /api/runs/{run_id}/remediations` | Scope plus failed check/case IDs | `{run_id, remediation}` | `app/api/remediation.py` |
 | `GET /api/policies/{policy_name}` | Policy name path value | Parsed YAML template | `app/api/policy.py` |
 
 There are no explicit Pydantic request/response models, authentication,
@@ -111,6 +113,8 @@ other accumulated state.
 | `analysis/cmake_build/compile_commands.json` | CMake source index | libclang compilation database | Ignored generated evidence |
 | `analysis/symbols.json` | symbol inventory | naming checks, manual inspection | Ignored generated evidence |
 | `report.json` | reporting stage | UI response, agent GET, build repo resolution | Ignored generated evidence |
+| `remediation.json` | remediation service | Report drawer, later decision workflow | Ignored generated evidence |
+| `build.json` | build orchestration | Build result UI, later evidence export | Ignored generated evidence |
 
 The report is the only persisted run metadata. There is no separate manifest
 with source checksum, code revision, command, environment, or completion state.
@@ -171,9 +175,11 @@ persisted into `symbols.json` or `report.json`.
 
 ### `BuildResult`
 
-`repo_build.models.BuildResult` records status, return code, repository root,
-script name, stdout/stderr line arrays, optional detected build log path, and UTC
-start/completion timestamps. It does not currently persist to the run report.
+`repo_build.models.BuildResult` records a run ID, format and build steps, status,
+return code, repository root, script name, raw stdout/stderr, selected
+diagnostics, artifact manifest, placeholder intelligence summary, detected build
+log path, and UTC start/completion timestamps. The build service writes
+`build.json` and updates the canonical report.
 
 ### Structure tree types
 
@@ -196,8 +202,8 @@ included by the active runner.
 
 - `review.py` validates only the `.zip` filename suffix, then delegates upload
   and reporting work synchronously from async routes.
-- `build.py` delegates a run ID to orchestration without local validation or
-  error mapping.
+- `build.py` and `remediation.py` map invalid or missing run data to HTTP errors,
+  then delegate to their application/domain services.
 - `policy.py` loads a named YAML policy and maps missing files to HTTP 404.
 
 These are thin adapters, consistent with the entry-point pattern. Long-running
@@ -226,8 +232,9 @@ The API returns templates; the pipeline owns execution-time loading.
 
 - `index.html`: page structure and CSS for setup, progress, report, and build
   views.
-- `app.js`: POSTs the ZIP, renders `RunResult` stage/check/case hierarchy,
-  provides filters/search, stores the active run ID, and triggers a build.
+- `app.js`: POSTs the ZIP, renders the `RunResult` stage/check/case hierarchy,
+  provides filters/search, requests provider-independent remediation suggestions,
+  and renders the structured build result for the active run ID.
 - The progress display is explicitly simulated (`startFakeProgress`); it is not
   server-side stage telemetry.
 - HTML is escaped before report values are inserted into templates.
@@ -242,8 +249,9 @@ The API returns templates; the pipeline owns execution-time loading.
   directory, deletes the uploaded ZIP where possible, and returns that directory.
 - `runner.py`: facade joining workspace creation and ingestion; derives the
   module name from repository directory name.
+- `run_store.py`: validates run IDs and centralizes canonical report JSON access.
 - `build.py`: opens `report.json`, obtains `metadata.module_name`, reconstructs
-  the repository path, and delegates to `repo_build`.
+  the repository path, writes `build.json`, and updates the canonical report.
 
 The package implements orchestration/facade and adapter-dispatch patterns. ZIP
 extraction currently uses `extractall` without member-path validation.
@@ -255,6 +263,18 @@ extraction currently uses `extractall` without member-path validation.
 - `parser.py`: maps return code to status and probes two build-log locations.
 - `reporter.py`: DTO-to-dict mapping.
 - `runner.py`: timestamps and composes builder/parser/reporter.
+
+`artifacts.py` restricts discovery to useful build outputs (`.elf`, `.hex`,
+`.bin`, `.map`, logs, and generated reports). `intelligence.py` provides a
+provider boundary and the current deterministic summary/diagnostic selection.
+
+### `repo_remediation`
+
+`RemediationProvider` defines a provider-independent suggestion boundary.
+`PlaceholderRemediationProvider` groups failed check cases or combines one
+case's reasons into a suggestion. `FutureOpenAIRemediationProvider` is reserved
+for later implementation and must keep the same output contract. The provider
+does not edit source files or persist developer decisions.
 
 The separation is clean but small; it makes execution and result formation
 independently replaceable. The concrete builder is Windows-only, while the
