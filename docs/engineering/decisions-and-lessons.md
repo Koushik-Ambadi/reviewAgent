@@ -1,7 +1,6 @@
 # Reconstructed Decisions, Problems, and Lessons
 
 - Status: append-only reconstructed decision record
-- Owner: project maintainer
 - Created: 2026-10-06
 - Last reviewed: 2026-10-06
 - Update trigger: accepted/superseded decision or stronger historical evidence
@@ -203,6 +202,27 @@ No motive is attributed where the repository does not support it.
   when ordering or locations change. They are not permanent source-symbol IDs.
 - Validation: current formatter implementation is deterministic; no explicit
   identity regression test exists.
+
+## D011 — Keep one project voice and derive secondary views
+
+- Date: 2026-10-06
+- Status: accepted
+- Scope: engineering documentation and historical records
+- Trigger: actor-specific record fields and dedicated gap/content/profile files
+  duplicated facts and made project evidence look like work by separate actors.
+- Decision: describe what happened, why, evidence, and result in one project
+  voice. Git identity records authorship. Keep constraints in the architecture,
+  module, testing, contract, decision, operation, or standards record that proves
+  them. Keep the roadmap limited to future gates. Generate gap assessments,
+  skill views, and narrative ideas from those authoritative records on demand.
+- Alternatives rejected: keeping actor fields for tools; keeping a living
+  content-idea index; keeping a project-wide gap inventory beside the actual
+  module and verification records.
+- Consequences: fewer duplicate documents and less attribution noise; derived
+  views require reading/linking the authoritative records when requested.
+- Validation: dedicated content and skill-profile documents removed; roadmap
+  narrowed and renamed; current constraints distributed to their factual owners;
+  navigation and links updated.
 
 ## Durable problem and learning ledger
 

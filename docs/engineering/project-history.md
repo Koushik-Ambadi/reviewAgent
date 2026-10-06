@@ -1,7 +1,6 @@
 # Project History and Daily Engineering Log
 
 - Status: append-only reconstruction
-- Owner: project maintainer
 - Created: 2026-10-06
 - Evidence window: `bddb1a0` through `c603a69`
 - Update trigger: new commit, recovered contemporary evidence, or explicit erratum
@@ -458,6 +457,21 @@ and third-party artifacts and must not be interpreted as effort or quality.
   name missing keyword/library inventories, provenance, and semantic review.
 - Verification: documentation-only commit immediately follows implementation,
   giving the current branch an auditable policy rationale.
+
+## 6 October 2026 — Consolidate documentation authority
+
+- Outcome: make the engineering record read as one project history and remove
+  secondary files that duplicated current facts.
+- Change: removed actor/owner attribution fields, removed the dedicated content
+  and developer-profile documents, renamed the roadmap, and limited it to future
+  gates.
+- Evidence preservation: deleted documents remain available in Git history;
+  current security, contract, operations, portability, and maintenance
+  constraints moved to the architecture record, while test/replay and standards
+  records continue to own their existing detail.
+- Decision: D011 records the single-voice and on-demand derivation rule.
+- Verification target: no current links to removed files, all Markdown paths
+  resolve, and no application source changes are present.
 
 ## Evolution summary
 

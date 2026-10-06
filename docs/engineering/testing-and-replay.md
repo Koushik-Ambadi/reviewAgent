@@ -1,7 +1,6 @@
 # Testing, Retained Runs, and Historical Replay
 
 - Status: living
-- Owner: project maintainer
 - Created: 2026-10-06
 - Last reviewed: 2026-10-06
 - Update trigger: test command, environment, artifact schema, retention, or replay

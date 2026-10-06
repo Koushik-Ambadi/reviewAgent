@@ -1,7 +1,6 @@
 # Current Architecture and Module Guide
 
 - Status: living
-- Owner: project maintainer
 - Created: 2026-10-06
 - Last reviewed: 2026-10-06 at revision `c603a69`
 - Update trigger: module boundary, interface, data contract, dependency, or
@@ -367,6 +366,55 @@ Tests are standalone scripts with local absolute paths or retained-run IDs.
 There is no discovered pytest suite or CI workflow. Workspaces preserve useful
 derived artifacts but are ignored by Git and lack a manifest. See
 [`testing-and-replay.md`](testing-and-replay.md).
+
+## Cross-module constraints
+
+These constraints belong here because they describe the current system boundary.
+Roadmap gates may link them, but must not become a duplicate constraint owner.
+
+### Trust and execution boundary
+
+- ZIP ingestion uses `ZipFile.extractall` without member-path, link, entry-count,
+  or expanded-size validation; uploads are read fully into memory without a
+  configured size limit.
+- Run and policy identifiers become path components without a strict validated
+  identifier contract.
+- HTTP endpoints have no authentication or authorization.
+- Firmware build executes a script from the reviewed repository with service
+  permissions; workspaces may copy nested Git metadata, credentials, generated
+  artifacts, or proprietary material without classification or redaction.
+
+### Result and configuration boundary
+
+- Pipeline exceptions abort the run instead of becoming typed `ERROR` results,
+  and `RunStatus.COMPLETED` does not distinguish policy pass from failure.
+- Skipped-file diagnostics exist during analysis but are not persisted in the
+  report, so consumers cannot measure all missing coverage.
+- Policy access uses raw mapping keys without schema validation.
+- Case identity depends partly on ordering and source location.
+- Legacy/current report compatibility has no recorded removal condition.
+
+### Operations and portability boundary
+
+- Workspace, upload, and static roots depend on the process working directory.
+- Review analysis can run in the Linux image, while firmware build remains tied
+  to Windows `cmd` and a batch script; the container command also enables reload.
+- Filesystem, CMake, libclang, and build operations run synchronously in request
+  handlers without a job queue, cancellation, timeout, or resource quota.
+- Analysis recreates its build directory without an atomic completion marker.
+- No health/readiness endpoint, structured telemetry, run-state API, workspace
+  retention process, or disk-capacity policy is present.
+
+### Maintenance boundary
+
+- `review_service.py` combines upload flow, current and legacy report shaping,
+  and duplicate helper responsibilities.
+- Policy loading exists in both application and review layers.
+- Some source headers still describe former paths.
+- The dependency set retains the historical MCP environment and does not
+  distinguish direct, optional, and transitive packages.
+- Project metadata does not yet define a console entry point or an integrated
+  formatter, linter, type-check, test, and CI contract.
 
 ## Design patterns evidenced by the code
 

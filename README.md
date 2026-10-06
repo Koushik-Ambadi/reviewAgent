@@ -21,9 +21,11 @@ recorded, inferred, or unknown.
 - [Current architecture and module guide](docs/engineering/architecture.md)
 - [Decisions, problems, and lessons](docs/engineering/decisions-and-lessons.md)
 - [Testing, retained runs, and replay](docs/engineering/testing-and-replay.md)
-- [Current limitations and roadmap](docs/engineering/roadmap-and-gaps.md)
-- [Developer skills evidence](docs/engineering/developer-skills-evidence.md)
-- [Content sourcebook](docs/engineering/content-sourcebook.md)
+- [Engineering roadmap](docs/engineering/roadmap.md)
+
+Current constraints, demonstrated skills, learning opportunities, and material
+for later narratives are derived from the architecture, history, decisions,
+testing, standards, runs, and commits rather than maintained in parallel files.
 
 Existing domain references remain authoritative for their narrower subjects:
 

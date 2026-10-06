@@ -1,7 +1,6 @@
 # Run result contract
 
 - Status: living
-- Owner: project maintainer
 - Last reviewed: 2026-10-06 at revision `c603a69`
 - Update trigger: serialized result, response envelope, identifier, or persistence
   contract change

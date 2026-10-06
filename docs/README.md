@@ -8,22 +8,24 @@ scope and confidence model used across the records.
 
 Current project knowledge lives in [`engineering/`](engineering/):
 
-- [Evidence index](engineering/evidence-index.md) — documentation ownership,
+- [Evidence index](engineering/evidence-index.md) -- documentation authority,
   review scope, evidence labels, and repository facts.
-- [Architecture](engineering/architecture.md) — current modules, interfaces,
-  data structures, technology, and execution flow.
-- [Project history](engineering/project-history.md) — append-only daily and
+- [Architecture](engineering/architecture.md) -- current modules, interfaces,
+  data structures, technology, constraints, and execution flow.
+- [Project history](engineering/project-history.md) -- append-only daily and
   commit chronology.
-- [Decisions and lessons](engineering/decisions-and-lessons.md) — reconstructed
+- [Decisions and lessons](engineering/decisions-and-lessons.md) -- reconstructed
   rationale, alternatives, problems, and durable lessons.
-- [Testing and replay](engineering/testing-and-replay.md) — verification status,
-  retained runs, hashes, and isolated replay procedure.
-- [Roadmap and gaps](engineering/roadmap-and-gaps.md) — current limitations and
-  future gates.
-- [Developer skills evidence](engineering/developer-skills-evidence.md) —
-  evidence-backed strengths, growth, and learning goals.
-- [Content sourcebook](engineering/content-sourcebook.md) — provenance-first
-  story candidates for later blogs or portfolio work.
+- [Testing and replay](engineering/testing-and-replay.md) -- verification status,
+  retained runs, hashes, constraints, and isolated replay procedure.
+- [Roadmap](engineering/roadmap.md) -- future gates, dependencies, priorities,
+  and acceptance evidence derived from current engineering records.
+
+Current constraints remain with the architecture, module, testing, contract,
+decision, operational, or standards record that demonstrates them. Skill views,
+gap assessments, blog ideas, portfolio stories, and similar summaries are
+generated from those authoritative records when needed; they are not maintained
+as competing documents.
 
 ## Standards and coverage
 
@@ -56,6 +58,13 @@ instructions or active application modules. See the
 - Put current project-wide engineering truth under `engineering/`.
 - Put source-standard interpretation and coverage under `standards/`.
 - Put serialized interface definitions under `contracts/`.
+- Keep each constraint in the record that proves it; keep only future work in
+  the roadmap.
+- Derive profiles, assessments, and narrative ideas on demand from authoritative
+  records instead of maintaining parallel summaries.
+- Write records in one project voice: describe what happened, why, evidence,
+  and outcome. Git identity records authorship; do not add separate actor or
+  assistant attribution fields.
 - Move superseded material to `archive/` with an explanation; do not silently
   delete evidence.
 - Store generated run output under `workspace/runs/`, not in this directory.

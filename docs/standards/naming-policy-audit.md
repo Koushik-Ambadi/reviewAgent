@@ -1,7 +1,6 @@
 # Naming policy rule audit
 
 - Status: living
-- Owner: project maintainer
 - Last reviewed: 2026-10-06 at revision `c603a69`
 - Update trigger: naming policy, checker, source rule, or applicability change
 - Related: [`review-check-catalog.md`](review-check-catalog.md),

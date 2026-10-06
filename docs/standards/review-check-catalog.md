@@ -1,12 +1,11 @@
 # Review Check Catalog and Implementation Backlog
 
 - Status: living
-- Owner: project maintainer
 - Last reviewed: 2026-10-06 at revision `c603a69`
 - Update trigger: source rule, automation status, check wiring, or implementation
   sequence change
 - Related: [`naming-policy-audit.md`](naming-policy-audit.md),
-  [`roadmap-and-gaps.md`](../engineering/roadmap-and-gaps.md)
+  [`roadmap.md`](../engineering/roadmap.md)
 
 ## Purpose
 
