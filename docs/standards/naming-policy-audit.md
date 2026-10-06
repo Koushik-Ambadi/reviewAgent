@@ -1,11 +1,20 @@
 # Naming policy rule audit
 
+- Status: living
+- Owner: project maintainer
+- Last reviewed: 2026-10-06 at revision `c603a69`
+- Update trigger: naming policy, checker, source rule, or applicability change
+- Related: [`review-check-catalog.md`](review-check-catalog.md),
+  [`decisions-and-lessons.md`](../engineering/decisions-and-lessons.md)
+
 ## Purpose and scope
 
 This audit records how the active symbol-naming checks derive their behavior
 from `src/repo_review/policies/default.yaml` and compares those checks with
-the naming requirements in `docs/Software Coding Standard.docx`. The
-machine-readable rulebook at `docs/ABS_Software_Coding_Standard_Rulebook.yaml`
+the naming requirements in
+[`sources/software-coding-standard.docx`](sources/software-coding-standard.docx).
+The machine-readable rulebook at
+[`coding-standard-rulebook.yaml`](coding-standard-rulebook.yaml)
 provides stable rule IDs and source page references. This audit covers the
 existing naming checks; it does not claim that every rule in the full coding
 standard is automated.

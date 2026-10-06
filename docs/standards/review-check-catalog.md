@@ -1,5 +1,13 @@
 # Review Check Catalog and Implementation Backlog
 
+- Status: living
+- Owner: project maintainer
+- Last reviewed: 2026-10-06 at revision `c603a69`
+- Update trigger: source rule, automation status, check wiring, or implementation
+  sequence change
+- Related: [`naming-policy-audit.md`](naming-policy-audit.md),
+  [`roadmap-and-gaps.md`](../engineering/roadmap-and-gaps.md)
+
 ## Purpose
 
 This file is the implementation map for converting the ABS Software Coding
@@ -8,12 +16,15 @@ implementation and does not change the standard.
 
 Primary source:
 
-- `ABS_Software_Coding_Standard_Rulebook.yaml` (`schema_version: 2.0.0`, 211 rules)
+- [`coding-standard-rulebook.yaml`](coding-standard-rulebook.yaml)
+  (`schema_version: 2.0.0`, 211 rules)
 
 Supporting sources:
 
-- `Software Coding Standard 1.docx` (document 0151, revision 2.4)
-- `Software Configuration Management Plan.docx` (document 0179)
+- [`sources/software-coding-standard.docx`](sources/software-coding-standard.docx)
+  (document 0151, revision 2.4)
+- [`sources/software-configuration-management-plan.docx`](sources/software-configuration-management-plan.docx)
+  (document 0179)
 
 The YAML rule IDs below preserve traceability to the original document,
 including its section and page metadata. Before implementing a check, copy its
@@ -34,6 +45,13 @@ the YAML into the check policy or check documentation.
 - `[INACTIVE]`: explicitly inactive in the current standard phase.
 - `[DECISION]`: the source standard is ambiguous or contradictory; resolve the
   policy decision before implementation.
+
+Runtime wiring note: `[EXISTING]` means an implementation module exists. In the
+current structure runner, only Required Paths is converted to a `CheckResult`
+and executed. Forbidden paths/extensions, allowed extensions, required file
+types, size rules, and tree rules have modules but remain inactive until they
+are wired through the typed contract and tested. Do not interpret their presence
+as current run coverage.
 
 Each leaf below should eventually become either one `CheckResult` or one clearly
 identified `CaseResult`. A regex may implement a leaf, but a regex mismatch must
@@ -396,7 +414,8 @@ uppercase. This distinction reflects the examples and policy for each symbol
 kind; no prefix is added by hidden checker logic.
 
 The full rule-by-rule coverage, resolved findings, and remaining manual review
-items are tracked in [POLICY_RULE_AUDIT.md](POLICY_RULE_AUDIT.md).
+items are tracked in
+[naming-policy-audit.md](naming-policy-audit.md).
 
 ---
 
