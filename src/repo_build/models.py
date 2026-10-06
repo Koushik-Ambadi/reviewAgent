@@ -11,6 +11,7 @@ class BuildResult:
     run_id: str
     status: str
     return_code: int
+    process_return_code: int
 
     repo_root: str
     build_script: str

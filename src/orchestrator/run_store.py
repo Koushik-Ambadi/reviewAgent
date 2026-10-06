@@ -40,8 +40,10 @@ def load_report(run_id: str) -> dict[str, Any]:
 
 
 def write_json(path: Path, content: dict[str, Any]) -> None:
-    with path.open("w", encoding="utf-8") as output_file:
+    temporary_path = path.with_suffix(f"{path.suffix}.tmp")
+    with temporary_path.open("w", encoding="utf-8") as output_file:
         json.dump(content, output_file, indent=2)
+    temporary_path.replace(path)
 
 
 def update_report_extension(

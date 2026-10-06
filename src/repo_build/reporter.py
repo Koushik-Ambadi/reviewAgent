@@ -10,6 +10,7 @@ def build_result_to_dict(result: BuildResult) -> dict:
         "run_id": result.run_id,
         "status": result.status,
         "return_code": result.return_code,
+        "process_return_code": result.process_return_code,
         "repo_root": result.repo_root,
         "build_script": result.build_script,
         "build_log_path": result.build_log_path,

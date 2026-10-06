@@ -41,6 +41,9 @@ def get_repo_root_for_run(
 
 def build_run(
     run_id: str,
+    *,
+    run_format: bool = False,
+    on_output=None,
 ):
 
     repo_root = get_repo_root_for_run(
@@ -50,6 +53,8 @@ def build_run(
     build_result = execute_firmware_build(
         repo_root,
         run_id=run_id,
+        run_format=run_format,
+        on_output=on_output,
     )
     write_json(get_run_path(run_id) / "build.json", build_result)
     update_report_extension(run_id, "build_result", build_result)

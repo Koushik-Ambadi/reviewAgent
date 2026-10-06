@@ -90,7 +90,8 @@ workspace/runs/        ignored generated run inputs and evidence
 | `POST /api/review` | Multipart `.zip` | `{run_id, report}` where report is serialized `RunResult` | `app/api/review.py` |
 | `POST /api/agent/review` | Multipart `.zip` | Compact failed/skipped summary | `app/api/review.py`, service formatter |
 | `GET /api/agent/review/{run_id}` | Run ID path value | Detailed agent-oriented failure text | `app/api/review.py`, service formatter |
-| `POST /api/runs/{run_id}/build` | Run ID path value | Serialized `BuildResult` | `app/api/build.py` |
+| `POST /api/runs/{run_id}/build` | Run ID path value | Final `BuildResult`, or queued job with `background=true` | `app/api/build.py` |
+| `GET /api/runs/{run_id}/build/status` | Run ID path value | Persisted build job state and recent raw output | `app/api/build.py` |
 | `POST /api/runs/{run_id}/remediations` | Scope plus failed check/case IDs | `{run_id, remediation}` | `app/api/remediation.py` |
 | `GET /api/policies/{policy_name}` | Policy name path value | Parsed YAML template | `app/api/policy.py` |
 
@@ -115,6 +116,7 @@ other accumulated state.
 | `report.json` | reporting stage | UI response, agent GET, build repo resolution | Ignored generated evidence |
 | `remediation.json` | remediation service | Report drawer, later decision workflow | Ignored generated evidence |
 | `build.json` | build orchestration | Build result UI, later evidence export | Ignored generated evidence |
+| `build-progress.json` | background build job | Live build status/output polling | Ignored generated evidence |
 
 The report is the only persisted run metadata. There is no separate manifest
 with source checksum, code revision, command, environment, or completion state.
@@ -176,7 +178,7 @@ persisted into `symbols.json` or `report.json`.
 ### `BuildResult`
 
 `repo_build.models.BuildResult` records a run ID, format and build steps, status,
-return code, repository root, script name, raw stdout/stderr, selected
+normalized and process return codes, repository root, script name, raw stdout/stderr, selected
 diagnostics, artifact manifest, placeholder intelligence summary, detected build
 log path, and UTC start/completion timestamps. The build service writes
 `build.json` and updates the canonical report.
@@ -258,15 +260,22 @@ extraction currently uses `extractall` without member-path validation.
 
 ### `repo_build`
 
-- `builder.py`: checks for a script and runs it with `cmd /c`, capturing output.
+- `builder.py`: checks repository-local batch wrappers and streams captured lines.
+- `formatting.py`: reads an explicit optional `review-build.json` formatter wrapper.
 - `models.py`: typed DTO.
-- `parser.py`: maps return code to status and probes two build-log locations.
+- `parser.py`: maps return code to status, detects fatal output that a batch wrapper
+  may mask, and probes two build-log locations.
 - `reporter.py`: DTO-to-dict mapping.
 - `runner.py`: timestamps and composes builder/parser/reporter.
 
 `artifacts.py` restricts discovery to useful build outputs (`.elf`, `.hex`,
 `.bin`, `.map`, logs, and generated reports). `intelligence.py` provides a
 provider boundary and the current deterministic summary/diagnostic selection.
+
+`orchestrator/build_jobs.py` runs UI-started builds on a bounded worker pool and
+persists `build-progress.json`; the final build still becomes `build.json` and
+`RunResult.build_result`. This lets the static UI poll live output without
+changing the synchronous API behavior used by callers that need a final result.
 
 ### `repo_remediation`
 

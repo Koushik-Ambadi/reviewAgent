@@ -100,5 +100,21 @@ case reasons. A future provider must preserve this response shape.
 `POST /api/runs/{run_id}/build` returns the latest serialized build result. It
 includes `format_step`, `build_step`, `return_code`, raw output,
 `important_diagnostics`, `artifact_manifest`, and `intelligence_summary`.
-Formatting is reported as skipped until an uploaded project supplies a formatter
-command or wrapper.
+`process_return_code` preserves the batch wrapper's exit code; `return_code` is
+the normalized result after fatal output is checked, so a permissive wrapper
+cannot report success after CMake/toolchain failure text.
+
+The report UI starts a background build with `background=true` and polls
+`GET /api/runs/{run_id}/build/status` for persisted queued/running/completed
+state and recent raw output. Calling `POST /build` without `background=true`
+continues to return the final result synchronously.
+
+Formatting is skipped unless requested and the uploaded repository provides a
+repository-local `review-build.json` declaration such as:
+
+```json
+{ "format": { "script": "tools/format.bat" } }
+```
+
+The declared script must remain inside the uploaded repository and use `.bat`
+or `.cmd`. Formatter output is captured in the same build result.

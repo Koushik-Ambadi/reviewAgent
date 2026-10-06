@@ -233,8 +233,23 @@ async function requestRemediation(button) {
 }
 function showPlannedNotice() { alert("Pull request creation is not available in this prototype."); }
 
-function renderBuildLoading() {
-    document.getElementById("buildResult").innerHTML = `<div class="build-summary glass panel"><span class="pill warning">Running</span><h3>Build in progress</h3><p>Preparing the build result for this review run.</p></div>`;
+function renderBuildLoading(status = {}) {
+    const output = [...(status.stdout || []), ...(status.stderr || [])].join("\n");
+    document.getElementById("buildResult").innerHTML = `<div class="build-grid"><section class="glass panel build-live"><span id="buildState" class="pill warning">${escapeHtml(String(status.state || "queued").toUpperCase())}</span><h3>Build in progress</h3><p id="buildStateMessage">${escapeHtml(status.state === "queued" ? "Waiting for a build worker." : "The build is running. New output appears below as it is captured.")}</p><pre id="liveBuildOutput">${escapeHtml(output || "No output captured yet.")}</pre></section><section class="glass panel"><h3>Build settings</h3><p>Formatting: ${status.run_format ? "requested" : "disabled"}</p><p class="section-sub">A formatter runs only when the uploaded project includes a repository-local <code>review-build.json</code> wrapper declaration.</p></section></div>`;
+}
+function updateLiveBuild(status) {
+    const output = [...(status.stdout || []), ...(status.stderr || [])].join("\n");
+    const state = document.getElementById("buildState");
+    const message = document.getElementById("buildStateMessage");
+    const outputElement = document.getElementById("liveBuildOutput");
+    if (!state || !message || !outputElement) {
+        renderBuildLoading(status);
+        return;
+    }
+    state.textContent = String(status.state || "running").toUpperCase();
+    message.textContent = status.state === "queued" ? "Waiting for a build worker." : "The build is running. New output appears below as it is captured.";
+    outputElement.textContent = output || "No output captured yet.";
+    outputElement.scrollTop = outputElement.scrollHeight;
 }
 function renderBuild(result) {
     const formatStep = result.format_step || { status: "skipped", message: "Formatting is not configured for this uploaded repository." };
@@ -255,17 +270,36 @@ function renderBuild(result) {
 }
 async function triggerBuild() {
     if (!window.currentRunId) { alert("Run review first."); return; }
+    const runFormat = document.getElementById("runFormatter")?.checked || false;
     showBuild();
-    renderBuildLoading();
+    renderBuildLoading({ state: "queued", run_format: runFormat });
+    await new Promise(resolve => requestAnimationFrame(resolve));
     try {
-        const response = await fetch(`/api/runs/${encodeURIComponent(window.currentRunId)}/build`, { method: "POST" });
+        const query = new URLSearchParams({ background: "true", run_format: String(runFormat) });
+        const response = await fetch(`/api/runs/${encodeURIComponent(window.currentRunId)}/build?${query}`, { method: "POST" });
         if (!response.ok) throw new Error(await response.text());
-        const result = await response.json();
-        if (window.currentReport) window.currentReport.build_result = result;
-        renderBuild(result);
+        await pollBuildStatus();
     } catch (error) {
         document.getElementById("buildResult").innerHTML = `<div class="glass panel"><span class="pill failed">Failed</span><h3>Build could not be started</h3><p>${escapeHtml(String(error))}</p></div>`;
         console.error(error);
+    }
+}
+async function pollBuildStatus() {
+    const endpoint = `/api/runs/${encodeURIComponent(window.currentRunId)}/build/status`;
+    while (true) {
+        const response = await fetch(endpoint);
+        if (!response.ok) throw new Error(await response.text());
+        const status = await response.json();
+        if (status.state === "completed" && status.result) {
+            if (window.currentReport) window.currentReport.build_result = status.result;
+            renderBuild(status.result);
+            return;
+        }
+        if (status.state === "failed") {
+            throw new Error(status.error || "Build worker failed before producing a result.");
+        }
+        updateLiveBuild(status);
+        await new Promise(resolve => setTimeout(resolve, 750));
     }
 }
 
