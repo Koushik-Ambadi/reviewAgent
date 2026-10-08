@@ -224,6 +224,41 @@ No motive is attributed where the repository does not support it.
   narrowed and renamed; current constraints distributed to their factual owners;
   navigation and links updated.
 
+## D012 — Deepen one run-scoped developer workspace before adding breadth
+
+- Date: 2026-10-08
+- Status: accepted
+- Scope: build intelligence, remediation, report/build UI, and evidence export
+- Trigger: the prototype already persisted review, remediation, and build data
+  under one run ID, but generic failure text, separate-looking pages, and
+  single-value filters obscured that continuity.
+- Decision sequence: classify known build failures before any model boundary;
+  produce remediation from policy-owned atomic reasons; expose Report and Build
+  as tabs over the current JavaScript state; allow multi-select only for status,
+  stage, and check; generate a self-contained HTML evidence pack from the
+  canonical persisted report; serialize the default project profile from policy
+  data without adding a selector.
+- Why this order: deterministic intelligence improves the value of existing
+  evidence without token cost; the workspace then makes the same evidence easier
+  to use; the HTML pack gives that state a portable handoff format. A profile
+  selector or multi-run workspace would add configuration claims the prototype
+  cannot yet support.
+- Fallbacks: unmatched build output is explicitly classified as an unclassified
+  failure and keeps generic next actions; legacy reports without profile fields
+  receive display defaults; an unbuilt run renders `not run`; empty remediation,
+  diagnostics, and artifact sections remain valid evidence-pack sections; zero
+  selected facet values means “all.”
+- Alternatives rejected: replacing the page architecture; model-first build
+  analysis; multi-select module/profile filters within one run; and a client-only
+  evidence export that could diverge from persisted state.
+- Consequences: current UI state remains lightweight and run-scoped; generated
+  evidence can be handed off without server assets; deterministic pattern rules
+  now require focused regression fixtures when new toolchains are added.
+- Validation: focused assertion tests cover Green Hills classification, generic
+  fallback, remediation templates, and escaped/self-contained evidence output;
+  JavaScript syntax is checked separately. Full API startup remains dependent on
+  the FastAPI runtime being installed.
+
 ## Durable problem and learning ledger
 
 ### P001 — Compiler/preprocessor visibility changes what can be reviewed

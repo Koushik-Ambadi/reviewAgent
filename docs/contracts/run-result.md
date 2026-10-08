@@ -43,6 +43,7 @@ Each run is stored under `workspace/runs/<run_id>/`:
 report.json             Canonical serialized RunResult
 remediation.json        Recorded remediation suggestions for the run
 build.json              Latest serialized build result
+evidence-pack.html      Latest self-contained HTML handoff generated on request
 ```
 
 `report.json` remains the canonical `RunResult`. A remediation request appends
@@ -50,6 +51,11 @@ its result to both `remediation.json` and `RunResult.remediation`. A build
 request overwrites `build.json` with the latest result and updates
 `RunResult.build_result`. This keeps follow-up actions attached to the same run
 without making the file layout part of the API contract.
+
+`GET /api/runs/{run_id}/evidence-pack` reads the canonical `report.json`, renders
+all review findings and atomic reasons plus current remediation/build extensions,
+and returns the persisted `evidence-pack.html` as a download. Generation is
+repeatable and timestamped; it does not mutate `RunResult`.
 
 The file is a prototype store. A later manifest/database-backed store should
 preserve or explicitly version the `RunResult` contract so consumers do not
@@ -103,6 +109,11 @@ includes `format_step`, `build_step`, `return_code`, raw output,
 `process_return_code` preserves the batch wrapper's exit code; `return_code` is
 the normalized result after fatal output is checked, so a permissive wrapper
 cannot report success after CMake/toolchain failure text.
+
+`intelligence_summary` includes a deterministic `issue_code`, `primary_issue`,
+`evidence`, and ordered `next_actions` when a known failure pattern is matched.
+Unknown failures use `unclassified-build-failure` and retain generic guidance;
+this is the explicit fallback before a future model-backed provider.
 
 The report UI starts a background build with `background=true` and polls
 `GET /api/runs/{run_id}/build/status` for persisted queued/running/completed

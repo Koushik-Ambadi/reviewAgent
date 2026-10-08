@@ -235,8 +235,12 @@ The API returns templates; the pipeline owns execution-time loading.
 - `index.html`: page structure and CSS for setup, progress, report, and build
   views.
 - `app.js`: POSTs the ZIP, renders the `RunResult` stage/check/case hierarchy,
-  provides filters/search, requests provider-independent remediation suggestions,
-  and renders the structured build result for the active run ID.
+  provides multi-select status/stage/check facets plus search, keeps Report and
+  Build tabs on the active run ID, requests provider-independent remediation
+  suggestions, and renders the structured build result.
+- Both workspace tabs expose the run-scoped HTML evidence-pack download. New and
+  re-run actions preserve the current architecture: re-run reuses the browser's
+  selected ZIP, while new review returns to the upload/profile view.
 - The progress display is explicitly simulated (`startFakeProgress`); it is not
   server-side stage telemetry.
 - HTML is escaped before report values are inserted into templates.
@@ -270,7 +274,9 @@ extraction currently uses `extractall` without member-path validation.
 
 `artifacts.py` restricts discovery to useful build outputs (`.elf`, `.hex`,
 `.bin`, `.map`, logs, and generated reports). `intelligence.py` provides a
-provider boundary and the current deterministic summary/diagnostic selection.
+provider boundary, diagnostic selection, and deterministic classification for
+known license, build-adapter, compiler-validation, and linker failures. Unknown
+output retains an explicit generic fallback.
 
 `orchestrator/build_jobs.py` runs UI-started builds on a bounded worker pool and
 persists `build-progress.json`; the final build still becomes `build.json` and
@@ -280,8 +286,9 @@ changing the synchronous API behavior used by callers that need a final result.
 ### `repo_remediation`
 
 `RemediationProvider` defines a provider-independent suggestion boundary.
-`PlaceholderRemediationProvider` groups failed check cases or combines one
-case's reasons into a suggestion. `FutureOpenAIRemediationProvider` is reserved
+`PlaceholderRemediationProvider` groups failed check cases and applies
+check-specific action/verification templates while preserving each policy-owned
+atomic reason. `FutureOpenAIRemediationProvider` is reserved
 for later implementation and must keep the same output contract. The provider
 does not edit source files or persist developer decisions.
 
