@@ -2,6 +2,20 @@ version: 4
 
 metadata:
   name: "ABS Default Policy"
+  profile:
+    name: "ABS Embedded C Default"
+    domain: "Embedded / battery management"
+    language: "C"
+    review_policy: "ABS Default Policy v4"
+    formatter: "repository configured"
+    build_adapter: "cmake-build.bat"
+    artifact_types:
+      - ELF
+      - HEX
+      - BIN
+      - MAP
+      - logs
+      - reports
 
 reporting:
   include_passed_cases: true

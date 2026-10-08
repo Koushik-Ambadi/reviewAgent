@@ -25,6 +25,7 @@ def build_metadata(
             "name",
             context.policy_name,
         ),
+        "profile": context.policy.get("metadata", {}).get("profile", {}),
         "generated_at": datetime.now(
             UTC,
         ).isoformat(),

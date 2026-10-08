@@ -26,7 +26,7 @@ class RemediationProvider(ABC):
 class PlaceholderRemediationProvider(RemediationProvider):
     """Deterministic remediation used until a model-backed provider is enabled."""
 
-    provider_id = "placeholder-remediation-v1"
+    provider_id = "policy-template-remediation-v2"
 
     def suggest(
         self,
@@ -53,12 +53,7 @@ class PlaceholderRemediationProvider(RemediationProvider):
             }
         )
         suggestions = [
-            {
-                "case_id": case["case_id"],
-                "title": f"Update {case.get('name') or 'this item'}",
-                "description": _case_suggestion(case),
-                "reasons": case.get("reasons", []),
-            }
+            _case_suggestion(check["check_id"], case)
             for case in cases
         ]
 
@@ -69,7 +64,7 @@ class PlaceholderRemediationProvider(RemediationProvider):
                 f"{check.get('title', 'check')} rules."
             )
         else:
-            summary = _case_suggestion(cases[0])
+            summary = suggestions[0]["description"]
 
         return {
             "remediation_id": uuid4().hex,
@@ -107,11 +102,59 @@ class FutureOpenAIRemediationProvider(RemediationProvider):
         raise NotImplementedError("OpenAI remediation is not configured.")
 
 
-def _case_suggestion(case: dict[str, Any]) -> str:
+_CHECK_TEMPLATES = {
+    "required_paths": {
+        "description": "Restore the required repository path at the policy-defined location.",
+        "actions": [
+            "Use the reported path exactly, including capitalization and module placeholders.",
+            "Add the path to source control if it is a required source or configuration input.",
+        ],
+        "verification": "Re-run the review and confirm the Required Paths case passes.",
+    },
+    "array_sizes": {
+        "description": "Update the array declaration to use the size form required by policy.",
+        "actions": [
+            "Prefer the configured symbolic size identifier when a literal dimension is rejected.",
+            "Keep the declaration and all dependent initializers consistent.",
+        ],
+        "verification": "Re-run the naming stage and confirm the array-size case passes.",
+    },
+    "global_variable_names": {
+        "description": "Rename the global so every policy-defined name segment is valid.",
+        "actions": [
+            "Apply the required type, module, unit, pointer, and description segments reported below.",
+            "Update declarations, definitions, references, and exported interfaces together.",
+        ],
+        "verification": "Re-run the review and inspect both naming and compile results.",
+    },
+}
+
+_SYMBOL_TEMPLATE = {
+    "description": "Rename the symbol to satisfy the active naming policy.",
+    "actions": [
+        "Apply each reported atomic rule instead of addressing only the first failure.",
+        "Update all declarations, definitions, references, and generated mappings together.",
+    ],
+    "verification": "Re-run the naming stage and confirm this case has no failed atomic reasons.",
+}
+
+
+def _case_suggestion(check_id: str, case: dict[str, Any]) -> dict[str, Any]:
     reasons = case.get("reasons", [])
-    if reasons:
-        return (
-            "Update the source item so it satisfies: "
-            + "; ".join(reasons)
-        )
-    return "Review the source item against the configured check requirements."
+    template = _CHECK_TEMPLATES.get(check_id)
+    if template is None and check_id.endswith("_names"):
+        template = _SYMBOL_TEMPLATE
+    if template is None:
+        template = {
+            "description": "Update the source item to satisfy the active policy check.",
+            "actions": ["Address every reported policy reason for this item."],
+            "verification": "Re-run the review and confirm this case passes.",
+        }
+    return {
+        "case_id": case["case_id"],
+        "title": f"Update {case.get('name') or 'this item'}",
+        "description": template["description"],
+        "actions": template["actions"],
+        "verification": template["verification"],
+        "reasons": reasons,
+    }
