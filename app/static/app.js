@@ -9,6 +9,7 @@ const stageLogs = [
 
 window.currentRunId = null;
 window.currentReport = null;
+window.currentBuildState = "not-run";
 
 function showPage(id) {
     document.querySelectorAll(".page").forEach(page => page.classList.remove("active"));
@@ -16,8 +17,33 @@ function showPage(id) {
 }
 function showIntro() { showPage("introPage"); }
 function showSetup() { showPage("setupPage"); }
-function showReport() { showPage("reportPage"); }
-function showBuild() { showPage("buildPage"); }
+function showReport() { showPage("reportPage"); updateWorkspaceChrome("report"); }
+function showBuild() {
+    showPage("buildPage");
+    if (window.currentReport?.build_result?.run_id) renderBuild(window.currentReport.build_result);
+    else if (window.currentBuildState === "not-run") renderBuildNotRun();
+    updateWorkspaceChrome("build");
+}
+
+function startNewReview() {
+    document.getElementById("zipFile").value = "";
+    window.currentRunId = null;
+    window.currentReport = null;
+    window.currentBuildState = "not-run";
+    showSetup();
+}
+function rerunReview() {
+    if (!document.getElementById("zipFile").files[0]) {
+        alert("The original ZIP is no longer available. Choose it again to re-run the review.");
+        showSetup();
+        return;
+    }
+    runPipeline();
+}
+function downloadEvidencePack() {
+    if (!window.currentRunId) { alert("Run a review first."); return; }
+    window.location.assign(`/api/runs/${encodeURIComponent(window.currentRunId)}/evidence-pack`);
+}
 
 function setProgress(percent, text) {
     document.getElementById("progressBar").style.width = `${percent}%`;
@@ -60,6 +86,7 @@ async function runPipeline() {
         const payload = await response.json();
         if (!payload.run_id || !payload.report) throw new Error("Invalid review response");
         window.currentRunId = payload.run_id;
+        window.currentBuildState = payload.report.build_result?.run_id ? statusName(payload.report.build_result.status) : "not-run";
         renderReport(payload.report);
         showReport();
     } catch (error) {
@@ -86,8 +113,13 @@ function formatBytes(value) {
     return `${(value / (1024 * 1024)).toFixed(1)} MB`;
 }
 function reportCases(report) {
-    return (report.stages || []).flatMap(stage =>
+    return visibleStages(report).flatMap(stage =>
         (stage.checks || []).flatMap(check => (check.cases || []).map(item => ({ stage, check, item })))
+    );
+}
+function visibleStages(report) {
+    return (report.stages || []).filter(stage =>
+        (stage.checks || []).some(check => (check.cases || []).length > 0)
     );
 }
 function statusName(status) {
@@ -103,6 +135,27 @@ function pillClass(status) {
     return "failed";
 }
 
+function buildBadgeState() {
+    if (window.currentBuildState === "queued" || window.currentBuildState === "running") return "running";
+    if (window.currentBuildState === "success" || window.currentBuildState === "passed") return "passed";
+    if (window.currentBuildState === "failed") return "failed";
+    return "not run";
+}
+function updateWorkspaceChrome(activeTab) {
+    const remediationCount = window.currentReport?.remediation?.length || 0;
+    const buildState = buildBadgeState();
+    document.querySelectorAll("[data-workspace-tab]").forEach(button => {
+        const active = button.dataset.workspaceTab === activeTab;
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-selected", String(active));
+    });
+    document.querySelectorAll("[data-remediation-count]").forEach(badge => { badge.textContent = remediationCount; });
+    document.querySelectorAll("[data-build-badge]").forEach(badge => {
+        badge.textContent = buildState;
+        badge.className = `tab-badge ${buildState.replace(" ", "-")}`;
+    });
+}
+
 function renderReport(report) {
     window.currentReport = report;
     window.currentRunId = window.currentRunId || report.run_id;
@@ -110,12 +163,17 @@ function renderReport(report) {
     renderSummary(report);
     populateReportFilters(report);
     renderStages(report);
+    updateWorkspaceChrome("report");
 }
 function renderMetadata(report) {
     const metadata = report.metadata || {};
+    const profile = metadata.profile || {};
     const values = [
         ["Run ID", report.run_id || "—"], ["Module", metadata.module_name || "—"],
-        ["Policy", metadata.policy_name || "—"], ["Policy version", report.policy_version || "—"],
+        ["Profile", profile.name || "ABS Embedded C Default"], ["Domain", profile.domain || "Embedded / battery management"],
+        ["Language", profile.language || "C"], ["Review policy", profile.review_policy || metadata.policy_name || "—"],
+        ["Policy version", report.policy_version || "—"], ["Formatter", profile.formatter || "repository configured"],
+        ["Build adapter", profile.build_adapter || "cmake-build.bat"], ["Artifact types", (profile.artifact_types || ["ELF", "HEX", "BIN", "MAP", "logs", "reports"]).join(", ")],
         ["Report version", report.report_version || "—"], ["Generated", formatDate(metadata.generated_at)]
     ];
     document.getElementById("reportMetadata").innerHTML = `<div class="meta-grid">${values.map(([label, value]) =>
@@ -134,32 +192,43 @@ function renderSummary(report) {
     ).join("");
 }
 function populateReportFilters(report) {
-    const stageSelect = document.getElementById("stageFilter");
-    stageSelect.innerHTML = '<option value="all">All stages</option>' + (report.stages || []).map(stage =>
-        `<option value="${escapeHtml(stage.stage_id)}">${escapeHtml(stage.title)}</option>`
+    document.getElementById("statusFilter").innerHTML = [
+        ["failed", "Failed"], ["skipped", "Skipped"], ["success", "Passed"]
+    ].map(([value, label]) => facetOption(value, label)).join("");
+    document.getElementById("stageFilter").innerHTML = visibleStages(report).map(stage =>
+        facetOption(stage.stage_id, stage.title)
     ).join("");
     refreshCheckFilter(report);
 }
 function refreshCheckFilter(report) {
-    const stageId = document.getElementById("stageFilter").value;
-    const checks = (report.stages || []).filter(stage => stageId === "all" || stage.stage_id === stageId)
+    const selectedStages = selectedFacetValues("stageFilter");
+    const selectedChecks = selectedFacetValues("checkFilter");
+    const checks = visibleStages(report)
+        .filter(stage => !selectedStages.size || selectedStages.has(stage.stage_id))
         .flatMap(stage => stage.checks || []);
-    document.getElementById("checkFilter").innerHTML = '<option value="all">All checks</option>' + checks.map(check =>
-        `<option value="${escapeHtml(check.check_id)}">${escapeHtml(check.title)}</option>`
+    const uniqueChecks = [...new Map(checks.map(check => [check.check_id, check])).values()];
+    document.getElementById("checkFilter").innerHTML = uniqueChecks.map(check =>
+        facetOption(check.check_id, check.title, selectedChecks.has(check.check_id))
     ).join("");
+}
+function facetOption(value, label, checked = false) {
+    return `<label class="facet-option"><input type="checkbox" value="${escapeHtml(value)}" ${checked ? "checked" : ""}><span>${escapeHtml(label)}</span></label>`;
+}
+function selectedFacetValues(id) {
+    return new Set([...document.querySelectorAll(`#${id} input:checked`)].map(input => input.value));
 }
 function renderStages(report) {
     const query = document.getElementById("caseSearch").value.trim().toLowerCase();
-    const wantedStatus = document.getElementById("statusFilter").value;
-    const wantedStage = document.getElementById("stageFilter").value;
-    const wantedCheck = document.getElementById("checkFilter").value;
-    const cards = (report.stages || []).filter(stage => wantedStage === "all" || stage.stage_id === wantedStage).map(stage => {
-        const renderedChecks = (stage.checks || []).filter(check => wantedCheck === "all" || check.check_id === wantedCheck).map(check => {
+    const wantedStatuses = selectedFacetValues("statusFilter");
+    const wantedStages = selectedFacetValues("stageFilter");
+    const wantedChecks = selectedFacetValues("checkFilter");
+    const cards = visibleStages(report).filter(stage => !wantedStages.size || wantedStages.has(stage.stage_id)).map(stage => {
+        const renderedChecks = (stage.checks || []).filter(check => !wantedChecks.size || wantedChecks.has(check.check_id)).map(check => {
             const cases = (check.cases || []).filter(item => {
                 const haystack = [item.name, item.location, check.title, stage.title, ...(item.reasons || [])].join(" ").toLowerCase();
-                return (wantedStatus === "all" || statusName(item.status) === wantedStatus) && (!query || haystack.includes(query));
+                return (!wantedStatuses.size || wantedStatuses.has(statusName(item.status))) && (!query || haystack.includes(query));
             });
-            if (!cases.length && (query || wantedStatus !== "all")) return "";
+            if (!cases.length && (query || wantedStatuses.size || wantedChecks.size)) return "";
             const summary = check.summary || {};
             const hasFailures = (summary.failed || 0) > 0;
             return `<details class="check-card" data-check-id="${escapeHtml(check.check_id)}">
@@ -167,7 +236,7 @@ function renderStages(report) {
                 <div class="check-content"><div class="check-actions">${hasFailures ? `<button class="inline-action" type="button" data-remediation-scope="check" data-check-id="${escapeHtml(check.check_id)}">Suggest fixes for this check</button>` : ""}</div>${cases.length ? cases.map(item => renderCase(item, check.check_id)).join("") : '<div class="case-row success">No cases match the current filters.</div>'}</div>
             </details>`;
         }).filter(Boolean).join("");
-        if (!renderedChecks && (query || wantedStatus !== "all")) return "";
+        if (!renderedChecks && (query || wantedStatuses.size || wantedChecks.size)) return "";
         const summary = stage.summary || {};
         const hasFailures = (summary.failed || 0) > 0;
         return `<section class="stage-card" data-stage-id="${escapeHtml(stage.stage_id)}"><div class="stage-heading"><div><h2>${escapeHtml(stage.title)}</h2><div class="section-sub">${summary.failed || 0} failed · ${summary.skipped || 0} skipped · ${summary.passed || 0} passed</div></div><span class="pill ${hasFailures ? "failed" : "passed"}">${hasFailures ? "Failed" : "Completed"}</span></div><div class="check-list">${renderedChecks || '<div class="case-row success">No checks in this stage.</div>'}</div></section>`;
@@ -204,7 +273,7 @@ function renderRemediation(remediation) {
         <h3>${escapeHtml(remediation.title || "Suggested fixes")}</h3>
         <p>${escapeHtml(remediation.summary || "")}</p>
         ${remediation.common_failure_patterns?.length ? `<section><h4>Patterns</h4><ul>${remediation.common_failure_patterns.map(pattern => `<li>${escapeHtml(pattern)}</li>`).join("")}</ul></section>` : ""}
-        ${suggestions.length ? `<section><h4>Suggestions</h4>${suggestions.map(suggestion => `<div class="suggestion"><strong>${escapeHtml(suggestion.title)}</strong><p>${escapeHtml(suggestion.description)}</p></div>`).join("")}</section>` : ""}
+        ${suggestions.length ? `<section><h4>Suggestions</h4>${suggestions.map(suggestion => `<div class="suggestion"><strong>${escapeHtml(suggestion.title)}</strong><p>${escapeHtml(suggestion.description)}</p>${suggestion.actions?.length ? `<ol>${suggestion.actions.map(action => `<li>${escapeHtml(action)}</li>`).join("")}</ol>` : ""}${suggestion.verification ? `<p><strong>Verify:</strong> ${escapeHtml(suggestion.verification)}</p>` : ""}</div>`).join("")}</section>` : ""}
         ${affected.length ? `<section><h4>Affected cases</h4><ul>${affected.map(item => `<li><strong>${escapeHtml(item.name)}</strong><span>${escapeHtml(item.location || "")}</span></li>`).join("")}</ul></section>` : ""}
     </article>`;
 }
@@ -224,6 +293,7 @@ async function requestRemediation(button) {
         const items = window.currentReport.remediation || [];
         window.currentReport.remediation = [...items, result.remediation];
         renderRemediation(result.remediation);
+        updateWorkspaceChrome(document.getElementById("buildPage").classList.contains("active") ? "build" : "report");
     } catch (error) {
         document.getElementById("remediationContent").innerHTML = `<p class="empty-state">${escapeHtml(String(error))}</p>`;
         console.error(error);
@@ -234,10 +304,13 @@ async function requestRemediation(button) {
 function showPlannedNotice() { alert("Pull request creation is not available in this prototype."); }
 
 function renderBuildLoading(status = {}) {
+    window.currentBuildState = status.state || "queued";
     const output = [...(status.stdout || []), ...(status.stderr || [])].join("\n");
     document.getElementById("buildResult").innerHTML = `<div class="build-grid"><section class="glass panel build-live"><div class="build-live-status"><span id="buildState" class="pill warning">${escapeHtml(String(status.state || "queued").toUpperCase())}</span></div><h3>Build in progress</h3><p id="buildStateMessage">${escapeHtml(status.state === "queued" ? "Waiting for a build worker." : "The build is running. New output appears below as it is captured.")}</p><pre id="liveBuildOutput">${escapeHtml(output || "No output captured yet.")}</pre></section><section class="glass panel"><h3>Build settings</h3><p>Formatting: ${status.run_format ? "requested" : "disabled"}</p><p class="section-sub">A formatter runs only when the uploaded project includes a repository-local <code>review-build.json</code> wrapper declaration.</p></section></div>`;
+    updateWorkspaceChrome("build");
 }
 function updateLiveBuild(status) {
+    window.currentBuildState = status.state || "running";
     const output = [...(status.stdout || []), ...(status.stderr || [])].join("\n");
     const state = document.getElementById("buildState");
     const message = document.getElementById("buildStateMessage");
@@ -250,6 +323,10 @@ function updateLiveBuild(status) {
     message.textContent = status.state === "queued" ? "Waiting for a build worker." : "The build is running. New output appears below as it is captured.";
     outputElement.textContent = output || "No output captured yet.";
     outputElement.scrollTop = outputElement.scrollHeight;
+    updateWorkspaceChrome("build");
+}
+function renderBuildNotRun() {
+    document.getElementById("buildResult").innerHTML = '<div class="glass panel build-empty"><span class="pill warning">NOT RUN</span><h3>No build result yet</h3><p>Run the repository build to attach output, diagnostics, and artifacts to this review run.</p><button class="btn success" type="button" onclick="triggerBuild()">Run build</button></div>';
 }
 function renderBuild(result) {
     const formatStep = result.format_step || { status: "skipped", message: "Formatting is not configured for this uploaded repository." };
@@ -257,20 +334,22 @@ function renderBuild(result) {
     const diagnostics = result.important_diagnostics || [];
     const artifacts = result.artifact_manifest || [];
     const intelligence = result.intelligence_summary || {};
+    window.currentBuildState = statusName(result.status || buildStep.status);
     const output = [...(result.stdout || []), ...(result.stderr || [])].join("\n");
     document.getElementById("buildResult").innerHTML = `
         <div class="build-config"><span><strong>Formatting:</strong> ${escapeHtml(formatStep.command || "not configured")}</span><span><strong>Build:</strong> ${escapeHtml(result.build_script || "cmake-build.bat")}</span></div>
         <div class="summary build-summary"><div class="metric ${pillClass(buildStep.status)}"><div class="value">${escapeHtml(String(buildStep.status || result.status || "unknown").toUpperCase())}</div><div class="label">Build</div></div><div class="metric ${pillClass(formatStep.status)}"><div class="value">${escapeHtml(String(formatStep.status || "skipped").toUpperCase())}</div><div class="label">Formatting</div></div><div class="metric total"><div class="value">${escapeHtml(String(result.return_code ?? "—"))}</div><div class="label">Return code</div></div></div>
         <div class="build-grid">
-            <section class="glass panel"><h3>Build intelligence</h3><p>${escapeHtml(intelligence.summary || buildStep.message || "Build result is available.")}</p><p class="section-sub">Next action: ${escapeHtml(intelligence.next_action || "Review the build output.")}</p>${intelligence.suggestions?.length ? `<ul>${intelligence.suggestions.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : ""}</section>
+            <section class="glass panel"><h3>Build intelligence</h3><p><strong>Primary issue:</strong> ${escapeHtml(intelligence.primary_issue || intelligence.summary || buildStep.message || "Build result is available.")}</p>${intelligence.evidence?.length ? `<h4>Evidence</h4><ul>${intelligence.evidence.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : ""}${(intelligence.next_actions || intelligence.suggestions)?.length ? `<h4>Next actions</h4><ol>${(intelligence.next_actions || intelligence.suggestions).map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ol>` : `<p class="section-sub">Next action: ${escapeHtml(intelligence.next_action || "Review the build output.")}</p>`}</section>
             <section class="glass panel"><h3>Important diagnostics</h3>${diagnostics.length ? `<ul class="diagnostic-list">${diagnostics.map(line => `<li>${escapeHtml(line)}</li>`).join("")}</ul>` : '<p class="section-sub">No important diagnostics were selected.</p>'}</section>
             <section class="glass panel build-artifacts"><h3>Available artifacts</h3>${artifacts.length ? `<ul>${artifacts.map(artifact => `<li><strong>${escapeHtml(artifact.relative_path)}</strong><span>${escapeHtml(artifact.type)} · ${formatBytes(artifact.size_bytes)} · ${escapeHtml(formatDate(artifact.modified_at))}</span></li>`).join("")}</ul>` : '<p class="section-sub">No build artifacts were discovered.</p>'}</section>
             <section class="glass panel build-output"><h3>Raw output</h3><pre>${escapeHtml(output || "No output was captured.")}</pre></section>
         </div>`;
+    updateWorkspaceChrome("build");
 }
 async function triggerBuild() {
     if (!window.currentRunId) { alert("Run review first."); return; }
-    const runFormat = document.getElementById("runFormatter")?.checked || false;
+    const runFormat = false;
     showBuild();
     renderBuildLoading({ state: "queued", run_format: runFormat });
     await new Promise(resolve => requestAnimationFrame(resolve));
@@ -280,7 +359,9 @@ async function triggerBuild() {
         if (!response.ok) throw new Error(await response.text());
         await pollBuildStatus();
     } catch (error) {
+        window.currentBuildState = "failed";
         document.getElementById("buildResult").innerHTML = `<div class="glass panel"><span class="pill failed">Failed</span><h3>Build could not be started</h3><p>${escapeHtml(String(error))}</p></div>`;
+        updateWorkspaceChrome("build");
         console.error(error);
     }
 }

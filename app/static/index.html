@@ -64,12 +64,7 @@ html,body{
     height:100vh;
     overflow:hidden;
 
-    background:
-        linear-gradient(
-            180deg,
-            #6f90bb 0%,
-            #7da2d4 100%
-        );
+    background:#f1f5f9;
 }
 
 .shell::before{
@@ -78,8 +73,8 @@ html,body{
     inset:0;
 
     background-image:
-        linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+        linear-gradient(rgba(15,23,42,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15,23,42,.025) 1px, transparent 1px);
 
     background-size:40px 40px;
 
@@ -174,11 +169,11 @@ html,body{
 
     border-radius:999px;
 
-    background:rgba(59,130,246,.12);
+    background:#e2e8f0;
 
-    border:1px solid rgba(59,130,246,.25);
+    border:1px solid #cbd5e1;
 
-    color:#3590f8;
+    color:#334155;
 
     font-size:12px;
     letter-spacing:.18em;
@@ -689,8 +684,9 @@ html,body{
 .meta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
 .meta-value{font-size:13px;color:#334155;overflow-wrap:anywhere}
 .meta-label{display:block;color:#64748b;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
-.report-controls{display:flex;gap:10px;flex-wrap:wrap;padding:14px;margin-bottom:18px}
-.report-controls input,.report-controls select{padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;color:#0f172a;min-width:150px}
+.report-controls{display:flex;gap:12px;flex-wrap:wrap;padding:14px;margin-bottom:18px;align-items:flex-start}
+.report-controls>input{padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;color:#0f172a;min-width:240px}
+.facet-group{border:0;padding:0;margin:0;min-width:150px}.facet-group legend{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#64748b;margin-bottom:6px}.facet-options{display:flex;gap:6px;flex-wrap:wrap}.facet-option{display:inline-flex;align-items:center;cursor:pointer}.facet-option input{position:absolute;opacity:0;pointer-events:none}.facet-option span{display:inline-flex;padding:7px 10px;border:1px solid #cbd5e1;border-radius:999px;background:#fff;color:#475569;font-size:12px;font-weight:600}.facet-option input:checked+span{background:#dbeafe;border-color:#93c5fd;color:#1d4ed8}.facet-option input:focus-visible+span{outline:2px solid #2563eb;outline-offset:2px}
 .stage-card{padding:18px;grid-column:1/-1}
 .stage-heading,.check-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .stage-heading{margin-bottom:12px}
@@ -709,14 +705,15 @@ html,body{
 .report-page-layout{max-width:1440px;margin:0 auto}
 .report-toolbar{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:18px}
 .report-toolbar h1,.report-toolbar h2{font-size:28px;letter-spacing:-.04em}
+.workspace-nav{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-bottom:22px;padding:10px;background:#fff;border:1px solid #dbe3ee;border-radius:14px;box-shadow:0 5px 16px rgba(15,23,42,.05)}.workspace-tabs,.workspace-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.workspace-tab{border:0;background:transparent;color:#64748b;border-radius:10px;padding:10px 12px;font:700 13px 'Inter',sans-serif;cursor:pointer}.workspace-tab.active{background:#eaf2ff;color:#1d4ed8}.tab-badge{display:inline-flex;margin-left:6px;padding:2px 6px;border-radius:999px;background:#e2e8f0;color:#475569;font-size:10px;text-transform:uppercase}.tab-badge.passed{background:#d1fae5;color:#047857}.tab-badge.failed{background:#fee2e2;color:#b91c1c}.tab-badge.running{background:#fef3c7;color:#92400e}.workspace-action{border:1px solid #cbd5e1;background:#fff;color:#334155;border-radius:9px;padding:8px 10px;font:650 12px 'Inter',sans-serif;cursor:pointer}.workspace-action.primary{border-color:#bfdbfe;background:#eff6ff;color:#1d4ed8}
 .inline-action{border:1px solid #bfdbfe;background:#eff6ff;color:#1d4ed8;border-radius:9px;padding:8px 10px;font:600 12px 'Inter',sans-serif;cursor:pointer;white-space:nowrap}
 .inline-action:hover{background:#dbeafe}.inline-action:disabled{opacity:.6;cursor:wait}
-.build-option{display:flex;align-items:center;gap:8px;color:#475569;font-size:13px;cursor:pointer}.build-option input{accent-color:#2563eb}
 .case-row{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:12px;align-items:start}.case-main{min-width:0}.case-title{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.case-actions{grid-column:2;grid-row:1 / span 3}.case-row .case-reasons{margin:8px 0 0}.case-reasons summary{cursor:pointer;color:#475569;font-size:12px}.case-reasons ul{margin:7px 0 0 18px;color:#334155;font-size:13px}.case-reasons li+li{margin-top:4px}
 .drawer-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.26);opacity:0;pointer-events:none;transition:opacity .2s;z-index:20}.drawer-backdrop:not([hidden]){opacity:1;pointer-events:auto}
 .remediation-drawer{position:fixed;right:0;top:0;bottom:0;width:min(520px,100vw);background:#fff;box-shadow:-16px 0 44px rgba(15,23,42,.18);transform:translateX(104%);transition:transform .25s ease;z-index:21;display:flex;flex-direction:column}.remediation-drawer.open{transform:translateX(0)}
 .drawer-header{padding:22px 24px;border-bottom:1px solid #e2e8f0;display:flex;align-items:start;justify-content:space-between;gap:16px}.drawer-header h2{font-size:20px;letter-spacing:-.02em}.drawer-close{border:0;background:#f1f5f9;color:#334155;width:32px;height:32px;border-radius:8px;font-size:20px;cursor:pointer}.drawer-content{padding:24px;overflow:auto}.remediation-result h3{font-size:16px;margin:14px 0 7px}.remediation-result h4{font-size:13px;margin:20px 0 7px}.remediation-result p,.remediation-result li{font-size:13px;line-height:1.55;color:#334155}.remediation-result ul{margin:8px 0 0 18px}.remediation-result li span{display:block;font-size:12px;color:#64748b}.suggestion{border:1px solid #e2e8f0;border-radius:12px;padding:13px;margin-top:9px}.suggestion p{margin-top:5px}
-.build-layout{max-width:1180px;margin:0 auto}.build-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}.build-grid .panel{margin:0}.build-grid h3{font-size:16px;margin-bottom:10px}.build-grid p{color:#475569;font-size:14px;line-height:1.6}.build-live-status{height:32px;display:flex;align-items:center;margin-bottom:12px}.build-live-status .pill{display:inline-flex;align-items:center;min-height:28px;line-height:1}.build-config{margin:0 0 16px;display:flex;gap:10px;flex-wrap:wrap}.build-config span{background:#f1f5f9;border-radius:999px;padding:7px 10px;font-size:12px;color:#475569}.build-artifacts li{padding:11px 0;border-bottom:1px solid #eef2f7}.build-artifacts li:last-child{border:0}.build-artifacts strong{display:block;font:12px ui-monospace,monospace;overflow-wrap:anywhere}.build-artifacts span{display:block;font-size:12px;color:#64748b;margin-top:4px}.build-output pre,.build-live pre{height:300px;overflow:auto;white-space:pre-wrap;margin:14px 0 0;font:12px ui-monospace,monospace;color:#334155}.diagnostic-list{margin:0;padding-left:18px}.diagnostic-list li{font:12px ui-monospace,monospace;color:#334155;overflow-wrap:anywhere;margin:7px 0}
+.build-layout{max-width:1180px;margin:0 auto}.build-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}.build-grid .panel{margin:0}.build-grid h3{font-size:16px;margin-bottom:10px}.build-grid h4{font-size:12px;margin:16px 0 6px;text-transform:uppercase;letter-spacing:.08em;color:#64748b}.build-grid p,.build-grid li{color:#475569;font-size:14px;line-height:1.6}.build-live-status{height:32px;display:flex;align-items:center;margin-bottom:12px}.build-live-status .pill{display:inline-flex;align-items:center;min-height:28px;line-height:1}.build-config{margin:0 0 16px;display:flex;gap:10px;flex-wrap:wrap}.build-config span{background:#f1f5f9;border-radius:999px;padding:7px 10px;font-size:12px;color:#475569}.build-artifacts li{padding:11px 0;border-bottom:1px solid #eef2f7}.build-artifacts li:last-child{border:0}.build-artifacts strong{display:block;font:12px ui-monospace,monospace;overflow-wrap:anywhere}.build-artifacts span{display:block;font-size:12px;color:#64748b;margin-top:4px}.build-output pre,.build-live pre{height:300px;overflow:auto;white-space:pre-wrap;margin:14px 0 0;font:12px ui-monospace,monospace;color:#334155}.diagnostic-list{margin:0;padding-left:18px}.diagnostic-list li{font:12px ui-monospace,monospace;color:#334155;overflow-wrap:anywhere;margin:7px 0}.build-empty{text-align:center;max-width:620px;margin:48px auto}.build-empty h3{margin:14px 0 5px}.build-empty .btn{margin-top:18px}
+@media(max-width:760px){.workspace-nav{align-items:stretch;flex-direction:column}.workspace-tabs,.workspace-actions{width:100%}.workspace-tab{flex:1}.report-controls>input{width:100%}.build-grid{grid-template-columns:1fr}}
 
 .section{
     overflow:hidden;
@@ -781,18 +778,18 @@ html,body{
 }
 
 .pill.failed{
-    background:rgba(239,68,68,.12);
-    color:#e42c2c;
+    background:#fee2e2;
+    color:#b91c1c;
 }
 
 .pill.warning{
-    background:rgba(245,158,11,.12);
-    color:#f9d236;
+    background:#fef3c7;
+    color:#92400e;
 }
 
 .pill.passed{
-    background:rgba(34, 239, 170, 0.12);
-    color:#a7f3d0;
+    background:#d1fae5;
+    color:#047857;
 }
 
 .section-body{
@@ -979,29 +976,28 @@ p.sub,
             <div class="glass hero-content">
 
                 <div class="eyebrow">
-                    Autonomous Engineering Intelligence
+                    Engineering governance workspace
                 </div>
 
                 <h1 class="title">
-                    Nav tech
+                    Embedded software
                     <br>
                     <span class="accent">
-                        AI AGENT
+                        review evidence
                     </span>
                 </h1>
 
                 <p class="lead"style="color:#0f172a !important;">
-                    Automate engineering reviews, standards validation,
-                    artifact verification, build readiness,
-                    and release workflows across the embedded
-                    software lifecycle.
+                    Upload a repository to produce a policy-backed review run,
+                    inspect findings by stage, check, and case, then retain build
+                    output and artifacts with the same evidence record.
                 </p>
 
                 <div class="hero-points">
-                    <div class="chip">AI Review Agents</div>
-                    <div class="chip">Build Intelligence</div>
-                    <div class="chip">Standards Validation</div>
-                    <div class="chip">SCM + PR Automation</div>
+                    <div class="chip">Policy checks</div>
+                    <div class="chip">Traceable evidence</div>
+                    <div class="chip">Build results</div>
+                    <div class="chip">Remediation guidance</div>
                 </div>
 
                 <div class="hero-actions">
@@ -1015,23 +1011,23 @@ p.sub,
                 <div class="executive-strip">
 
                     <div class="exec-card">
-                        <h3>95%</h3>
-                        <p>Manual review reduction</p>
+                        <h3>Run</h3>
+                        <p>One evidence record per upload</p>
                     </div>
 
                     <div class="exec-card">
-                        <h3>10x</h3>
-                        <p>Faster validation cycles</p>
+                        <h3>Findings</h3>
+                        <p>Stages, checks, and cases</p>
                     </div>
 
                     <div class="exec-card">
-                        <h3>24/7</h3>
-                        <p>AI orchestration runtime</p>
+                        <h3>Build</h3>
+                        <p>Captured output and diagnostics</p>
                     </div>
 
                     <div class="exec-card">
-                        <h3>Full</h3>
-                        <p>Lifecycle traceability</p>
+                        <h3>Evidence</h3>
+                        <p>Run-scoped artifacts and reports</p>
                     </div>
 
                 </div>
@@ -1170,9 +1166,20 @@ p.sub,
     <section id="reportPage" class="page">
         <div class="report-page-layout">
 
+        <nav class="workspace-nav" aria-label="Developer workspace">
+            <div class="workspace-tabs" role="tablist" aria-label="Run views">
+                <button class="workspace-tab active" data-workspace-tab="report" role="tab" type="button" onclick="showReport()">Review report <span class="tab-badge" data-remediation-count>0</span></button>
+                <button class="workspace-tab" data-workspace-tab="build" role="tab" type="button" onclick="showBuild()">Build &amp; artifacts <span class="tab-badge not-run" data-build-badge>not run</span></button>
+            </div>
+            <div class="workspace-actions">
+                <button class="workspace-action" type="button" onclick="startNewReview()">New review</button>
+                <button class="workspace-action" type="button" onclick="rerunReview()">Re-run review</button>
+                <button class="workspace-action primary" type="button" onclick="downloadEvidencePack()">HTML evidence pack</button>
+            </div>
+        </nav>
+
         <div class="report-toolbar">
             <div>
-                <span class="eyebrow">Review run</span>
                 <h2>Governance report</h2>
             </div>
             <button class="btn secondary" type="button" onclick="openRemediationDrawer()">Remediations</button>
@@ -1184,22 +1191,17 @@ p.sub,
 
         <div class="report-controls">
             <input id="caseSearch" type="search" placeholder="Search symbol, path, or check" aria-label="Search report">
-            <select id="statusFilter" aria-label="Filter case status">
-                <option value="all">All statuses</option>
-                <option value="failed">Failed</option>
-                <option value="skipped">Skipped</option>
-                <option value="success">Passed</option>
-            </select>
-            <select id="stageFilter" aria-label="Filter stage"><option value="all">All stages</option></select>
-            <select id="checkFilter" aria-label="Filter check"><option value="all">All checks</option></select>
+            <fieldset class="facet-group"><legend>Status</legend><div id="statusFilter" class="facet-options" aria-label="Filter case statuses"></div></fieldset>
+            <fieldset class="facet-group"><legend>Stage</legend><div id="stageFilter" class="facet-options" aria-label="Filter stages"></div></fieldset>
+            <fieldset class="facet-group"><legend>Check</legend><div id="checkFilter" class="facet-options" aria-label="Filter checks"></div></fieldset>
         </div>
 
         <div id="stages" class="report-grid"></div>
 
         <div class="actions">
 
-            <button class="btn" onclick="runPipeline()">
-                Re-Run Analysis
+            <button class="btn" onclick="rerunReview()">
+                Re-run review
             </button>
 
             <button
@@ -1208,11 +1210,6 @@ p.sub,
             >
                 Trigger Build
             </button>
-
-            <label class="build-option" title="Runs only when the uploaded repository declares a formatter wrapper in review-build.json.">
-                <input id="runFormatter" type="checkbox">
-                Run configured formatter
-            </label>
 
             <button class="btn primary" type="button" onclick="showPlannedNotice()">
                 Raise PR (coming soon)
@@ -1230,14 +1227,24 @@ p.sub,
 
     <section id="buildPage" class="page">
         <div class="build-layout">
+            <nav class="workspace-nav" aria-label="Developer workspace">
+                <div class="workspace-tabs" role="tablist" aria-label="Run views">
+                    <button class="workspace-tab" data-workspace-tab="report" role="tab" type="button" onclick="showReport()">Review report <span class="tab-badge" data-remediation-count>0</span></button>
+                    <button class="workspace-tab active" data-workspace-tab="build" role="tab" type="button" onclick="showBuild()">Build &amp; artifacts <span class="tab-badge not-run" data-build-badge>not run</span></button>
+                </div>
+                <div class="workspace-actions">
+                    <button class="workspace-action" type="button" onclick="startNewReview()">New review</button>
+                    <button class="workspace-action" type="button" onclick="rerunReview()">Re-run review</button>
+                    <button class="workspace-action primary" type="button" onclick="downloadEvidencePack()">HTML evidence pack</button>
+                </div>
+            </nav>
             <div class="report-toolbar">
                 <div>
-                    <span class="eyebrow">Review run</span>
                     <h2>Build result</h2>
                 </div>
-                <button class="btn secondary" type="button" onclick="showReport()">Back to report</button>
+                <button class="btn secondary" type="button" onclick="triggerBuild()">Re-run build</button>
             </div>
-            <div id="buildResult" class="build-result"></div>
+            <div id="buildResult" class="build-result"><div class="glass panel build-empty"><span class="pill warning">NOT RUN</span><h3>No build result yet</h3><p>Run the repository build to attach output, diagnostics, and artifacts to this review run.</p></div></div>
         </div>
 
     </section>
