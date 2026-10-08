@@ -12,7 +12,7 @@ _ARTIFACT_SUFFIXES = {
     ".log": "Build log",
 }
 _REPORT_SUFFIXES = {".html", ".htm", ".json", ".xml", ".pdf", ".txt"}
-_IGNORED_DIRECTORIES = {".git", "analysis", "node_modules"}
+_IGNORED_DIRECTORIES = {".git", "analysis", "node_modules", "CMakeFiles"}
 _MAX_ARTIFACTS = 50
 
 
