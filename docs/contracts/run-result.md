@@ -31,7 +31,7 @@ RunResult
 
 `stage_id`, `check_id`, and `case_id` identify their records. Display fields such as `StageResult.title`, `CheckResult.title`, and `CaseResult.name` are for presentation and must not be used as identifiers. Consumers should join related records and actions through IDs.
 
-`policy_version` identifies the policy/schema revision used for the run. `report_version` identifies the serialized report contract version. `metadata` carries run context such as module name, policy name, and generation time. `summary` carries aggregate counts; stage/check summaries do likewise at their level.
+`policy_version` identifies the policy/schema revision used for the run. `report_version` identifies the serialized report contract version. `metadata` carries run context such as module name, policy name, generation time, and the policy-owned `profile` display data (domain, language, formatter, build adapter, and artifact types). `summary` carries aggregate counts; stage/check summaries do likewise at their level.
 
 `remediation` is a list of remediation result objects. `build_result` is the result object for the run's build. Their detailed fields can evolve without changing the run/stage/check/case hierarchy.
 

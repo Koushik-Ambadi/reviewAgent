@@ -6,10 +6,20 @@ const stageLogs = [
     "Reviewing declared values...", "Checking related project files...", "Organizing review findings...",
     "Preparing your report..."
 ];
+const DEFAULT_PROFILE = {
+    name: "ABS Embedded C Default",
+    domain: "Embedded / battery management",
+    language: "C",
+    review_policy: "ABS Default Policy v4",
+    formatter: "repository configured",
+    build_adapter: "cmake-build.bat",
+    artifact_types: ["ELF", "HEX", "BIN", "MAP", "logs", "reports"]
+};
 
 window.currentRunId = null;
 window.currentReport = null;
 window.currentBuildState = "not-run";
+window.currentProfile = { ...DEFAULT_PROFILE };
 
 function showPage(id) {
     document.querySelectorAll(".page").forEach(page => page.classList.remove("active"));
@@ -43,6 +53,28 @@ function rerunReview() {
 function downloadEvidencePack() {
     if (!window.currentRunId) { alert("Run a review first."); return; }
     window.location.assign(`/api/runs/${encodeURIComponent(window.currentRunId)}/evidence-pack`);
+}
+function renderProfileSummary(profile = DEFAULT_PROFILE) {
+    const values = [
+        ["Profile", profile.name], ["Domain", profile.domain], ["Language", profile.language],
+        ["Review policy", profile.review_policy], ["Formatter", profile.formatter],
+        ["Build adapter", profile.build_adapter], ["Artifact types", (profile.artifact_types || []).join(", ")]
+    ];
+    document.getElementById("profileSummary").innerHTML = `<div class="meta-grid">${values.map(([label, value]) =>
+        `<div class="meta-value"><span class="meta-label">${escapeHtml(label)}</span>${escapeHtml(value || "—")}</div>`
+    ).join("")}</div>`;
+}
+async function loadReviewProfile() {
+    try {
+        const response = await fetch("/api/policies/default");
+        if (!response.ok) throw new Error("Default policy profile is unavailable.");
+        const payload = await response.json();
+        window.currentProfile = { ...DEFAULT_PROFILE, ...(payload.template?.metadata?.profile || {}) };
+    } catch (error) {
+        window.currentProfile = { ...DEFAULT_PROFILE };
+        console.warn(error);
+    }
+    renderProfileSummary(window.currentProfile);
 }
 
 function setProgress(percent, text) {
@@ -167,13 +199,13 @@ function renderReport(report) {
 }
 function renderMetadata(report) {
     const metadata = report.metadata || {};
-    const profile = metadata.profile || {};
+    const profile = { ...DEFAULT_PROFILE, ...window.currentProfile, ...(metadata.profile || {}) };
     const values = [
         ["Run ID", report.run_id || "—"], ["Module", metadata.module_name || "—"],
-        ["Profile", profile.name || "ABS Embedded C Default"], ["Domain", profile.domain || "Embedded / battery management"],
-        ["Language", profile.language || "C"], ["Review policy", profile.review_policy || metadata.policy_name || "—"],
-        ["Policy version", report.policy_version || "—"], ["Formatter", profile.formatter || "repository configured"],
-        ["Build adapter", profile.build_adapter || "cmake-build.bat"], ["Artifact types", (profile.artifact_types || ["ELF", "HEX", "BIN", "MAP", "logs", "reports"]).join(", ")],
+        ["Profile", profile.name], ["Domain", profile.domain],
+        ["Language", profile.language], ["Review policy", profile.review_policy || metadata.policy_name || "—"],
+        ["Policy version", report.policy_version || "—"], ["Formatter", profile.formatter],
+        ["Build adapter", profile.build_adapter], ["Artifact types", profile.artifact_types.join(", ")],
         ["Report version", report.report_version || "—"], ["Generated", formatDate(metadata.generated_at)]
     ];
     document.getElementById("reportMetadata").innerHTML = `<div class="meta-grid">${values.map(([label, value]) =>
@@ -398,3 +430,4 @@ document.getElementById("stages").addEventListener("click", event => {
     requestRemediation(button);
 });
 document.getElementById("drawerBackdrop").addEventListener("click", closeRemediationDrawer);
+loadReviewProfile();

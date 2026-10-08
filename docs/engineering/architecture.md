@@ -241,6 +241,9 @@ The API returns templates; the pipeline owns execution-time loading.
 - Both workspace tabs expose the run-scoped HTML evidence-pack download. New and
   re-run actions preserve the current architecture: re-run reuses the browser's
   selected ZIP, while new review returns to the upload/profile view.
+- The upload view reads the default profile from `GET /api/policies/default` and
+  uses the same explicit defaults as a display-only fallback if that read fails;
+  no profile selector or multi-project behavior is implied.
 - The progress display is explicitly simulated (`startFakeProgress`); it is not
   server-side stage telemetry.
 - HTML is escaped before report values are inserted into templates.
