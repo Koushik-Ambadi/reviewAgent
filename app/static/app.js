@@ -181,10 +181,17 @@ function updateWorkspaceChrome(activeTab) {
         button.classList.toggle("active", active);
         button.setAttribute("aria-selected", String(active));
     });
-    document.querySelectorAll("[data-remediation-count]").forEach(badge => { badge.textContent = remediationCount; });
+    document.querySelectorAll("[data-remediation-count]").forEach(badge => {
+        badge.textContent = `${remediationCount} ${remediationCount === 1 ? "fix" : "fixes"}`;
+    });
     document.querySelectorAll("[data-build-badge]").forEach(badge => {
         badge.textContent = buildState;
         badge.className = `tab-badge ${buildState.replace(" ", "-")}`;
+    });
+    document.querySelectorAll("[data-build-action]").forEach(button => {
+        const running = buildState === "running";
+        button.disabled = running;
+        button.textContent = running ? "Build running…" : (buildState === "not run" ? "Run build" : "Re-run build");
     });
 }
 
@@ -348,8 +355,6 @@ async function requestRemediation(button) {
         button.disabled = false;
     }
 }
-function showPlannedNotice() { alert("Pull request creation is not available in this prototype."); }
-
 function renderBuildLoading(status = {}) {
     window.currentBuildState = status.state || "queued";
     const output = [...(status.stdout || []), ...(status.stderr || [])].join("\n");
