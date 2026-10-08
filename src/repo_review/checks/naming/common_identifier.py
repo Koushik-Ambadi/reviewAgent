@@ -80,6 +80,8 @@ def evaluate_atomic_rules(
         valid = True
         if validator == "fullmatch":
             valid = re.fullmatch(expected, name) is not None
+        elif validator == "starts_with_letter":
+            valid = bool(name) and name[0].isalpha()
         elif validator == "max_length":
             valid = len(name) <= int(rule["limit"])
         elif validator == "min_length":
@@ -96,6 +98,26 @@ def evaluate_atomic_rules(
             valid = not any(char.isalpha() and not char.isupper() for char in name)
         elif validator == "nonempty_after_prefix":
             valid = not name.startswith(expected) or bool(name[len(expected):].strip("_"))
+        elif validator == "lowercase_after_prefix":
+            suffix = name[len(expected):] if name.startswith(expected) else ""
+            valid = not suffix or all(
+                not character.isalpha() or character.islower()
+                for character in suffix
+            )
+        elif validator == "starts_lowercase_after_prefix":
+            suffix = name[len(expected):] if name.startswith(expected) else ""
+            valid = not suffix or suffix[0].islower()
+        elif validator == "starts_letter_after_prefix":
+            suffix = name[len(expected):] if name.startswith(expected) else ""
+            valid = not suffix or suffix[0].isalpha()
+        elif validator == "nonempty_between_affixes":
+            prefix = str(rule.get("prefix", "")).format(**rule_values)
+            suffix = str(rule.get("suffix", "")).format(**rule_values)
+            valid = (
+                name.startswith(prefix)
+                and name.endswith(suffix)
+                and len(name) > len(prefix) + len(suffix)
+            )
         elif validator == "pointer_suffix":
             valid = name.endswith(expected)
         elif validator == "not_empty":

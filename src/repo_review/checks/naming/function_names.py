@@ -1,7 +1,5 @@
 # src/repo_review/checks/naming/function_names.py
 
-import re
-
 from ...contracts import (
     CaseResult,
     CaseStatus,
@@ -9,7 +7,7 @@ from ...contracts import (
     CheckStatus,
     build_check_summary,
 )
-from .common_identifier import evaluate_atomic_rules
+from .common_identifier import evaluate_atomic_rules, find_applicability_exclusion
 
 
 def validate_function_names(
@@ -43,23 +41,20 @@ def validate_function_names(
                 f"{file_path}:{function.get('line', '')}"
             )
 
-            # Skip excluded functions
-            if any(
-                re.match(pattern, name)
-                for pattern in exclusion_patterns
-            ):
-
+            exclusion = find_applicability_exclusion(
+                name,
+                exclusion_patterns,
+                context={"module": module_name},
+            )
+            if exclusion:
                 cases.append(
                     CaseResult(
                         status=CaseStatus.SKIPPED,
                         name=name,
                         location=location,
-                        reasons=[
-                            f"[{naming_policy['exclusion_rule_id']}] {naming_policy['exclusion_reason']}",
-                        ],
+                        reasons=[f"[{exclusion['id']}] {exclusion['reason']}"],
                     )
                 )
-
                 continue
 
             reasons = evaluate_atomic_rules(

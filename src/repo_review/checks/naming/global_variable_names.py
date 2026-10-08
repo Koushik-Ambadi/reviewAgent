@@ -17,6 +17,14 @@ def validate_global_variable_names(
 ):
 
     cases = []
+    rules = {
+        rule["key"]: rule
+        for rule in naming_policy["automatic_rules"]
+    }
+
+    def policy_reason(key: str, **values: object) -> str:
+        rule = rules[key]
+        return f"[{rule['id']}] {rule['reason'].format(**values)}"
 
     allowed_chars_pattern = re.compile(
         naming_policy[
@@ -101,7 +109,7 @@ def validate_global_variable_names(
                         status=CaseStatus.FAILED,
                         name=name,
                         location=location,
-                        reasons=["[ABS-SCS-17.e] Variable name is missing."],
+                        reasons=[policy_reason("missing_name")],
                     )
                 )
                 continue
@@ -124,11 +132,7 @@ def validate_global_variable_names(
                         name=name,
                         location=location,
                         reasons=[
-                            (
-                                f"[{naming_policy['excluded_type_rule_id']}] Excluded global variable "
-                                f"type '{var_type}' "
-                                "by policy."
-                            )
+                            policy_reason("excluded_type", var_type=var_type)
                         ],
                     )
                 )
@@ -139,7 +143,7 @@ def validate_global_variable_names(
 
             if not naming_policy["leading_underscore_allowed"] and name.startswith("_"):
                 failures.append(
-                    "[ABS-SCS-17.c] Variable name must not start with an underscore."
+                    policy_reason("leading_underscore")
                 )
 
             pointer_count = var_type.count("*")
@@ -150,7 +154,7 @@ def validate_global_variable_names(
                     schema_name = name[:-len(pointer_suffix)]
                 else:
                     failures.append(
-                        f"[ABS-SCS-17.j] Pointer-to-pointer name must end with '{pointer_suffix}'."
+                        policy_reason("pointer_to_pointer_suffix", expected=pointer_suffix)
                     )
             elif pointer_count == 1:
                 pointer_suffix = naming_policy["pointer_suffix"]
@@ -158,7 +162,7 @@ def validate_global_variable_names(
                     schema_name = name[:-len(pointer_suffix)]
                 else:
                     failures.append(
-                        f"[ABS-SCS-17.i] Pointer name must end with '{pointer_suffix}'."
+                        policy_reason("pointer_suffix", expected=pointer_suffix)
                     )
 
             #
@@ -167,13 +171,13 @@ def validate_global_variable_names(
 
             if len(name) < min_length:
                 failures.append(
-                    f"[ABS-SCS-17.e] Name is shorter than the required {min_length} characters."
+                    policy_reason("minimum_length", minimum_name_length=min_length)
                 )
 
             if len(name) > max_length:
 
                 failures.append(
-                    f"[ABS-SCS-17.d] Name exceeds the configured maximum of {max_length} characters."
+                    policy_reason("maximum_length", name_max_length=max_length)
                 )
 
             #
@@ -185,7 +189,7 @@ def validate_global_variable_names(
             ):
 
                 failures.append(
-                    "[ABS-POLICY-GLOBAL-CHARACTERS] Name contains characters outside the configured identifier pattern."
+                    policy_reason("allowed_characters")
                 )
 
             #
@@ -197,9 +201,9 @@ def validate_global_variable_names(
             data_type = schema_name[data_type_position:data_type_position + 1]
 
             if not data_type:
-                failures.append("[ABS-POLICY-GLOBAL-DATA-TYPE] Data type code is missing.")
+                failures.append(policy_reason("data_type_missing"))
             elif data_type not in allowed_data_types:
-                failures.append(f"[ABS-POLICY-GLOBAL-DATA-TYPE] '{data_type}' is not an allowed data type code.")
+                failures.append(policy_reason("data_type_allowed", data_type=data_type))
 
             #
             # Data size
@@ -209,9 +213,9 @@ def validate_global_variable_names(
             data_size = schema_name[data_size_position:data_size_position + 1]
 
             if not data_size:
-                failures.append("[ABS-POLICY-GLOBAL-DATA-SIZE] Data size code is missing.")
+                failures.append(policy_reason("data_size_missing"))
             elif data_size not in allowed_data_sizes:
-                failures.append(f"[ABS-POLICY-GLOBAL-DATA-SIZE] '{data_size}' is not an allowed data size code.")
+                failures.append(policy_reason("data_size_allowed", data_size=data_size))
 
             remaining = (
                 schema_name[layout["remainder_start"]:]
@@ -231,12 +235,12 @@ def validate_global_variable_names(
 
             if len(parts) < naming_policy["layout"]["minimum_segment_count"]:
                 failures.append(
-                    "[ABS-POLICY-GLOBAL-SEGMENTS] Name must contain module, unit, and description segments separated by underscores."
+                    policy_reason("segment_count")
                 )
 
             if len(description_parts) > 1 and not naming_policy["description_separator_allowed"]:
                 failures.append(
-                    f"[ABS-POLICY-GLOBAL-DESCRIPTION] Keep the description as one lowerCamelCase segment without '{separator}'."
+                    policy_reason("description_separator", separator=separator)
                 )
 
             #
@@ -244,18 +248,18 @@ def validate_global_variable_names(
             #
 
             if module and module not in allowed_modules:
-                failures.append(f"[ABS-POLICY-GLOBAL-MODULE] '{module}' is not an allowed module code.")
+                failures.append(policy_reason("module_allowed", module=module))
             elif not module and naming_policy.get("enforce_module_required", True):
-                failures.append("[ABS-POLICY-GLOBAL-MODULE] Module code is required.")
+                failures.append(policy_reason("module_required"))
 
             #
             # Unit
             #
 
             if unit and unit not in allowed_units:
-                failures.append(f"[ABS-POLICY-GLOBAL-UNIT] '{unit}' is not an allowed unit code.")
+                failures.append(policy_reason("unit_allowed", unit=unit))
             elif not unit and naming_policy.get("enforce_unit_required", True):
-                failures.append("[ABS-POLICY-GLOBAL-UNIT] Unit code is required.")
+                failures.append(policy_reason("unit_required"))
 
             #
             # Description
@@ -269,26 +273,26 @@ def validate_global_variable_names(
                     )
                 ):
                     failures.append(
-                        "[ABS-POLICY-GLOBAL-DESCRIPTION] Description may contain only letters and numbers."
+                        policy_reason("description_characters")
                     )
 
                 if (
                     naming_policy.get("description_must_start_lowercase", True)
                     and not description[0].islower()
                 ):
-                    failures.append("[ABS-POLICY-GLOBAL-DESCRIPTION] Description must start with a lowercase letter.")
+                    failures.append(policy_reason("description_initial"))
 
                 if len(description) < description_min_length:
                     failures.append(
-                        f"[ABS-POLICY-GLOBAL-DESCRIPTION] Description is shorter than the configured {description_min_length} characters."
+                        policy_reason("description_minimum_length", description_min_length=description_min_length)
                     )
 
                 if len(description) > description_max_length:
                     failures.append(
-                        f"[ABS-POLICY-GLOBAL-DESCRIPTION] Description exceeds the configured {description_max_length} characters."
+                        policy_reason("description_maximum_length", description_max_length=description_max_length)
                     )
             elif naming_policy.get("enforce_description_required", True):
-                failures.append("[ABS-POLICY-GLOBAL-DESCRIPTION] Description is required.")
+                failures.append(policy_reason("description_required"))
 
             #
             # Final case

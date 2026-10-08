@@ -5,8 +5,7 @@ from ...contracts import (
     CheckStatus,
     build_check_summary,
 )
-from .common_identifier import evaluate_atomic_rules
-from .utils import is_excluded_macro
+from .common_identifier import evaluate_atomic_rules, find_applicability_exclusion
 
 
 def validate_macro_names(symbols, module_name, naming_policy):
@@ -21,13 +20,10 @@ def validate_macro_names(symbols, module_name, naming_policy):
                 continue
 
             location = f"{file_path}:{macro.get('line', '')}"
-            exclusion = next(
-                (
-                    rule
-                    for rule in naming_policy.get("applicability_exclusions", [])
-                    if is_excluded_macro(name, [rule], module_name)
-                ),
-                None,
+            exclusion = find_applicability_exclusion(
+                name,
+                naming_policy.get("applicability_exclusions", []),
+                context={"module": module_name},
             )
             if exclusion:
                 cases.append(

@@ -42,6 +42,10 @@ standard is automated.
 - Global-variable diagnostics now identify the corresponding source or local
   policy rule. Segment positions and separators are explicit policy settings.
 - Automatic naming failures include a rule ID and a corrective explanation.
+- Composite identifier expressions are implementation mechanics only. Policy now
+  declares each visible character, separator, case, prefix, suffix, and
+  descriptive-segment outcome separately; global and array outcomes also take
+  their IDs and messages from policy.
   Rules that need external symbol lists or semantic judgment are recorded as
   `manual` and are not silently run by the checker.
 

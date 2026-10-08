@@ -82,11 +82,39 @@ checks:
           value: "{module}_"
           module_case: title
           reason: "Function name must start with the configured module prefix '{expected}'."
-        - id: ABS-SCS-16.1.g
+        - id: ABS-POLICY-FUNCTION-CHARACTERS
           mode: automatic
           validator: fullmatch
-          value: "^[A-Z][A-Za-z0-9]*(_[a-z0-9]+)+$"
-          reason: "Use the module prefix followed by lowercase underscore-separated words (letters and digits only)."
+          value: "^[A-Za-z0-9_]+$"
+          reason: "Function name may contain only letters, digits, and underscores."
+        - id: ABS-POLICY-FUNCTION-DOUBLE-UNDERSCORE
+          mode: automatic
+          validator: not_contains
+          value: "__"
+          reason: "Function name must not contain consecutive underscores."
+        - id: ABS-POLICY-FUNCTION-TRAILING-UNDERSCORE
+          mode: automatic
+          validator: not_ends_with
+          value: "_"
+          reason: "Function name must not end with an underscore."
+        - id: ABS-POLICY-FUNCTION-DESCRIPTION
+          mode: automatic
+          validator: nonempty_after_prefix
+          value: "{module}_"
+          module_case: title
+          reason: "Add a descriptive name after module prefix '{expected}'."
+        - id: ABS-SCS-16.1.g
+          mode: automatic
+          validator: starts_lowercase_after_prefix
+          value: "{module}_"
+          module_case: title
+          reason: "The first character after module prefix '{expected}' must be lowercase."
+        - id: ABS-POLICY-FUNCTION-WORD-CASE
+          mode: automatic
+          validator: lowercase_after_prefix
+          value: "{module}_"
+          module_case: title
+          reason: "Letters after module prefix '{expected}' must be lowercase."
         - id: ABS-SCS-16.1.a
           mode: manual
           statement: "A procedure name shall not be a C or C++ keyword."
@@ -106,13 +134,18 @@ checks:
           mode: manual
           statement: "Interrupt service routine names require the '_isr' suffix."
       applicability_exclusions:
-        - "^look\\d_"
-        - "^plook_"
-        - "^intrp"
-        - "^binsearch_"
-      exclusion_reason: "Function is excluded by the configured applicability policy."
-      exclusion_rule_id: ABS-POLICY-FUNCTION-EXCLUSION
-
+        - id: ABS-POLICY-FUNCTION-LOOKUP-EXCLUSION
+          pattern: "^look\\d_"
+          reason: "Function is excluded because the lookup-function applicability rule applies."
+        - id: ABS-POLICY-FUNCTION-PLOOK-EXCLUSION
+          pattern: "^plook_"
+          reason: "Function is excluded because the lookup-function applicability rule applies."
+        - id: ABS-POLICY-FUNCTION-INTERPOLATION-EXCLUSION
+          pattern: "^intrp"
+          reason: "Function is excluded because the interpolation-function applicability rule applies."
+        - id: ABS-POLICY-FUNCTION-BINARY-SEARCH-EXCLUSION
+          pattern: "^binsearch_"
+          reason: "Function is excluded because the binary-search applicability rule applies."
     macro_names:
       rules:
         - id: ABS-POLICY-MACRO-CHARACTERS
@@ -150,6 +183,7 @@ checks:
       macro_value_type: "value"
       applicability_exclusions:
         - pattern: "^{module}_IN_"
+          module_case: upper
           id: ABS-POLICY-MACRO-INPUT-EXCLUSION
           reason: "Input macro is excluded by the configured applicability policy."
       source_rules:
@@ -186,9 +220,22 @@ checks:
           float_literal_pattern: "^[+-]?(?:(?:[0-9]+\\.[0-9]*|\\.[0-9]+)(?:[eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)[fFlL]?$"
           hex_float_literal_pattern: "^[+-]?0[xX](?:[0-9A-Fa-f]+(?:\\.[0-9A-Fa-f]*)?|\\.[0-9A-Fa-f]+)[pP][+-]?[0-9]+[fFlL]?$"
           identifier_pattern: "[A-Za-z_][A-Za-z0-9_]*"
-          reason: "Array dimension '{dimension}' is numeric; use a named symbolic size."
-          no_identifier_reason: "Array dimension '{dimension}' has no identifier; use a named symbolic size."
-
+          outcomes:
+            - key: disabled
+              id: ABS-POLICY-ARRAY-SYMBOLIC-SIZE
+              reason: "Symbolic array size validation is disabled by policy."
+            - key: unspecified_allowed
+              id: ABS-POLICY-ARRAY-UNSPECIFIED-DIMENSION
+              reason: "Array dimension is unspecified; policy allows an unspecified dimension."
+            - key: unspecified_required
+              id: ABS-POLICY-ARRAY-UNSPECIFIED-DIMENSION
+              reason: "Array dimension is required by policy."
+            - key: numeric_literal
+              id: ABS-POLICY-ARRAY-NUMERIC-LITERAL
+              reason: "Array dimension '{dimension}' is numeric; use a named symbolic size."
+            - key: identifier_required
+              id: ABS-POLICY-ARRAY-IDENTIFIER
+              reason: "Array dimension '{dimension}' has no identifier; use a named symbolic size."
     global_variable_names:
 
       # The explicit segment layout is the project naming grammar consumed by
@@ -236,6 +283,76 @@ checks:
           mode: manual
           statement: "Variable names must not overlap C Standard Library names."
 
+      automatic_rules:
+        - key: missing_name
+          id: ABS-SCS-17.e
+          reason: "Variable name is missing."
+        - key: excluded_type
+          id: ABS-POLICY-GLOBAL-EXCLUDED-TYPE
+          reason: "Excluded global variable type '{var_type}' by policy."
+        - key: leading_underscore
+          id: ABS-SCS-17.c
+          reason: "Variable name must not start with an underscore."
+        - key: pointer_to_pointer_suffix
+          id: ABS-SCS-17.j
+          reason: "Pointer-to-pointer name must end with '{expected}'."
+        - key: pointer_suffix
+          id: ABS-SCS-17.i
+          reason: "Pointer name must end with '{expected}'."
+        - key: minimum_length
+          id: ABS-SCS-17.e
+          reason: "Name is shorter than the required {minimum_name_length} characters."
+        - key: maximum_length
+          id: ABS-SCS-17.d
+          reason: "Name exceeds the configured maximum of {name_max_length} characters."
+        - key: allowed_characters
+          id: ABS-POLICY-GLOBAL-CHARACTERS
+          reason: "Name contains characters outside the configured identifier pattern."
+        - key: segment_count
+          id: ABS-SCS-17.g
+          reason: "Name must contain module, unit, and description segments separated by underscores."
+        - key: description_separator
+          id: ABS-SCS-17.g
+          reason: "Keep the description as one lowerCamelCase segment without '{separator}'."
+        - key: data_type_missing
+          id: ABS-POLICY-GLOBAL-DATA-TYPE
+          reason: "Data type code is missing."
+        - key: data_type_allowed
+          id: ABS-POLICY-GLOBAL-DATA-TYPE
+          reason: "'{data_type}' is not an allowed data type code."
+        - key: data_size_missing
+          id: ABS-POLICY-GLOBAL-DATA-SIZE
+          reason: "Data size code is missing."
+        - key: data_size_allowed
+          id: ABS-POLICY-GLOBAL-DATA-SIZE
+          reason: "'{data_size}' is not an allowed data size code."
+        - key: module_allowed
+          id: ABS-POLICY-GLOBAL-MODULE
+          reason: "'{module}' is not an allowed module code."
+        - key: module_required
+          id: ABS-POLICY-GLOBAL-MODULE
+          reason: "Module code is required."
+        - key: unit_allowed
+          id: ABS-POLICY-GLOBAL-UNIT
+          reason: "'{unit}' is not an allowed unit code."
+        - key: unit_required
+          id: ABS-POLICY-GLOBAL-UNIT
+          reason: "Unit code is required."
+        - key: description_characters
+          id: ABS-POLICY-GLOBAL-DESCRIPTION
+          reason: "Description may contain only letters and numbers."
+        - key: description_initial
+          id: ABS-POLICY-GLOBAL-DESCRIPTION
+          reason: "Description must start with a lowercase letter."
+        - key: description_minimum_length
+          id: ABS-POLICY-GLOBAL-DESCRIPTION
+          reason: "Description is shorter than the configured {description_min_length} characters."
+        - key: description_maximum_length
+          id: ABS-POLICY-GLOBAL-DESCRIPTION
+          reason: "Description exceeds the configured {description_max_length} characters."
+        - key: description_required
+          id: ABS-POLICY-GLOBAL-DESCRIPTION
+          reason: "Description is required."
       pointer_suffix: "_ptr"
       pointer_to_pointer_suffix: "_ptr_ptr"
       minimum_name_length: 3
@@ -377,10 +494,33 @@ checks:
       rules:
         - id: ABS-SCS-15.1.a
           mode: automatic
-          validator: fullmatch
-          value: "^{module}_[A-Za-z][A-Za-z0-9_]*_t$"
+          validator: starts_with
+          value: "{module}_"
           module_case: title
-          reason: "Type name must use the module prefix, a descriptive name, and the '_t' suffix."
+          reason: "Type name must start with module prefix '{expected}'."
+        - id: ABS-POLICY-TYPE-CHARACTERS
+          mode: automatic
+          validator: fullmatch
+          value: "^[A-Za-z0-9_]+$"
+          reason: "Type name may contain only letters, digits, and underscores."
+        - id: ABS-POLICY-TYPE-DESCRIPTION-INITIAL
+          mode: automatic
+          validator: starts_letter_after_prefix
+          value: "{module}_"
+          module_case: title
+          reason: "The type description after module prefix '{expected}' must start with a letter."
+        - id: ABS-POLICY-TYPE-SUFFIX
+          mode: automatic
+          validator: pointer_suffix
+          value: "_t"
+          reason: "Type name must end with suffix '{expected}'."
+        - id: ABS-POLICY-TYPE-DESCRIPTION
+          mode: automatic
+          validator: nonempty_between_affixes
+          prefix: "{module}_"
+          suffix: "_t"
+          module_case: title
+          reason: "Type name must include a descriptive segment between module prefix and '_t' suffix."
         - id: ABS-SCS-15.1.a
           mode: automatic
           validator: max_length
@@ -427,11 +567,25 @@ checks:
           validator: not_starts_with
           value: "_"
           reason: "Variable name must not start with an underscore."
-        - id: ABS-SCS-17.g
+        - id: ABS-POLICY-LOCAL-CHARACTERS
           mode: automatic
           validator: fullmatch
-          value: "^[A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)*$"
-          reason: "Separate variable-name words with underscores; do not use leading, repeated, or trailing underscores."
+          value: "^[A-Za-z0-9_]+$"
+          reason: "Variable name may contain only letters, digits, and underscores."
+        - id: ABS-POLICY-LOCAL-INITIAL
+          mode: automatic
+          validator: starts_with_letter
+          reason: "Variable name must start with a letter."
+        - id: ABS-SCS-17.g
+          mode: automatic
+          validator: not_contains
+          value: "__"
+          reason: "Variable name must not contain consecutive underscores."
+        - id: ABS-POLICY-LOCAL-TRAILING-UNDERSCORE
+          mode: automatic
+          validator: not_ends_with
+          value: "_"
+          reason: "Variable name must not end with an underscore."
         - id: ABS-SCS-17.i
           mode: automatic
           validator: pointer_suffix
@@ -471,11 +625,15 @@ checks:
           value: "{module}_"
           module_case: upper
           reason: "Enum constant must start with uppercase module prefix '{expected}'."
-        - id: ABS-POLICY-ENUM-UPPERCASE
+        - id: ABS-POLICY-ENUM-CHARACTERS
           mode: automatic
           validator: fullmatch
-          value: "^[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)*$"
-          reason: "Enum constant must use uppercase underscore-separated words."
+          value: "^[A-Za-z0-9_]+$"
+          reason: "Enum constant may contain only letters, digits, and underscores."
+        - id: ABS-POLICY-ENUM-UPPERCASE
+          mode: automatic
+          validator: uppercase_only
+          reason: "Enum constant letters must be uppercase."
         - id: ABS-POLICY-ENUM-MAX-LENGTH
           mode: automatic
           validator: max_length

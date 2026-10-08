@@ -16,6 +16,11 @@ def validate_array_sizes(
     cases = []
 
     rule = naming_policy["rules"][0]
+    outcomes = {outcome["key"]: outcome for outcome in rule["outcomes"]}
+
+    def policy_reason(key: str, **values: object) -> str:
+        outcome = outcomes[key]
+        return f"[{outcome['id']}] {outcome['reason'].format(**values)}"
 
     if not rule.get("enabled", True) or rule.get("mode") != "automatic":
         cases.append(
@@ -23,7 +28,7 @@ def validate_array_sizes(
                 status=CaseStatus.SKIPPED,
                 name="Array Size Check",
                 location="",
-                reasons=[f"[{rule['id']}] Symbolic array size validation is disabled by policy."],
+                reasons=[policy_reason("disabled")],
             )
         )
         return _build_result(cases)
@@ -49,10 +54,10 @@ def validate_array_sizes(
                         if rule.get("allow_unspecified_dimensions", True)
                         else CaseStatus.FAILED
                     )
-                    reason = (
-                        f"[{rule['id']}] Array dimension is unspecified; policy allows an unspecified dimension."
+                    reason = policy_reason(
+                        "unspecified_allowed"
                         if status == CaseStatus.SKIPPED
-                        else f"[{rule['id']}] Array dimension is required by policy."
+                        else "unspecified_required"
                     )
                     cases.append(
                         CaseResult(
@@ -78,7 +83,7 @@ def validate_array_sizes(
                             name=name,
                             location=location,
                             reasons=[
-                                f"[{rule['id']}] {rule['reason'].format(dimension=dimension)}"
+                                policy_reason("numeric_literal", dimension=dimension)
                             ],
                         )
                     )
@@ -89,7 +94,7 @@ def validate_array_sizes(
                             name=name,
                             location=location,
                             reasons=[
-                                f"[{rule['id']}] {rule['no_identifier_reason'].format(dimension=dimension)}"
+                                policy_reason("identifier_required", dimension=dimension)
                             ],
                         )
                     )
