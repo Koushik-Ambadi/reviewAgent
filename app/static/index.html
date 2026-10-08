@@ -686,7 +686,7 @@ html,body{
 .meta-label{display:block;color:#64748b;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
 .report-controls{display:flex;gap:12px;flex-wrap:wrap;padding:14px;margin-bottom:18px;align-items:flex-start}
 .report-controls>input{padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;color:#0f172a;min-width:240px}
-.facet-group{border:0;padding:0;margin:0;min-width:150px}.facet-group legend{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#64748b;margin-bottom:6px}.facet-options{display:flex;gap:6px;flex-wrap:wrap}.facet-option{display:inline-flex;align-items:center;cursor:pointer}.facet-option input{position:absolute;opacity:0;pointer-events:none}.facet-option span{display:inline-flex;padding:7px 10px;border:1px solid #cbd5e1;border-radius:999px;background:#fff;color:#475569;font-size:12px;font-weight:600}.facet-option input:checked+span{background:#dbeafe;border-color:#93c5fd;color:#1d4ed8}.facet-option input:focus-visible+span{outline:2px solid #2563eb;outline-offset:2px}
+.facet-group{border:0;padding:0;margin:0;min-width:170px}.facet-group legend{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#64748b;margin-bottom:6px}.facet-dropdown{position:relative}.facet-dropdown>summary{list-style:none;min-width:170px;padding:10px 34px 10px 12px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;color:#0f172a;font-size:13px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.facet-dropdown>summary::-webkit-details-marker{display:none}.facet-dropdown>summary::after{content:"▾";position:absolute;right:12px;color:#64748b}.facet-dropdown[open]>summary{border-color:#93c5fd;box-shadow:0 0 0 2px rgba(37,99,235,.1)}.facet-options{position:absolute;z-index:12;top:calc(100% + 6px);left:0;min-width:230px;max-height:280px;overflow:auto;padding:6px;background:#fff;border:1px solid #cbd5e1;border-radius:10px;box-shadow:0 12px 28px rgba(15,23,42,.16)}.facet-option{display:flex;align-items:center;gap:9px;padding:8px;border-radius:7px;color:#334155;font-size:13px;cursor:pointer}.facet-option:hover{background:#f1f5f9}.facet-option input{width:15px;height:15px;margin:0;accent-color:#2563eb}.facet-option span{line-height:1.25}
 .stage-card{padding:18px;grid-column:1/-1}
 .stage-heading,.check-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .stage-heading{margin-bottom:12px}
@@ -1185,9 +1185,9 @@ p.sub,
 
         <div class="report-controls">
             <input id="caseSearch" type="search" placeholder="Search symbol, path, or check" aria-label="Search report">
-            <fieldset class="facet-group"><legend>Status</legend><div id="statusFilter" class="facet-options" aria-label="Filter case statuses"></div></fieldset>
-            <fieldset class="facet-group"><legend>Stage</legend><div id="stageFilter" class="facet-options" aria-label="Filter stages"></div></fieldset>
-            <fieldset class="facet-group"><legend>Check</legend><div id="checkFilter" class="facet-options" aria-label="Filter checks"></div></fieldset>
+            <fieldset class="facet-group"><legend>Status</legend><details class="facet-dropdown"><summary data-facet-summary="statusFilter" data-all-label="All statuses">All statuses</summary><div id="statusFilter" class="facet-options" aria-label="Filter case statuses"></div></details></fieldset>
+            <fieldset class="facet-group"><legend>Stage</legend><details class="facet-dropdown"><summary data-facet-summary="stageFilter" data-all-label="All stages">All stages</summary><div id="stageFilter" class="facet-options" aria-label="Filter stages"></div></details></fieldset>
+            <fieldset class="facet-group"><legend>Check</legend><details class="facet-dropdown"><summary data-facet-summary="checkFilter" data-all-label="All checks">All checks</summary><div id="checkFilter" class="facet-options" aria-label="Filter checks"></div></details></fieldset>
         </div>
 
         <div id="stages" class="report-grid"></div>

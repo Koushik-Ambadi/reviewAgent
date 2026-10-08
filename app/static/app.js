@@ -231,6 +231,7 @@ function populateReportFilters(report) {
         facetOption(stage.stage_id, stage.title)
     ).join("");
     refreshCheckFilter(report);
+    updateFacetSummaries();
 }
 function refreshCheckFilter(report) {
     const selectedStages = selectedFacetValues("stageFilter");
@@ -242,12 +243,26 @@ function refreshCheckFilter(report) {
     document.getElementById("checkFilter").innerHTML = uniqueChecks.map(check =>
         facetOption(check.check_id, check.title, selectedChecks.has(check.check_id))
     ).join("");
+    updateFacetSummary("checkFilter");
 }
 function facetOption(value, label, checked = false) {
     return `<label class="facet-option"><input type="checkbox" value="${escapeHtml(value)}" ${checked ? "checked" : ""}><span>${escapeHtml(label)}</span></label>`;
 }
 function selectedFacetValues(id) {
     return new Set([...document.querySelectorAll(`#${id} input:checked`)].map(input => input.value));
+}
+function updateFacetSummary(id) {
+    const container = document.getElementById(id);
+    const summary = document.querySelector(`[data-facet-summary="${id}"]`);
+    if (!container || !summary) return;
+    const selected = [...container.querySelectorAll("input:checked")];
+    const allLabel = summary.dataset.allLabel;
+    if (!selected.length) summary.textContent = allLabel;
+    else if (selected.length === 1) summary.textContent = selected[0].nextElementSibling.textContent;
+    else summary.textContent = `${selected.length} selected`;
+}
+function updateFacetSummaries() {
+    ["statusFilter", "stageFilter", "checkFilter"].forEach(updateFacetSummary);
 }
 function renderStages(report) {
     const query = document.getElementById("caseSearch").value.trim().toLowerCase();
@@ -417,9 +432,10 @@ async function pollBuildStatus() {
 }
 
 document.getElementById("caseSearch").addEventListener("input", applyReportFilters);
-document.getElementById("statusFilter").addEventListener("change", applyReportFilters);
-document.getElementById("checkFilter").addEventListener("change", applyReportFilters);
+document.getElementById("statusFilter").addEventListener("change", () => { updateFacetSummary("statusFilter"); applyReportFilters(); });
+document.getElementById("checkFilter").addEventListener("change", () => { updateFacetSummary("checkFilter"); applyReportFilters(); });
 document.getElementById("stageFilter").addEventListener("change", () => {
+    updateFacetSummary("stageFilter");
     if (window.currentReport) { refreshCheckFilter(window.currentReport); renderStages(window.currentReport); }
 });
 document.getElementById("stages").addEventListener("click", event => {
@@ -430,4 +446,9 @@ document.getElementById("stages").addEventListener("click", event => {
     requestRemediation(button);
 });
 document.getElementById("drawerBackdrop").addEventListener("click", closeRemediationDrawer);
+document.addEventListener("click", event => {
+    document.querySelectorAll(".facet-dropdown[open]").forEach(dropdown => {
+        if (!dropdown.contains(event.target)) dropdown.removeAttribute("open");
+    });
+});
 loadReviewProfile();
