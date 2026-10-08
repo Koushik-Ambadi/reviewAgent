@@ -958,6 +958,132 @@ p.sub,
     opacity:1 !important;
 }
 
+/* ========================================================= */
+/* UI COHERENCE AND VIEWPORT SAFETY */
+/* ========================================================= */
+
+:root{
+    --bg:#f3f6fa;
+    --surface:#ffffff;
+    --text:#172033;
+    --muted:#5f6f85;
+    --line:#dbe3ee;
+    --blue:#2563eb;
+    --green:#0f766e;
+    --green2:#14b8a6;
+}
+
+html,body{background:var(--bg)}
+.shell{height:100dvh;background:linear-gradient(180deg,#f7f9fc 0%,#edf2f7 100%)}
+.page{
+    padding:clamp(16px,3vw,32px);
+    transform:none;
+    pointer-events:none;
+    overflow-x:hidden;
+    scrollbar-gutter:stable;
+    transition:opacity .2s ease,visibility 0s linear .2s;
+}
+.page.active{
+    transform:none;
+    pointer-events:auto;
+    transition-delay:0s;
+}
+.hero{align-items:flex-start}
+.hero-grid{margin:auto;align-items:start}
+.hero-content{padding:clamp(24px,4vw,40px)}
+.title{font-size:clamp(42px,6vw,72px)}
+.glass,.report-meta,.report-controls,.stage-card,.check-card{
+    border-color:var(--line);
+    box-shadow:0 8px 24px rgba(30,49,75,.07);
+}
+.chip{background:#ecfeff;border-color:#99f6e4;color:#115e59}
+.wf-node{background:#eff6ff;border-color:#bfdbfe;color:#1e3a5f}
+.setup-grid{align-items:start}
+.logbox{height:clamp(220px,42vh,420px)}
+
+.btn{
+    padding:11px 16px;
+    border-radius:10px;
+    border:1px solid #cbd5e1;
+    background:#fff;
+    color:#334155;
+    box-shadow:0 2px 5px rgba(15,23,42,.06);
+}
+.btn:hover{transform:translateY(-1px);border-color:#94a3b8;background:#f8fafc;box-shadow:0 5px 12px rgba(15,23,42,.09)}
+.btn:focus-visible{outline:2px solid #2563eb;outline-offset:2px}
+.btn.primary{background:#2563eb;border-color:#2563eb;color:#fff}
+.btn.primary:hover{background:#1d4ed8;border-color:#1d4ed8}
+.btn.success{background:#0f766e;border-color:#0f766e;color:#fff}
+.btn.success:hover{background:#115e59;border-color:#115e59}
+.btn:disabled{opacity:.58;cursor:wait;transform:none}
+
+.report-meta{padding:18px;background:#fff}
+.meta-grid{grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.meta-value{
+    min-width:0;
+    padding:14px 15px;
+    border:1px solid #e2e8f0;
+    border-radius:12px;
+    background:#f8fafc;
+    color:#1e293b;
+    font-size:14px;
+    font-weight:600;
+    line-height:1.45;
+}
+.meta-label{
+    padding-bottom:7px;
+    margin-bottom:8px;
+    border-bottom:1px solid #dbeafe;
+    color:#1d4ed8;
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:.02em;
+    text-transform:none;
+}
+
+.drawer-header{background:#f8fafc;border-color:#dbe3ee}
+.drawer-header .eyebrow{margin-bottom:10px;background:#dbeafe;border-color:#bfdbfe;color:#1d4ed8}
+.drawer-header h2{font-size:22px;color:#172033}
+.drawer-content{padding:22px 24px 32px}
+.remediation-result>h3{font-size:19px;line-height:1.35;color:#172033;margin:16px 0 8px}
+.remediation-result h4{font-size:12px;line-height:1.4;margin:22px 0 9px;color:#1d4ed8;letter-spacing:.08em;text-transform:uppercase}
+.remediation-result p,.remediation-result li{color:#475569;font-size:13px;line-height:1.6;overflow-wrap:anywhere}
+.remediation-result ul,.remediation-result ol{margin:9px 0 0;padding-left:24px;list-style-position:outside}
+.remediation-result li{padding-left:3px;margin:5px 0}
+.remediation-result li::marker{color:#2563eb;font-weight:700}
+.suggestion{
+    min-width:0;
+    overflow:hidden;
+    margin-top:10px;
+    padding:16px 16px 16px 18px;
+    border:1px solid #dbeafe;
+    border-left:4px solid #3b82f6;
+    border-radius:12px;
+    background:#f8fbff;
+}
+.suggestion>strong{display:block;color:#172033;font-size:15px;line-height:1.4;margin-bottom:7px}
+.suggestion p{margin-top:7px}
+.suggestion ol{margin:10px 0 0;padding-left:24px}
+
+.report-controls{background:#f8fafc}
+.stage-card{border-top:3px solid #dbeafe}
+.check-heading:hover{background:#f8fafc}
+.case-row{background:#f8fafc}
+
+@media(max-width:1100px){
+    .hero-grid,.setup-grid{margin:0 auto}
+    .preview{padding:20px}
+    .executive-strip{margin-top:24px}
+}
+@media(max-width:700px){
+    .hero-content,.panel{padding:20px}
+    .preview{padding:16px}
+    .preview-panel{padding:20px}
+    .meta-grid{grid-template-columns:1fr}
+    .remediation-drawer{width:100vw}
+    .drawer-content{padding:18px 18px 28px}
+}
+
 </style>
 
 

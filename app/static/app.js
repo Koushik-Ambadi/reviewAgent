@@ -22,8 +22,9 @@ window.currentBuildState = "not-run";
 window.currentProfile = { ...DEFAULT_PROFILE };
 
 function showPage(id) {
-    document.querySelectorAll(".page").forEach(page => page.classList.remove("active"));
-    requestAnimationFrame(() => document.getElementById(id).classList.add("active"));
+    document.querySelectorAll(".page").forEach(page => {
+        page.classList.toggle("active", page.id === id);
+    });
 }
 function showIntro() { showPage("introPage"); }
 function showSetup() { showPage("setupPage"); }
