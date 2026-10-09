@@ -261,12 +261,27 @@ The API returns templates; the pipeline owns execution-time loading.
 ### `app/static`
 
 - `index.html`: page structure and CSS for landing, setup/activity, report,
-  build, remediation drawer, and planned-capabilities views.
+  build, remediation drawer, planned-capabilities, and manager views.
 - `app.js`: POSTs the ZIP, renders the `RunResult` stage/check/case hierarchy,
   provides multi-select status/stage/check facets plus search, keeps Report and
   Build tabs on the active run ID, exposes the non-interactive Roadmap view,
   requests provider-independent remediation suggestions, and renders the
   structured build result.
+- `manager.js`: owns manager-only client state, loads the read-only manager
+  endpoints, switches the four manager tabs, renders latest module summaries,
+  drills into module history, requests selected-run comparisons, groups/selects
+  visible failed cases, and provides preview-only ownership/ticket feedback.
+- The manager workspace is entered separately from the landing page; it is not a
+  developer run tab and does not alter `currentRunId`, `currentReport`, the
+  selected ZIP, or build polling state. Its internal tabs are Portfolio overview,
+  Exception queue, Tickets and ownership, and Audit and delivery.
+- Exception selection is client-local and limited to the first 120 rendered
+  cases for a responsive prototype; group totals still reflect the complete
+  latest-run portfolio. Owner, ticket, approval, PR, and CI controls only explain
+  what would happen and make no request that writes state.
+- Manager insight cards consume the provider-independent insight envelope from
+  the API. Placeholder content is visibly labelled, allowing later deterministic
+  remediation or governed model output to use the same visual wrapper.
 - Both workspace tabs expose the run-scoped HTML evidence-pack download. New and
   re-run actions preserve the current architecture: re-run reuses the browser's
   selected ZIP, while new review returns to the upload/profile view.

@@ -1138,6 +1138,62 @@ html,body{background:var(--bg)}
     .sub{line-height:1.55;margin-bottom:14px}
 }
 
+/* ========================================================= */
+/* MANAGER WORKSPACE */
+/* ========================================================= */
+
+.manager-layout{max-width:1480px;margin:0 auto}
+.manager-header{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;margin-bottom:18px}
+.manager-header h1{font-size:32px;letter-spacing:-.04em;margin:4px 0 8px}
+.manager-header p{max-width:760px;color:var(--muted);line-height:1.55}
+.manager-kicker{color:#1d4ed8;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.manager-nav{margin-bottom:18px}
+.manager-nav .workspace-tab{min-width:170px}
+.manager-content{display:grid;gap:18px}
+.manager-summary{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+.manager-metric{padding:18px;border:1px solid var(--line);border-radius:14px;background:#fff;box-shadow:0 5px 16px rgba(15,23,42,.05)}
+.manager-metric strong{display:block;font-size:28px;letter-spacing:-.04em;color:#172033}
+.manager-metric span{display:block;margin-top:6px;color:#64748b;font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase}
+.manager-metric.failed strong{color:#b91c1c}.manager-metric.passed strong{color:#047857}.manager-metric.warning strong{color:#a16207}
+.manager-panel{padding:20px;border:1px solid var(--line);border-radius:16px;background:#fff;box-shadow:0 7px 20px rgba(15,23,42,.06)}
+.manager-panel-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:14px}
+.manager-panel h2{font-size:19px;letter-spacing:-.02em}.manager-panel h3{font-size:15px}
+.manager-panel p{color:#64748b;line-height:1.5}
+.preview-label{display:inline-flex;padding:5px 8px;border:1px solid #fcd34d;border-radius:999px;background:#fffbeb;color:#92400e;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.manager-table-wrap{overflow:auto;border:1px solid #e2e8f0;border-radius:12px}
+.manager-table{width:100%;border-collapse:collapse;min-width:820px}
+.manager-table th,.manager-table td{padding:12px 14px;border-bottom:1px solid #e8edf3;text-align:left;vertical-align:middle}
+.manager-table th{background:#f8fafc;color:#64748b;font-size:10px;letter-spacing:.09em;text-transform:uppercase}
+.manager-table td{color:#334155;font-size:13px}.manager-table tr:last-child td{border-bottom:0}
+.manager-table strong{color:#172033}.manager-table small{display:block;margin-top:3px;color:#64748b}
+.manager-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:18px}
+.manager-detail{border-color:#bfdbfe;background:linear-gradient(180deg,#fff 0%,#f8fbff 100%)}
+.manager-detail-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:14px 0}
+.manager-detail-stat{padding:12px;border:1px solid #dbe3ee;border-radius:11px;background:#fff}
+.manager-detail-stat b{display:block;font-size:20px}.manager-detail-stat span{font-size:11px;color:#64748b;text-transform:uppercase}
+.manager-compare-controls{display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;margin-top:16px;padding-top:16px;border-top:1px solid #dbe3ee}
+.manager-control{display:grid;gap:6px;min-width:240px;flex:1}
+.manager-control label{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#64748b}
+.manager-control select{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:9px;background:#fff;color:#172033}
+.manager-compare-result{margin-top:14px}.delta-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}
+.delta{padding:10px;border-radius:10px;background:#f1f5f9;color:#334155;font-size:12px}.delta b{display:block;font-size:18px}
+.delta.good{background:#ecfdf5;color:#047857}.delta.bad{background:#fef2f2;color:#b91c1c}
+.insight-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.insight-card{padding:15px;border:1px solid #dbe3ee;border-radius:12px;background:#f8fafc}
+.insight-card header{display:flex;justify-content:space-between;gap:10px;margin-bottom:8px}.insight-card p{font-size:13px}
+.exception-toolbar{display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;padding:14px;border:1px solid #e2e8f0;border-radius:12px;background:#f8fafc;margin-bottom:14px}
+.exception-groups{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.exception-group{display:flex;align-items:center;gap:7px;padding:8px 10px;border:1px solid #cbd5e1;border-radius:9px;background:#fff;font-size:12px;color:#334155;cursor:pointer}
+.exception-list{display:grid;gap:8px;max-height:540px;overflow:auto;padding-right:4px}
+.exception-item{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:start;padding:12px;border:1px solid #e2e8f0;border-radius:11px;background:#fff}
+.exception-item input,.exception-group input{margin-top:2px;accent-color:#2563eb}
+.exception-item strong{display:block;font-size:13px}.exception-item p{margin-top:4px;font-size:12px}.exception-item code{font-size:11px;color:#64748b;overflow-wrap:anywhere}
+.manager-notice{padding:11px 13px;border:1px solid #93c5fd;border-radius:10px;background:#eff6ff;color:#1e40af;font-size:13px;margin-bottom:14px}
+.manager-placeholder-button{border:1px dashed #94a3b8;background:#f8fafc;color:#475569}
+.manager-empty{padding:42px;text-align:center;border:1px dashed #cbd5e1;border-radius:14px;background:#fff;color:#64748b}
+@media(max-width:1100px){.manager-summary{grid-template-columns:repeat(3,1fr)}.manager-grid{grid-template-columns:1fr}.manager-detail-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.manager-header{flex-direction:column}.manager-summary{grid-template-columns:repeat(2,1fr)}.manager-nav .workspace-tab{min-width:0}.insight-grid,.delta-grid{grid-template-columns:1fr 1fr}.exception-item{grid-template-columns:auto minmax(0,1fr)}.exception-item .pill{grid-column:2}}
+
 </style>
 
 
@@ -1184,10 +1240,12 @@ html,body{background:var(--bg)}
 
                 <div class="hero-actions">
                     <button class="btn primary" onclick="showSetup()">
-                        Launch Platform
+                        Start developer review
                     </button>
 
-
+                    <button class="btn" onclick="showManager()">
+                        Open manager workspace
+                    </button>
                 </div>
 
                 <div class="executive-strip">
@@ -1252,7 +1310,7 @@ html,body{background:var(--bg)}
                         <div class="wf-line"></div>
 
                         <div class="wf-node">
-                            PR Automation
+                            Delivery Evidence
                         </div>
 
                     </div>
@@ -1456,6 +1514,40 @@ html,body{background:var(--bg)}
             </div>
         </div>
     </section>
+
+    <!-- ================================================= -->
+    <!-- MANAGER WORKSPACE -->
+    <!-- ================================================= -->
+
+    <section id="managerPage" class="page">
+        <div class="manager-layout">
+            <header class="manager-header">
+                <div>
+                    <span class="manager-kicker">Read-only portfolio projection</span>
+                    <h1>Manager workspace</h1>
+                    <p>Latest module health, persisted run comparisons, and clearly marked workflow previews. Review checks and build evidence remain owned by the original run records.</p>
+                </div>
+                <div class="toolbar-actions">
+                    <button class="btn" type="button" onclick="showIntro()">Back to home</button>
+                    <button class="btn primary" type="button" onclick="showSetup()">Start developer review</button>
+                </div>
+            </header>
+
+            <nav class="workspace-nav manager-nav" aria-label="Manager workspace">
+                <div class="workspace-tabs" role="tablist" aria-label="Manager views">
+                    <button class="workspace-tab active" data-manager-tab="portfolio" type="button" role="tab" onclick="switchManagerTab('portfolio')">Portfolio overview</button>
+                    <button class="workspace-tab" data-manager-tab="exceptions" type="button" role="tab" onclick="switchManagerTab('exceptions')">Exception queue <span class="tab-badge planned">preview</span></button>
+                    <button class="workspace-tab" data-manager-tab="ownership" type="button" role="tab" onclick="switchManagerTab('ownership')">Tickets &amp; ownership <span class="tab-badge planned">preview</span></button>
+                    <button class="workspace-tab" data-manager-tab="audit" type="button" role="tab" onclick="switchManagerTab('audit')">Audit &amp; delivery</button>
+                </div>
+            </nav>
+
+            <div id="managerActionNotice" class="manager-notice" hidden></div>
+            <main id="managerContent" class="manager-content" aria-live="polite">
+                <div class="manager-empty">Open the manager workspace to load persisted run statistics.</div>
+            </main>
+        </div>
+    </section>
 </div>
 
 <div id="drawerBackdrop" class="drawer-backdrop" hidden></div>
@@ -1473,6 +1565,7 @@ html,body{background:var(--bg)}
 </aside>
 
 <script src="/app.js" defer></script>
+<script src="/manager.js" defer></script>
 
 </body>
 </html>

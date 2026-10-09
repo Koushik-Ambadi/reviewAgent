@@ -318,8 +318,10 @@ No motive is attributed where the repository does not support it.
   authorized state transitions, a durable workflow store, auditable integration
   IDs, retry/idempotency behavior, and contract/end-to-end tests.
 - Validation: focused service assertions and a read-only projection over 17
-  retained reports; the active Python environment lacks pytest, so the same
-  assertion function was invoked directly.
+  retained reports; route/HTTP and JavaScript syntax checks cover the composed
+  preview. The active Python environments lack pytest, so the same assertion
+  function was invoked directly. Automated visual inspection was attempted but
+  the computer-use helper failed during sandbox setup before a page opened.
 
 ## Durable problem and learning ledger
 

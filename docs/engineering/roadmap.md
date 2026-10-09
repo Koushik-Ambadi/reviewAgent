@@ -162,7 +162,33 @@ changes. Do not maintain a second project-wide gap inventory here.
 - Acceptance evidence: role and authorization tests, profile schema/fixtures,
   run-comparison contract, provider-independent assisted-analysis contract, and
   end-to-end UI tests proving planned labels are removed only when controls work.
-- Current UI status: placeholder text only; no Roadmap item is an active control.
+- Current UI status: the developer Roadmap remains inert. A separate shallow
+  manager preview now reads persisted reports and demonstrates portfolio,
+  comparison, exception-selection, ownership/ticket, audit, and insight layouts.
+  Its workflow values and actions are explicitly non-persistent placeholders;
+  this does not satisfy the production acceptance evidence above.
+
+## Product workflow evolution
+
+The current product has two deliberately different scopes:
+
+1. The developer workspace owns one active run: report, remediation, build, and
+   evidence-pack actions remain attached to that run ID.
+2. The manager workspace derives a cross-run portfolio from the same
+   `report.json` records. It may compare runs and stage proposed work, but it
+   cannot approve, assign, create a ticket, or mutate delivery state.
+
+The next product gate is not another visual tab. It is a governed workflow
+contract: authenticated roles, authorized transitions, durable owner/ticket and
+approval records, external issue/PR/CI identities, audit events, idempotent
+retries, pagination/retention behavior, and end-to-end verification. Only after
+that gate should preview labels be removed or manager actions transmit data.
+
+Intelligence should evolve through the existing insight wrapper: deterministic
+classifiers and policy-derived remediation first, then optional model-generated
+analysis with evidence, provider/model provenance, confidence/uncertainty, and
+human-review boundaries. The canonical run record remains the evidence source;
+the intelligence layer must not silently replace or recalculate it.
 
 ## Proposed priority order
 

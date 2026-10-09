@@ -29,6 +29,9 @@ machine-specific CMake/libclang inputs. No source code was modified.
 | `python -m pytest -q tests/test_manager_service.py` | Not executed: active Python has no `pytest` module | Environment limitation is distinct from product behavior |
 | Direct invocation of the same assertion function with a temporary directory | Passed | Latest-per-module selection, history ordering, preview boundary, selected-run deltas, and new/resolved failure sets |
 | Read-only projection over retained reports | Passed: 2 modules, 17 valid reports; default `shunt` comparison selected the two newest runs | The service handles both legacy reports without top-level run IDs and current `RunResult` records |
+| `node --check app/static/app.js` and `node --check app/static/manager.js` | Passed | Existing developer behavior and the isolated manager controller are syntactically valid |
+| Local app route and HTTP smoke | Passed: application loaded all manager routes; `/` returned 200 with manager markup/script; portfolio returned 2 modules, 540 latest failures, and `persisted: false` | Static manager delivery and live read-only endpoint composition work together |
+| Focused browser visual check | Not executed: computer-use helper exited twice during sandbox setup before opening a tab | Visual layout remains a manual acceptance item; no browser result is claimed |
 
 The review/build pipeline was intentionally not rerun: the manager service only
 reads persisted JSON and the focused real-data projection exercised that

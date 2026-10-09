@@ -528,7 +528,7 @@ and third-party artifacts and must not be interpreted as effort or quality.
   full review/build pipeline run is planned because the change only reads
   existing run artifacts.
 
-### 16:18:00 +05:30 — Complete read-only manager projection gate
+### Read-only manager projection checkpoint — exact time not captured
 
 - Implemented dedicated portfolio, module-history, and run-comparison endpoints
   over canonical reports. Legacy reports without top-level run IDs use their
@@ -539,6 +539,30 @@ and third-party artifacts and must not be interpreted as effort or quality.
   focused assertion function passed when invoked directly with a temporary
   workspace. A retained-data projection passed across 17 reports and selected
   the two newest `shunt` runs for the default comparison.
+- Commit: `b867551` (`Add read-only manager run projections`).
 - Decision: D014 records the read-only projection and the production exit
   criteria. Next gate: render the dedicated tabbed manager workspace over these
   endpoints without changing the developer workspace's run-scoped state.
+
+### 16:12:56 +05:30 — Complete shallow manager UI gate
+
+- Added a separate manager entry and four manager-only tabs: portfolio,
+  exception queue, tickets and ownership, and audit and delivery. Developer
+  Report/Build/Roadmap navigation and active-run state remain separate.
+- Added module drill-down with latest-versus-previous defaults and arbitrary
+  two-run selection; comparison calls the dedicated endpoint and labels deltas
+  as target minus base.
+- Added grouped and individual failed-case selection, owner choices, and ticket
+  buttons. These controls return local preview notices only; no approval,
+  ownership, or ticket data is persisted or transmitted.
+- Added one reusable insight-card wrapper for current placeholders and later
+  deterministic remediation or governed model-generated insight.
+- Corrected the landing flow from `PR Automation` to `Delivery Evidence`; PR/CI
+  status now appears only in the manager audit preview.
+- Verification: JavaScript syntax and diff checks passed. The project runtime
+  loaded the manager routes, and a local HTTP smoke returned the manager page,
+  script, and live portfolio data. Computer-use browser setup failed twice before
+  opening a tab, so no automated visual result is claimed.
+- Next step: user checks the four manager tabs at normal browser zoom and reports
+  pass/fail plus any overflow, unreadable state, or console error. Production
+  workflow implementation remains gated by G11 and D014 exit criteria.
