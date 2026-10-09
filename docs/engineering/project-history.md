@@ -496,3 +496,49 @@ and third-party artifacts and must not be interpreted as effort or quality.
   attempts, but no error logs survive, so their root causes are Unknown.
 - No run can be mapped conclusively to a commit because run metadata omitted
   `code_revision`.
+
+## 2026-10-09 — Manager workspace preview
+
+### 15:55:47 +05:30 — Open read-only manager projection gate
+
+- Intended outcome: derive a latest-run portfolio, per-module history, and
+  selectable two-run comparison from the canonical persisted run records, then
+  expose them in a separate tabbed manager workspace.
+- Starting state: branch `codex/atomic-naming-rules` at `449d329`; worktree and
+  index clean; local branch six commits ahead of its upstream.
+- Authority and records consulted: `AGENTS.md`, the repository
+  `project-lifecycle-governance` skill, this history, architecture, run-result
+  contract, testing record, roadmap, and decisions.
+- Active implementation record: [`architecture.md`](architecture.md), especially
+  the `app/api`, `app/services`, and `app/static` module sections.
+- Source of truth: `workspace/runs/<run_id>/report.json`. Manager statistics,
+  queues, comparisons, and insights are derived representations and must not
+  recalculate review checks or build reports.
+- In scope: read-only aggregation endpoints, latest-run-per-module statistics,
+  module drill-down, arbitrary two-run comparison, preview-only approvals/PR/CI
+  insight wrappers, grouped failed-case selection, owner selection, and ticket
+  action affordances that do not persist.
+- Explicitly excluded: approval lifecycle state, ticket storage/integration,
+  ownership persistence, PR/CI integration, model calls, and a second report
+  format.
+- Intended maturity: prototype preview. Preview data and actions must be visibly
+  labelled and must not imply durable workflow execution.
+- Acceptance evidence: focused aggregation/comparison assertions using small
+  temporary reports, Python/JavaScript syntax checks, and diff validation. No
+  full review/build pipeline run is planned because the change only reads
+  existing run artifacts.
+
+### 16:18:00 +05:30 — Complete read-only manager projection gate
+
+- Implemented dedicated portfolio, module-history, and run-comparison endpoints
+  over canonical reports. Legacy reports without top-level run IDs use their
+  directory names; malformed reports are ignored and counted.
+- Preserved the prototype boundary: approval, ownership, ticket, PR/CI, and
+  intelligence data is explicitly preview-only and no workflow writes exist.
+- Verification: pytest was unavailable in the active Python installation. The
+  focused assertion function passed when invoked directly with a temporary
+  workspace. A retained-data projection passed across 17 reports and selected
+  the two newest `shunt` runs for the default comparison.
+- Decision: D014 records the read-only projection and the production exit
+  criteria. Next gate: render the dedicated tabbed manager workspace over these
+  endpoints without changing the developer workspace's run-scoped state.

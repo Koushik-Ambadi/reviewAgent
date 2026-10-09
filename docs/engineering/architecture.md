@@ -2,7 +2,7 @@
 
 - Status: living
 - Created: 2026-10-06
-- Last reviewed: 2026-10-06 at revision `c603a69`
+- Last reviewed: 2026-10-09 for the manager projection gate
 - Update trigger: module boundary, interface, data contract, dependency, or
   execution-flow change
 - Source of truth for: current system shape and module responsibilities
@@ -16,9 +16,10 @@ families. It depends on the target project being CMake-configurable so it can
 produce `compile_commands.json`, and on libclang being able to parse the
 resulting translation units after compiler-argument sanitization.
 
-The service also exposes a build trigger. Review and build share the ingested
-workspace, but the build path is Windows-specific because it invokes
-`cmd /c cmake-build.bat`.
+The service also exposes a build trigger and a read-only manager projection.
+Review and build share the ingested workspace, while the manager view derives
+latest-per-module statistics and comparisons from the same persisted reports.
+The build path is Windows-specific because it invokes `cmd /c cmake-build.bat`.
 
 ## Context and data flow
 
@@ -48,6 +49,7 @@ PipelineContext -> structure -> analysis -> naming -> reporting
   |
   +--> web UI renders stages/checks/cases
   +--> agent endpoints summarize failed/skipped cases
+  +--> manager endpoints aggregate and compare persisted runs without writes
   |--> remediation endpoint reads failed cases and writes provider output
   `--> build endpoint resolves repo from report metadata and runs batch script
 ```
@@ -93,6 +95,9 @@ workspace/runs/        ignored generated run inputs and evidence
 | `POST /api/runs/{run_id}/build` | Run ID path value | Final `BuildResult`, or queued job with `background=true` | `app/api/build.py` |
 | `GET /api/runs/{run_id}/build/status` | Run ID path value | Persisted build job state and recent raw output | `app/api/build.py` |
 | `POST /api/runs/{run_id}/remediations` | Scope plus failed check/case IDs | `{run_id, remediation}` | `app/api/remediation.py` |
+| `GET /api/manager/portfolio` | None | Latest run per module, portfolio aggregates, exceptions, and preview workflow data | `app/api/manager.py`, `manager_service.py` |
+| `GET /api/manager/modules/{module_name}` | Module name | Ordered persisted run history, latest failures, and comparison defaults | `app/api/manager.py`, `manager_service.py` |
+| `GET /api/manager/modules/{module_name}/compare` | Optional base and target run IDs | Target-minus-base summaries, check deltas, and new/resolved failures | `app/api/manager.py`, `manager_service.py` |
 | `GET /api/policies/{policy_name}` | Policy name path value | Parsed YAML template | `app/api/policy.py` |
 
 There are no explicit Pydantic request/response models, authentication,
@@ -229,6 +234,29 @@ CPU/subprocess work is not moved to a worker or thread pool.
 Loads `src/repo_review/policies/<name>.yaml`. Its responsibility overlaps with
 `pipeline/utils.py`, which independently resolves and loads the review policy.
 The API returns templates; the pipeline owns execution-time loading.
+
+### `app/services/manager_service.py`
+
+- Responsibility: read valid `report.json` files and derive portfolio, module,
+  exception, and comparison representations.
+- Inputs: the configured run root plus optional module/base/target identifiers.
+- Outputs: JSON-safe dictionaries; no generated artifact or persisted workflow
+  state.
+- Main flow: load reports, recover legacy run IDs from directory names, group by
+  case-insensitive module name, sort by persisted generation time, select the
+  latest report per module, and aggregate its already-persisted summaries.
+- Comparison: target counts minus base counts, per-check summary deltas, and
+  new/resolved failed cases matched by persisted case ID with a report-visible
+  legacy fallback.
+- Failure behavior: unreadable/non-object reports are counted as ignored in the
+  portfolio source metadata; missing modules/runs and invalid run selections are
+  translated by the API adapter.
+- Prototype boundary: approval counts, owner/ticket actions, PR/CI status, and
+  insight items are marked preview-only and are never written. A production
+  workflow requires identity, authorization, durable state, and integration
+  contracts before those controls can become active.
+- Verification: `tests/test_manager_service.py` covers latest-per-module
+  selection, ordering, default comparison IDs, deltas, and failure-set changes.
 
 ### `app/static`
 

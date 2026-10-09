@@ -2,7 +2,7 @@
 
 - Status: living
 - Created: 2026-10-06
-- Last reviewed: 2026-10-06
+- Last reviewed: 2026-10-09
 - Update trigger: test command, environment, artifact schema, retention, or replay
   contract changes
 - Source of truth for: current verification status and reproducible inspection
@@ -21,6 +21,18 @@
 No end-to-end review was launched during this documentation pass because it
 would copy a large external source, regenerate ignored workspaces, and depend on
 machine-specific CMake/libclang inputs. No source code was modified.
+
+### Manager projection verification — 2026-10-09
+
+| Check | Result | What it proves |
+|---|---|---|
+| `python -m pytest -q tests/test_manager_service.py` | Not executed: active Python has no `pytest` module | Environment limitation is distinct from product behavior |
+| Direct invocation of the same assertion function with a temporary directory | Passed | Latest-per-module selection, history ordering, preview boundary, selected-run deltas, and new/resolved failure sets |
+| Read-only projection over retained reports | Passed: 2 modules, 17 valid reports; default `shunt` comparison selected the two newest runs | The service handles both legacy reports without top-level run IDs and current `RunResult` records |
+
+The review/build pipeline was intentionally not rerun: the manager service only
+reads persisted JSON and the focused real-data projection exercised that
+integration boundary without regenerating machine-dependent artifacts.
 
 ## Current test inventory
 

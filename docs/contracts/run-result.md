@@ -70,6 +70,34 @@ The Python dataclasses in `src/repo_review/contracts/models.py` define these ext
 failed compliance cases can still be present. The pipeline does not yet convert
 stage exceptions into `PARTIAL` or `ERROR` results.
 
+## Derived manager response envelopes
+
+The manager endpoints are read-only projections over persisted `RunResult`
+records. They are not additional fields in `RunResult`, do not write a second
+report, and do not rerun or recalculate checks:
+
+- `GET /api/manager/portfolio` selects the newest valid report for each unique
+  module and aggregates its persisted summary/build/artifact/remediation data.
+- `GET /api/manager/modules/{module_name}` returns that module's reports newest
+  first plus the default latest-versus-previous comparison IDs.
+- `GET /api/manager/modules/{module_name}/compare` accepts `base_run_id` and
+  `target_run_id`; deltas are target minus base and both IDs must belong to the
+  selected module.
+
+Legacy reports that omit `run_id` use their run-directory name as the derived
+identifier. Failed cases match by persisted `case_id`; legacy cases use a
+fallback composed only from report-visible stage, check, location, name, and
+case index. This fallback is suitable for prototype comparison, not permanent
+source-symbol identity.
+
+`workflow_preview`, `ownership_preview`, and placeholder `insights` are
+explicitly non-authoritative and carry `persisted: false` or
+`status: "preview"`. Their values do not represent real approvals, owners,
+tickets, pull requests, CI state, or model output. The insight envelope reserves
+stable presentation fields—identity, source, kind, scope, summary, evidence,
+actions, and status—so deterministic remediation or a governed model provider
+can replace placeholder content later without changing the manager layout.
+
 ## Review response envelope
 
 `POST /api/review` returns the run identifier beside the canonical report:

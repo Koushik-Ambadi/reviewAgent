@@ -289,6 +289,38 @@ No motive is attributed where the repository does not support it.
 - Validation: focused HTML/CSS diff inspection and JavaScript syntax checks. No
   application start was performed solely for presentation changes.
 
+## D014 — Keep the manager preview a read-only projection
+
+- Date: 2026-10-09
+- Status: accepted temporarily at prototype maturity
+- Scope: manager aggregation, module comparison, and future workflow surfaces
+- Trigger: managers need a portfolio and cross-run view, but approvals,
+  ownership, ticketing, PR/CI integration, and model-assisted insights do not yet
+  have identity, authorization, persistence, or provider contracts.
+- Decision: create dedicated manager endpoints that read the same persisted
+  `RunResult` records, aggregate only the latest run of each module, and compare
+  any two runs within one module. Keep exception selection and workflow data in
+  clearly labelled preview envelopes; do not add write endpoints or lifecycle
+  states.
+- Source authority: `report.json` remains canonical. Manager totals,
+  comparisons, queues, and insight cards are derived and never recalculate
+  checks or duplicate the build-report format.
+- Tactical choices: recover missing legacy run IDs from directory names; order
+  by persisted generation time; express every delta as target minus base; match
+  failures by case ID with a report-visible legacy fallback; use a
+  provider-independent insight wrapper.
+- Alternatives rejected: client-only aggregation, a second manager database,
+  fake persistent ticket/approval actions, and model-first insight generation.
+- Consequences: the prototype can demonstrate portfolio navigation and
+  comparison honestly, but concurrent storage, pagination, access control,
+  retention, and durable workflow integration remain production gates.
+- Exit criteria: before preview actions become active, add authenticated roles,
+  authorized state transitions, a durable workflow store, auditable integration
+  IDs, retry/idempotency behavior, and contract/end-to-end tests.
+- Validation: focused service assertions and a read-only projection over 17
+  retained reports; the active Python environment lacks pytest, so the same
+  assertion function was invoked directly.
+
 ## Durable problem and learning ledger
 
 ### P001 — Compiler/preprocessor visibility changes what can be reviewed
