@@ -35,6 +35,7 @@ function showBuild() {
     else if (window.currentBuildState === "not-run") renderBuildNotRun();
     updateWorkspaceChrome("build");
 }
+function showRoadmap() { showPage("roadmapPage"); updateWorkspaceChrome("roadmap"); }
 
 function startNewReview() {
     document.getElementById("zipFile").value = "";
@@ -219,6 +220,8 @@ function renderMetadata(report) {
     document.getElementById("reportMetadata").innerHTML = `<div class="meta-grid">${values.map(([label, value]) =>
         `<div class="meta-value"><span class="meta-label">${escapeHtml(label)}</span>${escapeHtml(value)}</div>`
     ).join("")}</div>`;
+    const summary = document.getElementById("reportMetadataSummary");
+    if (summary) summary.textContent = `${profile.name} · ${metadata.module_name || "Uploaded repository"}`;
 }
 function renderSummary(report) {
     const counts = { failed: 0, skipped: 0, success: 0 };

@@ -976,7 +976,7 @@ p.sub,
 html,body{background:var(--bg)}
 .shell{height:100dvh;background:linear-gradient(180deg,#f7f9fc 0%,#edf2f7 100%)}
 .page{
-    padding:clamp(16px,3vw,32px);
+    padding:clamp(16px,2vw,24px);
     transform:none;
     pointer-events:none;
     overflow-x:hidden;
@@ -989,17 +989,31 @@ html,body{background:var(--bg)}
     transition-delay:0s;
 }
 .hero{align-items:flex-start}
-.hero-grid{margin:auto;align-items:start}
-.hero-content{padding:clamp(24px,4vw,40px)}
-.title{font-size:clamp(42px,6vw,72px)}
+.hero-grid{max-width:1240px;margin:auto;align-items:center;gap:22px}
+.hero-content{padding:clamp(24px,3vw,32px)}
+.title{font-size:clamp(42px,5vw,60px);margin-bottom:18px}
+.lead{font-size:16px;line-height:1.65;margin-bottom:22px}
+.hero-points{gap:8px;margin-bottom:22px}
+.chip{padding:9px 12px}
+.executive-strip{gap:10px;margin-top:24px}
+.exec-card{padding:16px;border-radius:14px}
+.exec-card h3{font-size:25px;margin-bottom:5px}
+.preview{padding:22px}
+.preview-panel{padding:24px}
 .glass,.report-meta,.report-controls,.stage-card,.check-card{
     border-color:var(--line);
     box-shadow:0 8px 24px rgba(30,49,75,.07);
 }
 .chip{background:#ecfeff;border-color:#99f6e4;color:#115e59}
 .wf-node{background:#eff6ff;border-color:#bfdbfe;color:#1e3a5f}
-.setup-grid{align-items:start}
-.logbox{height:clamp(220px,42vh,420px)}
+.setup-grid{max-width:1240px;height:calc(100dvh - 48px);align-items:stretch}
+.setup-grid>.panel{display:flex;min-height:0;flex-direction:column;padding:24px}
+.setup-grid>.panel .run-row{margin-top:auto;padding-top:14px}
+#setupPage .logbox{flex:1;height:auto;min-height:180px}
+#profileSummary{margin-bottom:0;padding:12px}
+#profileSummary .meta-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+#profileSummary .meta-value{padding:10px 11px;font-size:12px;line-height:1.35}
+#profileSummary .meta-label{padding-bottom:4px;margin-bottom:5px;font-size:11px}
 
 .btn{
     padding:11px 16px;
@@ -1041,6 +1055,19 @@ html,body{background:var(--bg)}
     text-transform:none;
 }
 
+.metadata-panel{padding:0;overflow:hidden}
+.metadata-panel>summary{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 18px;list-style:none;cursor:pointer;background:#fff}
+.metadata-panel>summary::-webkit-details-marker{display:none}
+.metadata-panel>summary:hover{background:#f8fafc}
+.metadata-panel>summary:focus-visible{outline:2px solid #2563eb;outline-offset:-2px}
+.metadata-heading{display:flex;min-width:0;flex-direction:column;gap:4px}
+.metadata-heading strong{font-size:15px;color:#172033}
+.metadata-heading span{color:#64748b;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.metadata-chevron{color:#2563eb;font-size:16px;transition:transform .18s ease}
+.metadata-panel[open] .metadata-chevron{transform:rotate(180deg)}
+.metadata-panel[open]>summary{border-bottom:1px solid #e2e8f0}
+.metadata-content{padding:16px 18px 18px}
+
 .drawer-header{background:#f8fafc;border-color:#dbe3ee}
 .drawer-header .eyebrow{margin-bottom:10px;background:#dbeafe;border-color:#bfdbfe;color:#1d4ed8}
 .drawer-header h2{font-size:22px;color:#172033}
@@ -1070,10 +1097,23 @@ html,body{background:var(--bg)}
 .check-heading:hover{background:#f8fafc}
 .case-row{background:#f8fafc}
 
+.roadmap-layout{max-width:1440px;margin:0 auto}
+.roadmap-hero{padding:24px;margin-bottom:18px;border:1px solid #dbe3ee;border-radius:18px;background:linear-gradient(135deg,#eff6ff 0%,#f0fdfa 100%)}
+.roadmap-hero .eyebrow{margin-bottom:12px;background:#dbeafe;border-color:#bfdbfe;color:#1d4ed8}
+.roadmap-hero h2{font-size:30px;letter-spacing:-.04em;margin-bottom:8px}
+.roadmap-hero p{max-width:780px;color:#526176;line-height:1.65}
+.roadmap-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.roadmap-card{position:relative;padding:20px;border:1px solid #dbe3ee;border-radius:16px;background:#fff;box-shadow:0 7px 20px rgba(30,49,75,.06)}
+.roadmap-card .pill{display:inline-flex;margin-bottom:12px}
+.roadmap-card h3{font-size:17px;color:#172033;margin-bottom:7px}
+.roadmap-card p{color:#5f6f85;font-size:13px;line-height:1.6}
+.tab-badge.planned{background:#ede9fe;color:#6d28d9}
+
 @media(max-width:1100px){
-    .hero-grid,.setup-grid{margin:0 auto}
+    .hero-grid,.setup-grid{height:auto;margin:0 auto}
     .preview{padding:20px}
     .executive-strip{margin-top:24px}
+    .roadmap-grid{grid-template-columns:1fr}
 }
 @media(max-width:700px){
     .hero-content,.panel{padding:20px}
@@ -1082,6 +1122,20 @@ html,body{background:var(--bg)}
     .meta-grid{grid-template-columns:1fr}
     .remediation-drawer{width:100vw}
     .drawer-content{padding:18px 18px 28px}
+    #profileSummary .meta-grid{grid-template-columns:1fr}
+    .roadmap-hero{padding:20px}
+}
+@media(max-height:780px) and (min-width:1101px){
+    .hero-content{padding:22px 26px}
+    .title{font-size:50px;margin-bottom:14px}
+    .lead{font-size:15px;line-height:1.5;margin-bottom:16px}
+    .eyebrow{margin-bottom:16px;padding:8px 12px}
+    .executive-strip{margin-top:18px}
+    .exec-card{padding:13px}
+    .preview{padding:18px}
+    .setup-grid>.panel{padding:20px}
+    .panel h2{font-size:26px;margin-bottom:9px}
+    .sub{line-height:1.55;margin-bottom:14px}
 }
 
 </style>
@@ -1223,11 +1277,10 @@ html,body{background:var(--bg)}
 
             <div class="glass panel">
 
-                <h2 style="color:#0f172a !important;">Configure AI Review Pipeline</h2>
+                <h2 style="color:#0f172a !important;">Configure review</h2>
 
                 <p class="sub" style="color:#0f172a !important;">
-                    Launch the autonomous engineering review workflow
-                    against the configured embedded software module.
+                    Confirm the selected profile and upload the repository ZIP.
                 </p>
 
                 <div class="field">
@@ -1258,10 +1311,10 @@ html,body{background:var(--bg)}
 
             <div class="glass panel">
 
-                <h2>Review Progress</h2>
+                <h2>Review activity</h2>
 
                 <p class="sub">
-                    Status updates while your report is prepared.
+                    Activity appears here while the repository is being reviewed.
                 </p>
 
                 <div class="statusbar">
@@ -1292,6 +1345,7 @@ html,body{background:var(--bg)}
             <div class="workspace-tabs" role="tablist" aria-label="Run views">
                 <button class="workspace-tab active" data-workspace-tab="report" role="tab" type="button" onclick="showReport()">Review report <span class="tab-badge" data-remediation-count>0 fixes</span></button>
                 <button class="workspace-tab" data-workspace-tab="build" role="tab" type="button" onclick="showBuild()">Build &amp; artifacts <span class="tab-badge not-run" data-build-badge>not run</span></button>
+                <button class="workspace-tab" data-workspace-tab="roadmap" role="tab" type="button" onclick="showRoadmap()">Roadmap <span class="tab-badge planned">planned</span></button>
             </div>
         </nav>
 
@@ -1305,7 +1359,13 @@ html,body{background:var(--bg)}
             </div>
         </div>
 
-        <div id="reportMetadata" class="report-meta"></div>
+        <details class="report-meta metadata-panel">
+            <summary>
+                <span class="metadata-heading"><strong>Selected profile &amp; run metadata</strong><span id="reportMetadataSummary">Loading run context…</span></span>
+                <span class="metadata-chevron" aria-hidden="true">⌄</span>
+            </summary>
+            <div id="reportMetadata" class="metadata-content"></div>
+        </details>
 
         <div class="summary" id="summaryCards"></div>
 
@@ -1351,6 +1411,7 @@ html,body{background:var(--bg)}
                 <div class="workspace-tabs" role="tablist" aria-label="Run views">
                     <button class="workspace-tab" data-workspace-tab="report" role="tab" type="button" onclick="showReport()">Review report <span class="tab-badge" data-remediation-count>0 fixes</span></button>
                     <button class="workspace-tab active" data-workspace-tab="build" role="tab" type="button" onclick="showBuild()">Build &amp; artifacts <span class="tab-badge not-run" data-build-badge>not run</span></button>
+                    <button class="workspace-tab" data-workspace-tab="roadmap" role="tab" type="button" onclick="showRoadmap()">Roadmap <span class="tab-badge planned">planned</span></button>
                 </div>
             </nav>
             <div class="report-toolbar">
@@ -1365,6 +1426,35 @@ html,body{background:var(--bg)}
             <div id="buildResult" class="build-result"><div class="glass panel build-empty"><span class="pill warning">NOT RUN</span><h3>No build result yet</h3><p>Run the repository build to attach output, diagnostics, and artifacts to this review run.</p></div></div>
         </div>
 
+    </section>
+
+    <!-- ================================================= -->
+    <!-- PLANNED WORKSPACE -->
+    <!-- ================================================= -->
+
+    <section id="roadmapPage" class="page">
+        <div class="roadmap-layout">
+            <nav class="workspace-nav" aria-label="Developer workspace">
+                <div class="workspace-tabs" role="tablist" aria-label="Run views">
+                    <button class="workspace-tab" data-workspace-tab="report" role="tab" type="button" onclick="showReport()">Review report <span class="tab-badge" data-remediation-count>0 fixes</span></button>
+                    <button class="workspace-tab" data-workspace-tab="build" role="tab" type="button" onclick="showBuild()">Build &amp; artifacts <span class="tab-badge not-run" data-build-badge>not run</span></button>
+                    <button class="workspace-tab active" data-workspace-tab="roadmap" role="tab" type="button" onclick="showRoadmap()">Roadmap <span class="tab-badge planned">planned</span></button>
+                </div>
+            </nav>
+
+            <div class="roadmap-hero">
+                <span class="eyebrow">Placeholder view</span>
+                <h2>Planned workspace capabilities</h2>
+                <p>These are deliberate next steps, not active controls. They extend the current run workspace after its evidence, build, and remediation foundations are stable.</p>
+            </div>
+
+            <div class="roadmap-grid">
+                <article class="roadmap-card"><span class="pill warning">Planned</span><h3>Pull request and approvals</h3><p>Create a governed handoff for manager approval, source-control changes, and auditable release decisions instead of exposing a premature Raise PR button.</p></article>
+                <article class="roadmap-card"><span class="pill warning">Planned</span><h3>Multi-run workspace</h3><p>Compare review runs, modules, profiles, and trends across projects. Module and profile filters belong here rather than inside a single run.</p></article>
+                <article class="roadmap-card"><span class="pill warning">Planned</span><h3>Configurable profiles</h3><p>Add validated project profiles and build adapters once profile selection, schema migration, and project ownership are defined.</p></article>
+                <article class="roadmap-card"><span class="pill warning">Planned</span><h3>Optional assisted intelligence</h3><p>Keep deterministic classification first, then add opt-in model analysis for unknown failures with evidence, provenance, and provider-independent outputs.</p></article>
+            </div>
+        </div>
     </section>
 </div>
 
