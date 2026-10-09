@@ -232,20 +232,34 @@ The API returns templates; the pipeline owns execution-time loading.
 
 ### `app/static`
 
-- `index.html`: page structure and CSS for setup, progress, report, and build
-  views.
+- `index.html`: page structure and CSS for landing, setup/activity, report,
+  build, remediation drawer, and planned-capabilities views.
 - `app.js`: POSTs the ZIP, renders the `RunResult` stage/check/case hierarchy,
   provides multi-select status/stage/check facets plus search, keeps Report and
-  Build tabs on the active run ID, requests provider-independent remediation
-  suggestions, and renders the structured build result.
+  Build tabs on the active run ID, exposes the non-interactive Roadmap view,
+  requests provider-independent remediation suggestions, and renders the
+  structured build result.
 - Both workspace tabs expose the run-scoped HTML evidence-pack download. New and
   re-run actions preserve the current architecture: re-run reuses the browser's
   selected ZIP, while new review returns to the upload/profile view.
 - The upload view reads the default profile from `GET /api/policies/default` and
   uses the same explicit defaults as a display-only fallback if that read fails;
   no profile selector or multi-project behavior is implied.
+- The workspace navigation contains navigation only. Review actions remain on
+  the review page, build actions remain on the build page, and evidence download
+  is available from both evidence-bearing views. Run/profile metadata is titled
+  and collapsed by default because it is supporting context; its summary retains
+  the selected profile and module.
+- Landing and setup use dynamic viewport sizing on normal desktop layouts. The
+  setup configuration and activity panels share one height, while the activity
+  log flexes inside its panel. Narrow or short displays retain page scrolling as
+  an accessibility and content-safety fallback.
+- The Roadmap tab is placeholder content mapped to roadmap gate G11. It does not
+  expose callable actions or claim that approvals, multi-run comparison,
+  configurable profiles, or model-assisted analysis are implemented.
 - The progress display is explicitly simulated (`startFakeProgress`); it is not
-  server-side stage telemetry.
+  server-side stage telemetry. Its purpose is perceived activity during the
+  current synchronous review request, not operational observability.
 - HTML is escaped before report values are inserted into templates.
 
 ### `orchestrator`

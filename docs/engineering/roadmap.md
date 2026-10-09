@@ -2,7 +2,7 @@
 
 - Status: living
 - Created: 2026-10-06
-- Last reviewed: 2026-10-06
+- Last reviewed: 2026-10-09
 - Update trigger: priority, dependency, acceptance evidence, or gate status changes
 - Source of truth for: future engineering gates and their ordering
 - Does not own: current behavior, module constraints, test status, or rule-level
@@ -144,6 +144,26 @@ changes. Do not maintain a second project-wide gap inventory here.
 - Acceptance evidence: remote tool test pinned to service/report versions.
 - Enables: reliable agent automation without re-bundling MCP concerns.
 
+### G11 — Graduate planned workspace capabilities
+
+- Priority: P3 after the supporting security, provenance, test, result-semantic,
+  and operational gates are complete
+- Goal: replace the inert Roadmap tab with trustworthy developer and manager
+  workflows rather than disconnected prototype controls.
+- Dependencies: G01–G05; G10 where an external agent performs an action.
+- In scope: governed pull-request and approval workflow; multi-run/project
+  comparison; validated selectable profiles and project-specific build adapters;
+  optional model-assisted analysis for failures not covered by deterministic
+  classifiers.
+- Required boundaries: deterministic analysis remains first; model output keeps
+  evidence and provider provenance; multi-run filters stay out of a single-run
+  report; approvals require actor identity and authorization; profile selection
+  requires schema/version ownership.
+- Acceptance evidence: role and authorization tests, profile schema/fixtures,
+  run-comparison contract, provider-independent assisted-analysis contract, and
+  end-to-end UI tests proving planned labels are removed only when controls work.
+- Current UI status: placeholder text only; no Roadmap item is an active control.
+
 ## Proposed priority order
 
 ```text
@@ -155,7 +175,8 @@ G03 automated baseline
         +--> G04 result semantics --> G10 external agent contract
         +--> G05 operations/portability
         +--> G06 debt reduction
-        `--> G07 structure checks --> G08 analysis foundations --> G09 rule expansion
+        +--> G07 structure checks --> G08 analysis foundations --> G09 rule expansion
+        `--> G11 planned workspace capabilities (after G01-G05)
 ```
 
 Security, provenance, and regression protection should precede a large increase

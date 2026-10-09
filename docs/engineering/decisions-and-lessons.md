@@ -259,6 +259,36 @@ No motive is attributed where the repository does not support it.
   JavaScript syntax is checked separately. Full API startup remains dependent on
   the FastAPI runtime being installed.
 
+## D013 — Separate workspace navigation, context, actions, and future intent
+
+- Date: 2026-10-09
+- Status: accepted
+- Scope: landing/setup layout and developer-workspace information architecture
+- Trigger: page-specific actions were mixed into the tab bar, run metadata had
+  no heading or disclosure control, entry screens depended on browser zoom to
+  fit, and deferred features had no honest product surface.
+- Decision: keep the shared bar navigation-only; place review and build actions
+  on their owning pages; show run/profile metadata under a titled disclosure
+  collapsed by default; fit landing and setup into a normal desktop dynamic
+  viewport; make the setup cards equal-height with a flexible activity log; and
+  expose deferred capabilities in an inert Roadmap tab backed by roadmap G11.
+- Rationale: tabs answer “where am I,” page actions answer “what can I do here,”
+  and metadata answers “what context produced this result.” Separating those
+  concerns improves discoverability without adding a new application shell.
+- Fallbacks: short and narrow viewports may scroll rather than clip content;
+  legacy reports use the existing profile display defaults; simulated activity
+  remains clearly documented as non-telemetry; the Roadmap provides explanatory
+  text only until its dependency gates are met.
+- Alternatives rejected: hiding metadata completely; leaving metadata as a
+  permanently expanded untitled card; keeping review actions in the tab bar;
+  disabling scrolling at all sizes; and presenting future actions as clickable
+  controls before their contracts exist.
+- Consequences: entry pages are denser at 100% zoom, supporting context consumes
+  less vertical space, and planned product scope is visible without confusing it
+  with implemented behavior.
+- Validation: focused HTML/CSS diff inspection and JavaScript syntax checks. No
+  application start was performed solely for presentation changes.
+
 ## Durable problem and learning ledger
 
 ### P001 — Compiler/preprocessor visibility changes what can be reviewed
