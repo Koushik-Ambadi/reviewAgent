@@ -110,9 +110,13 @@ def run_clang_format(
 
 
 def discover_format_sources(repo_root: Path) -> list[Path]:
+    """Return C/C++ sources under the module's authoritative src directory."""
+    source_root = repo_root / "src"
+    if not source_root.is_dir():
+        return []
     return sorted(
         path
-        for path in repo_root.rglob("*")
+        for path in source_root.rglob("*")
         if path.is_file()
         and path.suffix.lower() in _SOURCE_SUFFIXES
         and not any(part in _IGNORED_DIRECTORIES for part in path.relative_to(repo_root).parts)
