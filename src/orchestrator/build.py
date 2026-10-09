@@ -42,7 +42,7 @@ def get_repo_root_for_run(
 def build_run(
     run_id: str,
     *,
-    run_format: bool = False,
+    run_format: bool = True,
     on_output=None,
 ):
 

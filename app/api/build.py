@@ -15,13 +15,13 @@ router = APIRouter()
 async def trigger_build(
     run_id: str,
     background: bool = False,
-    run_format: bool = False,
+    run_format: bool = True,
 ):
 
     try:
         if background:
             return start_build_job(run_id, run_format=run_format)
-        return build_run(run_id)
+        return build_run(run_id, run_format=run_format)
     except RunNotFoundError as error:
         raise HTTPException(status_code=404, detail=str(error)) from error
     except (RunStoreError, RuntimeError) as error:

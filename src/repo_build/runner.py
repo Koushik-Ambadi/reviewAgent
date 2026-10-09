@@ -5,7 +5,7 @@ from pathlib import Path
 
 from .artifacts import discover_artifacts
 from .builder import OutputCallback, run_batch_script
-from .formatting import load_formatter_configuration
+from .formatting import load_formatter_configuration, run_clang_format
 from .intelligence import (
     PlaceholderBuildIntelligenceProvider,
     select_important_diagnostics,
@@ -20,7 +20,7 @@ def execute_firmware_build(
     run_id: str,
     build_script: str = "cmake-build.bat",
     *,
-    run_format: bool = False,
+    run_format: bool = True,
     on_output: OutputCallback | None = None,
 ) -> dict:
     repo_root = Path(repo_root).resolve()
@@ -98,7 +98,7 @@ def _run_format_step(
             {
                 "status": "skipped",
                 "command": None,
-                "message": "No formatter wrapper is configured in review-build.json.",
+                "message": "No .clang-format file or review-build.json formatter wrapper is configured.",
             },
             no_output,
         )
@@ -107,7 +107,12 @@ def _run_format_step(
         if on_output:
             on_output(stream, f"[format] {line}")
 
-    raw = _run_batch(repo_root, configuration["script"], prefixed_output)
+    if configuration["kind"] == "clang-format":
+        raw = run_clang_format(repo_root, prefixed_output)
+        command = configuration["command"]
+    else:
+        raw = _run_batch(repo_root, configuration["script"], prefixed_output)
+        command = configuration["script"]
     code, evidence = normalize_build_outcome(raw)
     output = {
         "stdout": [f"[format] {line}" for line in raw["stdout"]],
@@ -116,11 +121,11 @@ def _run_format_step(
     return (
         {
             "status": determine_status(code),
-            "command": configuration["script"],
+            "command": command,
             "message": (
                 "Formatting completed successfully."
                 if code == 0
-                else _build_message(raw["process_return_code"], code, evidence)
+                else "Formatting did not complete successfully."
             ),
         },
         output,

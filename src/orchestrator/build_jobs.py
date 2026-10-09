@@ -16,7 +16,7 @@ _start_locks: defaultdict[str, threading.Lock] = defaultdict(threading.Lock)
 _MAX_LIVE_LINES = 800
 
 
-def start_build_job(run_id: str, *, run_format: bool = False) -> dict[str, Any]:
+def start_build_job(run_id: str, *, run_format: bool = True) -> dict[str, Any]:
     lock = _start_locks[run_id]
     with lock:
         progress = get_build_status(run_id)

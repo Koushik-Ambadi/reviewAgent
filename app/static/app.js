@@ -359,7 +359,7 @@ async function requestRemediation(button) {
 function renderBuildLoading(status = {}) {
     window.currentBuildState = status.state || "queued";
     const output = [...(status.stdout || []), ...(status.stderr || [])].join("\n");
-    document.getElementById("buildResult").innerHTML = `<div class="build-grid"><section class="glass panel build-live"><div class="build-live-status"><span id="buildState" class="pill warning">${escapeHtml(String(status.state || "queued").toUpperCase())}</span></div><h3>Build in progress</h3><p id="buildStateMessage">${escapeHtml(status.state === "queued" ? "Waiting for a build worker." : "The build is running. New output appears below as it is captured.")}</p><pre id="liveBuildOutput">${escapeHtml(output || "No output captured yet.")}</pre></section><section class="glass panel"><h3>Build settings</h3><p>Formatting: ${status.run_format ? "requested" : "disabled"}</p><p class="section-sub">A formatter runs only when the uploaded project includes a repository-local <code>review-build.json</code> wrapper declaration.</p></section></div>`;
+    document.getElementById("buildResult").innerHTML = `<div class="build-grid"><section class="glass panel build-live"><div class="build-live-status"><span id="buildState" class="pill warning">${escapeHtml(String(status.state || "queued").toUpperCase())}</span></div><h3>Build in progress</h3><p id="buildStateMessage">${escapeHtml(status.state === "queued" ? "Waiting for a build worker." : "The build is running. New output appears below as it is captured.")}</p><pre id="liveBuildOutput">${escapeHtml(output || "No output captured yet.")}</pre></section><section class="glass panel"><h3>Build settings</h3><p>Formatting: ${status.run_format ? "requested" : "disabled"}</p><p class="section-sub">Formatting is included with the build when the uploaded project provides <code>.clang-format</code> or a repository-local <code>review-build.json</code> wrapper.</p></section></div>`;
     updateWorkspaceChrome("build");
 }
 function updateLiveBuild(status) {
@@ -402,7 +402,7 @@ function renderBuild(result) {
 }
 async function triggerBuild() {
     if (!window.currentRunId) { alert("Run review first."); return; }
-    const runFormat = false;
+    const runFormat = true;
     showBuild();
     renderBuildLoading({ state: "queued", run_format: runFormat });
     await new Promise(resolve => requestAnimationFrame(resolve));

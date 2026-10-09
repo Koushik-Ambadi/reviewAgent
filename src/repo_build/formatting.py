@@ -1,29 +1,124 @@
 from __future__ import annotations
 
 import json
+import shutil
+import subprocess
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 
 _CONFIG_NAME = "review-build.json"
+_CLANG_FORMAT_NAME = ".clang-format"
+_SOURCE_SUFFIXES = {".c", ".cc", ".cpp", ".cxx", ".h", ".hh", ".hpp", ".hxx"}
+_IGNORED_DIRECTORIES = {".git", "analysis", "build", "out", "CMakeFiles", "node_modules"}
+OutputCallback = Callable[[str, str], None]
 
 
 def load_formatter_configuration(repo_root: Path) -> dict[str, Any] | None:
-    """Read an explicit repository-local formatter wrapper declaration.
+    """Load the repository's reviewed formatting configuration.
 
-    The optional file is deliberately narrow so a reviewed project controls its
-    own formatter without accepting arbitrary commands from the browser:
-
-    {"format": {"script": "tools/format.bat"}}
+    A repository-local wrapper remains supported. When no wrapper is present,
+    a root `.clang-format` file enables the built-in C/C++ formatter.
     """
     config_path = repo_root / _CONFIG_NAME
-    if not config_path.is_file():
-        return None
+    if config_path.is_file():
+        with config_path.open(encoding="utf-8") as config_file:
+            config = json.load(config_file)
+        format_config = config.get("format", {})
+        script = format_config.get("script")
+        if isinstance(script, str) and script.strip():
+            return {
+                "kind": "script",
+                "script": script.strip(),
+                "config_path": _CONFIG_NAME,
+            }
 
-    with config_path.open(encoding="utf-8") as config_file:
-        config = json.load(config_file)
-    format_config = config.get("format", {})
-    script = format_config.get("script")
-    if not isinstance(script, str) or not script.strip():
-        return None
-    return {"script": script.strip(), "config_path": _CONFIG_NAME}
+    if (repo_root / _CLANG_FORMAT_NAME).is_file():
+        return {
+            "kind": "clang-format",
+            "command": "clang-format --style=file",
+            "config_path": _CLANG_FORMAT_NAME,
+        }
+    return None
+
+
+def run_clang_format(
+    repo_root: Path,
+    on_output: OutputCallback | None = None,
+) -> dict[str, object]:
+    """Format repository C/C++ files using the checked-in `.clang-format` file."""
+    executable = shutil.which("clang-format") or shutil.which("clang-format.exe")
+    if executable is None:
+        return {
+            "process_return_code": 1,
+            "stdout": [],
+            "stderr": [
+                "clang-format was requested by .clang-format but is not available on PATH."
+            ],
+        }
+
+    source_files = discover_format_sources(repo_root)
+    if not source_files:
+        return {
+            "process_return_code": 0,
+            "stdout": ["No C/C++ source files were found for formatting."],
+            "stderr": [],
+        }
+
+    message = (
+        f"Formatting {len(source_files)} C/C++ source file(s) using {_CLANG_FORMAT_NAME}."
+    )
+    if on_output:
+        on_output("stdout", message)
+    stdout = [message]
+    stderr: list[str] = []
+
+    for source_file in source_files:
+        process = subprocess.run(
+            [executable, "-i", "--style=file", "--fallback-style=none", str(source_file)],
+            cwd=repo_root,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        stdout.extend(_lines(process.stdout))
+        stderr.extend(_lines(process.stderr))
+        if process.returncode != 0:
+            error = f"clang-format failed for {source_file.relative_to(repo_root).as_posix()}."
+            stderr.append(error)
+            if on_output:
+                for line in _lines(process.stdout):
+                    on_output("stdout", line)
+                for line in _lines(process.stderr):
+                    on_output("stderr", line)
+                on_output("stderr", error)
+            return {
+                "process_return_code": process.returncode,
+                "stdout": stdout,
+                "stderr": stderr,
+            }
+        if on_output:
+            for line in _lines(process.stdout):
+                on_output("stdout", line)
+            for line in _lines(process.stderr):
+                on_output("stderr", line)
+
+    completion = "Formatting completed successfully."
+    stdout.append(completion)
+    if on_output:
+        on_output("stdout", completion)
+    return {"process_return_code": 0, "stdout": stdout, "stderr": stderr}
+
+
+def discover_format_sources(repo_root: Path) -> list[Path]:
+    return sorted(
+        path
+        for path in repo_root.rglob("*")
+        if path.is_file()
+        and path.suffix.lower() in _SOURCE_SUFFIXES
+        and not any(part in _IGNORED_DIRECTORIES for part in path.relative_to(repo_root).parts)
+    )
+
+
+def _lines(output: str) -> list[str]:
+    return [line for line in output.splitlines() if line]
