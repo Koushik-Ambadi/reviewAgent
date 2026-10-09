@@ -27,30 +27,20 @@ def execute_firmware_build(
     started_at = datetime.now(timezone.utc).isoformat()
     format_step, format_output = _run_format_step(repo_root, run_format, on_output)
 
-    if format_step["status"] == "failed":
-        raw = {
-            "process_return_code": 1,
-            "stdout": [],
-            "stderr": [],
-        }
-        effective_return_code = 1
-        build_step = {
-            "status": "skipped",
-            "command": build_script,
-            "message": "Build was skipped because formatting failed.",
-        }
-    else:
-        raw = _run_build(repo_root, build_script, on_output)
-        effective_return_code, failure_evidence = normalize_build_outcome(raw)
-        build_step = {
-            "status": determine_status(effective_return_code),
-            "command": build_script,
-            "message": _build_message(
-                raw["process_return_code"],
-                effective_return_code,
-                failure_evidence,
-            ),
-        }
+    raw = _run_build(repo_root, build_script, on_output)
+    build_return_code, failure_evidence = normalize_build_outcome(raw)
+    build_step = {
+        "status": determine_status(build_return_code),
+        "command": build_script,
+        "message": _build_message(
+            raw["process_return_code"],
+            build_return_code,
+            failure_evidence,
+        ),
+    }
+    effective_return_code = 1 if (
+        format_step["status"] == "failed" or build_return_code != 0
+    ) else 0
 
     completed_at = datetime.now(timezone.utc).isoformat()
     stdout = [*format_output["stdout"], *raw["stdout"]]
@@ -68,7 +58,7 @@ def execute_firmware_build(
         format_step=format_step,
         build_step=build_step,
         important_diagnostics=select_important_diagnostics(stdout, stderr),
-        artifact_manifest=(discover_artifacts(repo_root) if effective_return_code == 0 else []),
+        artifact_manifest=(discover_artifacts(repo_root) if build_return_code == 0 else []),
         started_at=started_at,
         completed_at=completed_at,
     )
@@ -141,7 +131,7 @@ def _run_build(
         if on_output:
             on_output(stream, f"[build] {line}")
 
-    raw = _run_batch(repo_root, build_script, prefixed_output)
+    raw = _run_batch(repo_root, build_script, prefixed_output, tail_build_log=True)
     return {
         "process_return_code": raw["process_return_code"],
         "stdout": [f"[build] {line}" for line in raw["stdout"]],
@@ -149,9 +139,17 @@ def _run_build(
     }
 
 
-def _run_batch(repo_root: Path, script: str, on_output: OutputCallback | None) -> dict:
+def _run_batch(
+    repo_root: Path,
+    script: str,
+    on_output: OutputCallback | None,
+    *,
+    tail_build_log: bool = False,
+) -> dict:
     try:
-        return run_batch_script(repo_root, script, on_output=on_output)
+        return run_batch_script(
+            repo_root, script, on_output=on_output, tail_build_log=tail_build_log
+        )
     except (FileNotFoundError, ValueError) as error:
         return {"process_return_code": 1, "stdout": [], "stderr": [str(error)]}
 

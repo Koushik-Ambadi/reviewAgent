@@ -75,21 +75,24 @@ def run_clang_format(
 
     for source_file in source_files:
         process = subprocess.run(
-            [executable, "-i", "--style=file", "--fallback-style=none", str(source_file)],
+            [
+                executable,
+                "--style=file",
+                "--fallback-style=none",
+                f"--assume-filename={repo_root / 'format.cpp'}",
+            ],
             cwd=repo_root,
+            input=source_file.read_bytes(),
             capture_output=True,
-            text=True,
             check=False,
         )
-        stdout.extend(_lines(process.stdout))
-        stderr.extend(_lines(process.stderr))
+        process_stderr = process.stderr.decode(errors="replace")
         if process.returncode != 0:
+            stderr.extend(_lines(process_stderr))
             error = f"clang-format failed for {source_file.relative_to(repo_root).as_posix()}."
             stderr.append(error)
             if on_output:
-                for line in _lines(process.stdout):
-                    on_output("stdout", line)
-                for line in _lines(process.stderr):
+                for line in _lines(process_stderr):
                     on_output("stderr", line)
                 on_output("stderr", error)
             return {
@@ -97,11 +100,7 @@ def run_clang_format(
                 "stdout": stdout,
                 "stderr": stderr,
             }
-        if on_output:
-            for line in _lines(process.stdout):
-                on_output("stdout", line)
-            for line in _lines(process.stderr):
-                on_output("stderr", line)
+        source_file.write_bytes(process.stdout)
 
     completion = "Formatting completed successfully."
     stdout.append(completion)
