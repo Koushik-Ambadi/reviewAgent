@@ -97,9 +97,12 @@ def _review_findings(stages: list[dict[str, Any]]) -> str:
     content: list[str] = []
     for stage in stages:
         checks = stage.get("checks") or []
-        if not any(check.get("cases") for check in checks):
+        inventory = stage.get("inventory") or {}
+        if not inventory.get("items") and not any(check.get("cases") for check in checks):
             continue
         content.append(f"<h3>{_text(stage.get('title'))}</h3>")
+        if inventory.get("items"):
+            content.append(_inventory_summary(inventory))
         for check in checks:
             cases = check.get("cases") or []
             if not cases:
@@ -117,6 +120,34 @@ def _review_findings(stages: list[dict[str, Any]]) -> str:
                 f"<table><thead><tr><th>Status</th><th>Finding</th><th>Atomic reasons</th></tr></thead><tbody>{rows}</tbody></table></div>"
             )
     return "".join(content) or "<p class='muted'>No review findings were recorded.</p>"
+
+
+def _inventory_summary(inventory: dict[str, Any]) -> str:
+    parsed_files = inventory.get("parsed_files", 0)
+    skipped_files = inventory.get("skipped_files", 0)
+    coverage = (
+        f"<p><b>Parsing coverage:</b> {_text(parsed_files)} "
+        f"{'file' if parsed_files == 1 else 'files'} parsed; {_text(skipped_files)} "
+        f"{'file' if skipped_files == 1 else 'files'} skipped. "
+        f"<code>{_text(inventory.get('source_artifact'))}</code></p>"
+    )
+    cards = "".join(
+        f"<div><b>{_text(item.get('label'))}</b>{_text(item.get('identified', 0))}</div>"
+        for item in inventory.get("items") or []
+    )
+    audit = inventory.get("audit") or {}
+    if audit.get("status") == "tracked":
+        audit_note = (
+            f"<p><b>Audit:</b> {_text(audit.get('audited', 0))} audited; "
+            f"{_text(audit.get('pending_approval', 0))} pending approval; "
+            f"{_text(audit.get('not_audited', 0))} not audited.</p>"
+        )
+    else:
+        audit_note = (
+            "<p class='muted'><b>Audit coverage is not tracked.</b> "
+            "Inventory counts represent identified records only.</p>"
+        )
+    return f"<div class='card'>{coverage}<div class='meta'>{cards}</div>{audit_note}</div>"
 
 
 def _remediations(remediations: list[dict[str, Any]]) -> str:

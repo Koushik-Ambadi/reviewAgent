@@ -2,7 +2,7 @@
 
 - Status: living
 - Created: 2026-10-06
-- Last reviewed: 2026-10-09
+- Last reviewed: 2026-10-10
 - Update trigger: test command, environment, artifact schema, retention, or replay
   contract changes
 - Source of truth for: current verification status and reproducible inspection
@@ -36,6 +36,19 @@ machine-specific CMake/libclang inputs. No source code was modified.
 The review/build pipeline was intentionally not rerun: the manager service only
 reads persisted JSON and the focused real-data projection exercised that
 integration boundary without regenerating machine-dependent artifacts.
+
+### Analysis inventory verification — 2026-10-10
+
+| Check | Result | What it proves |
+|---|---|---|
+| Direct invocation of `tests/test_analysis_inventory.py` assertions | Passed | The pure projection counts every supported symbol family, preserves parsed/skipped coverage, keeps audit values unavailable, and serializes report version 2.1 |
+| Direct invocation of the updated evidence-pack assertion | Passed | Analysis inventory and its audit boundary appear in the self-contained handoff document |
+| `node --check app/static/app.js` | Passed | The developer report controller remains syntactically valid after the inventory rendering path was added |
+
+The full review/build pipeline was intentionally not rerun. The change is a pure
+projection over the extractor result already returned in memory; regenerating
+machine-specific CMake/libclang artifacts would be disproportionate. The
+responsive card layout remains a focused visual check at normal browser zoom.
 
 ## Current test inventory
 

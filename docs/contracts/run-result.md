@@ -1,7 +1,7 @@
 # Run result contract
 
 - Status: living
-- Last reviewed: 2026-10-06
+- Last reviewed: 2026-10-10
 - Update trigger: serialized result, response envelope, identifier, or persistence
   contract change
 - Related: [`architecture.md`](../engineering/architecture.md),
@@ -23,6 +23,7 @@ RunResult
 ├── status
 ├── summary
 ├── stages[]
+│   ├── inventory?
 │   └── checks[]
 │       └── cases[]
 ├── remediation[]
@@ -34,6 +35,44 @@ RunResult
 `policy_version` identifies the policy/schema revision used for the run. `report_version` identifies the serialized report contract version. `metadata` carries run context such as module name, policy name, generation time, and the policy-owned `profile` display data (domain, language, formatter, build adapter, and artifact types). `summary` carries aggregate counts; stage/check summaries do likewise at their level.
 
 `remediation` is a list of remediation result objects. `build_result` is the result object for the run's build. Their detailed fields can evolve without changing the run/stage/check/case hierarchy.
+
+### Analysis inventory
+
+Report version `2.1` adds an optional stage-level `inventory` object. The Analysis
+stage uses it to preserve a compact projection of `analysis/symbols.json`:
+
+```json
+{
+  "source_artifact": "analysis/symbols.json",
+  "parsed_files": 2,
+  "skipped_files": 1,
+  "items": [
+    {
+      "inventory_id": "global_variables",
+      "label": "Global variables",
+      "identified": 14
+    }
+  ],
+  "audit": {
+    "status": "not_tracked",
+    "audited": null,
+    "pending_approval": null,
+    "not_audited": null
+  }
+}
+```
+
+`identified` counts extracted records by family; it does not claim unique,
+source-stable symbol identity or compliance. `parsed_files` counts file records
+written to the symbol inventory. `skipped_files` counts exclusions and parse or
+compile failures returned by the extractor, but does not yet persist their
+individual paths/reasons.
+
+Audit values remain `null` while `status` is `not_tracked`. Consumers must not
+coerce them to zero. A later audit workflow may populate these fields only after
+stable symbol identity, reviewer/role authorization, decision persistence, and
+approval semantics are defined. Reports before version 2.1 omit `inventory` and
+remain valid.
 
 ## Current prototype persistence
 

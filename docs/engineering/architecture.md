@@ -2,7 +2,7 @@
 
 - Status: living
 - Created: 2026-10-06
-- Last reviewed: 2026-10-09 for the manager projection gate
+- Last reviewed: 2026-10-10 for the analysis inventory projection
 - Update trigger: module boundary, interface, data contract, dependency, or
   execution-flow change
 - Source of truth for: current system shape and module responsibilities
@@ -147,7 +147,8 @@ Mutable stage-carrier dataclass in `pipeline/context.py`.
 
 - `CaseResult`: one checked item, status, name, location, stable case ID, reasons.
 - `CheckResult`: check identity/title, completion status, summary, cases.
-- `StageResult`: stage identity/title, completion status, summary, checks.
+- `StageResult`: stage identity/title, completion status, summary, checks, and an
+  optional typed inventory projection.
 - `RunResult`: run metadata, policy/report versions, aggregate status/summary,
   stages, remediation, and optional build result.
 
@@ -176,9 +177,10 @@ Each `symbols.json` element represents one parsed source file and contains:
 - user macros and their classification/replacement.
 
 The inventory is a derived intermediate representation, not an authoritative
-copy of source. A file without a compilation command is not represented; parse
-errors are recorded only in the return value's `skipped_files`, which is not
-persisted into `symbols.json` or `report.json`.
+copy of source. A file without a compilation command is not represented. Report
+version 2.1 persists aggregate parsed/skipped file coverage and extracted symbol
+family counts, but individual skipped paths and reasons remain outside
+`report.json`.
 
 ### `BuildResult`
 
@@ -267,6 +269,11 @@ The API returns templates; the pipeline owns execution-time loading.
   Build tabs on the active run ID, exposes the non-interactive Roadmap view,
   requests provider-independent remediation suggestions, and renders the
   structured build result.
+- A stage is visible when it has compliance cases or inventory items. Analysis
+  inventory therefore renders even when the stage has no cases. Stage and text
+  filters apply to it; status and check facets exclude it because extracted
+  records do not have compliance outcomes. Reports without `inventory` retain
+  the previous behavior.
 - `manager.js`: owns manager-only client state, loads the read-only manager
   endpoints, switches the four manager tabs, renders latest module summaries,
   drills into module history, requests selected-run comparisons, groups/selects
@@ -375,6 +382,11 @@ deleted, so the analysis directory must remain run-scoped.
 - `extractor.py`: loads the compilation database, restricts files to configured
   folders/extensions, deduplicates entries, parses each translation unit, and
   writes `symbols.json`.
+- `analysis/runner.py`: derives the report inventory from the extractor's
+  returned `results` without rereading source. The linear summary counts
+  function definitions/declarations, global/local variables, parameters,
+  structures, enumerations and constants, type definitions, and macros; it also
+  records parsed/skipped coverage and marks audit coverage `not_tracked`.
 - `ast_walker.py`: recursive cursor dispatcher, excluding nodes outside the
   repository and macros outside configured target folders.
 - `symbol_extractors.py`: converts Clang cursors and source text into JSON-safe

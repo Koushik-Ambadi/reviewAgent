@@ -566,3 +566,48 @@ and third-party artifacts and must not be interpreted as effort or quality.
 - Next step: user checks the four manager tabs at normal browser zoom and reports
   pass/fail plus any overflow, unreadable state, or console error. Production
   workflow implementation remains gated by G11 and D014 exit criteria.
+
+## 2026-10-10 — Analysis inventory visibility
+
+### 14:51:22 +05:30 — Open analysis inventory gate
+
+- Intended outcome: keep the completed Analysis stage visible in the developer
+  report by summarizing the symbol inventory already produced by libclang.
+- Starting state: branch `codex/atomic-naming-rules` at `325b7a5`; worktree and
+  index clean; local branch eight commits ahead of its upstream.
+- Authority and records consulted: `AGENTS.md`, the repository
+  `project-lifecycle-governance` skill, architecture, run-result contract,
+  testing record, roadmap, decisions, and this history.
+- Active implementation record: [`architecture.md`](architecture.md), especially
+  the result contract, symbol inventory, analysis runner, and static UI sections.
+- Source of truth: `build_symbol_inventory`'s returned `results` list, which is
+  the same content persisted as `analysis/symbols.json`. The report stores a
+  deterministic count projection; it does not parse the source a second time.
+- In scope: parsed/skipped file coverage, counts for extracted symbol families,
+  an explicit untracked audit state, backward-compatible report serialization,
+  and a non-case UI card for Analysis.
+- Explicitly excluded: symbol-level audit identity, reviewer/approval state,
+  persistence for audit decisions, and manager workflow aggregation.
+- Acceptance evidence: one pure inventory-summary test, report serialization
+  assertion, JavaScript syntax check, focused diff review, and no full
+  CMake/libclang pipeline rerun.
+
+### 15:02:09 +05:30 — Complete analysis inventory visibility gate
+
+- Added the optional stage-level inventory contract and advanced the report
+  version to 2.1. Older reports remain valid because the field is optional.
+- Derived parsed/skipped coverage and ten symbol-family counts directly from the
+  extractor result already returned to the Analysis runner; no source or
+  `symbols.json` reread was added.
+- Made Analysis visible without compliance cases and rendered responsive count
+  cards in the developer report and HTML evidence pack. Status/check facets do
+  not treat inventory as pass/fail data.
+- Kept audit values nullable under `not_tracked`; no fake audited, pending, or
+  approval totals are presented. Governed symbol identity and audit workflow are
+  deferred to roadmap gate G12.
+- Verification passed: focused inventory summary/serialization assertions,
+  focused evidence-pack assertions, JavaScript syntax, and diff whitespace.
+  The full CMake/libclang review pipeline was intentionally not rerun because
+  this is a pure projection over the existing extractor result.
+- Remaining visual check: confirm the Analysis count grid and coverage row at
+  normal browser zoom with a newly generated 2.1 report.

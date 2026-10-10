@@ -153,8 +153,22 @@ function reportCases(report) {
 }
 function visibleStages(report) {
     return (report.stages || []).filter(stage =>
+        (stage.inventory?.items || []).length > 0 ||
         (stage.checks || []).some(check => (check.cases || []).length > 0)
     );
+}
+function renderStageInventory(inventory, items) {
+    const audit = inventory.audit || { status: "not_tracked" };
+    const parsedFiles = inventory.parsed_files || 0;
+    const skippedFiles = inventory.skipped_files || 0;
+    const auditContent = audit.status === "tracked"
+        ? `<div class="inventory-audit-values"><span><strong>${audit.audited ?? 0}</strong> audited</span><span><strong>${audit.pending_approval ?? 0}</strong> pending approval</span><span><strong>${audit.not_audited ?? 0}</strong> not audited</span></div>`
+        : '<p class="inventory-audit-note"><strong>Audit coverage is not tracked yet.</strong> These are identification counts from the persisted symbol inventory, not review or approval totals.</p>';
+    return `<div class="inventory-summary">
+        <div class="inventory-coverage"><span><strong>${parsedFiles}</strong> ${parsedFiles === 1 ? "file" : "files"} parsed</span><span><strong>${skippedFiles}</strong> ${skippedFiles === 1 ? "file" : "files"} skipped</span><code>${escapeHtml(inventory.source_artifact || "analysis/symbols.json")}</code></div>
+        <div class="inventory-grid">${items.map(item => `<article class="inventory-card"><strong>${item.identified || 0}</strong><span>${escapeHtml(item.label)}</span></article>`).join("")}</div>
+        ${auditContent}
+    </div>`;
 }
 function statusName(status) {
     const normalized = String(status || "").toUpperCase();
@@ -281,6 +295,13 @@ function renderStages(report) {
     const wantedStages = selectedFacetValues("stageFilter");
     const wantedChecks = selectedFacetValues("checkFilter");
     const cards = visibleStages(report).filter(stage => !wantedStages.size || wantedStages.has(stage.stage_id)).map(stage => {
+        const inventory = stage.inventory || {};
+        const inventoryItems = inventory.items || [];
+        const stageMatchesQuery = !query || [stage.title, stage.stage_id].join(" ").toLowerCase().includes(query);
+        const matchingInventory = stageMatchesQuery
+            ? inventoryItems
+            : inventoryItems.filter(item => [item.label, item.inventory_id].join(" ").toLowerCase().includes(query));
+        const showInventory = matchingInventory.length > 0 && !wantedStatuses.size && !wantedChecks.size;
         const renderedChecks = (stage.checks || []).filter(check => !wantedChecks.size || wantedChecks.has(check.check_id)).map(check => {
             const cases = (check.cases || []).filter(item => {
                 const haystack = [item.name, item.location, check.title, stage.title, ...(item.reasons || [])].join(" ").toLowerCase();
@@ -294,10 +315,16 @@ function renderStages(report) {
                 <div class="check-content"><div class="check-actions">${hasFailures ? `<button class="inline-action" type="button" data-remediation-scope="check" data-check-id="${escapeHtml(check.check_id)}">Suggest fixes for this check</button>` : ""}</div>${cases.length ? cases.map(item => renderCase(item, check.check_id)).join("") : '<div class="case-row success">No cases match the current filters.</div>'}</div>
             </details>`;
         }).filter(Boolean).join("");
-        if (!renderedChecks && (query || wantedStatuses.size || wantedChecks.size)) return "";
+        if (!renderedChecks && !showInventory && (query || wantedStatuses.size || wantedChecks.size)) return "";
         const summary = stage.summary || {};
         const hasFailures = (summary.failed || 0) > 0;
-        return `<section class="stage-card" data-stage-id="${escapeHtml(stage.stage_id)}"><div class="stage-heading"><div><h2>${escapeHtml(stage.title)}</h2><div class="section-sub">${summary.failed || 0} failed · ${summary.skipped || 0} skipped · ${summary.passed || 0} passed</div></div><span class="pill ${hasFailures ? "failed" : "passed"}">${hasFailures ? "Failed" : "Completed"}</span></div><div class="check-list">${renderedChecks || '<div class="case-row success">No checks in this stage.</div>'}</div></section>`;
+        const identified = inventoryItems.reduce((total, item) => total + (item.identified || 0), 0);
+        const stageDetail = inventoryItems.length
+            ? `${identified} extracted records · ${inventory.parsed_files || 0} parsed files · ${inventory.skipped_files || 0} skipped files`
+            : `${summary.failed || 0} failed · ${summary.skipped || 0} skipped · ${summary.passed || 0} passed`;
+        const content = (showInventory ? renderStageInventory(inventory, matchingInventory) : "") + renderedChecks;
+        if (!content) return "";
+        return `<section class="stage-card" data-stage-id="${escapeHtml(stage.stage_id)}"><div class="stage-heading"><div><h2>${escapeHtml(stage.title)}</h2><div class="section-sub">${stageDetail}</div></div><span class="pill ${hasFailures ? "failed" : "passed"}">${hasFailures ? "Failed" : (inventoryItems.length ? "Inventory ready" : "Completed")}</span></div><div class="check-list">${content}</div></section>`;
     }).filter(Boolean);
     document.getElementById("stages").innerHTML = cards.join("") || '<div class="empty-state">No results match the current filters.</div>';
 }

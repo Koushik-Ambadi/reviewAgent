@@ -48,12 +48,37 @@ class StageSummary:
 
 
 @dataclass
+class InventoryItem:
+    inventory_id: str
+    label: str
+    identified: int
+
+
+@dataclass
+class InventoryAuditSummary:
+    status: str = "not_tracked"
+    audited: int | None = None
+    pending_approval: int | None = None
+    not_audited: int | None = None
+
+
+@dataclass
+class InventorySummary:
+    source_artifact: str = "analysis/symbols.json"
+    parsed_files: int = 0
+    skipped_files: int = 0
+    items: list[InventoryItem] = field(default_factory=list)
+    audit: InventoryAuditSummary = field(default_factory=InventoryAuditSummary)
+
+
+@dataclass
 class StageResult:
     title: str
     status: StageStatus
     summary: StageSummary
     stage_id: str = ""
     checks: list[CheckResult] = field(default_factory=list)
+    inventory: InventorySummary | None = None
 
 
 @dataclass

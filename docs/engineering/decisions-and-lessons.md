@@ -323,6 +323,30 @@ No motive is attributed where the repository does not support it.
   function was invoked directly. Automated visual inspection was attempted but
   the computer-use helper failed during sandbox setup before a page opened.
 
+## D015 — Represent analysis inventory as evidence, not compliance
+
+- Date: 2026-10-10
+- Status: accepted
+- Scope: Analysis-stage result contract, developer report, and evidence pack
+- Trigger: the Analysis stage already built and persisted a useful AST-derived
+  symbol inventory, but the report hid the stage whenever it contained no
+  compliance cases.
+- Decision: add an optional typed stage inventory and derive its file coverage
+  and symbol-family counts from the extractor result already in memory. Render
+  it as identified evidence, outside pass/fail/skip totals and facets.
+- Audit boundary: reserve nullable audited, pending-approval, and not-audited
+  values under an explicit `not_tracked` status. Do not present unavailable
+  governance data as zero.
+- Alternatives rejected: fake successful cases, browser-side aggregation of
+  `symbols.json`, hiding Analysis until an audit workflow exists, and mixing
+  inventory counts into compliance totals.
+- Consequences: report version 2.1 is backward compatible because inventory is
+  optional. Extracted records may include both declarations and definitions and
+  are not yet stable cross-run symbol identities.
+- Validation: focused pure summary/serialization assertions, evidence-pack
+  assertions, and JavaScript syntax validation. The machine-dependent full
+  CMake/libclang pipeline was intentionally not rerun for this projection.
+
 ## Durable problem and learning ledger
 
 ### P001 — Compiler/preprocessor visibility changes what can be reviewed
