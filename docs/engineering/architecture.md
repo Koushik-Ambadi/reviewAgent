@@ -2,7 +2,7 @@
 
 - Status: living
 - Created: 2026-10-06
-- Last reviewed: 2026-10-10 for the analysis inventory projection
+- Last reviewed: 2026-10-10 for the analysis artifact audit register
 - Update trigger: module boundary, interface, data contract, dependency, or
   execution-flow change
 - Source of truth for: current system shape and module responsibilities
@@ -148,7 +148,8 @@ Mutable stage-carrier dataclass in `pipeline/context.py`.
 - `CaseResult`: one checked item, status, name, location, stable case ID, reasons.
 - `CheckResult`: check identity/title, completion status, summary, cases.
 - `StageResult`: stage identity/title, completion status, summary, checks, and an
-  optional typed inventory projection.
+  optional typed inventory projection with aggregate items and grouped artifact
+  records.
 - `RunResult`: run metadata, policy/report versions, aggregate status/summary,
   stages, remediation, and optional build result.
 
@@ -178,9 +179,10 @@ Each `symbols.json` element represents one parsed source file and contains:
 
 The inventory is a derived intermediate representation, not an authoritative
 copy of source. A file without a compilation command is not represented. Report
-version 2.1 persists aggregate parsed/skipped file coverage and extracted symbol
-family counts, but individual skipped paths and reasons remain outside
-`report.json`.
+version 2.2 persists aggregate parsed/skipped file coverage, extracted symbol
+family counts, and individual grouped artifacts with report-local identities,
+source evidence, and initial audit states. Individual skipped paths and reasons
+remain outside `report.json`.
 
 ### `BuildResult`
 
@@ -274,6 +276,11 @@ The API returns templates; the pipeline owns execution-time loading.
   filters apply to it; status and check facets exclude it because extracted
   records do not have compliance outcomes. Reports without `inventory` retain
   the previous behavior.
+- The Analysis inventory keeps aggregate cards at the top and renders non-empty
+  symbol families as collapsible audit groups. Each row shows the artifact name,
+  source location, extracted evidence, audit state, and audit rationale slot.
+  Report 2.1 count-only inventory remains readable and prompts for a rerun when
+  detailed groups are absent.
 - `manager.js`: owns manager-only client state, loads the read-only manager
   endpoints, switches the four manager tabs, renders latest module summaries,
   drills into module history, requests selected-run comparisons, groups/selects
@@ -383,10 +390,12 @@ deleted, so the analysis directory must remain run-scoped.
   folders/extensions, deduplicates entries, parses each translation unit, and
   writes `symbols.json`.
 - `analysis/runner.py`: derives the report inventory from the extractor's
-  returned `results` without rereading source. The linear summary counts
+  returned `results` without rereading source. One linear projection groups
   function definitions/declarations, global/local variables, parameters,
-  structures, enumerations and constants, type definitions, and macros; it also
-  records parsed/skipped coverage and marks audit coverage `not_tracked`.
+  structures and fields, enumerations and constants, type definitions, and
+  macros. It creates deterministic report-local IDs, retains source evidence,
+  records parsed/skipped coverage, and initializes every artifact
+  `not_audited`.
 - `ast_walker.py`: recursive cursor dispatcher, excluding nodes outside the
   repository and macros outside configured target folders.
 - `symbol_extractors.py`: converts Clang cursors and source text into JSON-safe

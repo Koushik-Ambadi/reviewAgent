@@ -55,11 +55,28 @@ class InventoryItem:
 
 
 @dataclass
+class InventoryArtifact:
+    artifact_id: str
+    name: str
+    location: str
+    evidence: list[str] = field(default_factory=list)
+    audit_status: str = "not_audited"
+    audit_reason: str | None = None
+
+
+@dataclass
+class InventoryGroup:
+    group_id: str
+    label: str
+    artifacts: list[InventoryArtifact] = field(default_factory=list)
+
+
+@dataclass
 class InventoryAuditSummary:
-    status: str = "not_tracked"
-    audited: int | None = None
-    pending_approval: int | None = None
-    not_audited: int | None = None
+    status: str = "inventory_initialized"
+    audited: int = 0
+    pending_approval: int = 0
+    not_audited: int = 0
 
 
 @dataclass
@@ -68,6 +85,7 @@ class InventorySummary:
     parsed_files: int = 0
     skipped_files: int = 0
     items: list[InventoryItem] = field(default_factory=list)
+    groups: list[InventoryGroup] = field(default_factory=list)
     audit: InventoryAuditSummary = field(default_factory=InventoryAuditSummary)
 
 

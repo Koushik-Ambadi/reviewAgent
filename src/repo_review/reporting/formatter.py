@@ -11,7 +11,7 @@ from uuid import NAMESPACE_URL, uuid5
 
 from .serializer import serialize
 
-REPORT_VERSION = "2.1"
+REPORT_VERSION = "2.2"
 
 
 def build_metadata(

@@ -98,10 +98,14 @@ def _review_findings(stages: list[dict[str, Any]]) -> str:
     for stage in stages:
         checks = stage.get("checks") or []
         inventory = stage.get("inventory") or {}
-        if not inventory.get("items") and not any(check.get("cases") for check in checks):
+        if (
+            not inventory.get("items")
+            and not inventory.get("groups")
+            and not any(check.get("cases") for check in checks)
+        ):
             continue
         content.append(f"<h3>{_text(stage.get('title'))}</h3>")
-        if inventory.get("items"):
+        if inventory.get("items") or inventory.get("groups"):
             content.append(_inventory_summary(inventory))
         for check in checks:
             cases = check.get("cases") or []
@@ -136,18 +140,49 @@ def _inventory_summary(inventory: dict[str, Any]) -> str:
         for item in inventory.get("items") or []
     )
     audit = inventory.get("audit") or {}
-    if audit.get("status") == "tracked":
+    groups = inventory.get("groups") or []
+    if groups:
         audit_note = (
             f"<p><b>Audit:</b> {_text(audit.get('audited', 0))} audited; "
             f"{_text(audit.get('pending_approval', 0))} pending approval; "
-            f"{_text(audit.get('not_audited', 0))} not audited.</p>"
+            f"{_text(audit.get('not_audited', 0))} not audited. "
+            "Review decisions and approvals are not writable yet.</p>"
         )
     else:
         audit_note = (
-            "<p class='muted'><b>Audit coverage is not tracked.</b> "
-            "Inventory counts represent identified records only.</p>"
+            "<p class='muted'><b>Detailed audit register is unavailable.</b> "
+            "Re-run the review to generate individual artifact records.</p>"
         )
-    return f"<div class='card'>{coverage}<div class='meta'>{cards}</div>{audit_note}</div>"
+    register = _inventory_register(groups)
+    return (
+        f"<div class='card'>{coverage}<div class='meta'>{cards}</div>"
+        f"{audit_note}{register}</div>"
+    )
+
+
+def _inventory_register(groups: list[dict[str, Any]]) -> str:
+    sections: list[str] = []
+    for group in groups:
+        artifacts = group.get("artifacts") or []
+        if not artifacts:
+            continue
+        rows = "".join(
+            "<tr>"
+            f"<td>{_text(str(artifact.get('audit_status') or 'not_audited').replace('_', ' '))}</td>"
+            f"<td><b>{_text(artifact.get('name'))}</b><br><code>{_text(artifact.get('location'))}</code></td>"
+            f"<td>{_plain_list(artifact.get('evidence') or [], empty='No parser evidence recorded.')}</td>"
+            f"<td>{_text(artifact.get('audit_reason') or 'No audit rationale recorded.')}</td>"
+            "</tr>"
+            for artifact in artifacts
+        )
+        sections.append(
+            f"<h3>{_text(group.get('label'))} ({len(artifacts)})</h3>"
+            "<table><thead><tr><th>Audit state</th><th>Artifact</th>"
+            f"<th>Parser evidence</th><th>Audit rationale</th></tr></thead><tbody>{rows}</tbody></table>"
+        )
+    if not sections:
+        return ""
+    return "<h3>Artifact audit register</h3>" + "".join(sections)
 
 
 def _remediations(remediations: list[dict[str, Any]]) -> str:

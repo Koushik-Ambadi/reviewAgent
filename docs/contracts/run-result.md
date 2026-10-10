@@ -38,8 +38,9 @@ RunResult
 
 ### Analysis inventory
 
-Report version `2.1` adds an optional stage-level `inventory` object. The Analysis
-stage uses it to preserve a compact projection of `analysis/symbols.json`:
+Report version `2.1` added an optional stage-level count projection. Report
+version `2.2` retains those aggregate `items` and adds grouped individual
+artifacts so every extracted record can enter an audit lifecycle:
 
 ```json
 {
@@ -53,11 +54,27 @@ stage uses it to preserve a compact projection of `analysis/symbols.json`:
       "identified": 14
     }
   ],
+  "groups": [
+    {
+      "group_id": "global_variables",
+      "label": "Global variables",
+      "artifacts": [
+        {
+          "artifact_id": "deterministic-uuid5-hex",
+          "name": "g_state",
+          "location": "src/state.c:14",
+          "evidence": ["Type: State", "Storage: static"],
+          "audit_status": "not_audited",
+          "audit_reason": null
+        }
+      ]
+    }
+  ],
   "audit": {
-    "status": "not_tracked",
-    "audited": null,
-    "pending_approval": null,
-    "not_audited": null
+    "status": "inventory_initialized",
+    "audited": 0,
+    "pending_approval": 0,
+    "not_audited": 14
   }
 }
 ```
@@ -68,11 +85,17 @@ written to the symbol inventory. `skipped_files` counts exclusions and parse or
 compile failures returned by the extractor, but does not yet persist their
 individual paths/reasons.
 
-Audit values remain `null` while `status` is `not_tracked`. Consumers must not
-coerce them to zero. A later audit workflow may populate these fields only after
-stable symbol identity, reviewer/role authorization, decision persistence, and
-approval semantics are defined. Reports before version 2.1 omit `inventory` and
-remain valid.
+Each 2.2 artifact begins as `not_audited`. Its deterministic prototype ID is
+derived from group, source location, display name, and local ordinal. `evidence`
+contains only AST/source facts already extracted, such as type, declaration,
+storage, enum value, or macro replacement. `audit_reason` remains `null` because
+the parser cannot infer design intent.
+
+The current contract initializes the register but does not provide a write API,
+reviewer identity, approval transition, or durable audit history. Production
+audit identity must survive line movement and symbol refactoring; the 2.2 ID is
+for report-local selection and comparison only. Reports before 2.1 omit
+`inventory`; 2.1 reports omit `groups`; both remain valid.
 
 ## Current prototype persistence
 

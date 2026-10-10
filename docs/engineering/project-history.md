@@ -611,3 +611,40 @@ and third-party artifacts and must not be interpreted as effort or quality.
   this is a pure projection over the existing extractor result.
 - Remaining visual check: confirm the Analysis count grid and coverage row at
   normal browser zoom with a newly generated 2.1 report.
+
+### 15:49:06 +05:30 — Correct inventory scope to an artifact audit register
+
+- Requirement clarification: aggregate counts are useful as a header, but the
+  intended Analysis content is every extracted function, macro, variable, type,
+  enum, parameter, and related symbol grouped for individual audit visibility.
+- The 2.1 count-only projection is retained for compatibility but is not the
+  completed product behavior. A new report must preserve per-artifact identity,
+  source location, parser evidence, audit state, and an audit-reason slot.
+- The AST can prove declaration facts such as location, type, storage, value, or
+  replacement text. It cannot infer why a symbol exists, so design rationale
+  remains explicitly unrecorded until supplied by a governed audit workflow.
+- In scope: granular typed report projection, grouped Governance Report UI,
+  evidence-pack output, focused contract tests, and synchronized records.
+- Excluded: interactive audit transitions, reviewer identity, approvals, and
+  durable audit writes. All newly identified artifacts start `not_audited`.
+
+### 15:53:28 +05:30 — Complete granular Analysis audit register
+
+- Advanced the additive report contract to 2.2 and preserved the 2.1 aggregate
+  cards. The Analysis stage now contains non-empty groups for functions,
+  variables, parameters, structures/fields, enums/constants, typedefs, and
+  macros.
+- Every record has a deterministic report-local ID, source location, extracted
+  evidence, `not_audited` state, and an empty audit-rationale field. Aggregate
+  audited/pending/not-audited totals derive from those same records.
+- The Governance Report opens the first group and keeps the others collapsible;
+  search matches artifact names, locations, evidence, and audit fields. The HTML
+  evidence pack includes the same register.
+- Focused projection/serialization assertions, deterministic-ID assertion,
+  evidence-pack assertions, JavaScript syntax, and diff whitespace passed.
+- The full CMake/libclang pipeline was intentionally not rerun because the
+  extractor itself did not change. Visual confirmation requires a new or rerun
+  review so report 2.2 data exists; old reports remain count-only or omit the
+  Analysis inventory entirely.
+- Production audit transitions, actors, approvals, history, stable cross-run
+  identity, and large-inventory virtualization remain roadmap gate G12.

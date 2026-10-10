@@ -45,6 +45,12 @@ integration boundary without regenerating machine-dependent artifacts.
 | Direct invocation of the updated evidence-pack assertion | Passed | Analysis inventory and its audit boundary appear in the self-contained handoff document |
 | `node --check app/static/app.js` | Passed | The developer report controller remains syntactically valid after the inventory rendering path was added |
 
+The follow-up 2.2 fixture also verifies grouped individual artifacts,
+structure-field expansion, deterministic report-local IDs, initial
+`not_audited` state, AST evidence, and the evidence-pack audit table. It uses the
+same focused direct invocation because the active Python environment does not
+provide pytest.
+
 The full review/build pipeline was intentionally not rerun. The change is a pure
 projection over the extractor result already returned in memory; regenerating
 machine-specific CMake/libclang artifacts would be disproportionate. The

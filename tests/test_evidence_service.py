@@ -25,11 +25,27 @@ def test_evidence_pack_is_self_contained_and_escapes_run_content():
                         }
                     ],
                     "audit": {
-                        "status": "not_tracked",
-                        "audited": None,
-                        "pending_approval": None,
-                        "not_audited": None,
+                        "status": "inventory_initialized",
+                        "audited": 0,
+                        "pending_approval": 0,
+                        "not_audited": 1,
                     },
+                    "groups": [
+                        {
+                            "group_id": "macros",
+                            "label": "Macros",
+                            "artifacts": [
+                                {
+                                    "artifact_id": "macro-1",
+                                    "name": "MAX_CURRENT",
+                                    "location": "src/config.h:12",
+                                    "evidence": ["Macro type: value", "Replacement: 100"],
+                                    "audit_status": "not_audited",
+                                    "audit_reason": None,
+                                }
+                            ],
+                        }
+                    ],
                 },
                 "checks": [],
             },
@@ -66,7 +82,12 @@ def test_evidence_pack_is_self_contained_and_escapes_run_content():
     assert "7" in document
     assert "Macros" in document
     assert "2 files parsed; 1 file skipped" in document
-    assert "Audit coverage is not tracked." in document
+    assert "Artifact audit register" in document
+    assert "MAX_CURRENT" in document
+    assert "src/config.h:12" in document
+    assert "Replacement: 100" in document
+    assert "No audit rationale recorded." in document
+    assert "1 not audited" in document
     assert "not run" in document
     assert "2026-10-08T10:00:00+00:00" in document
     assert "<script" not in document

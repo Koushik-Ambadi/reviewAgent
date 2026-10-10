@@ -347,6 +347,31 @@ No motive is attributed where the repository does not support it.
   assertions, and JavaScript syntax validation. The machine-dependent full
   CMake/libclang pipeline was intentionally not rerun for this projection.
 
+## D016 — Preserve every extracted artifact as an audit candidate
+
+- Date: 2026-10-10
+- Status: accepted; supersedes the count-only scope of D015
+- Scope: Analysis-stage inventory contract, Governance Report, and evidence pack
+- Trigger: aggregate counts made Analysis visible but did not satisfy the actual
+  requirement that every symbol be inspectable and visibly audited or not.
+- Decision: retain aggregate cards, then group every extracted function,
+  variable, parameter, structure/field, enum/constant, typedef, and macro as an
+  individual artifact. Initialize each record `not_audited` and expose parser
+  evidence plus an empty audit-rationale slot.
+- Identity boundary: use a deterministic UUID5 over category, location, name,
+  and ordinal for report-local identity. Do not claim that it survives line
+  movement or refactoring; production cross-run identity remains G12 work.
+- Rationale boundary: AST evidence can describe what was declared, where, and
+  with which type/value/replacement. It cannot explain why the design needs the
+  artifact, so no rationale is synthesized.
+- Alternatives rejected: converting artifacts to passed/failed compliance
+  cases, showing counts without rows, and inventing design rationales from names.
+- Consequences: report 2.2 may be substantially larger, and rendering all rows
+  is a prototype trade-off. Large-repository pagination or virtualization must
+  precede production scale.
+- Validation: hand-checkable projection and serialization assertions,
+  deterministic-ID assertion, evidence-pack assertion, and JavaScript syntax.
+
 ## Durable problem and learning ledger
 
 ### P001 — Compiler/preprocessor visibility changes what can be reviewed

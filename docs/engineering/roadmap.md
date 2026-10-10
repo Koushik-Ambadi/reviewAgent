@@ -173,15 +173,17 @@ changes. Do not maintain a second project-wide gap inventory here.
 - Priority: P3 after G02-G04 and the identity/authorization parts of G11
 - Goal: turn identified symbol records into a durable, reviewable audit scope
   without weakening the distinction between extraction and compliance.
-- Current baseline: report version 2.1 records parsed/skipped coverage and
-  symbol-family counts; audit values are explicitly unavailable.
+- Current baseline: report version 2.2 records parsed/skipped coverage,
+  symbol-family counts, and individual grouped artifacts initialized as not
+  audited. The register is read-only and has no actor or decision history.
 - In scope: stable cross-run symbol identity, audit policy and scope, reviewer
   and approver roles, authorized state transitions, persisted decisions and
   evidence, inventory reconciliation, and manager aggregation.
 - Required boundaries: declaration/definition duplicates must be resolved by an
   explicit identity rule; skipped-file causes remain visible; pending approval
   is not treated as audited; historical decisions retain actor and policy
-  versions; aggregate totals derive from the same persisted records.
+  versions; aggregate totals derive from the same persisted records; large
+  inventories use pagination or virtualization rather than an unbounded DOM.
 - Acceptance evidence: identity fixtures across source changes, authorization
   and transition tests, replayable decision history, skipped-file reconciliation,
   and developer/manager end-to-end audit summaries.

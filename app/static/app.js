@@ -154,21 +154,55 @@ function reportCases(report) {
 function visibleStages(report) {
     return (report.stages || []).filter(stage =>
         (stage.inventory?.items || []).length > 0 ||
+        (stage.inventory?.groups || []).some(group => (group.artifacts || []).length > 0) ||
         (stage.checks || []).some(check => (check.cases || []).length > 0)
     );
 }
-function renderStageInventory(inventory, items) {
-    const audit = inventory.audit || { status: "not_tracked" };
+function renderInventoryArtifact(artifact) {
+    const evidence = artifact.evidence || [];
+    const auditLabel = String(artifact.audit_status || "not_audited").replaceAll("_", " ");
+    return `<article class="inventory-artifact" data-artifact-id="${escapeHtml(artifact.artifact_id)}">
+        <div class="inventory-artifact-main"><div class="inventory-artifact-title"><strong>${escapeHtml(artifact.name || "Unnamed artifact")}</strong><span class="pill warning">${escapeHtml(auditLabel)}</span></div>
+        <div class="case-location">${escapeHtml(artifact.location || "")}</div>
+        ${evidence.length ? `<ul class="inventory-evidence">${evidence.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : ""}</div>
+        <p class="inventory-reason">${artifact.audit_reason ? `<strong>Audit rationale:</strong> ${escapeHtml(artifact.audit_reason)}` : "No audit rationale recorded."}</p>
+    </article>`;
+}
+function renderInventoryGroup(group, index) {
+    const artifacts = group.artifacts || [];
+    const audited = artifacts.filter(item => item.audit_status === "audited").length;
+    const pending = artifacts.filter(item => item.audit_status === "pending_approval").length;
+    const notAudited = artifacts.length - audited - pending;
+    return `<details class="inventory-group" ${index === 0 ? "open" : ""}>
+        <summary><span><strong>${escapeHtml(group.label)}</strong><small>${artifacts.length} identified</small></span><span class="inventory-group-audit">${audited} audited · ${pending} pending · ${notAudited} not audited</span></summary>
+        <div class="inventory-artifacts">${artifacts.map(renderInventoryArtifact).join("")}</div>
+    </details>`;
+}
+function renderStageInventory(inventory, items, groups) {
+    const audit = inventory.audit || {};
     const parsedFiles = inventory.parsed_files || 0;
     const skippedFiles = inventory.skipped_files || 0;
-    const auditContent = audit.status === "tracked"
-        ? `<div class="inventory-audit-values"><span><strong>${audit.audited ?? 0}</strong> audited</span><span><strong>${audit.pending_approval ?? 0}</strong> pending approval</span><span><strong>${audit.not_audited ?? 0}</strong> not audited</span></div>`
-        : '<p class="inventory-audit-note"><strong>Audit coverage is not tracked yet.</strong> These are identification counts from the persisted symbol inventory, not review or approval totals.</p>';
+    const hasRegister = groups.some(group => (group.artifacts || []).length > 0);
+    const auditContent = hasRegister
+        ? `<div class="inventory-audit-values"><span><strong>${audit.audited ?? 0}</strong> audited</span><span><strong>${audit.pending_approval ?? 0}</strong> pending approval</span><span><strong>${audit.not_audited ?? 0}</strong> not audited</span></div><p class="inventory-audit-note"><strong>Audit register initialized.</strong> Every extracted record starts as not audited. Review decisions and approvals are not writable yet.</p>`
+        : '<p class="inventory-audit-note"><strong>Detailed audit register is unavailable for this report.</strong> Re-run the review to generate individual artifact records.</p>';
     return `<div class="inventory-summary">
         <div class="inventory-coverage"><span><strong>${parsedFiles}</strong> ${parsedFiles === 1 ? "file" : "files"} parsed</span><span><strong>${skippedFiles}</strong> ${skippedFiles === 1 ? "file" : "files"} skipped</span><code>${escapeHtml(inventory.source_artifact || "analysis/symbols.json")}</code></div>
+        <div class="inventory-summary-heading"><h3>Identified artifact summary</h3><p>Counts are derived from the generated symbol inventory.</p></div>
         <div class="inventory-grid">${items.map(item => `<article class="inventory-card"><strong>${item.identified || 0}</strong><span>${escapeHtml(item.label)}</span></article>`).join("")}</div>
         ${auditContent}
+        ${hasRegister ? `<div class="inventory-register-heading"><h3>Artifact audit register</h3><p>Open a group to inspect every extracted record and its parser evidence.</p></div><div class="inventory-groups">${groups.filter(group => (group.artifacts || []).length).map(renderInventoryGroup).join("")}</div>` : ""}
     </div>`;
+}
+function filterInventoryGroups(groups, query, stageMatchesQuery) {
+    if (!query || stageMatchesQuery) return groups;
+    return groups.map(group => {
+        const groupMatches = [group.label, group.group_id].join(" ").toLowerCase().includes(query);
+        const artifacts = groupMatches ? (group.artifacts || []) : (group.artifacts || []).filter(artifact =>
+            [artifact.name, artifact.location, artifact.audit_status, artifact.audit_reason, ...(artifact.evidence || [])].join(" ").toLowerCase().includes(query)
+        );
+        return { ...group, artifacts };
+    }).filter(group => group.artifacts.length);
 }
 function statusName(status) {
     const normalized = String(status || "").toUpperCase();
@@ -297,11 +331,13 @@ function renderStages(report) {
     const cards = visibleStages(report).filter(stage => !wantedStages.size || wantedStages.has(stage.stage_id)).map(stage => {
         const inventory = stage.inventory || {};
         const inventoryItems = inventory.items || [];
+        const inventoryGroups = inventory.groups || [];
         const stageMatchesQuery = !query || [stage.title, stage.stage_id].join(" ").toLowerCase().includes(query);
         const matchingInventory = stageMatchesQuery
             ? inventoryItems
             : inventoryItems.filter(item => [item.label, item.inventory_id].join(" ").toLowerCase().includes(query));
-        const showInventory = matchingInventory.length > 0 && !wantedStatuses.size && !wantedChecks.size;
+        const matchingGroups = filterInventoryGroups(inventoryGroups, query, stageMatchesQuery);
+        const showInventory = (matchingInventory.length > 0 || matchingGroups.length > 0) && !wantedStatuses.size && !wantedChecks.size;
         const renderedChecks = (stage.checks || []).filter(check => !wantedChecks.size || wantedChecks.has(check.check_id)).map(check => {
             const cases = (check.cases || []).filter(item => {
                 const haystack = [item.name, item.location, check.title, stage.title, ...(item.reasons || [])].join(" ").toLowerCase();
@@ -319,12 +355,13 @@ function renderStages(report) {
         const summary = stage.summary || {};
         const hasFailures = (summary.failed || 0) > 0;
         const identified = inventoryItems.reduce((total, item) => total + (item.identified || 0), 0);
-        const stageDetail = inventoryItems.length
+        const hasInventory = inventoryItems.length || inventoryGroups.length;
+        const stageDetail = hasInventory
             ? `${identified} extracted records · ${inventory.parsed_files || 0} parsed files · ${inventory.skipped_files || 0} skipped files`
             : `${summary.failed || 0} failed · ${summary.skipped || 0} skipped · ${summary.passed || 0} passed`;
-        const content = (showInventory ? renderStageInventory(inventory, matchingInventory) : "") + renderedChecks;
+        const content = (showInventory ? renderStageInventory(inventory, matchingInventory, matchingGroups) : "") + renderedChecks;
         if (!content) return "";
-        return `<section class="stage-card" data-stage-id="${escapeHtml(stage.stage_id)}"><div class="stage-heading"><div><h2>${escapeHtml(stage.title)}</h2><div class="section-sub">${stageDetail}</div></div><span class="pill ${hasFailures ? "failed" : "passed"}">${hasFailures ? "Failed" : (inventoryItems.length ? "Inventory ready" : "Completed")}</span></div><div class="check-list">${content}</div></section>`;
+        return `<section class="stage-card" data-stage-id="${escapeHtml(stage.stage_id)}"><div class="stage-heading"><div><h2>${escapeHtml(stage.title)}</h2><div class="section-sub">${stageDetail}</div></div><span class="pill ${hasFailures ? "failed" : "passed"}">${hasFailures ? "Failed" : (hasInventory ? "Inventory ready" : "Completed")}</span></div><div class="check-list">${content}</div></section>`;
     }).filter(Boolean);
     document.getElementById("stages").innerHTML = cards.join("") || '<div class="empty-state">No results match the current filters.</div>';
 }
