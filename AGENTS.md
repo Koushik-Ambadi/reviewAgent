@@ -41,6 +41,28 @@
 - In the final report, name the documentation updated. If no documentation was
   needed, state why.
 
+## Deferred defect register
+
+- `docs/engineering/known-issues.md` is the authoritative project-wide register
+  for observed bugs that are not being fixed immediately. Record the defect
+  before completing the task that surfaced it; do not leave it only in chat,
+  terminal output, a roadmap paragraph, or a generic TODO.
+- Assign a stable `BUG-NNN` ID and record status, fixed/not-fixed state, impact,
+  evidence confidence, affected paths, smallest known reproduction, workaround,
+  unknowns, selected remediation or decision needed, and closure evidence.
+- Keep facts honest: label user-supplied or historical evidence as recorded,
+  distinguish inference from reproduction, and never mark a workaround or
+  accepted design as a completed fix.
+- Use `OPEN`, `PLANNED`, `IN_PROGRESS`, `MITIGATED`, `RESOLVED`, `ACCEPTED`, or
+  `SUPERSEDED`. Change an issue to `RESOLVED` only after linking the fixing
+  commit and proportional regression evidence.
+- When work starts or finishes, update the same issue entry and the owning
+  architecture, decision, testing, history, or roadmap record only when their
+  update triggers apply. Link rather than duplicating the full issue narrative.
+- This register is for non-urgent or deliberately deferred defects. Escalate
+  urgent security, data-loss, destructive, or release-blocking problems through
+  the appropriate immediate workflow as well as recording them.
+
 ## Incremental delivery and commits
 
 - For implementation work, split the task into the smallest cohesive increments

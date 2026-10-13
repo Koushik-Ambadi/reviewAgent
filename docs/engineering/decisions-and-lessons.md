@@ -2,7 +2,7 @@
 
 - Status: append-only reconstructed decision record
 - Created: 2026-10-06
-- Last reviewed: 2026-10-06
+- Last reviewed: 2026-10-13
 - Update trigger: accepted/superseded decision or stronger historical evidence
 - Source of truth for: consequential technical rationale and durable problems
 - Does not own: daily chronology, current architecture, or future priorities
@@ -371,6 +371,36 @@ No motive is attributed where the repository does not support it.
   precede production scale.
 - Validation: hand-checkable projection and serialization assertions,
   deterministic-ID assertion, evidence-pack assertion, and JavaScript syntax.
+
+## D017 — Preflight and selectively extract review archives
+
+- Date: 2026-10-13
+- Status: accepted design; implementation deferred to G01
+- Scope: ZIP ingestion for review workspaces
+- Trigger: BUG-001 records a Windows `WinError 206` during `extractall` on a
+  deeply nested `.git/refs/codex/turn-diffs/checkpoints/` member. Removing
+  `.git` allowed the reported archive to extract.
+- Evidence boundary: the failure and workaround are recorded from the supplied
+  investigation; the two original ZIPs were not compared or replayed here.
+- Decision: preflight the entire archive, exclude non-consumed `.git` metadata,
+  enforce path and resource limits, and then extract approved members
+  individually into the run workspace. Return typed ingestion failures as 4xx
+  responses and retain exclusion/rejection reason counts for run provenance.
+- Security requirements: reject traversal, absolute/drive/UNC, NUL, and
+  link-like members; bound entry count, expanded size, compression ratio,
+  nesting depth, and predicted resolved path length; clean partial output after
+  failure.
+- Alternatives rejected: enabling Windows long paths as the only remedy,
+  continuing unrestricted `extractall`, silently ignoring write errors, and
+  requiring every user to rebuild ZIPs manually without `.git`.
+- Consequences: ingestion becomes more explicit and testable but needs a
+  documented archive policy. Excluding `.git` means future checks that require
+  repository history must obtain it through a separate governed source.
+- Validation required: compact Windows long-path fixture; malicious-member and
+  archive-limit tests; source equivalence with/without `.git`; cleanup test; API
+  4xx smoke; and comparison of the two reported ZIP manifests if available.
+- Implementation references: none yet. This decision is not a fix.
+- Related: [BUG-001](known-issues.md#bug-001--windows-zip-extraction-fails-on-overlong-nested-git-paths), G01.
 
 ## Durable problem and learning ledger
 

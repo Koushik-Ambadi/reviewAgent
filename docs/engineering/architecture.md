@@ -2,7 +2,7 @@
 
 - Status: living
 - Created: 2026-10-06
-- Last reviewed: 2026-10-10 for the analysis artifact audit register
+- Last reviewed: 2026-10-13 for the deferred ZIP-ingestion defect boundary
 - Update trigger: module boundary, interface, data contract, dependency, or
   execution-flow change
 - Source of truth for: current system shape and module responsibilities
@@ -335,6 +335,9 @@ The API returns templates; the pipeline owns execution-time loading.
 
 The package implements orchestration/facade and adapter-dispatch patterns. ZIP
 extraction currently uses `extractall` without member-path validation.
+The resulting Windows long-path failure is tracked as
+[BUG-001](known-issues.md#bug-001--windows-zip-extraction-fails-on-overlong-nested-git-paths);
+the selected remediation remains unimplemented.
 
 ### `repo_build`
 
@@ -493,7 +496,8 @@ Roadmap gates may link them, but must not become a duplicate constraint owner.
 
 - ZIP ingestion uses `ZipFile.extractall` without member-path, link, entry-count,
   or expanded-size validation; uploads are read fully into memory without a
-  configured size limit.
+  configured size limit. Deep archive members can also fail with Windows path
+  error 206; see BUG-001.
 - Run and policy identifiers become path components without a strict validated
   identifier contract.
 - HTTP endpoints have no authentication or authorization.

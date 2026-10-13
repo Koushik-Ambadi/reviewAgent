@@ -20,6 +20,8 @@ Current project knowledge lives in [`engineering/`](engineering/):
   retained runs, hashes, constraints, and isolated replay procedure.
 - [Roadmap](engineering/roadmap.md) -- future gates, dependencies, priorities,
   and acceptance evidence derived from current engineering records.
+- [Known issues](engineering/known-issues.md) -- authoritative status,
+  evidence, selected remediation, and resolution proof for deferred defects.
 
 Current constraints remain with the architecture, module, testing, contract,
 decision, operational, or standards record that demonstrates them. Skill views,
@@ -60,6 +62,9 @@ instructions or active application modules. See the
 - Put serialized interface definitions under `contracts/`.
 - Keep each constraint in the record that proves it; keep only future work in
   the roadmap.
+- Record a non-urgent defect once in `engineering/known-issues.md`; link its
+  architectural constraint, decision, test evidence, and roadmap gate instead
+  of copying the complete issue narrative into those records.
 - Derive profiles, assessments, and narrative ideas on demand from authoritative
   records instead of maintaining parallel summaries.
 - Write records in one project voice: describe what happened, why, evidence,

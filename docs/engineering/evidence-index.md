@@ -2,7 +2,7 @@
 
 - Status: frozen review plus living navigation
 - Created: 2026-10-06
-- Last reviewed: 2026-10-06
+- Last reviewed: 2026-10-13 for living documentation navigation
 - Review revision: `c603a69ddf97a9b8c9970e2e922c289209e0d591`
 - Scope: all 31 commits reachable from all local refs, current tracked source,
   existing documentation, manual tests, and retained `workspace/runs` artifacts
@@ -50,6 +50,7 @@ fully reproducible benchmark evidence.
 | Decisions and durable lessons | [`decisions-and-lessons.md`](decisions-and-lessons.md) | Reconstructed decisions with confidence, alternatives, consequences | Decision accepted, superseded, or better evidence recovered |
 | Verification and reproduction | [`testing-and-replay.md`](testing-and-replay.md) | Test status, run inventory, commands, isolation, provenance | Test/run/environment contract changes |
 | Future gates | [`roadmap.md`](roadmap.md) | Prioritized future work, dependencies, and acceptance evidence derived from current records | Priority, dependency, evidence, or gate status changes |
+| Deferred defects | [`known-issues.md`](known-issues.md) | Status, evidence, remediation selection, and closure proof for non-urgent project-wide bugs | Defect observed, triaged, mitigated, scheduled, fixed, verified, accepted, or superseded |
 | Check coverage and backlog | [`../standards/review-check-catalog.md`](../standards/review-check-catalog.md) | Rule-by-rule implementation map | Check coverage changes |
 | Policy/source mapping | [`../standards/naming-policy-audit.md`](../standards/naming-policy-audit.md) | Naming automation versus source rule | Naming rule implementation changes |
 | Result schema | [`../contracts/run-result.md`](../contracts/run-result.md) | `RunResult` field and persistence contract | Schema or envelope changes |

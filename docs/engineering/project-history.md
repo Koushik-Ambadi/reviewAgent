@@ -648,3 +648,45 @@ and third-party artifacts and must not be interpreted as effort or quality.
   Analysis inventory entirely.
 - Production audit transitions, actors, approvals, history, stable cross-run
   identity, and large-inventory virtualization remain roadmap gate G12.
+
+## 2026-10-13 — Deferred defect governance
+
+### 16:23:45 +05:30 — Record ZIP long-path failure and open defect policy gate
+
+- Recorded the supplied Windows `WinError 206` investigation as BUG-001 without
+  changing ingestion code or manipulating either source ZIP.
+- Starting state: branch `codex/atomic-naming-rules` at `bc1c403`; worktree and
+  index clean.
+- Evidence boundary: exception details, input paths, `.git` member location,
+  source-edit note, and successful manual `.git` removal are recorded from the
+  supplied report and were not independently replayed.
+- Selected D017 as the deferred design: preflight and bound all members, exclude
+  unused `.git` metadata, extract approved members individually, clean partial
+  output, retain reason counts, and return typed 4xx ingestion errors.
+- Added a project-wide issue owner, tracked agent policy, and workspace-local
+  lifecycle-skill guidance so later non-urgent defects retain stable status,
+  fixed/not-fixed truth, decisions, and closure evidence. The repository's
+  `skills/` directory remains intentionally ignored.
+- Authorization boundary: documentation and workflow policy only. No product
+  fix, archive comparison, or test run is permitted in this increment. BUG-001
+  is `PLANNED` because D017 is accepted under G01, but it remains explicitly not
+  fixed.
+
+### 16:31:15 +05:30 — Complete deferred defect record and policy increment
+
+- BUG-001 is the first entry in the new authoritative known-issues register. Its
+  summary and detail both state `PLANNED` and `Fixed: No`; the `.git` removal is
+  retained only as a workaround.
+- Architecture now links the current unsafe `extractall` boundary, D017 owns the
+  selected remediation rationale, and G01 owns future implementation priority
+  and acceptance scope.
+- `AGENTS.md` now requires stable IDs, evidence confidence, explicit lifecycle
+  states, and fixing commit/regression evidence before `RESOLVED`. The local
+  lifecycle skill has matching routing and guidance under ignored `skills/`.
+- Verification was documentation-proportional: referenced paths existed,
+  BUG-001/D017/policy cross-links were found, and `git diff --check` passed with
+  line-ending warnings only. No application tests or ZIP replay were run because
+  no product code changed and the request explicitly deferred the fix.
+- Next executable gate: when G01 starts, change BUG-001 to `IN_PROGRESS`, retain
+  the compact failing fixtures, implement selective extraction and API mapping,
+  then link the fixing commit and regression evidence before `RESOLVED`.

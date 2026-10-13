@@ -2,7 +2,7 @@
 
 - Status: living
 - Created: 2026-10-06
-- Last reviewed: 2026-10-10
+- Last reviewed: 2026-10-13
 - Update trigger: priority, dependency, acceptance evidence, or gate status changes
 - Source of truth for: future engineering gates and their ordering
 - Does not own: current behavior, module constraints, test status, or rule-level
@@ -35,6 +35,10 @@ changes. Do not maintain a second project-wide gap inventory here.
 - In scope: safe archive member validation, expanded-size/entry/file limits,
   strict run/policy identifiers, authentication/authorization, build isolation
   or disablement, timeouts, resource quotas, and security tests.
+- Known defect: [BUG-001](known-issues.md#bug-001--windows-zip-extraction-fails-on-overlong-nested-git-paths)
+  requires selective extraction, `.git` exclusion, Windows target-path
+  preflight, bounded archive policies, partial-workspace cleanup, and typed 4xx
+  error mapping.
 - Out of scope: new coding-standard checks.
 - Acceptance evidence: malicious archive/path test suite; build threat model;
   authorization tests; documented limits; container/OS sandbox proof.
