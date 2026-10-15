@@ -53,6 +53,7 @@ fully reproducible benchmark evidence.
 | Deferred defects | [`known-issues.md`](known-issues.md) | Status, evidence, remediation selection, and closure proof for non-urgent project-wide bugs | Defect observed, triaged, mitigated, scheduled, fixed, verified, accepted, or superseded |
 | Check coverage and backlog | [`../standards/review-check-catalog.md`](../standards/review-check-catalog.md) | Rule-by-rule implementation map | Check coverage changes |
 | Policy/source mapping | [`../standards/naming-policy-audit.md`](../standards/naming-policy-audit.md) | Naming automation versus source rule | Naming rule implementation changes |
+| LLM remediation readiness | [`../standards/llm-remediation-readiness.md`](../standards/llm-remediation-readiness.md) | Failed-check solvability, missing context, and proposed model-input contract | Report, check, policy, or remediation input changes |
 | Result schema | [`../contracts/run-result.md`](../contracts/run-result.md) | `RunResult` field and persistence contract | Schema or envelope changes |
 
 ## Review method

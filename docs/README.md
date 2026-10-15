@@ -38,6 +38,7 @@ automation map:
   [machine-readable YAML](standards/coding-standard-rulebook.yaml).
 - [Review check catalog](standards/review-check-catalog.md).
 - [Naming policy audit](standards/naming-policy-audit.md).
+- [LLM remediation input readiness audit](standards/llm-remediation-readiness.md).
 - [`standards/sources/`](standards/sources/) contains the original Word source
   documents. Derived rulebooks and audits must remain traceable to these sources.
 
