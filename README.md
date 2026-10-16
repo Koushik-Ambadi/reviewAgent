@@ -52,11 +52,13 @@ in [Testing, retained runs, and replay](docs/engineering/testing-and-replay.md).
 
 ## Model-assisted remediation prototype
 
-Set `OPENAI_API_KEY` in the environment that starts the application to enable
-rename candidates. Do not put the key in this repository, a run artifact, or a
-browser request. `OPENAI_REMEDIATION_MODEL` optionally overrides the prototype
-default (`gpt-5-nano`), and `OPENAI_REMEDIATION_TIMEOUT_SECONDS` overrides the
-30-second request timeout.
+Open `.env.local` in the repository root and replace
+`replace_with_your_openai_api_key` with the real key, then restart `run.bat`.
+The file is ignored by Git and loaded automatically at application startup. Do
+not put the key in `.env.local.example`, a run artifact, or a browser request.
+The tracked example documents the supported fields. `OPENAI_REMEDIATION_MODEL`
+optionally overrides the prototype default (`gpt-5-nano`), and
+`OPENAI_REMEDIATION_TIMEOUT_SECONDS` overrides the 30-second request timeout.
 
 The remediation drawer proposes names; it never edits uploaded source. It asks
 for narrowly scoped developer context when a failed case does not reveal its

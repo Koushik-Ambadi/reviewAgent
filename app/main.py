@@ -3,6 +3,11 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
+from app.local_env import load_local_env
+
+
+load_local_env()
+
 from app.api.review import (
     router as review_router,
 )

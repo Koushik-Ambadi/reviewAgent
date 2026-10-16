@@ -383,6 +383,12 @@ retries one transient network/429/5xx failure. It never persists credentials.
 The placeholder remains an offline compatibility provider, and the former
 future-provider name is now an alias.
 
+At startup, `app.local_env` loads only the three allow-listed remediation
+settings from repository-root `.env.local`, without overriding process
+environment values. The real local file is Git-ignored; `.env.local.example` is
+the tracked shape. Placeholder and empty values are ignored, malformed or
+unknown keys stop startup, and no loaded value is logged or added to run data.
+
 The remediation service rejects policy-version drift, persists new plans, and
 replaces a continued plan by `remediation_id`. Its API returns candidates,
 confidence, validation, questions, limitations, usage, and the rules once. No

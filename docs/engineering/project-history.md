@@ -784,3 +784,19 @@ and third-party artifacts and must not be interpreted as effort or quality.
   artifacts, or logs. Once the user configures the environment, run one retained
   function-name request and one question continuation, record response/token
   evidence, and rotate the disclosed credential.
+
+### 15:16:52 +05:30 — Add one-place local credential configuration
+
+- User workflow: edit repository-root `.env.local`, replace the dummy value,
+  save, and restart `run.bat`. The tracked `.env.local.example` documents the
+  same supported fields without containing a secret.
+- Security choice: ignore the editable file in Git, load only three allow-listed
+  remediation settings, preserve higher-priority process environment values,
+  ignore empty/dummy values, reject unknown keys, and never log loaded values.
+- Alternative considered: parse the file only in `run.bat`. Application-level
+  loading was selected so direct Uvicorn and test launches behave consistently.
+  Adding a dotenv dependency was unnecessary for the three-field contract.
+- Verification: Python syntax, all 13 focused direct tests, application import,
+  placeholder-not-loaded assertion, Git ignore evidence, fresh Uvicorn startup,
+  and an HTTP 200 root smoke passed. The real key remains user-owned and was not
+  copied from chat.

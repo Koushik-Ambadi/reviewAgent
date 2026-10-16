@@ -378,3 +378,11 @@ because `OPENAI_API_KEY` was absent from the app environment. When configured,
 open the retained run, request a function-name remediation, answer any question,
 and confirm plan count is unchanged after continuation. Never paste a credential
 into a command or persist it in a run artifact.
+
+Local credential loading was verified separately with two focused tests: an
+allow-listed value loads, an existing process variable wins, the dummy
+placeholder is ignored, and an unknown key fails closed. Importing `app.main`
+with the checked-in dummy file succeeds and leaves `OPENAI_API_KEY` unset.
+`git check-ignore -v .env.local` confirms the editable secret file is ignored.
+The combined focused set contains 13 passing tests, and a fresh Uvicorn startup
+with the dummy file returned HTTP 200 from the static root.
