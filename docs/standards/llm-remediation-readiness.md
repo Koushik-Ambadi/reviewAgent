@@ -10,6 +10,14 @@
   [`naming-policy-audit.md`](naming-policy-audit.md), and
   [`architecture.md`](../engineering/architecture.md)
 
+> Implementation note (2026-10-16): this audit's broad “minimum model input”
+> describes evidence eventually needed for safe repository patching. Current
+> candidate generation deliberately uses the smaller compiled contract in
+> [Remediation generation](../engineering/remediation-generation.md): readable
+> failed-rule lines and current names, with IDs, locations, validator metadata,
+> exclusions, and full-policy validation retained in the application. Safe patch
+> generation still requires the richer source/ownership/reference context below.
+
 ## Question and decision standard
 
 The proposed model input is one failed check at a time, containing its failed

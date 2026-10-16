@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import json
 import os
 import re
 import time
@@ -11,7 +10,13 @@ from uuid import uuid4
 
 import httpx
 
-from repo_review.checks.naming.common_identifier import evaluate_atomic_rules
+from repo_remediation.llm import (
+    RemediationModelSettings,
+    compile_remediation_prompt,
+    parse_structured_response,
+    restore_case_ids,
+    validate_candidate,
+)
 
 
 class RemediationProviderError(RuntimeError):
@@ -199,7 +204,8 @@ class OpenAIRemediationProvider(RemediationProvider):
         model: str | None = None,
     ) -> None:
         self.client = client or OpenAIResponsesClient()
-        self.model = model or os.getenv("OPENAI_REMEDIATION_MODEL", "gpt-5-nano")
+        self.settings = RemediationModelSettings.from_environment(model=model)
+        self.model = self.settings.model
 
     def suggest(
         self,
@@ -239,8 +245,7 @@ class OpenAIRemediationProvider(RemediationProvider):
                     {
                         "case_id": case["case_id"],
                         "name": case.get("name", ""),
-                        "location": case.get("location", ""),
-                        "failed_rule_ids": _rule_ids(case.get("reasons", [])),
+                        "failed_rules": _failed_rules(case.get("reasons", [])),
                         "developer_context": disposition.get(
                             "developer_context", ""
                         ),
@@ -251,13 +256,11 @@ class OpenAIRemediationProvider(RemediationProvider):
         model_evidence: dict[str, Any] | None = None
         provider_call: dict[str, Any] | None = None
         if eligible_cases:
-            payload = _responses_payload(
-                model=self.model,
-                module_name=module_name,
-                check_id=check["check_id"],
-                check_policy=_automatic_policy(check_policy),
+            compiled_prompt = compile_remediation_prompt(
+                settings=self.settings,
                 cases=eligible_cases,
             )
+            payload = compiled_prompt.payload
             try:
                 response_with_trace = self.client.create(payload)
             except RemediationProviderError as error:
@@ -294,15 +297,20 @@ class OpenAIRemediationProvider(RemediationProvider):
                 "response": _redact_sensitive(response),
             }
             try:
-                parsed = _parse_structured_response(response)
+                parsed = parse_structured_response(response)
+                restored_results = restore_case_ids(
+                    parsed["cases"],
+                    compiled_prompt.case_ref_to_id,
+                )
                 suggestions, model_questions, model_limitations = _model_results(
                     check_id=check["check_id"],
                     module_name=module_name,
                     check_policy=check_policy,
                     requested_cases=eligible_cases,
-                    results=parsed["cases"],
+                    results=restored_results,
                 )
-            except RemediationProviderError as error:
+            except (RemediationProviderError, ValueError) as caught_error:
+                error = RemediationProviderError(str(caught_error))
                 error.call_trace = _failed_turn(
                     turn_id=turn_id,
                     started_at=turn_started_at,
@@ -316,7 +324,7 @@ class OpenAIRemediationProvider(RemediationProvider):
                     provider_trace=provider_call,
                     message=str(error),
                 )
-                raise
+                raise error from caught_error
             questions.extend(model_questions)
             limitations.extend(model_limitations)
             model_evidence = _model_evidence(response, self.model)
@@ -438,43 +446,6 @@ class FutureOpenAIRemediationProvider(OpenAIRemediationProvider):
     """Compatibility alias for the formerly reserved provider name."""
 
 
-_RESPONSE_SCHEMA: dict[str, Any] = {
-    "type": "object",
-    "additionalProperties": False,
-    "properties": {
-        "cases": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "additionalProperties": False,
-                "properties": {
-                    "case_id": {"type": "string"},
-                    "disposition": {
-                        "type": "string",
-                        "enum": ["candidate", "context_required"],
-                    },
-                    "candidate": {"type": "string"},
-                    "confidence": {
-                        "type": "string",
-                        "enum": ["low", "medium", "high"],
-                    },
-                    "note": {"type": "string"},
-                    "question": {"type": "string"},
-                },
-                "required": [
-                    "case_id",
-                    "disposition",
-                    "candidate",
-                    "confidence",
-                    "note",
-                    "question",
-                ],
-            },
-        }
-    },
-    "required": ["cases"],
-}
-
 _GLOBAL_CATEGORICAL_RULES = {
     "ABS-POLICY-GLOBAL-DATA-TYPE",
     "ABS-POLICY-GLOBAL-DATA-SIZE",
@@ -490,53 +461,6 @@ _SEMANTIC_RULES = {
     "ABS-POLICY-TYPE-DESCRIPTION",
     "ABS-POLICY-ENUM-DESCRIPTION",
 }
-
-
-def _responses_payload(
-    *,
-    model: str,
-    module_name: str,
-    check_id: str,
-    check_policy: Any,
-    cases: list[dict[str, Any]],
-) -> dict[str, Any]:
-    developer_prompt = (
-        "Generate concise policy-compliant identifier candidates for the supplied "
-        "failed cases. The check policy is supplied once; each case references only "
-        "its failed rule IDs. Preserve the meaning visible in the current identifier "
-        "and developer context. Abbreviate long names conservatively. Do not repeat "
-        "rules or explanations. If meaning is insufficient, return context_required "
-        "with one short, specific question. Never invent or change global variable "
-        "type, size, module, or unit segments. Return every case exactly once."
-    )
-    remediation_input = {
-        "module": module_name,
-        "check_id": check_id,
-        "policy": check_policy,
-        "cases": cases,
-    }
-    return {
-        "model": model,
-        "store": False,
-        "reasoning": {"effort": "minimal"},
-        "max_output_tokens": max(400, min(1600, 160 + 120 * len(cases))),
-        "input": [
-            {"role": "developer", "content": developer_prompt},
-            {
-                "role": "user",
-                "content": json.dumps(remediation_input, separators=(",", ":")),
-            },
-        ],
-        "text": {
-            "format": {
-                "type": "json_schema",
-                "name": "remediation_batch",
-                "strict": True,
-                "schema": _RESPONSE_SCHEMA,
-            },
-            "verbosity": "low",
-        },
-    }
 
 
 def _preflight_case(
@@ -682,11 +606,11 @@ def _model_results(
                 }
             )
             continue
-        validation_status, validation_reasons = _validate_candidate(
-            check_id,
-            candidate,
-            module_name,
-            check_policy,
+        validation_status, validation_reasons = validate_candidate(
+            check_id=check_id,
+            candidate=candidate,
+            module_name=module_name,
+            check_policy=check_policy,
         )
         if validation_status == "failed":
             limitations.append(
@@ -716,50 +640,6 @@ def _model_results(
             }
         )
     return suggestions, questions, limitations
-
-
-def _validate_candidate(
-    check_id: str,
-    candidate: str,
-    module_name: str,
-    check_policy: Any,
-) -> tuple[str, list[str]]:
-    if check_id == "global_variable_names":
-        return "not_available_without_symbol_type", []
-    if not isinstance(check_policy, dict) or "rules" not in check_policy:
-        return "not_available", []
-    reasons = evaluate_atomic_rules(
-        candidate,
-        check_policy["rules"],
-        context={"module": module_name},
-    )
-    return ("failed", reasons) if reasons else ("passed", [])
-
-
-def _parse_structured_response(response: dict[str, Any]) -> dict[str, Any]:
-    for output in response.get("output", []):
-        if output.get("type") != "message":
-            continue
-        for content in output.get("content", []):
-            if content.get("type") == "refusal":
-                raise RemediationProviderError(
-                    "The model refused the remediation request."
-                )
-            if content.get("type") == "output_text":
-                try:
-                    parsed = json.loads(content["text"])
-                except (KeyError, TypeError, json.JSONDecodeError) as error:
-                    raise RemediationProviderError(
-                        "Model remediation returned invalid structured output."
-                    ) from error
-                if not isinstance(parsed, dict) or not isinstance(
-                    parsed.get("cases"), list
-                ):
-                    raise RemediationProviderError(
-                        "Model remediation returned an unexpected structured output shape."
-                    )
-                return parsed
-    raise RemediationProviderError("Model remediation returned no output text.")
 
 
 def _model_evidence(response: dict[str, Any], model: str) -> dict[str, Any]:
@@ -930,23 +810,18 @@ def _rule_ids(reasons: list[Any]) -> list[str]:
     return ids
 
 
-def _automatic_policy(policy: Any) -> Any:
-    if not isinstance(policy, dict):
-        return policy
-    result: dict[str, Any] = {}
-    for key, value in policy.items():
-        if key in {"source_rules", "source_exemptions"}:
-            continue
-        if key == "rules" and isinstance(value, list):
-            result[key] = [
-                item
-                for item in value
-                if not isinstance(item, dict)
-                or item.get("mode", "automatic") == "automatic"
-            ]
-        else:
-            result[key] = value
-    return result
+def _failed_rules(reasons: list[Any]) -> list[dict[str, str]]:
+    failed_rules: list[dict[str, str]] = []
+    for index, reason in enumerate(reasons, start=1):
+        text = str(reason)
+        match = re.match(r"^\[([^\]]+)\]\s*(.*)$", text)
+        failed_rules.append(
+            {
+                "rule_id": match.group(1) if match else f"finding-{index}",
+                "text": match.group(2) if match else text,
+            }
+        )
+    return failed_rules
 
 
 def _display_rules(policy: Any) -> list[dict[str, str]]:

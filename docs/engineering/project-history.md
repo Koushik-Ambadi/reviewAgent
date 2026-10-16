@@ -882,3 +882,27 @@ and third-party artifacts and must not be interpreted as effort or quality.
   `SyntaxError` before importing or executing the script. A corrected in-memory
   fake response then exercised direct output parsing/highlighting and confirmed
   the payload contains only `failed_case`, `actual_policy`, and `output_format`.
+
+### 23:42:12 +05:30 — Compile compact model-facing remediation input
+
+- The retained production trace showed the model understood the lowercase rule
+  but returned the unchanged name. The successful isolated smoke showed the
+  same model could produce the correct name from a minimal request.
+- Added `repo_remediation/llm/` boundaries for model settings, prompt
+  compilation, structured output parsing/correlation, and full-policy candidate
+  validation. The provider now delegates these responsibilities while retaining
+  its external contract and trace behavior.
+- Model input now omits persistent IDs, locations, rule IDs, modes, validators,
+  operands, passing rules, and applicability exclusions. It sends readable
+  failed-rule lines with private prompt-local references; application IDs are
+  restored only after parsing.
+- The example message content decreased from 3,103 to 424 characters. Fourteen
+  focused tests pass without a live call; BUG-005 moved to `IN_PROGRESS` pending
+  retained live evidence.
+- Two verification harness errors were setup-only: Windows Python received an
+  unexpanded `*.py` path, and a one-line inspection command had malformed
+  quoting. Expanded paths and a PowerShell here-string both passed afterward.
+- A later `pytest` attempt stopped before collection because the package is not
+  installed; the first direct-test retry likewise stopped before collection
+  because `src` was absent from its import path. The supported virtual
+  environment with the path inserted passed all 14 focused tests.

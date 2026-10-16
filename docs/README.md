@@ -12,6 +12,8 @@ Current project knowledge lives in [`engineering/`](engineering/):
   review scope, evidence labels, and repository facts.
 - [Architecture](engineering/architecture.md) -- current modules, interfaces,
   data structures, technology, constraints, and execution flow.
+- [Remediation generation](engineering/remediation-generation.md) -- model
+  prompt/output boundaries, local validation, extension points, and maturity.
 - [Project history](engineering/project-history.md) -- append-only daily and
   commit chronology.
 - [Decisions and lessons](engineering/decisions-and-lessons.md) -- reconstructed

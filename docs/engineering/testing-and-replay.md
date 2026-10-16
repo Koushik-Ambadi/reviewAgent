@@ -429,3 +429,32 @@ It does not persist a run or call log.
 Syntax/import verification does not make a network call. The live output is
 user-run experimental evidence and must not be represented as a regression
 pass until its actual result is retained.
+
+### Compact model-input compiler
+
+The model-facing refactor is verified by 14 focused remediation tests.
+The payload contract assertion now proves that one function-name case contains
+only readable failed `rules`, prompt-local case references, the current name,
+and optional developer context. It asserts that module/check metadata,
+persistent case IDs, locations, validators, full policy objects, and
+applicability exclusions are absent. Existing assertions continue to cover strict output
+parsing, private ID restoration through the provider flow, context questions,
+full-policy candidate validation, logging, retries, and redaction.
+Boundary-specific coverage also proves shared failed rules are emitted once per
+batch and that missing, duplicate, or unknown prompt-local case references are
+rejected before application IDs are restored.
+
+The retained production prompt for `Shunt_msgcountercheck_Init` contains 3,103
+developer/user message characters. The compiled equivalent contains 424, an
+86% reduction in message characters. This is not a token-cost claim because the
+structured output schema and API framing are not included in that comparison.
+
+The first compilation command passed a literal `*.py` to Windows Python and
+failed with `Errno 22`; it did not compile those files. Expanding the paths in
+PowerShell and rerunning passed. A separate one-line prompt-inspection harness
+had malformed quoting and stopped with `SyntaxError`; the corrected here-string
+harness produced the compact payload above. A `pytest` command stopped before
+collection because that package is not installed in the repository environment;
+the first direct-harness retry also stopped before collection because `src` was
+not on its import path. The supported virtual-environment harness with `src`
+inserted passed all 14 tests.

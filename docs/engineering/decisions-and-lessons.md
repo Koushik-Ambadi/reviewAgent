@@ -484,6 +484,43 @@ No motive is attributed where the repository does not support it.
   choose prompt correction, validation feedback/retry, deterministic transforms,
   or a combination based on the recorded failure mode.
 
+## D020 — Compile report policy into a minimal model-facing view
+
+- Date: 2026-10-16
+- Status: accepted prototype
+- Scope: remediation prompt data, output correlation, settings, parsing, and
+  candidate validation boundaries
+- Trigger: the logged production request sent 3,103 message characters for one
+  lowercase correction and returned the unchanged name, while a minimal
+  single-case request returned the correct lowercase candidate.
+- Evidence: the failed production response understood and restated the rule but
+  copied `Shunt_msgcountercheck_Init`; the isolated smoke returned
+  `Shunt_msgcountercheck_init`.
+- Options considered:
+  - continue serializing the full function policy and tune prose only;
+  - send raw validator objects only for failed rules;
+  - compile failed findings into readable atomic rule lines and keep executable
+    policy local.
+- Decision: select the compiled view. Omit persistent IDs, locations, validator
+  implementation fields, passing rules, and applicability exclusions. Use
+  prompt-local ordinals for batch correlation, restore application IDs after
+  parsing, and rerun the full executable policy locally.
+- Why: exclusions have already served their purpose before a case becomes a
+  failure; IDs and locations do not help generate a name; validator metadata is
+  less direct than the resolved failure sentence. Local full-policy validation
+  protects constraints omitted from the prompt.
+- Structure: model settings, prompt compilation, structured-output parsing, and
+  candidate validation now live under `repo_remediation/llm/`. The existing
+  provider remains the compatibility/orchestration surface while later model
+  selection, prompt variants, validation feedback, and evals evolve separately.
+- Validation: 14 focused remediation tests pass; payload assertions prove the
+  excluded fields are absent and the resolved failed rule is present.
+- Limitation: no live production call was made after this change, so BUG-005 is
+  `IN_PROGRESS`, not resolved.
+- External basis: [official OpenAI Structured Outputs guidance](https://developers.openai.com/api/docs/guides/structured-outputs?api-mode=responses)
+  says the schema ensures output shape but content mistakes still require
+  instruction changes, examples, simpler subtasks, and evals.
+
 ## Durable problem and learning ledger
 
 ### P001 — Compiler/preprocessor visibility changes what can be reviewed

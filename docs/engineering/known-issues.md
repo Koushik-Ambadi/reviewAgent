@@ -34,15 +34,16 @@ make an issue fixed. Status changes require dated evidence in the issue entry.
 | BUG-002 | Ignored run workspace was moved to the Windows Recycle Bin | OPEN | No | High until deletion source and backup boundary are known | G02 provenance and retention |
 | BUG-003 | ZIP ingestion deletes caller-owned archives | OPEN | No | High for direct/local ZIP callers | G01 ingestion ownership |
 | BUG-004 | Remediation calls lose raw request/response and turn lineage | RESOLVED | Yes | Closed by `bbacefa` | G11 remediation evidence |
-| BUG-005 | Mechanical naming failures can return unsupported model output | OPEN | No | High for remediation reliability and cost | G11 deterministic remediation |
+| BUG-005 | Mechanical naming failures can return unsupported model output | IN_PROGRESS | No | High for remediation reliability and cost | G11 prompt/evaluation remediation |
 
 ## BUG-005 — Mechanical naming failures can return unsupported model output
 
-- Status: OPEN
+- Status: IN_PROGRESS
 - Fixed: No
 - First observed: 2026-10-16 in run `20261016_153027_9ab948dc`
-- Last updated: 2026-10-16T16:52:38+05:30
-- Affected paths: `src/repo_remediation/providers.py`, function-name remediation
+- Last updated: 2026-10-16T23:40:01+05:30
+- Affected paths: `src/repo_remediation/providers.py`,
+  `src/repo_remediation/llm/`, function-name remediation
 - Impact: an atomic, mechanically solvable case can consume a model call and
   finish `unsupported` with no candidate and no question
 - Evidence confidence: independently reproduced from retained report/remediation
@@ -63,14 +64,15 @@ make an issue fixed. Status changes require dated evidence in the issue entry.
 
 ### Current decision and closure evidence
 
-Do not add deterministic candidate transforms in the current increment. First
-inspect a new live call using the BUG-004 trace so the exact request, raw model
-output, parsed candidate, and validation decision identify the failure layer.
-Then choose among prompt correction, validation feedback/retry, deterministic
-transforms, or a combination. This defers optimization without accepting the
-defect. Closure still requires the selected behavior fix, a retained regression
-for `Shunt_getcurrent_ibatt_mA`, proportional call-count evidence, and the fixing
-commit.
+The trace proved the model understood the lowercase rule but returned the
+unchanged name. The current implementation compiles only readable failed-rule
+lines into the prompt, explicitly requires a changed candidate, keeps IDs and
+validator metadata local, and reruns the full policy after generation. Focused
+offline tests pass, but no post-change live call has verified model behavior.
+Closure requires retained live evidence for the observed lowercase cases,
+unchanged-candidate and policy-pass measurements, proportional call/token
+evidence, and the fixing commit. A bounded corrective retry or deterministic
+fallback remains a later decision based on that evidence.
 
 ## BUG-004 — Remediation calls lose raw request/response and turn lineage
 

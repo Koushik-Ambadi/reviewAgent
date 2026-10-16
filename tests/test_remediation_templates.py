@@ -62,7 +62,7 @@ def test_function_length_batch_calls_model_once_and_validates_candidate():
     client = FakeResponsesClient(
         [
             {
-                "case_id": "case-1",
+                "case_ref": "C1",
                 "disposition": "candidate",
                 "candidate": "Shunt_get_plaus_currfault",
                 "confidence": "medium",
@@ -95,16 +95,32 @@ def test_function_length_batch_calls_model_once_and_validates_candidate():
     assert len(client.payloads) == 1
 
     model_input = json.loads(client.payloads[0]["input"][1]["content"])
-    assert "policy" in model_input
-    assert "reasons" not in model_input["cases"][0]
-    assert model_input["cases"][0]["failed_rule_ids"] == ["ABS-SCS-16.1.d"]
+    assert set(model_input) == {"rules", "cases"}
+    assert model_input["rules"] == [
+        {
+            "ref": "R1",
+            "text": "Function name is 32 characters; the maximum is 31.",
+        }
+    ]
+    assert model_input["cases"] == [
+        {
+            "ref": "C1",
+            "current_name": "Shunt_get_plausibility_currfault",
+            "failed_rules": ["R1"],
+        }
+    ]
+    serialized_input = client.payloads[0]["input"][1]["content"]
+    assert "case_id" not in serialized_input
+    assert "location" not in serialized_input
+    assert "validator" not in serialized_input
+    assert "applicability_exclusions" not in serialized_input
 
 
 def test_unchanged_model_candidate_preserves_raw_and_parsed_trace():
     client = FakeResponsesClient(
         [
             {
-                "case_id": "case-word-case",
+                "case_ref": "C1",
                 "disposition": "candidate",
                 "candidate": "Shunt_getcurrent_ibatt_mA",
                 "confidence": "high",
@@ -170,7 +186,7 @@ def test_parameter_context_continuation_generates_candidate():
     client = FakeResponsesClient(
         [
             {
-                "case_id": "case-p",
+                "case_ref": "C1",
                 "disposition": "candidate",
                 "candidate": "payloadByte",
                 "confidence": "high",
@@ -210,7 +226,7 @@ def test_model_question_can_be_answered_on_a_follow_up():
     question_client = FakeResponsesClient(
         [
             {
-                "case_id": "case-f",
+                "case_ref": "C1",
                 "disposition": "context_required",
                 "candidate": "",
                 "confidence": "low",
@@ -241,7 +257,7 @@ def test_model_question_can_be_answered_on_a_follow_up():
     answer_client = FakeResponsesClient(
         [
             {
-                "case_id": "case-f",
+                "case_ref": "C1",
                 "disposition": "candidate",
                 "candidate": "Shunt_decode_curr",
                 "confidence": "high",
@@ -380,7 +396,7 @@ def test_service_persists_and_replaces_context_continuation():
             candidate_client = FakeResponsesClient(
                 [
                     {
-                        "case_id": "case-p",
+                        "case_ref": "C1",
                         "disposition": "candidate",
                         "candidate": "payloadByte",
                         "confidence": "high",

@@ -368,15 +368,23 @@ changing the synchronous API behavior used by callers that need a final result.
 
 ### `repo_remediation`
 
+Detailed implementation and extension boundaries are owned by
+[Remediation generation](remediation-generation.md).
+
 `RemediationProvider` defines a provider-independent suggestion boundary.
 `OpenAIRemediationProvider` is the interactive default. It receives one failed
 check, that check's active policy, and all selected failed cases. Deterministic
 preflight partitions cases into model-eligible candidates, developer-context
 questions, and unsupported limitations. One strict-schema Responses API call is
-made only when eligible cases remain; the policy is sent once and each case
-carries only failed rule IDs plus any developer answer.
+made only when eligible cases remain. The model-facing compiler sends only
+current names, optional developer context, and readable atomic rules that
+actually failed. Prompt-local `C1`/`R1` references replace persistent
+case/rule IDs. Locations, validator fields, passing rules, and applicability
+exclusions stay outside the prompt.
 
-Ordinary naming candidates are validated again with the atomic-rule evaluator.
+Ordinary naming candidates are validated again against the complete check
+policy with the atomic-rule evaluator, including constraints omitted from the
+compact prompt.
 Global categorical repairs (type, size, module, unit, or invalid segment
 grammar) and required-path creation remain limitations. Single-letter
 parameters, ambiguous local names, symbolic array sizes, and absent semantic
