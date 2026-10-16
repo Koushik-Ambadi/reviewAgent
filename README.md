@@ -72,3 +72,13 @@ appends a diagnostic turn to `remediation-calls.jsonl` inside that run's
 `workspace/runs/<run_id>/` directory. The turn records the redacted provider
 payload, raw response, retries, parsed result, validation outcome, and
 parent/child linkage. API keys and authorization headers are never written.
+
+To make one isolated call with the same `gpt-5-nano` model, a fixed failed case,
+its location, its actual policy rule, and an explicit JSON output format, run:
+
+```powershell
+.\venv313\Scripts\python.exe src\repo_remediation\manual_single_case_test.py
+```
+
+The script loads the ignored `.env.local` key, prints the model's JSON, and
+highlights the returned remediation. It does not create or modify run artifacts.

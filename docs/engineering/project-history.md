@@ -866,3 +866,19 @@ and third-party artifacts and must not be interpreted as effort or quality.
   provider transport evidence, regression coverage, and owning documentation.
 - BUG-004 is now resolved against 12 focused passing tests. BUG-005 remains open
   by design because this increment did not alter prompts or naming decisions.
+
+### 23:06:43 +05:30 — Add isolated single-case model smoke
+
+- Added one directly executable script under `src/repo_remediation/` that sends
+  only a fixed failed function name, its location, the failed rule's actual
+  policy definition, and the requested JSON output format to `gpt-5-nano`.
+- The script prints raw structured output and highlights the proposed rename. It
+  reuses the supported ignored local credential loader and Responses client but
+  intentionally bypasses remediation preflight, validation, persistence, and
+  call logging so prompt behavior can be observed in isolation.
+- Scope excludes a live call; the user will run the script. Verification for
+  this increment is syntax/import and focused payload inspection only.
+- The first inline fake-client harness was malformed and stopped with a Python
+  `SyntaxError` before importing or executing the script. A corrected in-memory
+  fake response then exercised direct output parsing/highlighting and confirmed
+  the payload contains only `failed_case`, `actual_policy`, and `output_format`.

@@ -411,3 +411,21 @@ have `httpx`; no test executed in that attempt. The repository virtual
 environment is the supported test runtime.
 
 This evidence is committed with the trace implementation in `bbacefa`.
+
+### Minimal single-case model smoke
+
+`src/repo_remediation/manual_single_case_test.py` isolates prompt behavior from
+the remediation workflow. It sends `Shunt_msgcountercheck_Init`, its source
+location, only the failed lowercase rule and its actual policy definition, plus
+the required three-field JSON output shape. It uses the same `gpt-5-nano` model,
+loads the ignored `.env.local` credential through the supported loader, disables
+provider storage, prints the raw model JSON, and highlights the returned rename.
+It does not persist a run or call log.
+
+```powershell
+.\venv313\Scripts\python.exe src\repo_remediation\manual_single_case_test.py
+```
+
+Syntax/import verification does not make a network call. The live output is
+user-run experimental evidence and must not be represented as a regression
+pass until its actual result is retained.
