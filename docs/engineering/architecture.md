@@ -363,11 +363,36 @@ changing the synchronous API behavior used by callers that need a final result.
 ### `repo_remediation`
 
 `RemediationProvider` defines a provider-independent suggestion boundary.
-`PlaceholderRemediationProvider` groups failed check cases and applies
-check-specific action/verification templates while preserving each policy-owned
-atomic reason. `FutureOpenAIRemediationProvider` is reserved
-for later implementation and must keep the same output contract. The provider
-does not edit source files or persist developer decisions.
+`OpenAIRemediationProvider` is the interactive default. It receives one failed
+check, that check's active policy, and all selected failed cases. Deterministic
+preflight partitions cases into model-eligible candidates, developer-context
+questions, and unsupported limitations. One strict-schema Responses API call is
+made only when eligible cases remain; the policy is sent once and each case
+carries only failed rule IDs plus any developer answer.
+
+Ordinary naming candidates are validated again with the atomic-rule evaluator.
+Global categorical repairs (type, size, module, unit, or invalid segment
+grammar) and required-path creation remain limitations. Single-letter
+parameters, ambiguous local names, symbolic array sizes, and absent semantic
+descriptions request narrow context. A model may also request one question when
+the visible name is ambiguous.
+
+`OpenAIResponsesClient` reads `OPENAI_API_KEY`, disables response storage,
+bounds output, uses minimal reasoning, applies a configurable timeout, and
+retries one transient network/429/5xx failure. It never persists credentials.
+The placeholder remains an offline compatibility provider, and the former
+future-provider name is now an alias.
+
+The remediation service rejects policy-version drift, persists new plans, and
+replaces a continued plan by `remediation_id`. Its API returns candidates,
+confidence, validation, questions, limitations, usage, and the rules once. No
+provider edits source or treats a candidate as approved.
+
+Prototype limitations remain explicit: reports reference rather than embed the
+exact policy snapshot; repository collisions and references are not checked;
+global candidates cannot be fully revalidated without symbol type; source
+context is manual; and the inexpensive default model is a workflow-test choice,
+not a production quality decision.
 
 The separation is clean but small; it makes execution and result formation
 independently replaceable. The concrete builder is Windows-only, while the

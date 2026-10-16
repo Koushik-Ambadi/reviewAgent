@@ -690,3 +690,54 @@ and third-party artifacts and must not be interpreted as effort or quality.
 - Next executable gate: when G01 starts, change BUG-001 to `IN_PROGRESS`, retain
   the compact failing fixtures, implement selective extraction and API mapping,
   then link the fixing commit and regression evidence before `RESOLVED`.
+
+## 2026-10-16 — Model-assisted remediation prototype
+
+### 13:14:36 +05:30 — Open candidate-or-context remediation gate
+
+- Starting state: branch `codex/atomic-naming-rules` at `cb88b70`; worktree and
+  index clean.
+- Requirement: replace placeholder-only remediation with one conservative
+  failed-check batch flow. Generate naming candidates where the current name
+  and policy are sufficient; request narrow developer context where meaning is
+  absent; do not attempt repository edits.
+- Input boundary: send each check's policy once, failed rule IDs per case, and
+  only user-supplied context in this increment. Source-code context enrichment,
+  reference discovery, collision analysis, and automatic patching remain
+  excluded.
+- Cost boundary: use one structured model request per eligible batch, no model
+  call for deterministically unsupported or context-required cases, concise
+  output, and a configurable low-cost test model.
+- Security boundary: read the API credential only from `OPENAI_API_KEY`; never
+  persist or log it. The credential supplied in chat was not copied into a
+  command or repository file. A live smoke requires the app process to receive
+  the environment variable separately.
+- Provider research: current official OpenAI documentation supports Responses
+  API Structured Outputs. `gpt-5-nano` was selected temporarily for the cheapest
+  workflow smoke; official documentation marks it deprecated, so production
+  model selection remains an explicit exit condition.
+- Intended maturity: prototype. Acceptance covers provider/service/API/UI
+  contracts, focused fake-provider tests, JavaScript syntax, import smoke, and
+  one optional live request. Accuracy evaluation, production retries,
+  observability, authentication, and source mutation are not claimed.
+
+### 13:29:59 +05:30 — Verify backend remediation contract before commit
+
+- Implemented deterministic preflight, one-check structured model batching,
+  atomic-rule candidate validation, narrow context questions, explicit
+  limitations, transient retry/error mapping, and continuation upserts.
+- Replayed retained run `20261013_160052_bd9a5d2b` directly from
+  `workspace/runs`: parameter failures produced four context questions with no
+  model call, required paths produced three limitations, and the selected
+  categorical global failure produced one limitation. These generated plans are
+  run artifacts and remain outside Git.
+- Evidence-to-decision chain: retained atomic failures showed which context is
+  actually absent; that drove deterministic preflight. Shared check policy and
+  repeated rule text drove policy-once batching. The need to answer questions
+  without inflating plan counts drove replace-by-`remediation_id` persistence.
+- Options considered and rejected are owned by D018. The selected boundary
+  favors low call count and truthful uncertainty over speculative names or
+  automatic source mutation.
+- Focused backend tests pass through direct invocation because `pytest` is not
+  installed. This event closes the first backend commit boundary; UI/evidence
+  presentation and final records remain the next increment.

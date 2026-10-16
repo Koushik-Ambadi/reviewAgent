@@ -402,6 +402,40 @@ No motive is attributed where the repository does not support it.
 - Implementation references: none yet. This decision is not a fix.
 - Related: [BUG-001](known-issues.md#bug-001--windows-zip-extraction-fails-on-overlong-nested-git-paths), G01.
 
+## D018 — Generate a candidate or ask one narrow context question
+
+- Date: 2026-10-16
+- Status: accepted prototype; production model/evaluation gate remains G11
+- Scope: naming remediation provider, service/API contract, and persistence
+- Trigger: most lexical, case, prefix, and length failures can produce a useful
+  candidate from the symbol and policy, while semantic names and categorical
+  global-name segments cannot be inferred honestly from that evidence.
+- Decision: process one check as one batch. Run deterministic preflight first,
+  send the policy once and only failed rule IDs per case, and require strict
+  structured output. Return a candidate, one narrow developer question, or an
+  explicit limitation. Continue the same remediation record after answers.
+- Length boundary: maximum-length failures are eligible because conservative
+  abbreviations can preserve visible meaning. Ambiguity becomes a question.
+- Global boundary: never invent data-type, size, module, unit, or categorical
+  segment values. Other global failures are eligible only when existing segments
+  and semantic description are sufficient.
+- Cost and privacy: deterministic no-call paths, one request per eligible check
+  batch, concise prompts, minimal reasoning, bounded output, `store=false`,
+  environment-only credentials, and one transient retry. Persist model/token
+  evidence, never credentials.
+- Alternatives rejected: ask before every case; call once per case; repeat rule
+  prose per case; invent categorical globals; silently edit source; or append a
+  new plan for each question/answer turn.
+- Prototype model boundary: `gpt-5-nano` is the configurable cheapest workflow
+  default and is deprecated in the current catalog. Production requires a
+  supported-model decision, evaluation corpus, collision/source-context checks,
+  and end-to-end tests.
+- Contract limitation: historical reports do not embed immutable policy
+  snapshots, so name/version drift is rejected and requires a new review run.
+- Validation: payload assertions, no-call paths, context continuations, global
+  deferral, candidate policy checking, retry/error behavior, persistence
+  replacement, and Python syntax checks.
+
 ## Durable problem and learning ledger
 
 ### P001 — Compiler/preprocessor visibility changes what can be reviewed

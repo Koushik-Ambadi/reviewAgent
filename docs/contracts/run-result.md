@@ -108,8 +108,10 @@ build.json              Latest serialized build result
 evidence-pack.html      Latest self-contained HTML handoff generated on request
 ```
 
-`report.json` remains the canonical `RunResult`. A remediation request appends
-its result to both `remediation.json` and `RunResult.remediation`. A build
+`report.json` remains the canonical `RunResult`. A new remediation request
+appends its result to both `remediation.json` and `RunResult.remediation`. A
+continuation supplies the existing `remediation_id` and replaces that record in
+both files while preserving its identity and original `generated_at`. A build
 request overwrites `build.json` with the latest result and updates
 `RunResult.build_result`. This keeps follow-up actions attached to the same run
 without making the file layout part of the API contract.
@@ -175,8 +177,10 @@ The persisted `report.json` contains the `RunResult` itself. The API envelope gi
 
 ## Follow-up response envelopes
 
-`POST /api/runs/{run_id}/remediations` accepts a failed `check_id`, optionally
-with a failed `case_id`, and returns a provider-independent envelope:
+`POST /api/runs/{run_id}/remediations` accepts `scope`, a failed `check_id`, and
+an optional failed `case_id`. A follow-up also sends the returned
+`remediation_id` plus a `context_answers` object keyed by question ID. The
+response remains a provider-independent envelope:
 
 ```json
 {
@@ -185,13 +189,31 @@ with a failed `case_id`, and returns a provider-independent envelope:
     "remediation_id": "...",
     "scope": "check",
     "check_id": "function_names",
-    "suggestions": []
+    "status": "candidate_ready",
+    "applicable_rules": [],
+    "affected_cases": [],
+    "suggestions": [],
+    "questions": [],
+    "limitations": [],
+    "model": null
   }
 }
 ```
 
-The current placeholder provider generates deterministic guidance from failed
-case reasons. A future provider must preserve this response shape.
+`status` is `candidate_ready`, `input_required`, `partial`, or `unsupported`.
+Rules are represented once per check in `applicable_rules`; cases retain their
+original atomic reasons in `affected_cases`. Suggestions carry current and
+candidate names, confidence, policy-validation status, a concise note, and
+verification guidance. Questions carry a stable ID, field, case, and prompt.
+Limitations explain why no candidate is available. `model` records provider
+response identity and token counts only when a model was called.
+
+The default provider runs deterministic preflight first. It makes no model call
+for known context-only or unsupported cases, then sends all eligible cases for
+one check in one structured-output request. The service currently resolves only
+the active default policy and rejects reports whose policy name/version differs;
+reports do not yet embed an immutable policy snapshot. Provider output is a
+proposal and never authorizes or performs source edits.
 
 `POST /api/runs/{run_id}/build` returns the latest serialized build result. It
 includes `format_step`, `build_step`, `return_code`, raw output,

@@ -49,3 +49,18 @@ The supported development launcher is `run.bat`, which activates `venv313`,
 sets `PYTHONPATH=src`, and starts Uvicorn with reload. Reproduction constraints,
 safer historical replay commands, and known platform mismatches are documented
 in [Testing, retained runs, and replay](docs/engineering/testing-and-replay.md).
+
+## Model-assisted remediation prototype
+
+Set `OPENAI_API_KEY` in the environment that starts the application to enable
+rename candidates. Do not put the key in this repository, a run artifact, or a
+browser request. `OPENAI_REMEDIATION_MODEL` optionally overrides the prototype
+default (`gpt-5-nano`), and `OPENAI_REMEDIATION_TIMEOUT_SECONDS` overrides the
+30-second request timeout.
+
+The remediation drawer proposes names; it never edits uploaded source. It asks
+for narrowly scoped developer context when a failed case does not reveal its
+meaning. Global-variable type, size, module, unit, and other categorical segment
+repairs are deliberately unavailable until those values can come from trusted
+code or developer context. The inexpensive default model is for workflow
+testing only and must be replaced and evaluated before production use.
