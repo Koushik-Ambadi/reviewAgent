@@ -800,3 +800,15 @@ and third-party artifacts and must not be interpreted as effort or quality.
   placeholder-not-loaded assertion, Git ignore evidence, fresh Uvicorn startup,
   and an HTTP 200 root smoke passed. The real key remains user-owned and was not
   copied from chat.
+
+### 15:24:32 +05:30 — Record restored run-workspace data-loss event
+
+- User reported that `workspace/runs` had been deleted and restored its contents
+  from the Windows Recycle Bin. No deletion was performed as part of the
+  remediation/configuration commands, and targeted source inspection found no
+  application startup cleanup for the run root.
+- Post-restore inventory contains 12 directories and 11 reports; one directory
+  is empty, while the retained IDs used earlier in the remediation replay are
+  absent. Recovery is therefore recorded as partial until reconciled.
+- Opened BUG-002 with high retention priority, unknown initiator, observed versus
+  user-supplied evidence separated, current workaround, and closure evidence.

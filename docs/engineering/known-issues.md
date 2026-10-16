@@ -2,7 +2,7 @@
 
 - Status: living
 - Created: 2026-10-13
-- Last reviewed: 2026-10-13
+- Last reviewed: 2026-10-16
 - Update trigger: a defect is observed, triaged, mitigated, scheduled, fixed,
   verified, accepted, or superseded
 - Source of truth for: project-wide non-urgent and deferred defect state
@@ -31,6 +31,75 @@ make an issue fixed. Status changes require dated evidence in the issue entry.
 | ID | Summary | Status | Fixed? | Current priority | Owner/gate |
 |---|---|---|---|---|---|
 | BUG-001 | Windows ZIP extraction fails on overlong nested Git paths | PLANNED | No | Deferred for local prototype; required before untrusted/multi-user use | G01 ingestion security |
+| BUG-002 | Ignored run workspace was moved to the Windows Recycle Bin | OPEN | No | High until deletion source and backup boundary are known | G02 provenance and retention |
+
+## BUG-002 — Ignored run workspace was moved to the Windows Recycle Bin
+
+- Status: OPEN
+- Fixed: No
+- First observed: 2026-10-16; exact deletion time and initiator unknown
+- Last updated: 2026-10-16T15:24:32+05:30
+- Environment: Windows local checkout
+- Affected path: `workspace/runs/`
+- Impact: retained reports and source/run evidence became unavailable until the
+  user restored directories from the Windows Recycle Bin
+- Severity: high data-retention risk; no evidence currently attributes the
+  deletion to application code or to a particular user/tool action
+- Current priority: investigate before relying on ignored runs as durable proof
+- Related gate: G02 provenance and retention
+
+### Recorded symptom and evidence
+
+- The user reported that `workspace/runs` had been deleted and subsequently
+  restored its contents from the Windows Recycle Bin.
+- After restoration, the directory exists with 12 run directories; 11 contain
+  `report.json`. `20261005_185929_2c0b2076` is empty.
+- The run IDs observed during the earlier remediation replay, including
+  `20261013_160052_bd9a5d2b`, are not in the restored set currently visible.
+- `git status --ignored` reports `workspace/` as ignored, so Git history and
+  checkout operations do not provide a recovery source for these artifacts.
+- Targeted source search found no startup or retention routine that removes
+  `workspace/runs`; the only recursive product deletion found is the run-local
+  analysis build directory in `generator.py`.
+- During the remediation work, no `Remove-Item`, `rm`, `git clean`, recursive
+  workspace deletion, or reset command was issued. A test used Python's system
+  temporary directory and restored the monkeypatched run-store root in `finally`.
+
+Evidence confidence: deletion and Recycle Bin recovery are user-supplied and
+high confidence. The post-restore inventory is independently observed. The
+deleting process, trigger, and exact pre-deletion inventory are unknown.
+
+### Smallest known reproduction
+
+No reproduction exists. Starting/importing the application and exercising the
+focused remediation tests did not intentionally remove the run workspace.
+
+### Workaround and recovery boundary
+
+Restoring from the Windows Recycle Bin recovered 12 directories, but one is
+empty and the earlier observed retained IDs remain absent. This is a partial
+recovery, not a fix. Copy important run artifacts outside the ignored workspace
+before further cleanup, checkout, IDE maintenance, or automated housekeeping.
+
+### Unknowns and selected next action
+
+- Identify whether an IDE, synchronization/cleanup tool, manual action, security
+  product, or unobserved application process moved the directory to Recycle Bin.
+- Compare the Recycle Bin/restored inventory with any external backup or known
+  run manifest; the repository currently has no authoritative inventory.
+- Add explicit retention/export behavior and a run manifest under G02 before
+  treating ignored workspaces as durable evidence.
+- Consider filesystem auditing or a narrow watcher during the next reproduction
+  attempt so the deleting process and timestamp are captured.
+
+### Closure evidence required
+
+- Deleting process and trigger identified or a reproducible product path found.
+- Retention/export policy implemented and tested, or the external backup owner
+  documented and verified.
+- Missing/empty runs reconciled against an authoritative inventory.
+- Fix/mitigation commit and proportional recovery/regression evidence linked
+  before changing this issue to `RESOLVED` or `MITIGATED`.
 
 ## BUG-001 — Windows ZIP extraction fails on overlong nested Git paths
 
