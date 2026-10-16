@@ -11,6 +11,7 @@ from repo_remediation.providers import (
     OpenAIResponsesClient,
     PlaceholderRemediationProvider,
     RemediationProviderUnavailableError,
+    _redact_sensitive,
 )
 from repo_review.pipeline.utils import load_policy
 
@@ -97,6 +98,47 @@ def test_function_length_batch_calls_model_once_and_validates_candidate():
     assert "policy" in model_input
     assert "reasons" not in model_input["cases"][0]
     assert model_input["cases"][0]["failed_rule_ids"] == ["ABS-SCS-16.1.d"]
+
+
+def test_unchanged_model_candidate_preserves_raw_and_parsed_trace():
+    client = FakeResponsesClient(
+        [
+            {
+                "case_id": "case-word-case",
+                "disposition": "candidate",
+                "candidate": "Shunt_getcurrent_ibatt_mA",
+                "confidence": "high",
+                "note": "No rename was produced.",
+                "question": "",
+            }
+        ]
+    )
+    provider = OpenAIRemediationProvider(client=client, model="test-nano")
+
+    result = provider.suggest(
+        run_id="run-1",
+        module_name="shunt",
+        check={"check_id": "function_names", "title": "Function Names"},
+        check_policy=_policy("function_names"),
+        cases=[
+            _case(
+                "case-word-case",
+                "Shunt_getcurrent_ibatt_mA",
+                "[ABS-POLICY-FUNCTION-WORD-CASE] Letters after module prefix 'Shunt_' must be lowercase.",
+            )
+        ],
+        scope="case",
+    )
+
+    assert result["status"] == "unsupported"
+    assert result["limitations"][0]["message"] == (
+        "The model did not produce a changed candidate."
+    )
+    provider_call = result["turns"][0]["provider_call"]
+    assert provider_call["response"]["id"] == "resp_test"
+    assert provider_call["parsed_output"]["cases"][0]["candidate"] == (
+        "Shunt_getcurrent_ibatt_mA"
+    )
 
 
 def test_single_letter_parameter_requests_context_without_model_call():
@@ -252,18 +294,22 @@ def test_global_categorical_failure_is_deferred_without_model_call():
     assert client.payloads == []
 
 
-def test_remediation_continuation_replaces_original_record():
+def test_remediation_continuation_appends_linked_turn():
     original = {
         "remediation_id": "rem-1",
         "check_id": "parameter_names",
         "scope": "case",
         "generated_at": "2026-10-16T01:00:00+00:00",
+        "latest_turn_id": "turn-1",
+        "turns": [{"turn_id": "turn-1", "parent_turn_id": None}],
     }
     replacement = {
         "remediation_id": "new-id",
         "check_id": "parameter_names",
         "scope": "case",
         "generated_at": "2026-10-16T02:00:00+00:00",
+        "latest_turn_id": "turn-2",
+        "turns": [{"turn_id": "turn-2", "parent_turn_id": None}],
     }
 
     result = _upsert_remediation(
@@ -277,6 +323,9 @@ def test_remediation_continuation_replaces_original_record():
     assert len(result) == 1
     assert result[0]["remediation_id"] == "rem-1"
     assert result[0]["generated_at"] == original["generated_at"]
+    assert result[0]["latest_turn_id"] == "turn-2"
+    assert len(result[0]["turns"]) == 2
+    assert result[0]["turns"][1]["parent_turn_id"] == "turn-1"
 
 
 def test_service_persists_and_replaces_context_continuation():
@@ -363,7 +412,29 @@ def test_service_persists_and_replaces_context_continuation():
         assert completed["remediation_id"] == pending["remediation_id"]
         assert len(stored["remediation"]) == 1
         assert stored["remediation"][0]["status"] == "candidate_ready"
+        assert len(stored["remediation"][0]["turns"]) == 2
+        first_turn, second_turn = stored["remediation"][0]["turns"]
+        assert second_turn["parent_turn_id"] == first_turn["turn_id"]
         assert len(persisted_report["remediation"]) == 1
+
+        call_log = [
+            json.loads(line)
+            for line in (run_path / "remediation-calls.jsonl")
+            .read_text(encoding="utf-8")
+            .splitlines()
+        ]
+        assert len(call_log) == 2
+        assert call_log[0]["remediation_id"] == call_log[1]["remediation_id"]
+        assert call_log[1]["turn"]["parent_turn_id"] == call_log[0]["turn"]["turn_id"]
+        provider_call = call_log[1]["turn"]["provider_call"]
+        request_input = json.loads(provider_call["request"]["input"][1]["content"])
+        assert request_input["cases"][0]["developer_context"].startswith(
+            "The byte position"
+        )
+        assert provider_call["response"]["id"] == "resp_test"
+        assert provider_call["parsed_output"]["cases"][0]["candidate"] == (
+            "payloadByte"
+        )
 
 
 def test_responses_client_retries_one_transient_failure():
@@ -381,8 +452,13 @@ def test_responses_client_retries_one_transient_failure():
         transport=httpx.MockTransport(handler),
     )
 
-    assert client.create({"model": "test"})["id"] == "resp-ok"
+    result = client.create({"model": "test"})
+    assert result["id"] == "resp-ok"
     assert len(calls) == 2
+    trace = result["_remediation_transport_trace"]
+    assert trace["request"] == {"model": "test"}
+    assert [attempt["http_status"] for attempt in trace["attempts"]] == [503, 200]
+    assert trace["attempts"][0]["response"]["error"]["message"] == "busy"
 
 
 def test_responses_client_requires_environment_key():
@@ -392,8 +468,24 @@ def test_responses_client_requires_environment_key():
         client.create({"model": "test"})
     except RemediationProviderUnavailableError as error:
         assert "OPENAI_API_KEY" in str(error)
+        assert error.call_trace["request"] == {"model": "test"}
+        assert error.call_trace["attempts"] == []
+        assert error.call_trace["status"] == "configuration_error"
     else:
         raise AssertionError("Expected missing-key failure")
+
+
+def test_trace_redaction_removes_nested_secret_values():
+    snapshot = _redact_sensitive(
+        {
+            "Authorization": "Bearer secret",
+            "nested": {"api_key": "secret", "ordinary": "retained"},
+        }
+    )
+
+    assert snapshot["Authorization"] == "[REDACTED]"
+    assert snapshot["nested"]["api_key"] == "[REDACTED]"
+    assert snapshot["nested"]["ordinary"] == "retained"
 
 
 def test_placeholder_provider_remains_available_for_offline_callers():

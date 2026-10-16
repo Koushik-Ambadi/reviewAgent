@@ -120,6 +120,7 @@ other accumulated state.
 | `analysis/symbols.json` | symbol inventory | naming checks, manual inspection | Ignored generated evidence |
 | `report.json` | reporting stage | UI response, agent GET, build repo resolution | Ignored generated evidence |
 | `remediation.json` | remediation service | Report drawer, later decision workflow | Ignored generated evidence |
+| `remediation-calls.jsonl` | remediation service | Call diagnosis, retry audit, and turn replay | Ignored append-only generated evidence |
 | `build.json` | build orchestration | Build result UI, later evidence export | Ignored generated evidence |
 | `build-progress.json` | background build job | Live build status/output polling | Ignored generated evidence |
 
@@ -395,9 +396,13 @@ the tracked shape. Placeholder and empty values are ignored, malformed or
 unknown keys stop startup, and no loaded value is logged or added to run data.
 
 The remediation service rejects policy-version drift, persists new plans, and
-replaces a continued plan by `remediation_id`. Its API returns candidates,
-confidence, validation, questions, limitations, usage, and the rules once. No
-provider edits source or treats a candidate as approved.
+updates a continued plan by `remediation_id` while retaining immutable linked
+turns. Its API returns candidates, confidence, validation, questions,
+limitations, usage, and the rules once. Each request also appends a redacted
+turn to `remediation-calls.jsonl`, including the exact provider request, raw
+response, retries, parsed output, validation outcome, and developer answers.
+Transport/provider failures are recorded before their HTTP error is returned.
+No provider edits source or treats a candidate as approved.
 
 `app/static/app.js` renders that contract in the remediation drawer and posts
 question answers with the existing plan ID. It replaces the matching in-memory
@@ -410,11 +415,12 @@ global candidates cannot be fully revalidated without symbol type; source
 context is manual; and the inexpensive default model is a workflow-test choice,
 not a production quality decision.
 
-The current persistence also stores only derived remediation state and model
-metadata. Raw request/response evidence is discarded, and a continuation
-replaces its parent record instead of retaining immutable turns. This audit and
-lineage defect is tracked in
-[BUG-004](known-issues.md#bug-004--remediation-calls-lose-raw-requestresponse-and-turn-lineage).
+The trace persistence added for
+[BUG-004](known-issues.md#bug-004--remediation-calls-lose-raw-requestresponse-and-turn-lineage)
+is intentionally local and append-only. It records observable inputs, outputs,
+transport evidence, and application validation; it does not claim access to
+hidden model reasoning. Generated traces remain inside the ignored run workspace
+and therefore still depend on the unresolved retention boundary in BUG-002.
 Mechanical atomic failures are not transformed before model dispatch, allowing
 an unchanged/empty model candidate to become an unsupported result; see
 [BUG-005](known-issues.md#bug-005--mechanical-naming-failures-can-return-unsupported-model-output).

@@ -66,3 +66,9 @@ meaning. Global-variable type, size, module, unit, and other categorical segment
 repairs are deliberately unavailable until those values can come from trusted
 code or developer context. The inexpensive default model is for workflow
 testing only and must be replaced and evaluated before production use.
+
+Each remediation request writes its current plan to `remediation.json` and
+appends a diagnostic turn to `remediation-calls.jsonl` inside that run's
+`workspace/runs/<run_id>/` directory. The turn records the redacted provider
+payload, raw response, retries, parsed result, validation outcome, and
+parent/child linkage. API keys and authorization headers are never written.

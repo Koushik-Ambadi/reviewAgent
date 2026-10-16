@@ -104,17 +104,31 @@ Each run is stored under `workspace/runs/<run_id>/`:
 ```text
 report.json             Canonical serialized RunResult
 remediation.json        Recorded remediation suggestions for the run
+remediation-calls.jsonl Append-only remediation turn/call evidence
 build.json              Latest serialized build result
 evidence-pack.html      Latest self-contained HTML handoff generated on request
 ```
 
 `report.json` remains the canonical `RunResult`. A new remediation request
 appends its result to both `remediation.json` and `RunResult.remediation`. A
-continuation supplies the existing `remediation_id` and replaces that record in
-both files while preserving its identity and original `generated_at`. A build
-request overwrites `build.json` with the latest result and updates
+continuation supplies the existing `remediation_id`, updates that plan's latest
+projection, preserves its identity and original `generated_at`, and appends the
+new immutable turn to `turns`. `latest_turn_id` identifies the current leaf;
+each continuation turn points to the preceding leaf through `parent_turn_id`.
+A build request overwrites `build.json` with the latest result and updates
 `RunResult.build_result`. This keeps follow-up actions attached to the same run
 without making the file layout part of the API contract.
+
+Every remediation turn is also appended as one JSON object per line to
+`remediation-calls.jsonl`. Each record carries the run/remediation IDs and the
+complete turn: remediation request context, developer answers, preflight
+decision, exact provider payload with sensitive fields redacted, transport
+attempt status/latency/error response, raw provider response, parsed structured
+output, validation outcome, and final suggestions/questions/limitations.
+Preflight-only turns have `provider_call: null`. Transport or provider failures
+are logged before the API error is returned. Authorization headers and API keys
+are never serialized. The log is application-owned evidence; provider-side
+retention remains disabled with `store: false`.
 
 `GET /api/runs/{run_id}/evidence-pack` reads the canonical `report.json`, renders
 all review findings and atomic reasons plus current remediation/build extensions,

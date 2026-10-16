@@ -17,6 +17,15 @@ from repo_review.checks.naming.common_identifier import evaluate_atomic_rules
 class RemediationProviderError(RuntimeError):
     """Base error for model-backed remediation failures."""
 
+    def __init__(
+        self,
+        message: str,
+        *,
+        call_trace: dict[str, Any] | None = None,
+    ) -> None:
+        super().__init__(message)
+        self.call_trace = call_trace
+
 
 class RemediationProviderUnavailableError(RemediationProviderError):
     """Raised when the configured model provider cannot be used."""
@@ -45,9 +54,16 @@ class OpenAIResponsesClient:
         self.transport = transport
 
     def create(self, payload: dict[str, Any]) -> dict[str, Any]:
+        request_snapshot = _redact_sensitive(payload)
+        attempts: list[dict[str, Any]] = []
         if not self.api_key:
             raise RemediationProviderUnavailableError(
-                "OPENAI_API_KEY is not configured for model-backed remediation."
+                "OPENAI_API_KEY is not configured for model-backed remediation.",
+                call_trace={
+                    "request": request_snapshot,
+                    "attempts": attempts,
+                    "status": "configuration_error",
+                },
             )
 
         headers = {
@@ -62,6 +78,7 @@ class OpenAIResponsesClient:
             transport=self.transport,
         ) as client:
             for attempt in range(2):
+                attempt_started = time.perf_counter()
                 try:
                     response = client.post(self.endpoint, headers=headers, json=payload)
                 except httpx.RequestError as error:
@@ -69,23 +86,85 @@ class OpenAIResponsesClient:
                         "OpenAI Responses API request failed: "
                         f"{error.__class__.__name__}."
                     )
+                    attempts.append(
+                        {
+                            "attempt": attempt + 1,
+                            "status": "network_error",
+                            "error_type": error.__class__.__name__,
+                            "elapsed_ms": _elapsed_ms(attempt_started),
+                        }
+                    )
                     if attempt == 0:
                         time.sleep(0.25)
                         continue
-                    raise RemediationProviderUnavailableError(last_error) from error
+                    raise RemediationProviderUnavailableError(
+                        last_error,
+                        call_trace={
+                            "request": request_snapshot,
+                            "attempts": attempts,
+                            "status": "failed",
+                        },
+                    ) from error
+
+                response_body = _response_body(response)
+                attempts.append(
+                    {
+                        "attempt": attempt + 1,
+                        "status": "success" if response.is_success else "http_error",
+                        "http_status": response.status_code,
+                        "elapsed_ms": _elapsed_ms(attempt_started),
+                        "response": _redact_sensitive(response_body),
+                    }
+                )
 
                 if response.is_success:
-                    return response.json()
+                    if not isinstance(response_body, dict):
+                        raise RemediationProviderError(
+                            "OpenAI Responses API returned a non-object response.",
+                            call_trace={
+                                "request": request_snapshot,
+                                "attempts": attempts,
+                                "status": "invalid_response",
+                            },
+                        )
+                    result = dict(response_body)
+                    result["_remediation_transport_trace"] = {
+                        "request": request_snapshot,
+                        "attempts": attempts,
+                        "status": "completed",
+                    }
+                    return result
 
                 last_error = _safe_openai_error(response)
                 if response.status_code in retryable_statuses and attempt == 0:
                     time.sleep(0.25)
                     continue
                 if response.status_code in retryable_statuses:
-                    raise RemediationProviderUnavailableError(last_error)
-                raise RemediationProviderError(last_error)
+                    raise RemediationProviderUnavailableError(
+                        last_error,
+                        call_trace={
+                            "request": request_snapshot,
+                            "attempts": attempts,
+                            "status": "failed",
+                        },
+                    )
+                raise RemediationProviderError(
+                    last_error,
+                    call_trace={
+                        "request": request_snapshot,
+                        "attempts": attempts,
+                        "status": "failed",
+                    },
+                )
 
-        raise RemediationProviderUnavailableError(last_error)
+        raise RemediationProviderUnavailableError(
+            last_error,
+            call_trace={
+                "request": request_snapshot,
+                "attempts": attempts,
+                "status": "failed",
+            },
+        )
 
 
 class RemediationProvider(ABC):
@@ -133,6 +212,8 @@ class OpenAIRemediationProvider(RemediationProvider):
         scope: str,
         context_answers: dict[str, str] | None = None,
     ) -> dict[str, Any]:
+        turn_id = uuid4().hex
+        turn_started_at = datetime.now(UTC).isoformat()
         context_answers = {
             key: value.strip()
             for key, value in (context_answers or {}).items()
@@ -168,6 +249,7 @@ class OpenAIRemediationProvider(RemediationProvider):
 
         suggestions: list[dict[str, Any]] = []
         model_evidence: dict[str, Any] | None = None
+        provider_call: dict[str, Any] | None = None
         if eligible_cases:
             payload = _responses_payload(
                 model=self.model,
@@ -176,21 +258,86 @@ class OpenAIRemediationProvider(RemediationProvider):
                 check_policy=_automatic_policy(check_policy),
                 cases=eligible_cases,
             )
-            response = self.client.create(payload)
-            parsed = _parse_structured_response(response)
-            suggestions, model_questions, model_limitations = _model_results(
-                check_id=check["check_id"],
-                module_name=module_name,
-                check_policy=check_policy,
-                requested_cases=eligible_cases,
-                results=parsed["cases"],
-            )
+            try:
+                response_with_trace = self.client.create(payload)
+            except RemediationProviderError as error:
+                error.call_trace = _failed_turn(
+                    turn_id=turn_id,
+                    started_at=turn_started_at,
+                    scope=scope,
+                    check_id=check["check_id"],
+                    cases=cases,
+                    context_answers=context_answers,
+                    eligible_cases=eligible_cases,
+                    questions=questions,
+                    limitations=limitations,
+                    provider_trace=error.call_trace,
+                    message=str(error),
+                )
+                raise
+            response = dict(response_with_trace)
+            transport_trace = response.pop("_remediation_transport_trace", None)
+            if transport_trace is None:
+                transport_trace = {
+                    "request": _redact_sensitive(payload),
+                    "attempts": [
+                        {
+                            "attempt": 1,
+                            "status": "completed_by_client",
+                            "http_status": None,
+                        }
+                    ],
+                    "status": "completed",
+                }
+            provider_call = {
+                **transport_trace,
+                "response": _redact_sensitive(response),
+            }
+            try:
+                parsed = _parse_structured_response(response)
+                suggestions, model_questions, model_limitations = _model_results(
+                    check_id=check["check_id"],
+                    module_name=module_name,
+                    check_policy=check_policy,
+                    requested_cases=eligible_cases,
+                    results=parsed["cases"],
+                )
+            except RemediationProviderError as error:
+                error.call_trace = _failed_turn(
+                    turn_id=turn_id,
+                    started_at=turn_started_at,
+                    scope=scope,
+                    check_id=check["check_id"],
+                    cases=cases,
+                    context_answers=context_answers,
+                    eligible_cases=eligible_cases,
+                    questions=questions,
+                    limitations=limitations,
+                    provider_trace=provider_call,
+                    message=str(error),
+                )
+                raise
             questions.extend(model_questions)
             limitations.extend(model_limitations)
             model_evidence = _model_evidence(response, self.model)
+            provider_call["parsed_output"] = _redact_sensitive(parsed)
 
         status = _result_status(suggestions, questions, limitations)
         now = datetime.now(UTC).isoformat()
+        turn = _completed_turn(
+            turn_id=turn_id,
+            started_at=turn_started_at,
+            scope=scope,
+            check_id=check["check_id"],
+            cases=cases,
+            context_answers=context_answers,
+            eligible_cases=eligible_cases,
+            provider_call=provider_call,
+            status=status,
+            suggestions=suggestions,
+            questions=questions,
+            limitations=limitations,
+        )
         return {
             "remediation_id": uuid4().hex,
             "run_id": run_id,
@@ -211,6 +358,8 @@ class OpenAIRemediationProvider(RemediationProvider):
             "suggestions": suggestions,
             "questions": questions,
             "limitations": limitations,
+            "latest_turn_id": turn_id,
+            "turns": [turn],
         }
 
 
@@ -238,6 +387,21 @@ class PlaceholderRemediationProvider(RemediationProvider):
             _case_suggestion(check["check_id"], case) for case in cases
         ]
         now = datetime.now(UTC).isoformat()
+        turn_id = uuid4().hex
+        turn = _completed_turn(
+            turn_id=turn_id,
+            started_at=now,
+            scope=scope,
+            check_id=check["check_id"],
+            cases=cases,
+            context_answers=context_answers or {},
+            eligible_cases=[],
+            provider_call=None,
+            status="candidate_ready",
+            suggestions=suggestions,
+            questions=[],
+            limitations=[],
+        )
         return {
             "remediation_id": uuid4().hex,
             "run_id": run_id,
@@ -265,6 +429,8 @@ class PlaceholderRemediationProvider(RemediationProvider):
             "suggestions": suggestions,
             "questions": [],
             "limitations": [],
+            "latest_turn_id": turn_id,
+            "turns": [turn],
         }
 
 
@@ -618,6 +784,141 @@ def _safe_openai_error(response: httpx.Response) -> str:
     if detail:
         message = f"{message} {str(detail)[:300]}"
     return message
+
+
+_SENSITIVE_TRACE_KEYS = {
+    "authorization",
+    "api-key",
+    "api_key",
+    "openai_api_key",
+    "x-api-key",
+}
+
+
+def _redact_sensitive(value: Any) -> Any:
+    """Return a JSON-safe trace snapshot without credentials or secret fields."""
+    if isinstance(value, dict):
+        return {
+            str(key): (
+                "[REDACTED]"
+                if str(key).casefold() in _SENSITIVE_TRACE_KEYS
+                else _redact_sensitive(item)
+            )
+            for key, item in value.items()
+        }
+    if isinstance(value, (list, tuple)):
+        return [_redact_sensitive(item) for item in value]
+    if value is None or isinstance(value, (str, int, float, bool)):
+        return value
+    return repr(value)
+
+
+def _elapsed_ms(started_at: float) -> float:
+    return round((time.perf_counter() - started_at) * 1000, 3)
+
+
+def _response_body(response: httpx.Response) -> Any:
+    try:
+        return response.json()
+    except ValueError:
+        return {"unparsed_text": response.text}
+
+
+def _turn_request(
+    *,
+    scope: str,
+    check_id: str,
+    cases: list[dict[str, Any]],
+    context_answers: dict[str, str],
+) -> dict[str, Any]:
+    return {
+        "scope": scope,
+        "check_id": check_id,
+        "case_ids": [str(case.get("case_id", "")) for case in cases],
+        "context_answers": _redact_sensitive(context_answers),
+    }
+
+
+def _completed_turn(
+    *,
+    turn_id: str,
+    started_at: str,
+    scope: str,
+    check_id: str,
+    cases: list[dict[str, Any]],
+    context_answers: dict[str, str],
+    eligible_cases: list[dict[str, Any]],
+    provider_call: dict[str, Any] | None,
+    status: str,
+    suggestions: list[dict[str, Any]],
+    questions: list[dict[str, Any]],
+    limitations: list[dict[str, Any]],
+) -> dict[str, Any]:
+    return {
+        "turn_id": turn_id,
+        "parent_turn_id": None,
+        "started_at": started_at,
+        "completed_at": datetime.now(UTC).isoformat(),
+        "status": "completed",
+        "request_context": _turn_request(
+            scope=scope,
+            check_id=check_id,
+            cases=cases,
+            context_answers=context_answers,
+        ),
+        "preflight": {
+            "eligible_case_ids": [case["case_id"] for case in eligible_cases],
+            "model_call_made": provider_call is not None,
+        },
+        "provider_call": _redact_sensitive(provider_call),
+        "outcome": {
+            "status": status,
+            "suggestions": _redact_sensitive(suggestions),
+            "questions": _redact_sensitive(questions),
+            "limitations": _redact_sensitive(limitations),
+        },
+    }
+
+
+def _failed_turn(
+    *,
+    turn_id: str,
+    started_at: str,
+    scope: str,
+    check_id: str,
+    cases: list[dict[str, Any]],
+    context_answers: dict[str, str],
+    eligible_cases: list[dict[str, Any]],
+    questions: list[dict[str, Any]],
+    limitations: list[dict[str, Any]],
+    provider_trace: dict[str, Any] | None,
+    message: str,
+) -> dict[str, Any]:
+    return {
+        "turn_id": turn_id,
+        "parent_turn_id": None,
+        "started_at": started_at,
+        "completed_at": datetime.now(UTC).isoformat(),
+        "status": "failed",
+        "request_context": _turn_request(
+            scope=scope,
+            check_id=check_id,
+            cases=cases,
+            context_answers=context_answers,
+        ),
+        "preflight": {
+            "eligible_case_ids": [case["case_id"] for case in eligible_cases],
+            "model_call_made": provider_trace is not None,
+        },
+        "provider_call": _redact_sensitive(provider_trace),
+        "outcome": {
+            "status": "provider_error",
+            "suggestions": [],
+            "questions": _redact_sensitive(questions),
+            "limitations": _redact_sensitive(limitations),
+            "error": {"message": message},
+        },
+    }
 
 
 def _rule_ids(reasons: list[Any]) -> list[str]:

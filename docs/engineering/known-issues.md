@@ -33,7 +33,7 @@ make an issue fixed. Status changes require dated evidence in the issue entry.
 | BUG-001 | Windows ZIP extraction fails on overlong nested Git paths | PLANNED | No | Deferred for local prototype; required before untrusted/multi-user use | G01 ingestion security |
 | BUG-002 | Ignored run workspace was moved to the Windows Recycle Bin | OPEN | No | High until deletion source and backup boundary are known | G02 provenance and retention |
 | BUG-003 | ZIP ingestion deletes caller-owned archives | OPEN | No | High for direct/local ZIP callers | G01 ingestion ownership |
-| BUG-004 | Remediation calls lose raw request/response and turn lineage | OPEN | No | High for workflow auditability | G11 remediation evidence |
+| BUG-004 | Remediation calls lose raw request/response and turn lineage | IN_PROGRESS | No | High for workflow auditability | G11 remediation evidence |
 | BUG-005 | Mechanical naming failures can return unsupported model output | OPEN | No | High for remediation reliability and cost | G11 deterministic remediation |
 
 ## BUG-005 — Mechanical naming failures can return unsupported model output
@@ -61,21 +61,23 @@ make an issue fixed. Status changes require dated evidence in the issue entry.
 - The persisted response used 838 input and 393 output tokens but produced no
   actionable result.
 
-### Selected remediation and closure evidence
+### Current decision and closure evidence
 
-Add deterministic candidate transforms for mechanically closed rules (case,
-fixed prefix/suffix, underscore cleanup, and safe character normalization),
-then validate locally. Use the model only for semantic choice, conservative
-abbreviation, or ambiguity. Add retained-case tests proving this case yields
-`Shunt_getcurrent_ibatt_ma` with zero model calls. Do not mark resolved until the
-fix commit and regression evidence are linked.
+Do not add deterministic candidate transforms in the current increment. First
+inspect a new live call using the BUG-004 trace so the exact request, raw model
+output, parsed candidate, and validation decision identify the failure layer.
+Then choose among prompt correction, validation feedback/retry, deterministic
+transforms, or a combination. This defers optimization without accepting the
+defect. Closure still requires the selected behavior fix, a retained regression
+for `Shunt_getcurrent_ibatt_mA`, proportional call-count evidence, and the fixing
+commit.
 
 ## BUG-004 — Remediation calls lose raw request/response and turn lineage
 
-- Status: OPEN
+- Status: IN_PROGRESS
 - Fixed: No
 - First observed: 2026-10-16 in run `20261016_153027_9ab948dc`
-- Last updated: 2026-10-16T16:52:38+05:30
+- Last updated: 2026-10-16T17:25:44+05:30
 - Affected paths: `src/repo_remediation/providers.py`,
   `app/services/remediation_service.py`, `remediation.json`
 - Impact: a response ID and token counts exist, but the exact returned structured
@@ -110,6 +112,15 @@ owned evidence, not provider retention, is authoritative. Derive the plan's
 current state from its turns rather than overwriting history. Closure requires
 contract, persistence, API/UI/evidence, retry/error, redaction, and multi-turn
 regression tests plus the fixing commit.
+
+### Implementation state
+
+The current worktree implements the selected append-only evidence and linked
+turn contract. Focused tests pass in `venv313`, including request/raw response,
+parsed output, retry evidence, secret redaction, developer-answer lineage, and
+unchanged-candidate capture. The issue remains `IN_PROGRESS` and `Fixed: No`
+until the implementation commit exists and the committed regression evidence is
+linked here.
 
 ## BUG-003 — ZIP ingestion deletes caller-owned archives
 

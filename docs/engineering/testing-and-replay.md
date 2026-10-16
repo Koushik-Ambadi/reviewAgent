@@ -386,3 +386,26 @@ with the checked-in dummy file succeeds and leaves `OPENAI_API_KEY` unset.
 `git check-ignore -v .env.local` confirms the editable secret file is ignored.
 The combined focused set contains 13 passing tests, and a fresh Uvicorn startup
 with the dummy file returned HTTP 200 from the static root.
+
+### Remediation call-trace increment
+
+The append-only trace change is covered by focused direct tests in the repository
+Python 3.13 virtual environment. The checks prove that a question/answer
+continuation keeps one remediation root, appends two turns, links the second turn
+to the first, and writes two JSONL records with the same remediation ID. The
+model-backed turn retains its exact request payload, raw response, parsed
+structured output, and developer answer. Separate assertions cover retry attempt
+status/responses, missing-key failure traces, nested secret redaction, and the
+observed unchanged-candidate path retaining the raw/parsed candidate beside the
+derived limitation.
+
+Verification command:
+
+```powershell
+$env:PYTHONPATH='src'
+.\venv313\Scripts\python.exe -B -c "import tests.test_remediation_templates as m; tests=[(n,getattr(m,n)) for n in dir(m) if n.startswith('test_')]; [f() for n,f in tests]; print(f'{len(tests)} remediation tests passed')"
+```
+
+The system-Python attempt stopped at import because that interpreter does not
+have `httpx`; no test executed in that attempt. The repository virtual
+environment is the supported test runtime.

@@ -450,6 +450,40 @@ No motive is attributed where the repository does not support it.
   deferral, candidate policy checking, retry/error behavior, persistence
   replacement, escaped evidence output, and Python/JavaScript syntax checks.
 
+## D019 — Observe model remediation before optimizing its decisions
+
+- Date: 2026-10-16
+- Status: accepted prototype
+- Scope: remediation call evidence, continuation lineage, and the boundary of
+  the next naming-quality change
+- Trigger: run `20261016_153027_9ab948dc` retained an unsupported derived result
+  and token counts, but not the exact request/response needed to determine why
+  the model returned an unchanged or empty candidate.
+- Decision inputs: the failed rule was mechanically understandable, the current
+  mapper emits the same limitation for empty and unchanged candidates, provider
+  retention was disabled, and continuations replaced their prior record.
+- Options considered:
+  - add deterministic casing/prefix transformations immediately;
+  - change the prompt and retry unchanged candidates immediately;
+  - retain observable evidence first and decide from the next real call.
+- Decision: make this increment logging-only. Preserve `store: false`; append an
+  application-owned, secret-redacted turn for every remediation request; retain
+  the exact provider payload, transport attempts, raw response, parsed output,
+  validation result, and developer answers; link continuation turns by parent
+  ID. Do not change the prompt, add a deterministic naming classifier, or make
+  an extra quality retry in this increment.
+- Why selected: it separates diagnosis from behavior changes and lets the next
+  live failure distinguish model output, parsing, and local validation without
+  spending extra calls or hiding the original evidence.
+- Security boundary: authorization headers and key-like fields are redacted.
+  The trace may still contain source identifiers and developer context, so it
+  remains a local ignored run artifact.
+- Consequences: current naming quality is unchanged; BUG-005 stays open. Trace
+  durability still depends on the unresolved run-retention issue BUG-002.
+- Reconsideration trigger: inspect the next live function-name trace, then
+  choose prompt correction, validation feedback/retry, deterministic transforms,
+  or a combination based on the recorded failure mode.
+
 ## Durable problem and learning ledger
 
 ### P001 — Compiler/preprocessor visibility changes what can be reviewed

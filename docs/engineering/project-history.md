@@ -841,3 +841,21 @@ and third-party artifacts and must not be interpreted as effort or quality.
 - Opened BUG-004 for append-only redacted call evidence and parent/child turns,
   and BUG-005 for deterministic mechanical remediation before model dispatch.
   Per user instruction, no runtime fix was made before design discussion.
+
+### 17:25:44 +05:30 — Start observable remediation-call logging
+
+- Scope was narrowed to logging only: no prompt adjustment, deterministic
+  naming classifier, candidate fallback, or additional model-quality retry.
+- Added immutable remediation turn records and append-only
+  `remediation-calls.jsonl` evidence with redacted exact requests, transport
+  attempts, raw responses, parsed output, validation outcomes, developer
+  answers, and errors. Continued plans link each new turn to the prior
+  `latest_turn_id` while retaining one stable remediation root.
+- The first system-Python test attempt stopped before execution because `httpx`
+  is absent. The supported `venv313` direct harness then passed all focused
+  remediation tests, including continuation lineage, JSONL evidence, retries,
+  redaction, missing-key traces, and the unchanged-candidate diagnostic path.
+- Current interpretation remains deliberately unchanged: the historic live
+  response cannot be recovered, and BUG-005 stays open until a new logged live
+  call shows whether the model returned an empty name, the original name, or a
+  candidate rejected by local validation.

@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import json
+from datetime import UTC, datetime
 from typing import Any
+from uuid import uuid4
 
 from orchestrator.run_store import (
     get_run_path,
@@ -9,7 +11,11 @@ from orchestrator.run_store import (
     update_report_extension,
     write_json,
 )
-from repo_remediation import OpenAIRemediationProvider, RemediationProvider
+from repo_remediation import (
+    OpenAIRemediationProvider,
+    RemediationProvider,
+    RemediationProviderError,
+)
 from repo_review.pipeline.utils import load_policy
 
 
@@ -44,16 +50,37 @@ def create_remediation(
     if not failed_cases:
         raise LookupError("This check has no failed cases to remediate.")
 
-    result = (provider or OpenAIRemediationProvider()).suggest(
-        run_id=run_id,
-        module_name=str((report.get("metadata") or {}).get("module_name") or ""),
-        check=check,
-        check_policy=check_policy,
-        cases=failed_cases,
-        scope=scope,
-        context_answers=context_answers,
-    )
     remediation = _load_remediations(run_id)
+    existing = _find_continuation(
+        remediation,
+        remediation_id=remediation_id,
+        check_id=check_id,
+        scope=scope,
+    )
+    try:
+        result = (provider or OpenAIRemediationProvider()).suggest(
+            run_id=run_id,
+            module_name=str((report.get("metadata") or {}).get("module_name") or ""),
+            check=check,
+            check_policy=check_policy,
+            cases=failed_cases,
+            scope=scope,
+            context_answers=context_answers,
+        )
+    except RemediationProviderError as error:
+        if error.call_trace:
+            failed_turn = error.call_trace
+            failed_turn["parent_turn_id"] = (
+                existing.get("latest_turn_id") if existing else None
+            )
+            _append_call_log(
+                run_id,
+                remediation_id or uuid4().hex,
+                failed_turn,
+            )
+        raise
+
+    new_turns = list(result.get("turns") or [])
     remediation = _upsert_remediation(
         remediation,
         result,
@@ -61,6 +88,8 @@ def create_remediation(
         check_id=check_id,
         scope=scope,
     )
+    for turn in new_turns:
+        _append_call_log(run_id, result["remediation_id"], turn)
     _write_remediations(run_id, remediation)
     update_report_extension(run_id, "remediation", remediation)
 
@@ -113,23 +142,85 @@ def _upsert_remediation(
     scope: str,
 ) -> list[dict[str, Any]]:
     if not remediation_id:
+        _link_new_turns(result, parent_turn_id=None)
         return [*remediation, result]
 
     updated = list(remediation)
     for index, existing in enumerate(updated):
         if existing.get("remediation_id") != remediation_id:
             continue
-        if existing.get("check_id") != check_id or existing.get("scope") != scope:
-            raise ValueError(
-                "Remediation continuation does not match the original request."
-            )
+        _validate_continuation(existing, check_id=check_id, scope=scope)
+        prior_turns = list(existing.get("turns") or [])
+        new_turns = list(result.get("turns") or [])
+        _link_new_turns(
+            result,
+            parent_turn_id=existing.get("latest_turn_id"),
+        )
         result["remediation_id"] = remediation_id
         result["generated_at"] = existing.get(
             "generated_at", result["generated_at"]
         )
+        result["turns"] = [*prior_turns, *new_turns]
         updated[index] = result
         return updated
     raise LookupError(f"Remediation not found: {remediation_id}")
+
+
+def _find_continuation(
+    remediation: list[dict[str, Any]],
+    *,
+    remediation_id: str | None,
+    check_id: str,
+    scope: str,
+) -> dict[str, Any] | None:
+    if not remediation_id:
+        return None
+    for existing in remediation:
+        if existing.get("remediation_id") == remediation_id:
+            _validate_continuation(existing, check_id=check_id, scope=scope)
+            return existing
+    raise LookupError(f"Remediation not found: {remediation_id}")
+
+
+def _validate_continuation(
+    existing: dict[str, Any],
+    *,
+    check_id: str,
+    scope: str,
+) -> None:
+    if existing.get("check_id") != check_id or existing.get("scope") != scope:
+        raise ValueError("Remediation continuation does not match the original request.")
+
+
+def _link_new_turns(
+    result: dict[str, Any],
+    *,
+    parent_turn_id: str | None,
+) -> None:
+    previous_turn_id = parent_turn_id
+    for turn in result.get("turns") or []:
+        turn["parent_turn_id"] = previous_turn_id
+        previous_turn_id = turn.get("turn_id")
+    if previous_turn_id is not None:
+        result["latest_turn_id"] = previous_turn_id
+
+
+def _append_call_log(
+    run_id: str,
+    remediation_id: str,
+    turn: dict[str, Any],
+) -> None:
+    record = {
+        "schema_version": 1,
+        "run_id": run_id,
+        "remediation_id": remediation_id,
+        "recorded_at": datetime.now(UTC).isoformat(),
+        "turn": turn,
+    }
+    path = get_run_path(run_id) / "remediation-calls.jsonl"
+    with path.open("a", encoding="utf-8") as call_log:
+        call_log.write(json.dumps(record, separators=(",", ":")))
+        call_log.write("\n")
 
 
 def _load_remediations(run_id: str) -> list[dict[str, Any]]:
