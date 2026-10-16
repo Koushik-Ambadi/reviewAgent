@@ -859,3 +859,10 @@ and third-party artifacts and must not be interpreted as effort or quality.
   response cannot be recovered, and BUG-005 stays open until a new logged live
   call shows whether the model returned an empty name, the original name, or a
   candidate rejected by local validation.
+
+### 17:28:12 +05:30 — Commit remediation trace and close BUG-004
+
+- Commit `bbacefa` contains the append-only trace contract, linked turns,
+  provider transport evidence, regression coverage, and owning documentation.
+- BUG-004 is now resolved against 12 focused passing tests. BUG-005 remains open
+  by design because this increment did not alter prompts or naming decisions.

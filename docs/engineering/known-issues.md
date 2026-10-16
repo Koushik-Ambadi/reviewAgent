@@ -33,7 +33,7 @@ make an issue fixed. Status changes require dated evidence in the issue entry.
 | BUG-001 | Windows ZIP extraction fails on overlong nested Git paths | PLANNED | No | Deferred for local prototype; required before untrusted/multi-user use | G01 ingestion security |
 | BUG-002 | Ignored run workspace was moved to the Windows Recycle Bin | OPEN | No | High until deletion source and backup boundary are known | G02 provenance and retention |
 | BUG-003 | ZIP ingestion deletes caller-owned archives | OPEN | No | High for direct/local ZIP callers | G01 ingestion ownership |
-| BUG-004 | Remediation calls lose raw request/response and turn lineage | IN_PROGRESS | No | High for workflow auditability | G11 remediation evidence |
+| BUG-004 | Remediation calls lose raw request/response and turn lineage | RESOLVED | Yes | Closed by `bbacefa` | G11 remediation evidence |
 | BUG-005 | Mechanical naming failures can return unsupported model output | OPEN | No | High for remediation reliability and cost | G11 deterministic remediation |
 
 ## BUG-005 — Mechanical naming failures can return unsupported model output
@@ -74,10 +74,10 @@ commit.
 
 ## BUG-004 — Remediation calls lose raw request/response and turn lineage
 
-- Status: IN_PROGRESS
-- Fixed: No
+- Status: RESOLVED
+- Fixed: Yes
 - First observed: 2026-10-16 in run `20261016_153027_9ab948dc`
-- Last updated: 2026-10-16T17:25:44+05:30
+- Last updated: 2026-10-16T17:28:12+05:30
 - Affected paths: `src/repo_remediation/providers.py`,
   `app/services/remediation_service.py`, `remediation.json`
 - Impact: a response ID and token counts exist, but the exact returned structured
@@ -115,12 +115,12 @@ regression tests plus the fixing commit.
 
 ### Implementation state
 
-The current worktree implements the selected append-only evidence and linked
-turn contract. Focused tests pass in `venv313`, including request/raw response,
-parsed output, retry evidence, secret redaction, developer-answer lineage, and
-unchanged-candidate capture. The issue remains `IN_PROGRESS` and `Fixed: No`
-until the implementation commit exists and the committed regression evidence is
-linked here.
+Commit `bbacefa` implements the selected append-only evidence and linked-turn
+contract. Twelve focused remediation tests pass in `venv313`, including exact
+request/raw response and parsed-output capture, retry evidence, secret
+redaction, developer-answer lineage, missing-key failure traces, and the
+unchanged-candidate path. This resolves the audit/lineage defect. It does not
+resolve BUG-005 naming quality or BUG-002 run-directory retention.
 
 ## BUG-003 — ZIP ingestion deletes caller-owned archives
 

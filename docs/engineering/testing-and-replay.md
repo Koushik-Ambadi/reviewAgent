@@ -409,3 +409,5 @@ $env:PYTHONPATH='src'
 The system-Python attempt stopped at import because that interpreter does not
 have `httpx`; no test executed in that attempt. The repository virtual
 environment is the supported test runtime.
+
+This evidence is committed with the trace implementation in `bbacefa`.
