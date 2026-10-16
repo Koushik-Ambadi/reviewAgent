@@ -66,7 +66,39 @@ def test_evidence_pack_is_self_contained_and_escapes_run_content():
                 ],
             }
         ],
-        "remediation": [],
+        "remediation": [
+            {
+                "title": "Function Names remediation",
+                "summary": "Generated 1 rename candidate.",
+                "suggestions": [
+                    {
+                        "current_name": "Battery_get_overlong_current_value",
+                        "candidate_name": "Battery_get_curr_value",
+                        "description": "Shortens the existing semantic description.",
+                        "confidence": "medium",
+                        "policy_validation": "passed",
+                        "verification": "Re-run the naming check.",
+                    }
+                ],
+                "questions": [
+                    {
+                        "name": "p<&>",
+                        "prompt": "What value does this parameter represent?",
+                    }
+                ],
+                "limitations": [
+                    {
+                        "name": "globalName",
+                        "message": "Categorical global segments are deferred.",
+                    }
+                ],
+                "model": {
+                    "model": "test-nano",
+                    "input_tokens": 120,
+                    "output_tokens": 30,
+                },
+            }
+        ],
         "build_result": {},
     }
 
@@ -88,6 +120,12 @@ def test_evidence_pack_is_self_contained_and_escapes_run_content():
     assert "Replacement: 100" in document
     assert "No audit rationale recorded." in document
     assert "1 not audited" in document
+    assert "Battery_get_overlong_current_value" in document
+    assert "Battery_get_curr_value" in document
+    assert "Developer context required" in document
+    assert "p&lt;&amp;&gt;" in document
+    assert "Categorical global segments are deferred." in document
+    assert "test-nano" in document
     assert "not run" in document
     assert "2026-10-08T10:00:00+00:00" in document
     assert "<script" not in document

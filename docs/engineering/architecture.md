@@ -388,6 +388,11 @@ replaces a continued plan by `remediation_id`. Its API returns candidates,
 confidence, validation, questions, limitations, usage, and the rules once. No
 provider edits source or treats a candidate as approved.
 
+`app/static/app.js` renders that contract in the remediation drawer and posts
+question answers with the existing plan ID. It replaces the matching in-memory
+plan so badges count decisions rather than request turns. The evidence service
+projects the same persisted state into escaped, self-contained HTML.
+
 Prototype limitations remain explicit: reports reference rather than embed the
 exact policy snapshot; repository collisions and references are not checked;
 global candidates cannot be fully revalidated without symbol type; source

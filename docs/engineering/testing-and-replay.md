@@ -349,3 +349,32 @@ errors: []
 
 This closes the largest gap between useful local artifacts and defensible,
 repeatable organizational evidence.
+
+## 2026-10-16 remediation workflow verification
+
+The first candidate-or-context slice was verified without a live credential:
+
+- Python AST parsing passed for provider, service, API, evidence renderer, and
+  focused tests; `node --check app/static/app.js` passed.
+- Eleven focused tests passed by direct invocation in the repository virtual
+  environment. Coverage includes one-call batching, policy-once/rule-ID-only
+  input, length shortening, deterministic no-call questions, developer and
+  model-question continuations, global deferral, candidate policy validation,
+  one transient retry, missing-key behavior, record replacement, and escaped
+  evidence output.
+- A file-backed replay used a temporary report and proved the question-to-answer
+  continuation leaves one `candidate_ready` record in both persistence files.
+- Retained run `20261013_160052_bd9a5d2b` was also used in place: its four
+  one-letter parameters produced questions, three missing required paths
+  produced limitations, and one malformed categorical global produced a
+  limitation. All three requests made zero model calls.
+- Uvicorn started successfully on a local test port. The static root, retained
+  agent report, and generated evidence-pack routes returned HTTP 200; the
+  evidence response contained the persisted developer-context section.
+
+`pytest` was unavailable, so zero-argument focused tests were loaded and invoked
+directly. This does not replace G03. A live Responses/browser smoke was not run
+because `OPENAI_API_KEY` was absent from the app environment. When configured,
+open the retained run, request a function-name remediation, answer any question,
+and confirm plan count is unchanged after continuation. Never paste a credential
+into a command or persist it in a run artifact.

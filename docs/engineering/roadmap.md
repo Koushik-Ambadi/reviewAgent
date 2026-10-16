@@ -171,6 +171,13 @@ changes. Do not maintain a second project-wide gap inventory here.
   comparison, exception-selection, ownership/ticket, audit, and insight layouts.
   Its workflow values and actions are explicitly non-persistent placeholders;
   this does not satisfy the production acceptance evidence above.
+- Remediation prototype status (2026-10-16): the developer report has a
+  provider-independent candidate/context workflow with deterministic preflight,
+  strict model output, persisted provenance, and explicit unsupported cases.
+  This is a G11 experiment, not graduation. Source-context enrichment,
+  immutable policy snapshots, supported-model selection and evaluations,
+  repository-wide collision/reference discovery, authorization, approved patch
+  generation, and end-to-end browser/provider tests remain gated work.
 
 ### G12 — Govern symbol inventory audits
 

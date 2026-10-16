@@ -741,3 +741,21 @@ and third-party artifacts and must not be interpreted as effort or quality.
 - Focused backend tests pass through direct invocation because `pytest` is not
   installed. This event closes the first backend commit boundary; UI/evidence
   presentation and final records remain the next increment.
+
+### 13:32:58 +05:30 — Render remediation decisions as persisted evidence
+
+- Added drawer states for candidates, confidence, policy validation, targeted
+  questions, limitations, model token evidence, and check-level rules. Answering
+  questions continues the same remediation instead of increasing plan count.
+- Extended the self-contained evidence pack with the same candidate/question/
+  limitation/provenance state and HTML-escaping assertions.
+- Updated D018 with the explicit evidence-to-choice chain and corrected the
+  earlier readiness audit: maximum length is candidate-eligible when visible
+  semantics support conservative abbreviation.
+- No reusable skill change was needed. The active lifecycle skill already owns
+  incremental commits, retained-run evidence, experiment boundaries, decision
+  rationale, and contemporaneous records; duplicating those rules would create
+  two authorities.
+- Verification passed: Python and JavaScript syntax, all eleven focused direct
+  tests, application import, Uvicorn startup, and HTTP 200 responses for the
+  static root, retained agent report, and evidence-pack routes.

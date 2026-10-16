@@ -192,18 +192,54 @@ def _remediations(remediations: list[dict[str, Any]]) -> str:
     for remediation in remediations:
         suggestions = remediation.get("suggestions") or []
         suggestion_html = "".join(
-            f"<div class='card'><b>{_text(item.get('title'))}</b>"
-            f"<p>{_text(item.get('description'))}</p>"
-            f"{_named_list('Policy reasons', item.get('reasons') or [])}"
-            f"{_named_list('Actions', item.get('actions') or [], ordered=True)}"
-            f"<p><b>Verification:</b> {_text(item.get('verification'))}</p></div>"
-            for item in suggestions
+            _remediation_suggestion(item) for item in suggestions
         )
+        questions = remediation.get("questions") or []
+        question_html = "".join(
+            f"<li><b>{_text(item.get('name'))}:</b> {_text(item.get('prompt'))}</li>"
+            for item in questions
+        )
+        limitations = remediation.get("limitations") or []
+        limitation_html = "".join(
+            f"<li><b>{_text(item.get('name'))}:</b> {_text(item.get('message'))}</li>"
+            for item in limitations
+        )
+        model = remediation.get("model") or {}
+        model_html = ""
+        if model.get("model"):
+            model_html = (
+                f"<p class='muted'>Model: {_text(model.get('model'))}; "
+                f"input tokens: {_text(model.get('input_tokens'))}; "
+                f"output tokens: {_text(model.get('output_tokens'))}</p>"
+            )
         content.append(
             f"<h3>{_text(remediation.get('title'))}</h3>"
-            f"<p>{_text(remediation.get('summary'))}</p>{suggestion_html}"
+            f"<p>{_text(remediation.get('summary'))}</p>{model_html}{suggestion_html}"
+            f"{f'<h3>Developer context required</h3><ul>{question_html}</ul>' if question_html else ''}"
+            f"{f'<h3>Current limitations</h3><ul>{limitation_html}</ul>' if limitation_html else ''}"
         )
     return "".join(content)
+
+
+def _remediation_suggestion(item: dict[str, Any]) -> str:
+    heading = _text(item.get("current_name") or item.get("title"))
+    if item.get("candidate_name"):
+        heading += f" &rarr; {_text(item.get('candidate_name'))}"
+    confidence = ""
+    if item.get("confidence"):
+        confidence = (
+            f"<p><b>Confidence:</b> {_text(item.get('confidence'))}; "
+            f"<b>policy validation:</b> "
+            f"{_text(item.get('policy_validation'))}</p>"
+        )
+    return (
+        f"<div class='card'><b>{heading}</b>"
+        f"<p>{_text(item.get('description'))}</p>"
+        f"{_named_list('Policy reasons', item.get('reasons') or [])}"
+        f"{_named_list('Actions', item.get('actions') or [], ordered=True)}"
+        f"{confidence}"
+        f"<p><b>Verification:</b> {_text(item.get('verification'))}</p></div>"
+    )
 
 
 def _named_list(name: str, items: list[Any], *, ordered: bool = False) -> str:

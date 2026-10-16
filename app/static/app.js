@@ -232,7 +232,7 @@ function updateWorkspaceChrome(activeTab) {
         button.setAttribute("aria-selected", String(active));
     });
     document.querySelectorAll("[data-remediation-count]").forEach(badge => {
-        badge.textContent = `${remediationCount} ${remediationCount === 1 ? "fix" : "fixes"}`;
+        badge.textContent = `${remediationCount} ${remediationCount === 1 ? "plan" : "plans"}`;
     });
     document.querySelectorAll("[data-build-badge]").forEach(badge => {
         badge.textContent = buildState;
@@ -390,38 +390,73 @@ function closeRemediationDrawer() {
 function renderRemediation(remediation) {
     const affected = remediation.affected_cases || [];
     const suggestions = remediation.suggestions || [];
+    const questions = remediation.questions || [];
+    const limitations = remediation.limitations || [];
+    const rules = remediation.applicable_rules || [];
+    const model = remediation.model || {};
+    const statusClass = remediation.status === "candidate_ready" ? "passed" : remediation.status === "unsupported" ? "failed" : "warning";
     document.getElementById("remediationContent").innerHTML = `<article class="remediation-result">
-        <span class="pill ${remediation.scope === "case" ? "warning" : "passed"}">${escapeHtml(remediation.scope)} scope</span>
+        <span class="pill ${statusClass}">${escapeHtml((remediation.status || "plan").replaceAll("_", " "))}</span>
         <h3>${escapeHtml(remediation.title || "Suggested fixes")}</h3>
         <p>${escapeHtml(remediation.summary || "")}</p>
-        ${remediation.common_failure_patterns?.length ? `<section><h4>Patterns</h4><ul>${remediation.common_failure_patterns.map(pattern => `<li>${escapeHtml(pattern)}</li>`).join("")}</ul></section>` : ""}
-        ${suggestions.length ? `<section><h4>Suggestions</h4>${suggestions.map(suggestion => `<div class="suggestion"><strong>${escapeHtml(suggestion.title)}</strong><p>${escapeHtml(suggestion.description)}</p>${suggestion.actions?.length ? `<ol>${suggestion.actions.map(action => `<li>${escapeHtml(action)}</li>`).join("")}</ol>` : ""}${suggestion.verification ? `<p><strong>Verify:</strong> ${escapeHtml(suggestion.verification)}</p>` : ""}</div>`).join("")}</section>` : ""}
+        ${model.model ? `<p class="remediation-model">${escapeHtml(model.model)} · ${escapeHtml(String(model.input_tokens ?? "?"))} input / ${escapeHtml(String(model.output_tokens ?? "?"))} output tokens</p>` : ""}
+        ${suggestions.length ? `<section><h4>Candidates</h4>${suggestions.map(suggestion => `<div class="suggestion"><strong>${escapeHtml(suggestion.current_name || suggestion.title)} → ${escapeHtml(suggestion.candidate_name || "")}</strong><p>${escapeHtml(suggestion.description || "")}</p><p><strong>Confidence:</strong> ${escapeHtml(suggestion.confidence || "not recorded")} · <strong>Policy:</strong> ${escapeHtml((suggestion.policy_validation || "not checked").replaceAll("_", " "))}</p>${suggestion.actions?.length ? `<ol>${suggestion.actions.map(action => `<li>${escapeHtml(action)}</li>`).join("")}</ol>` : ""}${suggestion.verification ? `<p><strong>Verify:</strong> ${escapeHtml(suggestion.verification)}</p>` : ""}</div>`).join("")}</section>` : ""}
+        ${questions.length ? `<form class="remediation-questions" onsubmit="submitRemediationContext(event)"><h4>Developer context required</h4>${questions.map(question => `<label class="remediation-question"><span>${escapeHtml(question.prompt)}</span><textarea name="${escapeHtml(question.question_id)}" rows="3" required placeholder="Add only the meaning or context needed to name this item."></textarea></label>`).join("")}<button class="btn primary" type="submit">Generate candidates</button></form>` : ""}
+        ${limitations.length ? `<section><h4>Current limitations</h4><ul>${limitations.map(item => `<li><strong>${escapeHtml(item.name || "Case")}</strong> — ${escapeHtml(item.message || "Not supported in this prototype.")}</li>`).join("")}</ul></section>` : ""}
+        ${rules.length ? `<details class="remediation-rules"><summary>Applicable policy rules (${rules.length})</summary><ul>${rules.map(rule => `<li><strong>${escapeHtml(rule.rule_id)}</strong> ${escapeHtml(rule.reason)}</li>`).join("")}</ul></details>` : ""}
         ${affected.length ? `<section><h4>Affected cases</h4><ul>${affected.map(item => `<li><strong>${escapeHtml(item.name)}</strong><span>${escapeHtml(item.location || "")}</span></li>`).join("")}</ul></section>` : ""}
     </article>`;
 }
-async function requestRemediation(button) {
-    if (!window.currentRunId) return;
-    const payload = { scope: button.dataset.remediationScope, check_id: button.dataset.checkId };
-    if (payload.scope === "case") payload.case_id = button.dataset.caseId;
-    openRemediationDrawer();
-    document.getElementById("remediationContent").innerHTML = '<p class="empty-state">Preparing remediation suggestion…</p>';
-    button.disabled = true;
+function upsertCurrentRemediation(remediation) {
+    const items = window.currentReport.remediation || [];
+    const index = items.findIndex(item => item.remediation_id === remediation.remediation_id);
+    window.currentReport.remediation = index >= 0
+        ? items.map((item, itemIndex) => itemIndex === index ? remediation : item)
+        : [...items, remediation];
+}
+async function sendRemediation(payload, button = null) {
+    document.getElementById("remediationContent").innerHTML = '<p class="empty-state">Preparing remediation plan…</p>';
+    if (button) button.disabled = true;
     try {
         const response = await fetch(`/api/runs/${encodeURIComponent(window.currentRunId)}/remediations`, {
             method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload)
         });
         if (!response.ok) throw new Error(await response.text());
         const result = await response.json();
-        const items = window.currentReport.remediation || [];
-        window.currentReport.remediation = [...items, result.remediation];
+        window.currentRemediationRequest = {
+            scope: payload.scope,
+            check_id: payload.check_id,
+            case_id: payload.case_id,
+            remediation_id: result.remediation.remediation_id
+        };
+        upsertCurrentRemediation(result.remediation);
         renderRemediation(result.remediation);
         updateWorkspaceChrome(document.getElementById("buildPage").classList.contains("active") ? "build" : "report");
     } catch (error) {
         document.getElementById("remediationContent").innerHTML = `<p class="empty-state">${escapeHtml(String(error))}</p>`;
         console.error(error);
     } finally {
-        button.disabled = false;
+        if (button) button.disabled = false;
     }
+}
+async function requestRemediation(button) {
+    if (!window.currentRunId) return;
+    const payload = { scope: button.dataset.remediationScope, check_id: button.dataset.checkId };
+    if (payload.scope === "case") payload.case_id = button.dataset.caseId;
+    openRemediationDrawer();
+    window.currentRemediationRequest = payload;
+    await sendRemediation(payload, button);
+}
+async function submitRemediationContext(event) {
+    event.preventDefault();
+    if (!window.currentRemediationRequest) return;
+    const form = event.currentTarget;
+    const contextAnswers = Object.fromEntries(new FormData(form).entries());
+    const button = form.querySelector('button[type="submit"]');
+    await sendRemediation({
+        ...window.currentRemediationRequest,
+        context_answers: contextAnswers
+    }, button);
 }
 function renderBuildLoading(status = {}) {
     window.currentBuildState = status.state || "queued";

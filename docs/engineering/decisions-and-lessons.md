@@ -406,7 +406,8 @@ No motive is attributed where the repository does not support it.
 
 - Date: 2026-10-16
 - Status: accepted prototype; production model/evaluation gate remains G11
-- Scope: naming remediation provider, service/API contract, and persistence
+- Scope: naming remediation provider, service/API contract, persistence, UI,
+  and evidence export
 - Trigger: most lexical, case, prefix, and length failures can produce a useful
   candidate from the symbol and policy, while semantic names and categorical
   global-name segments cannot be inferred honestly from that evidence.
@@ -414,6 +415,19 @@ No motive is attributed where the repository does not support it.
   send the policy once and only failed rule IDs per case, and require strict
   structured output. Return a candidate, one narrow developer question, or an
   explicit limitation. Continue the same remediation record after answers.
+- Evidence-to-choice chain:
+  - repeated policy prose across cases made per-case prompts wasteful, which
+    selected one policy plus rule-ID references;
+  - retained one-letter parameter failures exposed absent intent, which selected
+    a question before any model call;
+  - retained function prefix/length failures preserved usable meaning, which
+    selected candidate generation rather than treating all length as semantic;
+  - retained malformed global segments lacked trusted type/module/unit facts,
+    which selected categorical deferral;
+  - one developer answer can unblock one pending case, which selected stable
+    question IDs and replacement of the original plan;
+  - untrusted model text must not become application structure, which selected
+    strict JSON Schema plus local policy validation.
 - Length boundary: maximum-length failures are eligible because conservative
   abbreviations can preserve visible meaning. Ambiguity becomes a question.
 - Global boundary: never invent data-type, size, module, unit, or categorical
@@ -434,7 +448,7 @@ No motive is attributed where the repository does not support it.
   snapshots, so name/version drift is rejected and requires a new review run.
 - Validation: payload assertions, no-call paths, context continuations, global
   deferral, candidate policy checking, retry/error behavior, persistence
-  replacement, and Python syntax checks.
+  replacement, escaped evidence output, and Python/JavaScript syntax checks.
 
 ## Durable problem and learning ledger
 
