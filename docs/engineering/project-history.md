@@ -759,3 +759,28 @@ and third-party artifacts and must not be interpreted as effort or quality.
 - Verification passed: Python and JavaScript syntax, all eleven focused direct
   tests, application import, Uvicorn startup, and HTTP 200 responses for the
   static root, retained agent report, and evidence-pack routes.
+
+### 13:35:30 +05:30 — Close committed prototype increments
+
+- Commit `8a2981a` records the provider, service/API contract, persistence,
+  focused tests, operating instructions, architecture, and D018 decision.
+- Commit `406bc61` records the drawer, evidence export, readiness correction,
+  roadmap/testing updates, and evidence-to-choice rationale.
+- Problems and retries: the first combined delete/add patch was rejected before
+  changing files; the provider was then replaced in supported patch steps. The
+  first evidence renderer used an invalid nested f-string; AST verification
+  caught it before execution, and an escaped helper replaced it. Initial Git
+  staging was denied by the restricted `.git` sandbox and succeeded after the
+  scoped approval. A trial `--renormalize` exposed the HTML file's pre-existing
+  mixed line endings and inflated the staged diff; only that staged
+  normalization was undone, the focused worktree edit was preserved, and the
+  final diff used the repository's CR-at-EOL-aware whitespace check.
+- Current state: tracked worktree clean after two independently verified
+  commits. Generated remediation/evidence artifacts remain in the ignored
+  retained run, as intended.
+- Remaining experiment gate: the application environment still has no
+  `OPENAI_API_KEY`, so no live Responses request or model-generated candidate is
+  claimed. The credential shown in chat was never copied into commands, files,
+  artifacts, or logs. Once the user configures the environment, run one retained
+  function-name request and one question continuation, record response/token
+  evidence, and rotate the disclosed credential.
