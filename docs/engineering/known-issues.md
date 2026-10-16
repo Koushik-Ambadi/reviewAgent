@@ -33,6 +33,83 @@ make an issue fixed. Status changes require dated evidence in the issue entry.
 | BUG-001 | Windows ZIP extraction fails on overlong nested Git paths | PLANNED | No | Deferred for local prototype; required before untrusted/multi-user use | G01 ingestion security |
 | BUG-002 | Ignored run workspace was moved to the Windows Recycle Bin | OPEN | No | High until deletion source and backup boundary are known | G02 provenance and retention |
 | BUG-003 | ZIP ingestion deletes caller-owned archives | OPEN | No | High for direct/local ZIP callers | G01 ingestion ownership |
+| BUG-004 | Remediation calls lose raw request/response and turn lineage | OPEN | No | High for workflow auditability | G11 remediation evidence |
+| BUG-005 | Mechanical naming failures can return unsupported model output | OPEN | No | High for remediation reliability and cost | G11 deterministic remediation |
+
+## BUG-005 — Mechanical naming failures can return unsupported model output
+
+- Status: OPEN
+- Fixed: No
+- First observed: 2026-10-16 in run `20261016_153027_9ab948dc`
+- Last updated: 2026-10-16T16:52:38+05:30
+- Affected paths: `src/repo_remediation/providers.py`, function-name remediation
+- Impact: an atomic, mechanically solvable case can consume a model call and
+  finish `unsupported` with no candidate and no question
+- Evidence confidence: independently reproduced from retained report/remediation
+  artifacts; raw model output is unavailable due BUG-004
+
+### Observed case and cause boundary
+
+- Case `44638082d7e35f6ea9643697d68394ff` failed only
+  `ABS-POLICY-FUNCTION-WORD-CASE`: `Shunt_getcurrent_ibatt_mA` must use lowercase
+  letters after `Shunt_`.
+- The policy-implied candidate is `Shunt_getcurrent_ibatt_ma`; no semantic
+  question is required.
+- Current preflight sends every otherwise eligible case to the model. The result
+  mapper emits “The model did not produce a changed candidate” only when the
+  structured candidate is empty or identical to the current name.
+- The persisted response used 838 input and 393 output tokens but produced no
+  actionable result.
+
+### Selected remediation and closure evidence
+
+Add deterministic candidate transforms for mechanically closed rules (case,
+fixed prefix/suffix, underscore cleanup, and safe character normalization),
+then validate locally. Use the model only for semantic choice, conservative
+abbreviation, or ambiguity. Add retained-case tests proving this case yields
+`Shunt_getcurrent_ibatt_ma` with zero model calls. Do not mark resolved until the
+fix commit and regression evidence are linked.
+
+## BUG-004 — Remediation calls lose raw request/response and turn lineage
+
+- Status: OPEN
+- Fixed: No
+- First observed: 2026-10-16 in run `20261016_153027_9ab948dc`
+- Last updated: 2026-10-16T16:52:38+05:30
+- Affected paths: `src/repo_remediation/providers.py`,
+  `app/services/remediation_service.py`, `remediation.json`
+- Impact: a response ID and token counts exist, but the exact returned structured
+  output, request snapshot, retry events, developer answers, and parent/child
+  call relationship cannot be audited after the call
+- Evidence confidence: independently observed in source and retained artifacts
+
+### Recorded evidence
+
+- The provider posts `store: false`, parses the returned response in memory, and
+  persists only model metadata plus the derived suggestions/questions/
+  limitations.
+- A retrieval attempt for response
+  `resp_0882a5ce90b4029b016ad206863ee487d188851e4e2eba293e` returned HTTP 404.
+- The request was reconstructed from current code and retained inputs, but no
+  persisted artifact proves the exact original bytes or raw model output.
+- Continuation uses the same `remediation_id` and replaces the prior record,
+  preserving only its original `generated_at`. It does not retain a turn ID,
+  parent turn, prior question/output, answer event, or prior response ID.
+- The implementation does not use an OpenAI conversation or
+  `previous_response_id`; each call is stateless and rebuilt from policy, cases,
+  and current developer answers.
+
+### Selected remediation and closure evidence
+
+Keep one stable remediation-plan root and append immutable call turns. Each turn
+needs `turn_id`, `parent_turn_id`, request timestamp/hash/sanitized payload,
+developer answers, transport attempts, raw provider response, parsed output,
+validation decisions, latency, token/model metadata, and errors. Secrets and
+authorization headers must never be logged. Keep `store: false`; application-
+owned evidence, not provider retention, is authoritative. Derive the plan's
+current state from its turns rather than overwriting history. Closure requires
+contract, persistence, API/UI/evidence, retry/error, redaction, and multi-turn
+regression tests plus the fixing commit.
 
 ## BUG-003 — ZIP ingestion deletes caller-owned archives
 

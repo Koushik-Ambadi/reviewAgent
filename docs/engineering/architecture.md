@@ -410,6 +410,15 @@ global candidates cannot be fully revalidated without symbol type; source
 context is manual; and the inexpensive default model is a workflow-test choice,
 not a production quality decision.
 
+The current persistence also stores only derived remediation state and model
+metadata. Raw request/response evidence is discarded, and a continuation
+replaces its parent record instead of retaining immutable turns. This audit and
+lineage defect is tracked in
+[BUG-004](known-issues.md#bug-004--remediation-calls-lose-raw-requestresponse-and-turn-lineage).
+Mechanical atomic failures are not transformed before model dispatch, allowing
+an unchanged/empty model candidate to become an unsupported result; see
+[BUG-005](known-issues.md#bug-005--mechanical-naming-failures-can-return-unsupported-model-output).
+
 The separation is clean but small; it makes execution and result formation
 independently replaceable. The concrete builder is Windows-only, while the
 container is Linux-based.

@@ -825,3 +825,19 @@ and third-party artifacts and must not be interpreted as effort or quality.
   unknown.
 - Per user direction, this increment records the defect and selected remediation
   but does not change runtime behavior or execute a destructive reproduction.
+
+### 16:52:38 +05:30 — Diagnose unsupported live remediation and missing lineage
+
+- Retained case `Shunt_getcurrent_ibatt_mA` failed only lowercase word-case, but
+  the model-backed path returned no changed candidate and no question after 838
+  input and 393 output tokens. The correct mechanical candidate is
+  `Shunt_getcurrent_ibatt_ma`.
+- Reconstructed the request from code, policy, report, and case data. The exact
+  raw model output was not persisted. Read-only retrieval by response ID returned
+  HTTP 404 because provider storage was disabled.
+- Confirmed continuations overwrite the prior plan record and do not retain
+  turn/parent IDs, earlier outputs, answers, or response IDs. Calls are stateless
+  and do not use an OpenAI conversation or `previous_response_id`.
+- Opened BUG-004 for append-only redacted call evidence and parent/child turns,
+  and BUG-005 for deterministic mechanical remediation before model dispatch.
+  Per user instruction, no runtime fix was made before design discussion.
