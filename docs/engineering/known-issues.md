@@ -32,6 +32,67 @@ make an issue fixed. Status changes require dated evidence in the issue entry.
 |---|---|---|---|---|---|
 | BUG-001 | Windows ZIP extraction fails on overlong nested Git paths | PLANNED | No | Deferred for local prototype; required before untrusted/multi-user use | G01 ingestion security |
 | BUG-002 | Ignored run workspace was moved to the Windows Recycle Bin | OPEN | No | High until deletion source and backup boundary are known | G02 provenance and retention |
+| BUG-003 | ZIP ingestion deletes caller-owned archives | OPEN | No | High for direct/local ZIP callers | G01 ingestion ownership |
+
+## BUG-003 — ZIP ingestion deletes caller-owned archives
+
+- Status: OPEN
+- Fixed: No
+- First observed: 2026-10-16 during BUG-002 cause investigation
+- Last updated: 2026-10-16T16:42:30+05:30
+- Environment: all platforms using the orchestration ingestion API
+- Affected path: `src/orchestrator/ingestion/zip_ingestion.py`
+- Affected callers: direct `prepare_review_run(..., source_type="zip")` and any
+  future caller that passes a user-owned archive
+- Impact: a successfully extracted input ZIP is unconditionally unlinked even
+  when the ingestion layer does not own that file
+- Severity: high data-loss defect for direct/local ZIP ingestion; currently
+  masked in the HTTP upload flow because that flow first creates a private
+  temporary copy
+- Current priority: unresolved; establish ownership and regression coverage
+- Related gate: G01 ingestion security and ownership
+
+### Observed code evidence
+
+- `ingest_zip_source` converts its argument to `Path`, extracts it, detects the
+  repository root, then calls `zip_path.unlink()` inside an ignored `OSError`
+  handler. Its signature has no ownership/delete flag.
+- `review_uploaded_zip` writes the browser upload into an application-owned UUID
+  file under `app/temp/uploads`, passes that file to ingestion, and attempts a
+  second cleanup afterward. Deleting that private temporary file is appropriate,
+  but ownership is not represented at the ingestion boundary.
+- `ingest_local_source` does not delete the source directory. It resolves the
+  path and copies it into the run workspace with `shutil.copytree`.
+- The manual local smoke script uses `source_type="local"`, so it does not enter
+  the destructive ZIP branch.
+
+Evidence confidence: independently observed directly in current source. No
+destructive runtime reproduction was performed because the code path and target
+are unambiguous and reproducing it against user data would add risk.
+
+### Relationship to BUG-002
+
+This defect deletes one ZIP file; it does not recursively delete or move
+`workspace/runs`. It therefore does not explain the recovered run-directory
+event. BUG-002 remains open with an unknown deleting process.
+
+### Smallest known reproduction
+
+Create a disposable ZIP outside `app/temp/uploads`, call
+`prepare_review_run(source_path=zip_path, source_type="zip")`, and observe that
+the original archive no longer exists after successful extraction. This
+reproduction is specified but intentionally not executed in this
+documentation-only triage.
+
+### Selected remediation and closure evidence
+
+- Remove source deletion from `ingest_zip_source`; ingestion must treat its
+  input as caller-owned.
+- Make the HTTP upload service solely responsible for deleting the private
+  temporary copy in a `finally` block, covering preparation and review failures.
+- Add tests proving a direct caller's ZIP survives success and failure while an
+  HTTP temporary upload is cleaned on success and failure.
+- Link the fix commit and passing regression evidence before marking resolved.
 
 ## BUG-002 — Ignored run workspace was moved to the Windows Recycle Bin
 
@@ -61,6 +122,9 @@ make an issue fixed. Status changes require dated evidence in the issue entry.
 - Targeted source search found no startup or retention routine that removes
   `workspace/runs`; the only recursive product deletion found is the run-local
   analysis build directory in `generator.py`.
+- Local ingestion copies its source directory and does not delete it. ZIP
+  ingestion has a separate caller-owned-file deletion defect (BUG-003), but its
+  single-file `unlink` cannot explain recursive removal of the run root.
 - During the remediation work, no `Remove-Item`, `rm`, `git clean`, recursive
   workspace deletion, or reset command was issued. A test used Python's system
   temporary directory and restored the monkeypatched run-store root in `finally`.

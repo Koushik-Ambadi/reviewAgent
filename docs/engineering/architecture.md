@@ -338,6 +338,11 @@ extraction currently uses `extractall` without member-path validation.
 The resulting Windows long-path failure is tracked as
 [BUG-001](known-issues.md#bug-001--windows-zip-extraction-fails-on-overlong-nested-git-paths);
 the selected remediation remains unimplemented.
+The ZIP adapter also unconditionally deletes its input even though ownership is
+not part of its contract. The HTTP caller supplies a private temporary copy, but
+direct callers may supply user-owned archives; this remains unfixed in
+[BUG-003](known-issues.md#bug-003--zip-ingestion-deletes-caller-owned-archives).
+Local directory ingestion is copy-only and does not delete its source.
 
 ### `repo_build`
 

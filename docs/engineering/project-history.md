@@ -812,3 +812,16 @@ and third-party artifacts and must not be interpreted as effort or quality.
   absent. Recovery is therefore recorded as partial until reconciled.
 - Opened BUG-002 with high retention priority, unknown initiator, observed versus
   user-supplied evidence separated, current workaround, and closure evidence.
+
+### 16:42:30 +05:30 — Separate ZIP ownership defect from run loss
+
+- Cause check found that local directory ingestion is copy-only, while ZIP
+  ingestion unconditionally unlinks its input after successful extraction.
+- Opened BUG-003 as unresolved: direct/local ZIP callers can lose a user-owned
+  archive because the ingestion contract does not express ownership. The HTTP
+  path happens to pass an application-owned temporary copy.
+- This does not explain BUG-002: one ZIP-file `unlink` cannot recursively move
+  `workspace/runs` to the Windows Recycle Bin. The run-loss initiator remains
+  unknown.
+- Per user direction, this increment records the defect and selected remediation
+  but does not change runtime behavior or execute a destructive reproduction.
