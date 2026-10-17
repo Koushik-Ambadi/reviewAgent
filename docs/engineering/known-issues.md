@@ -41,9 +41,9 @@ make an issue fixed. Status changes require dated evidence in the issue entry.
 - Status: IN_PROGRESS
 - Fixed: No
 - First observed: 2026-10-16 in run `20261016_153027_9ab948dc`
-- Last updated: 2026-10-16T23:40:01+05:30
+- Last updated: 2026-10-17T01:22:10+05:30
 - Affected paths: `src/repo_remediation/providers.py`,
-  `src/repo_remediation/llm/`, function-name remediation
+  `src/repo_remediation/generation/`, function-name remediation
 - Impact: an atomic, mechanically solvable case can consume a model call and
   finish `unsupported` with no candidate and no question
 - Evidence confidence: independently reproduced from retained report/remediation

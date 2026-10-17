@@ -114,6 +114,7 @@ def test_function_length_batch_calls_model_once_and_validates_candidate():
     assert "location" not in serialized_input
     assert "validator" not in serialized_input
     assert "applicability_exclusions" not in serialized_input
+    assert "conservative acronyms" in client.payloads[0]["input"][0]["content"]
 
 
 def test_unchanged_model_candidate_preserves_raw_and_parsed_trace():
@@ -282,7 +283,7 @@ def test_model_question_can_be_answered_on_a_follow_up():
     assert model_input["cases"][0]["developer_context"].startswith("It decodes")
 
 
-def test_global_categorical_failure_is_deferred_without_model_call():
+def test_global_categorical_failure_requests_trusted_context_without_model_call():
     client = FakeResponsesClient([])
     provider = OpenAIRemediationProvider(client=client, model="test-nano")
 
@@ -305,8 +306,8 @@ def test_global_categorical_failure_is_deferred_without_model_call():
         scope="case",
     )
 
-    assert result["status"] == "unsupported"
-    assert "deferred" in result["limitations"][0]["message"]
+    assert result["status"] == "input_required"
+    assert result["questions"][0]["field"] == "global_segments"
     assert client.payloads == []
 
 
@@ -333,7 +334,6 @@ def test_remediation_continuation_appends_linked_turn():
         replacement,
         remediation_id="rem-1",
         check_id="parameter_names",
-        scope="case",
     )
 
     assert len(result) == 1
@@ -428,6 +428,10 @@ def test_service_persists_and_replaces_context_continuation():
         assert completed["remediation_id"] == pending["remediation_id"]
         assert len(stored["remediation"]) == 1
         assert stored["remediation"][0]["status"] == "candidate_ready"
+        assert stored["remediation"][0]["scope"] == "check"
+        assert stored["remediation"][0]["case_results"][0]["status"] == (
+            "candidate_ready"
+        )
         assert len(stored["remediation"][0]["turns"]) == 2
         first_turn, second_turn = stored["remediation"][0]["turns"]
         assert second_turn["parent_turn_id"] == first_turn["turn_id"]
@@ -451,6 +455,15 @@ def test_service_persists_and_replaces_context_continuation():
         assert provider_call["parsed_output"]["cases"][0]["candidate"] == (
             "payloadByte"
         )
+        metrics = [
+            json.loads(line)
+            for line in (run_path / "remediation-metrics.jsonl")
+            .read_text(encoding="utf-8")
+            .splitlines()
+        ]
+        assert len(metrics) == 1
+        assert metrics[0]["prompt_profile_id"] == "naming-parameter_names-v1"
+        assert metrics[0]["input_tokens"] == 120
 
 
 def test_responses_client_retries_one_transient_failure():

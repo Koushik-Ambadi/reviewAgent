@@ -371,6 +371,13 @@ changing the synchronous API behavior used by callers that need a final result.
 Detailed implementation and extension boundaries are owned by
 [Remediation generation](remediation-generation.md).
 
+`repo_remediation/contracts.py` defines the provider-independent suggestion and
+transport protocols. `providers.py` contains the OpenAI-backed and offline
+workflow implementations; external HTTP transport lives in `adapters/`,
+model-facing behavior in `generation/`, context gates in `context.py`, hierarchy
+projection in `hierarchy.py`, report mapping in `results.py`, and call
+evidence/metrics in `observability/`.
+
 `RemediationProvider` defines a provider-independent suggestion boundary.
 `OpenAIRemediationProvider` is the interactive default. It receives one failed
 check, that check's active policy, and all selected failed cases. Deterministic
@@ -385,8 +392,9 @@ exclusions stay outside the prompt.
 Ordinary naming candidates are validated again against the complete check
 policy with the atomic-rule evaluator, including constraints omitted from the
 compact prompt.
-Global categorical repairs (type, size, module, unit, or invalid segment
-grammar) and required-path creation remain limitations. Single-letter
+Global categorical repairs request trusted module/type/size/unit/meaning context
+before generation; their candidates still cannot be fully revalidated without
+symbol type. Required-path creation remains a limitation. Single-letter
 parameters, ambiguous local names, symbolic array sizes, and absent semantic
 descriptions request narrow context. A model may also request one question when
 the visible name is ambiguous.
@@ -403,12 +411,18 @@ environment values. The real local file is Git-ignored; `.env.local.example` is
 the tracked shape. Placeholder and empty values are ignored, malformed or
 unknown keys stop startup, and no loaded value is logged or added to run data.
 
-The remediation service rejects policy-version drift, persists new plans, and
-updates a continued plan by `remediation_id` while retaining immutable linked
-turns. Its API returns candidates, confidence, validation, questions,
-limitations, usage, and the rules once. Each request also appends a redacted
+The remediation service rejects policy-version drift and maintains one
+check-scoped plan per run/check. Ordered `case_results` children preserve
+candidate, context-required, limitation, and not-requested states. Case requests
+update one child; later check requests exclude attempted children and fill only
+missing ones. Optional per-case developer context can be supplied on the first
+request. Continued questions retain immutable linked turns under the same plan.
+The API also retains derived candidates, confidence, validation, questions,
+limitations, usage, and rules for compatibility. Each request appends a redacted
 turn to `remediation-calls.jsonl`, including the exact provider request, raw
 response, retries, parsed output, validation outcome, and developer answers.
+Successful model calls append normalized latency/token/profile evidence to
+`remediation-metrics.jsonl`.
 Transport/provider failures are recorded before their HTTP error is returned.
 No provider edits source or treats a candidate as approved.
 

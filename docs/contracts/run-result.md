@@ -105,16 +105,27 @@ Each run is stored under `workspace/runs/<run_id>/`:
 report.json             Canonical serialized RunResult
 remediation.json        Recorded remediation suggestions for the run
 remediation-calls.jsonl Append-only remediation turn/call evidence
+remediation-metrics.jsonl Normalized per-model-call token and latency evidence
 build.json              Latest serialized build result
 evidence-pack.html      Latest self-contained HTML handoff generated on request
 ```
 
-`report.json` remains the canonical `RunResult`. A new remediation request
-appends its result to both `remediation.json` and `RunResult.remediation`. A
-continuation supplies the existing `remediation_id`, updates that plan's latest
-projection, preserves its identity and original `generated_at`, and appends the
-new immutable turn to `turns`. `latest_turn_id` identifies the current leaf;
-each continuation turn points to the preceding leaf through `parent_turn_id`.
+`report.json` remains the canonical `RunResult`. New remediation writes maintain
+one plan root per check. Every failed check case has one ordered `case_results`
+entry with status `not_requested`, `candidate_ready`, `input_required`, or
+`unsupported`; absent candidates are JSON `null`, not invented placeholder
+names. A case request updates only that child. A later check request targets
+only `not_requested` children, then merges them into the same plan. The legacy
+top-level `suggestions`, `questions`, and `limitations` arrays remain derived
+compatibility views. Existing artifacts without `case_results` are projected at
+read/update time.
+
+A continuation supplies the existing `remediation_id`, updates that plan's
+latest projection, preserves its identity and original `generated_at`, and
+appends the new immutable turn to `turns`. `latest_turn_id` identifies the
+current leaf; each continuation turn points to the preceding leaf through
+`parent_turn_id`. Request scope belongs to each turn; the persisted plan root is
+check-scoped.
 A build request overwrites `build.json` with the latest result and updates
 `RunResult.build_result`. This keeps follow-up actions attached to the same run
 without making the file layout part of the API contract.
@@ -129,6 +140,13 @@ Preflight-only turns have `provider_call: null`. Transport or provider failures
 are logged before the API error is returned. Authorization headers and API keys
 are never serialized. The log is application-owned evidence; provider-side
 retention remains disabled with `store: false`.
+
+Successful model turns also append one normalized record to
+`remediation-metrics.jsonl`: run/remediation/turn/check/case identities, model
+and prompt profile IDs, response ID, input/output/reasoning/cached/total tokens,
+attempt count, measured transport latency, and outcome status. This metrics log
+supports later model and prompt comparisons; it is not itself an evaluation or
+quality score.
 
 `GET /api/runs/{run_id}/evidence-pack` reads the canonical `report.json`, renders
 all review findings and atomic reasons plus current remediation/build extensions,
@@ -192,7 +210,8 @@ The persisted `report.json` contains the `RunResult` itself. The API envelope gi
 ## Follow-up response envelopes
 
 `POST /api/runs/{run_id}/remediations` accepts `scope`, a failed `check_id`, and
-an optional failed `case_id`. A follow-up also sends the returned
+an optional failed `case_id`. Optional `developer_context` is keyed by case ID
+and can be supplied before the first call. A follow-up also sends the returned
 `remediation_id` plus a `context_answers` object keyed by question ID. The
 response remains a provider-independent envelope:
 
@@ -204,6 +223,7 @@ response remains a provider-independent envelope:
     "scope": "check",
     "check_id": "function_names",
     "status": "candidate_ready",
+    "case_results": [],
     "applicable_rules": [],
     "affected_cases": [],
     "suggestions": [],
@@ -214,7 +234,8 @@ response remains a provider-independent envelope:
 }
 ```
 
-`status` is `candidate_ready`, `input_required`, `partial`, or `unsupported`.
+`status` is `not_started`, `candidate_ready`, `input_required`, `partial`, or
+`unsupported`.
 Rules are represented once per check in `applicable_rules`; cases retain their
 original atomic reasons in `affected_cases`. Suggestions carry current and
 candidate names, confidence, policy-validation status, a concise note, and

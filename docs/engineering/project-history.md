@@ -906,3 +906,48 @@ and third-party artifacts and must not be interpreted as effort or quality.
   installed; the first direct-test retry likewise stopped before collection
   because `src` was absent from its import path. The supported virtual
   environment with the path inserted passed all 14 focused tests.
+
+## 2026-10-17 — Remediation hierarchy and developer-context workflow
+
+### 01:07:56 +05:30 — Open modular remediation workflow increment
+
+- Goal: give `repo_remediation` responsibility-based package boundaries, make
+  one run/check/case/turn hierarchy explicit, avoid regenerating cases already
+  covered when a full-check request follows a case request, and accept optional
+  developer context before the first model call.
+- Starting state: branch `codex/atomic-naming-rules` at `d0db8a1`, clean
+  worktree, and 14 focused remediation tests passing in `venv313`.
+- Authoritative records: `docs/contracts/run-result.md` owns persistence and API
+  shape; `docs/engineering/remediation-generation.md` owns module behavior;
+  architecture, decisions, testing, and this history own their respective facts.
+- Compatibility boundary: preserve the existing response fields and append-only
+  call evidence while adding a uniform per-case projection. Existing stored run
+  artifacts must remain readable. No source-code rename application, repository
+  context extraction, model comparison, or conversational candidate revision is
+  included in this increment.
+- Acceptance evidence: characterize existing behavior first; then prove package
+  compatibility imports, check-level exclusion of already covered cases,
+  question/answer parent-child turns, optional pre-call context, per-case empty
+  states, token/latency metrics, and the affected UI request payload.
+
+### 01:22:10 +05:30 — Establish check/case hierarchy and modular boundaries
+
+- Replaced the technology-named `llm/` bucket with responsibility-based
+  contracts, adapters, generation, context, hierarchy, result mapping, and
+  observability modules. `providers.py` decreased from 768 to 316 lines and now
+  composes those boundaries instead of owning HTTP, schemas, redaction,
+  measurements, policy questions, and result mapping together.
+- Added one check plan per run/check with ordered `case_results`. A case request
+  leaves untouched siblings as `not_requested` with null candidates; a later
+  full-check request excludes attempted children and merges only missing cases.
+  Context answers retain the same remediation root and linked turn chain.
+- Added optional case-keyed developer context before the first request,
+  check-specific prompt profiles, trusted global-segment questions, and
+  normalized `remediation-metrics.jsonl` token/latency/profile evidence.
+- Added an initial-context form and case-coverage states to the remediation UI.
+  Conversational candidate revision remains explicitly deferred.
+- Verification reached 17 focused direct tests, Python compilation, application
+  import, evidence-pack hierarchy rendering, and JavaScript syntax. No live
+  model call or visual UI claim was made. A literal
+  Windows `*.py` compilation attempt failed with `Errno 22`; expanded file paths
+  passed afterward.

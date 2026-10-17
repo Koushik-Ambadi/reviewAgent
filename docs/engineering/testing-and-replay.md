@@ -458,3 +458,26 @@ collection because that package is not installed in the repository environment;
 the first direct-harness retry also stopped before collection because `src` was
 not on its import path. The supported virtual-environment harness with `src`
 inserted passed all 14 tests.
+
+### Hierarchical remediation and initial context
+
+The 2026-10-17 increment extends the focused direct suite to 17 tests. New
+filesystem-backed coverage proves that a case request creates a check plan with
+one `candidate_ready` child and one `not_requested` child, then a later
+full-check request sends only the missing case, retains one remediation ID,
+produces two parent-linked turns, and persists one plan. A second test proves
+optional developer context for a one-letter parameter reaches the first prompt
+and avoids the context-question round trip.
+
+Evidence-pack coverage verifies that the same per-case hierarchy renders both a
+candidate and a `not_requested` case without inventing a candidate.
+
+Existing tests now also cover global categorical context questions, normalized
+model/prompt profile IDs, token evidence in `remediation-metrics.jsonl`, and the
+legacy top-level compatibility views. Python compilation, application import,
+and `node --check app/static/app.js` are the proportional syntax gates. No live
+provider call or visual browser check is represented by these tests.
+
+The first syntax command again passed a literal `*.py` path to Windows Python
+and reported `Errno 22`; the direct suite still executed and passed. The command
+was corrected to expand files with PowerShell before invoking `py_compile`.

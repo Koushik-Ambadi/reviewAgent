@@ -190,6 +190,10 @@ def _remediations(remediations: list[dict[str, Any]]) -> str:
         return "<p class='muted'>No remediation has been requested for this run.</p>"
     content: list[str] = []
     for remediation in remediations:
+        case_results = remediation.get("case_results") or []
+        case_result_html = "".join(
+            _remediation_case_result(item) for item in case_results
+        )
         suggestions = remediation.get("suggestions") or []
         suggestion_html = "".join(
             _remediation_suggestion(item) for item in suggestions
@@ -215,10 +219,23 @@ def _remediations(remediations: list[dict[str, Any]]) -> str:
         content.append(
             f"<h3>{_text(remediation.get('title'))}</h3>"
             f"<p>{_text(remediation.get('summary'))}</p>{model_html}{suggestion_html}"
+            f"{f'<h3>Case coverage</h3><ul>{case_result_html}</ul>' if case_result_html else ''}"
             f"{f'<h3>Developer context required</h3><ul>{question_html}</ul>' if question_html else ''}"
             f"{f'<h3>Current limitations</h3><ul>{limitation_html}</ul>' if limitation_html else ''}"
         )
     return "".join(content)
+
+
+def _remediation_case_result(item: dict[str, Any]) -> str:
+    candidate = (
+        f" &rarr; {_text(item.get('candidate_name'))}"
+        if item.get("candidate_name")
+        else ""
+    )
+    return (
+        f"<li><b>{_text(item.get('name'))}:</b> "
+        f"{_text(item.get('status') or 'not_requested')}{candidate}</li>"
+    )
 
 
 def _remediation_suggestion(item: dict[str, Any]) -> str:

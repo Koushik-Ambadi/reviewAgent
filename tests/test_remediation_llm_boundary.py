@@ -1,7 +1,7 @@
 import json
 
-from repo_remediation.llm import (
-    RemediationModelSettings,
+from repo_remediation.generation import (
+    RemediationModelProfile,
     compile_remediation_prompt,
     restore_case_ids,
 )
@@ -9,7 +9,11 @@ from repo_remediation.llm import (
 
 def test_prompt_compiler_deduplicates_rules_across_batch_cases():
     compiled = compile_remediation_prompt(
-        settings=RemediationModelSettings(model="test-nano"),
+        profile=RemediationModelProfile(
+            profile_id="test-profile",
+            model="test-nano",
+        ),
+        check_id="function_names",
         cases=[
             {
                 "case_id": "persistent-a",

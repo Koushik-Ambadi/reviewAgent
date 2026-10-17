@@ -348,7 +348,7 @@ function renderStages(report) {
             const hasFailures = (summary.failed || 0) > 0;
             return `<details class="check-card" data-check-id="${escapeHtml(check.check_id)}">
                 <summary class="check-heading"><span><strong>${escapeHtml(check.title)}</strong><div class="section-sub">${summary.failed || 0} failed · ${summary.skipped || 0} skipped · ${summary.passed || 0} passed</div></span><span class="pill ${hasFailures ? "failed" : "passed"}">${hasFailures ? "Failed" : "Completed"}</span></summary>
-                <div class="check-content"><div class="check-actions">${hasFailures ? `<button class="inline-action" type="button" data-remediation-scope="check" data-check-id="${escapeHtml(check.check_id)}">Suggest fixes for this check</button>` : ""}</div>${cases.length ? cases.map(item => renderCase(item, check.check_id)).join("") : '<div class="case-row success">No cases match the current filters.</div>'}</div>
+                <div class="check-content"><div class="check-actions">${hasFailures ? `<button class="inline-action" type="button" data-remediation-scope="check" data-check-id="${escapeHtml(check.check_id)}">${remediationForCheck(check.check_id) ? "Generate missing remediations" : "Suggest fixes for this check"}</button>` : ""}</div>${cases.length ? cases.map(item => renderCase(item, check.check_id)).join("") : '<div class="case-row success">No cases match the current filters.</div>'}</div>
             </details>`;
         }).filter(Boolean).join("");
         if (!renderedChecks && !showInventory && (query || wantedStatuses.size || wantedChecks.size)) return "";
@@ -368,14 +368,39 @@ function renderStages(report) {
 function renderCase(item, checkId) {
     const status = statusName(item.status);
     const reasons = item.reasons || [];
+    const remediationCase = remediationCaseFor(checkId, item.case_id);
+    const remediationStatus = remediationCase?.status || "not_requested";
+    const remediationDetail = remediationStatus === "candidate_ready"
+        ? `Candidate: ${escapeHtml(remediationCase.candidate_name || "")}`
+        : remediationStatus === "input_required"
+            ? "Developer context required"
+            : remediationStatus === "unsupported"
+                ? "Current limitation recorded"
+                : "No remediation generated";
+    const actionLabel = remediationStatus === "not_requested" ? "Generate remediation" : "View remediation";
     return `<article class="case-row ${status}" data-case-id="${escapeHtml(item.case_id)}">
         <div class="case-main"><div class="case-title"><strong>${escapeHtml(item.name || "Unnamed case")}</strong><span class="pill ${pillClass(status)}">${escapeHtml(item.status)}</span></div>
         <div class="case-location">${escapeHtml(item.location || "")}</div>
+        ${status === "failed" ? `<div class="case-remediation-state ${escapeHtml(remediationStatus)}">${remediationDetail}</div>` : ""}
         ${reasons.length ? `<details class="case-reasons"><summary>${reasons.length} rule detail${reasons.length === 1 ? "" : "s"}</summary><ul>${reasons.map(reason => `<li>${escapeHtml(reason)}</li>`).join("")}</ul></details>` : ""}</div>
-        ${status === "failed" ? `<button class="inline-action case-actions" type="button" data-remediation-scope="case" data-check-id="${escapeHtml(checkId)}" data-case-id="${escapeHtml(item.case_id)}">Suggest fix</button>` : ""}
+        ${status === "failed" ? `<button class="inline-action case-actions" type="button" data-remediation-scope="case" data-check-id="${escapeHtml(checkId)}" data-case-id="${escapeHtml(item.case_id)}">${actionLabel}</button>` : ""}
     </article>`;
 }
 function applyReportFilters() { if (window.currentReport) renderStages(window.currentReport); }
+
+function remediationForCheck(checkId) {
+    return [...(window.currentReport?.remediation || [])].reverse().find(item => item.check_id === checkId) || null;
+}
+function remediationCaseFor(checkId, caseId) {
+    return (remediationForCheck(checkId)?.case_results || []).find(item => item.case_id === caseId) || null;
+}
+function failedCasesForCheck(checkId) {
+    for (const stage of window.currentReport?.stages || []) {
+        const check = (stage.checks || []).find(item => item.check_id === checkId);
+        if (check) return (check.cases || []).filter(item => statusName(item.status) === "failed");
+    }
+    return [];
+}
 
 function openRemediationDrawer() {
     document.getElementById("drawerBackdrop").hidden = false;
@@ -394,12 +419,14 @@ function renderRemediation(remediation) {
     const limitations = remediation.limitations || [];
     const rules = remediation.applicable_rules || [];
     const model = remediation.model || {};
+    const caseResults = remediation.case_results || [];
     const statusClass = remediation.status === "candidate_ready" ? "passed" : remediation.status === "unsupported" ? "failed" : "warning";
     document.getElementById("remediationContent").innerHTML = `<article class="remediation-result">
         <span class="pill ${statusClass}">${escapeHtml((remediation.status || "plan").replaceAll("_", " "))}</span>
         <h3>${escapeHtml(remediation.title || "Suggested fixes")}</h3>
         <p>${escapeHtml(remediation.summary || "")}</p>
         ${model.model ? `<p class="remediation-model">${escapeHtml(model.model)} · ${escapeHtml(String(model.input_tokens ?? "?"))} input / ${escapeHtml(String(model.output_tokens ?? "?"))} output tokens</p>` : ""}
+        ${caseResults.length ? `<section><h4>Case coverage</h4><div class="remediation-case-grid">${caseResults.map(item => `<div class="remediation-case-result ${escapeHtml(item.status || "not_requested")}"><strong>${escapeHtml(item.name || "Case")}</strong><span>${escapeHtml((item.status || "not_requested").replaceAll("_", " "))}</span><p>${item.candidate_name ? `Candidate: ${escapeHtml(item.candidate_name)}` : item.question ? escapeHtml(item.question.prompt || "Developer context required") : item.limitation ? escapeHtml(item.limitation.message || "Current limitation") : "Candidate not generated yet."}</p>${item.status === "not_requested" ? `<button class="inline-action" type="button" data-remediation-scope="case" data-check-id="${escapeHtml(remediation.check_id)}" data-case-id="${escapeHtml(item.case_id)}">Generate remediation</button>` : ""}</div>`).join("")}</div></section>` : ""}
         ${suggestions.length ? `<section><h4>Candidates</h4>${suggestions.map(suggestion => `<div class="suggestion"><strong>${escapeHtml(suggestion.current_name || suggestion.title)} → ${escapeHtml(suggestion.candidate_name || "")}</strong><p>${escapeHtml(suggestion.description || "")}</p><p><strong>Confidence:</strong> ${escapeHtml(suggestion.confidence || "not recorded")} · <strong>Policy:</strong> ${escapeHtml((suggestion.policy_validation || "not checked").replaceAll("_", " "))}</p>${suggestion.actions?.length ? `<ol>${suggestion.actions.map(action => `<li>${escapeHtml(action)}</li>`).join("")}</ol>` : ""}${suggestion.verification ? `<p><strong>Verify:</strong> ${escapeHtml(suggestion.verification)}</p>` : ""}</div>`).join("")}</section>` : ""}
         ${questions.length ? `<form class="remediation-questions" onsubmit="submitRemediationContext(event)"><h4>Developer context required</h4>${questions.map(question => `<label class="remediation-question"><span>${escapeHtml(question.prompt)}</span><textarea name="${escapeHtml(question.question_id)}" rows="3" required placeholder="Add only the meaning or context needed to name this item."></textarea></label>`).join("")}<button class="btn primary" type="submit">Generate candidates</button></form>` : ""}
         ${limitations.length ? `<section><h4>Current limitations</h4><ul>${limitations.map(item => `<li><strong>${escapeHtml(item.name || "Case")}</strong> — ${escapeHtml(item.message || "Not supported in this prototype.")}</li>`).join("")}</ul></section>` : ""}
@@ -444,8 +471,41 @@ async function requestRemediation(button) {
     const payload = { scope: button.dataset.remediationScope, check_id: button.dataset.checkId };
     if (payload.scope === "case") payload.case_id = button.dataset.caseId;
     openRemediationDrawer();
+    const existing = remediationForCheck(payload.check_id);
+    const failedCases = failedCasesForCheck(payload.check_id);
+    const selectedCases = payload.scope === "case"
+        ? failedCases.filter(item => item.case_id === payload.case_id)
+        : failedCases.filter(item => (remediationCaseFor(payload.check_id, item.case_id)?.status || "not_requested") === "not_requested");
+    const selectedExisting = payload.scope === "case" ? remediationCaseFor(payload.check_id, payload.case_id) : null;
+    if ((selectedExisting && selectedExisting.status !== "not_requested") || (!selectedCases.length && existing)) {
+        window.currentRemediationRequest = { ...payload, remediation_id: existing.remediation_id };
+        renderRemediation(existing);
+        return;
+    }
+    renderRemediationRequestForm(payload, selectedCases, button);
+}
+function renderRemediationRequestForm(payload, cases, sourceButton) {
     window.currentRemediationRequest = payload;
-    await sendRemediation(payload, button);
+    document.getElementById("remediationContent").innerHTML = `<form class="remediation-context-form" onsubmit="submitInitialRemediation(event)">
+        <h3>${payload.scope === "check" ? "Generate missing remediations" : "Generate remediation"}</h3>
+        <p>Add any context you already know. Leave a box empty when the current symbol contains enough meaning; the model can request a specific missing fact.</p>
+        ${cases.map(item => `<label class="remediation-question"><span>${escapeHtml(item.name || "Case")}</span><small>${escapeHtml(item.location || "")}</small><textarea name="${escapeHtml(item.case_id)}" rows="3" placeholder="Purpose, usage, module, data type, size, unit, or other naming context (optional)."></textarea></label>`).join("")}
+        <button class="btn primary" type="submit">Generate candidates</button>
+    </form>`;
+    window.currentRemediationSourceButton = sourceButton;
+}
+async function submitInitialRemediation(event) {
+    event.preventDefault();
+    if (!window.currentRemediationRequest) return;
+    const form = event.currentTarget;
+    const developerContext = Object.fromEntries(
+        [...new FormData(form).entries()].filter(([, value]) => String(value).trim())
+    );
+    await sendRemediation({
+        ...window.currentRemediationRequest,
+        developer_context: developerContext
+    }, form.querySelector('button[type="submit"]'));
+    window.currentRemediationSourceButton = null;
 }
 async function submitRemediationContext(event) {
     event.preventDefault();

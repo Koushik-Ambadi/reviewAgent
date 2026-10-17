@@ -1,4 +1,4 @@
-"""Configuration owned by the model-call boundary."""
+"""Versioned model profile selection for remediation generation."""
 
 from __future__ import annotations
 
@@ -7,9 +7,10 @@ from dataclasses import dataclass
 
 
 @dataclass(frozen=True)
-class RemediationModelSettings:
-    """Versionable model settings independent of policy and prompt content."""
+class RemediationModelProfile:
+    """One reproducible set of model and inference parameters."""
 
+    profile_id: str
     model: str
     reasoning_effort: str = "minimal"
     verbosity: str = "low"
@@ -22,12 +23,15 @@ class RemediationModelSettings:
         cls,
         *,
         model: str | None = None,
-    ) -> "RemediationModelSettings":
+    ) -> "RemediationModelProfile":
         selected_model = model or os.getenv(
             "OPENAI_REMEDIATION_MODEL",
             "gpt-5-nano",
         )
-        return cls(model=selected_model)
+        return cls(
+            profile_id="openai-naming-remediation-v1",
+            model=selected_model,
+        )
 
     def max_output_tokens(self, case_count: int) -> int:
         requested = 160 + self.output_tokens_per_case * case_count

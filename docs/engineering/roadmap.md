@@ -221,6 +221,13 @@ analysis with evidence, provider/model provenance, confidence/uncertainty, and
 human-review boundaries. The canonical run record remains the evidence source;
 the intelligence layer must not silently replace or recalculate it.
 
+Remediation conversation is a later, bounded interaction gate. A developer may
+eventually ask for a specific candidate revision, but that requires a typed
+message contract, per-case branch/parent semantics, bounded call and token
+budgets, validation on every revision, and UI history. The current workflow is
+limited to optional initial context plus model-requested context answers; it
+must not be described as chat.
+
 ## Proposed priority order
 
 ```text

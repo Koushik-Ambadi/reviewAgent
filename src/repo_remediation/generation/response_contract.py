@@ -84,11 +84,7 @@ def restore_case_ids(
             )
         seen_refs.add(case_ref)
         restored.append(
-            {
-                key: value
-                for key, value in result.items()
-                if key != "case_ref"
-            }
+            {key: value for key, value in result.items() if key != "case_ref"}
             | {"case_id": case_ref_to_id[case_ref]}
         )
     if seen_refs != set(case_ref_to_id):

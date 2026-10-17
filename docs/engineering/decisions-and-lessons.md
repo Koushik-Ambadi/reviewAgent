@@ -510,7 +510,7 @@ No motive is attributed where the repository does not support it.
   less direct than the resolved failure sentence. Local full-policy validation
   protects constraints omitted from the prompt.
 - Structure: model settings, prompt compilation, structured-output parsing, and
-  candidate validation now live under `repo_remediation/llm/`. The existing
+  candidate validation now live under `repo_remediation/generation/`. The existing
   provider remains the compatibility/orchestration surface while later model
   selection, prompt variants, validation feedback, and evals evolve separately.
 - Validation: 14 focused remediation tests pass; payload assertions prove the
@@ -520,6 +520,43 @@ No motive is attributed where the repository does not support it.
 - External basis: [official OpenAI Structured Outputs guidance](https://developers.openai.com/api/docs/guides/structured-outputs?api-mode=responses)
   says the schema ensures output shape but content mistakes still require
   instruction changes, examples, simpler subtasks, and evals.
+
+## D021 — Persist remediation as run → check → case → turn hierarchy
+
+- Date: 2026-10-17
+- Status: accepted prototype
+- Scope: remediation persistence, request targeting, developer context,
+  observability, UI projection, and package boundaries
+- Trigger: a case remediation followed by a full-check remediation could repeat
+  the completed case, while untouched cases had no stable empty state. Developer
+  context could only be entered after the system asked a question.
+- Options considered:
+  - retain independent flat plan records for every request and deduplicate only
+    in the UI;
+  - create separate case and check plan types with cross-links;
+  - maintain one check plan with uniform case children and immutable turns.
+- Decision: use one plan per run/check. `case_results` owns one state for every
+  failed case, including `not_requested` with a null candidate. Request scope is
+  turn metadata. New check requests target only missing children; context
+  answers append child-affecting turns to the same root.
+- Developer context: accept an optional case-ID keyed map before generation.
+  Empty context is omitted. Existing deterministic questions remain for facts
+  known to be unsafe to invent; check-specific prompts tell the model which
+  meaning may be shortened and which domain facts require context.
+- Structure: separate stable contracts, external adapters, generation,
+  hierarchy, context gating, report mapping, and observability. Do not create
+  empty experiment directories; add authored benchmark definitions only when a
+  comparison is actually designed.
+- Metrics: append normalized model/prompt IDs, tokens, attempts, and transport
+  latency independently from raw call traces. These measurements do not imply
+  naming quality.
+- Compatibility: retain top-level suggestion/question/limitation views and
+  normalize legacy plans that lack `case_results`.
+- Deferred: conversational candidate revision, repository-derived context,
+  model selection experiments, and automated retry/evaluation gates.
+- External basis: [official OpenAI prompt engineering guidance](https://developers.openai.com/api/docs/guides/prompt-engineering)
+  recommends pinning production model behavior and maintaining tests/evaluation
+  suites as prompts and model versions change.
 
 ## Durable problem and learning ledger
 

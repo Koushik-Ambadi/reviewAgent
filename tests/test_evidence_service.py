@@ -70,6 +70,18 @@ def test_evidence_pack_is_self_contained_and_escapes_run_content():
             {
                 "title": "Function Names remediation",
                 "summary": "Generated 1 rename candidate.",
+                "case_results": [
+                    {
+                        "name": "Battery_get_overlong_current_value",
+                        "status": "candidate_ready",
+                        "candidate_name": "Battery_get_curr_value",
+                    },
+                    {
+                        "name": "Battery_pending_name",
+                        "status": "not_requested",
+                        "candidate_name": None,
+                    },
+                ],
                 "suggestions": [
                     {
                         "current_name": "Battery_get_overlong_current_value",
@@ -118,6 +130,9 @@ def test_evidence_pack_is_self_contained_and_escapes_run_content():
     assert "MAX_CURRENT" in document
     assert "src/config.h:12" in document
     assert "Replacement: 100" in document
+    assert "Case coverage" in document
+    assert "Battery_pending_name" in document
+    assert "not_requested" in document
     assert "No audit rationale recorded." in document
     assert "1 not audited" in document
     assert "Battery_get_overlong_current_value" in document

@@ -20,6 +20,7 @@ class RemediationRequest(BaseModel):
     case_id: str | None = None
     remediation_id: str | None = None
     context_answers: dict[str, str] = Field(default_factory=dict)
+    developer_context: dict[str, str] = Field(default_factory=dict)
 
 
 @router.post("/runs/{run_id}/remediations")
@@ -35,6 +36,7 @@ async def request_remediation(
             case_id=request.case_id,
             remediation_id=request.remediation_id,
             context_answers=request.context_answers,
+            developer_context=request.developer_context,
         )
     except (RunNotFoundError, LookupError) as error:
         raise HTTPException(status_code=404, detail=str(error)) from error
