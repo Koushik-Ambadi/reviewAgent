@@ -473,6 +473,23 @@ and third-party artifacts and must not be interpreted as effort or quality.
 - Verification target: no current links to removed files, all Markdown paths
   resolve, and no application source changes are present.
 
+## 2026-10-18 — Make documentation routes explicit
+
+### Time not captured — Add module-level context without duplicating authority
+
+- Added a coverage map that routes the review pipeline, C/C++ analysis
+  inventory, policy-driven checks, and result/reporting responsibilities to
+  local technical guides, code entry points, direct inputs, consumers,
+  contracts, and verification.
+- Kept architecture, decisions, testing, issues, standards, and contracts as
+  their existing owners. The local guides explain mechanics and link outward;
+  they do not restate project history or the policy catalog.
+- Recorded D022 and enabled compact evidence-only competency tracking. It
+  distinguishes implemented project work from prototype limits and does not
+  claim general proficiency.
+- Verification is focused Markdown-link validation and Git diff review. No
+  application code, policy, dependency, or generated run artifact changed.
+
 ## Evolution summary
 
 | Phase | Starting form | Ending form | Durable lesson |

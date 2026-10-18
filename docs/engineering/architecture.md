@@ -202,6 +202,12 @@ included by the active runner.
 
 ## Module guide
 
+The sections below are the project-level map. Detailed local mechanics and
+direct context routes live in the [module guides](../modules/README.md): review
+pipeline, analysis inventory, policy-driven checks, and result contract/reporting.
+The existing [remediation generation](remediation-generation.md) record remains
+the local owner for model-assisted behavior.
+
 ### `app/main.py`
 
 - Responsibility: application composition.

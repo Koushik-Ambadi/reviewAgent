@@ -25,6 +25,23 @@ Current project knowledge lives in [`engineering/`](engineering/):
 - [Known issues](engineering/known-issues.md) -- authoritative status,
   evidence, selected remediation, and resolution proof for deferred defects.
 
+## Module guides
+
+[`modules/`](modules/) contains detailed local records for responsibilities
+that change independently of the high-level architecture. Each guide starts
+with its code entry points, inputs, consumers, contracts, verification, and
+related decisions. It owns local mechanics; architecture summarizes the whole.
+
+| Responsibility | Local guide | Code entry points | Upstream | Downstream | State |
+|---|---|---|---|---|---|
+| Review pipeline | [review-pipeline](modules/review-pipeline.md) | `repo_review.review`, `pipeline/`, `pipeline/stages/` | orchestration workspace and policy | analysis, checks, reporting | living |
+| C/C++ analysis inventory | [analysis-inventory](modules/analysis-inventory.md) | `analysis/source_index`, `analysis/symbol_inventory`, `analysis/runner.py` | repository, CMake, YAML policy | symbol JSON, checks, inventory | living |
+| Policy-driven checks | [policy-driven-checks](modules/policy-driven-checks.md) | `checks/`, `policies/default.yaml` | structure tree, symbol inventory, policy | typed check results and report stages | living |
+| Result contract and reporting | [result-contract-and-reporting](modules/result-contract-and-reporting.md) | `contracts/`, `reporting/` | stage results and projections | report, API/UI/manager consumers | living |
+
+The existing [remediation generation](engineering/remediation-generation.md)
+record remains the detailed owner for the model-assisted workflow.
+
 Current constraints remain with the architecture, module, testing, contract,
 decision, operational, or standards record that demonstrates them. Skill views,
 gap assessments, blog ideas, portfolio stories, and similar summaries are
@@ -70,6 +87,10 @@ instructions or active application modules. See the
   of copying the complete issue narrative into those records.
 - Derive profiles, assessments, and narrative ideas on demand from authoritative
   records instead of maintaining parallel summaries.
+- Competency evidence tracking is enabled as a compact section of the
+  [engineering evidence index](engineering/evidence-index.md). Update it only
+  for a milestone, material responsibility change, verified experiment,
+  deployment, incident, or coverage-state change; it is not a per-task inventory.
 - Write records in one project voice: describe what happened, why, evidence,
   and outcome. Git identity records authorship; do not add separate actor or
   assistant attribution fields.

@@ -55,6 +55,28 @@ fully reproducible benchmark evidence.
 | Policy/source mapping | [`../standards/naming-policy-audit.md`](../standards/naming-policy-audit.md) | Naming automation versus source rule | Naming rule implementation changes |
 | LLM remediation readiness | [`../standards/llm-remediation-readiness.md`](../standards/llm-remediation-readiness.md) | Failed-check solvability, missing context, and proposed model-input contract | Report, check, policy, or remediation input changes |
 | Result schema | [`../contracts/run-result.md`](../contracts/run-result.md) | `RunResult` field and persistence contract | Schema or envelope changes |
+| Module coverage map | [`../README.md#module-guides`](../README.md#module-guides) | Routes material responsibilities to code entry points and local owners | Module boundary, entry point, or local owner changes |
+| Local module behavior | [`../modules/README.md`](../modules/README.md) | Detailed inputs, outputs, constructs, verification, and operational posture | Material module behavior or integration changes |
+
+## Competency evidence configuration
+
+- Status: enabled, living, evidence-only index.
+- Owner: this section; local technical facts remain with linked module,
+  architecture, contract, test, decision, issue, history, and commit records.
+- Scope: responsibilities demonstrated by the review engine. It does not assert
+  transferable proficiency, maintain a separate gap register, or turn planned
+  work into completed experience.
+- Update triggers: a milestone, material responsibility or coverage change,
+  verified experiment, deployment, incident, maintenance cycle, or historical
+  correction. Routine edits and formatting do not trigger an update.
+
+| Role lens | Evidenced responsibility | Coverage | Direct evidence | Evidence boundary |
+|---|---|---|---|---|
+| Software architecture | Separate orchestration, review, build, and reporting | implemented; prototype limits remain | [architecture](architecture.md), [D004](decisions-and-lessons.md#d004--separate-orchestration-review-and-build-ownership), [module map](../README.md#module-guides) | Deployment and release-operation depth is not demonstrated. |
+| Backend / application engineering | Expose typed review results to API, UI, manager, and remediation consumers | implemented with compatibility constraints | [run-result contract](../contracts/run-result.md), [reporting guide](../modules/result-contract-and-reporting.md), [testing](testing-and-replay.md) | No production-scale traffic or authentication claim. |
+| Static-analysis engineering | Build compilation context and extract a C/C++ symbol inventory | implemented with parsing and portability limits | [analysis guide](../modules/analysis-inventory.md), [D001](decisions-and-lessons.md#d001--use-the-real-compilation-database-for-c-analysis), [P001](decisions-and-lessons.md#p001--compilerpreprocessor-visibility-changes-what-can-be-reviewed) | Symbols do not prove full preprocessor, linker, or binary coverage. |
+| Rules / data engineering | Encode review behavior as YAML policy and produce atomic typed outcomes | implemented for recorded structure and naming families | [checks guide](../modules/policy-driven-checks.md), [D009](decisions-and-lessons.md#d009--make-atomic-naming-rules-policy-owned-and-source-linked), [policy audit](../standards/naming-policy-audit.md) | Manual rules and stale fixtures remain explicit limits. |
+| AI application engineering | Constrain model remediation with validation, evidence, and scoped prompts | prototype, partially verified | [remediation guide](remediation-generation.md), [D018](decisions-and-lessons.md#d018--generate-a-candidate-or-ask-one-narrow-context-question), [BUG-005](known-issues.md#bug-005--mechanical-naming-failures-can-return-unsupported-model-output) | No claim of production model quality or source mutation. |
 
 ## Review method
 

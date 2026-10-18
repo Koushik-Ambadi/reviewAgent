@@ -196,6 +196,18 @@ $env:PYTHONDONTWRITEBYTECODE = '1'
 Before relying on the manual test files, repair them or copy their intent into a
 disposable test; their current failures are documented above.
 
+### Documentation navigation check
+
+For a documentation-only increment, validate local Markdown targets after a
+focused diff review. This checks documentation routing, not application behavior:
+
+```powershell
+python -c "from pathlib import Path; import re; root=Path('docs'); missing=[]; [missing.append((p, t)) for p in root.rglob('*.md') for t in re.findall(r'\[[^]]+\]\(([^)#]+)', p.read_text(encoding='utf-8')) if not t.startswith(('http://','https://','#','?:')) and not (p.parent / t).resolve().exists()]; print(missing); raise SystemExit(bool(missing))"
+```
+
+Run focused Python, JavaScript, API, or replay checks as well whenever runtime
+behavior, contracts, policy, or generated artifacts change.
+
 ## Historical inspection without executing old code
 
 Use this first. It has the lowest risk and reconstructs most design decisions.

@@ -558,6 +558,34 @@ No motive is attributed where the repository does not support it.
   recommends pinning production model behavior and maintaining tests/evaluation
   suites as prompts and model versions change.
 
+## D022 — Route documentation from a high-level index to local module owners
+
+- Date: 2026-10-18
+- Status: accepted
+- Scope: documentation navigation, technical ownership, auditability, and
+  evidence-based competency mapping.
+- Trigger: material `repo_review` responsibilities lacked short local guides
+  showing direct code entry points and upstream/downstream context.
+- Drivers and constraints: preserve existing engineering records as authority;
+  avoid duplicate narratives; permit focused module work; retain evidence that
+  may support later auditable summaries.
+- Options considered: architecture as the sole guide; one document per source
+  file; or responsibility-based records reachable from one documentation index.
+- Decision: retain current high-level owners and add a coverage map plus local
+  guides for pipeline, analysis inventory, policy-driven checks, and reporting.
+  Enable a compact competency-evidence section in the existing evidence index,
+  linking to owners rather than copying facts.
+- Rejected alternatives: architecture-only made local context costly;
+  file-by-file notes would be noisy and stale; a separate profile/gap document
+  would duplicate evidence and imply stronger claims than supported.
+- Consequences: new material responsibilities need a guide or explicit parent
+  owner. Module guides link upward and sideways; competency evidence updates only
+  at material evidence transitions.
+- Validation: this documentation-only increment uses relative-link validation
+  and focused Git diff review; no runtime behavior is claimed.
+- Reconsideration trigger: regroup guides when package responsibility, public
+  contract, or active consumer relationships change.
+
 ## Durable problem and learning ledger
 
 ### P001 — Compiler/preprocessor visibility changes what can be reviewed
