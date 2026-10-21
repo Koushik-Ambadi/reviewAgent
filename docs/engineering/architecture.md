@@ -188,10 +188,12 @@ remain outside `report.json`.
 ### `BuildResult`
 
 `repo_build.models.BuildResult` records a run ID, format and build steps, status,
-normalized and process return codes, repository root, script name, raw stdout/stderr, selected
-diagnostics, artifact manifest, placeholder intelligence summary, detected build
-log path, and UTC start/completion timestamps. The build service writes
-`build.json` and updates the canonical report.
+normalized and process return codes, repository root, script name, raw
+stdout/stderr, selected diagnostics, current artifact manifest, retained-run
+artifact references, deterministic intelligence summary, optional model
+remediation, detected build log path, and UTC start/completion timestamps. The
+build service writes `build.json`, optionally writes `build-remediation.json`,
+and updates the canonical report.
 
 ### Structure tree types
 

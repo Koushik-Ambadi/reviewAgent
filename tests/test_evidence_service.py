@@ -111,7 +111,25 @@ def test_evidence_pack_is_self_contained_and_escapes_run_content():
                 },
             }
         ],
-        "build_result": {},
+        "build_result": {
+            "status": "failed",
+            "intelligence_summary": {
+                "remediation": {
+                    "summary": "Restore access to the toolchain license host.",
+                    "root_cause": "The license manager could not be contacted.",
+                    "actions": ["Restore VPN access."],
+                    "verification": "Repeat the build and confirm the ELF exists.",
+                }
+            },
+            "artifact_references": [
+                {
+                    "relative_path": "out/build/ghs/shunt-component.elf",
+                    "type": "ELF executable",
+                    "source_run_id": "20261017_171649_abddbcc4",
+                    "reference_only": True,
+                }
+            ],
+        },
     }
 
     document = render_evidence_pack(
@@ -141,6 +159,9 @@ def test_evidence_pack_is_self_contained_and_escapes_run_content():
     assert "p&lt;&amp;&gt;" in document
     assert "Categorical global segments are deferred." in document
     assert "test-nano" in document
+    assert "Restore access to the toolchain license host." in document
+    assert "out/build/ghs/shunt-component.elf" in document
+    assert "20261017_171649_abddbcc4" in document
     assert "not run" in document
     assert "2026-10-08T10:00:00+00:00" in document
     assert "<script" not in document

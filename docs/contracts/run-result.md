@@ -107,6 +107,7 @@ remediation.json        Recorded remediation suggestions for the run
 remediation-calls.jsonl Append-only remediation turn/call evidence
 remediation-metrics.jsonl Normalized per-model-call token and latency evidence
 build.json              Latest serialized build result
+build-remediation.json  Redacted build-remediation model trace and result
 evidence-pack.html      Latest self-contained HTML handoff generated on request
 ```
 
@@ -259,8 +260,18 @@ cannot report success after CMake/toolchain failure text.
 
 `intelligence_summary` includes a deterministic `issue_code`, `primary_issue`,
 `evidence`, and ordered `next_actions` when a known failure pattern is matched.
-Unknown failures use `unclassified-build-failure` and retain generic guidance;
-this is the explicit fallback before a future model-backed provider.
+For failed builds, an optional `remediation` object contains the validated
+model summary, root cause, actions, confidence, and verification text. The
+complete model request/response trace is stored separately in the redacted
+`build-remediation.json`; it is not repeated in the product report. Missing
+credentials or invalid model output preserve the deterministic summary and
+record an explicit unsupported remediation state.
+
+`artifact_manifest` contains files produced by the current build using paths
+relative to the module root. A failed build may also include
+`artifact_references`: paths observed in a retained run with a representative
+ELF/HEX/MAP output set. Each reference carries `source_run_id` and
+`reference_only: true`; it must never be presented as a current-run artifact.
 
 The report UI starts a background build with `background=true` and polls
 `GET /api/runs/{run_id}/build/status` for persisted queued/running/completed

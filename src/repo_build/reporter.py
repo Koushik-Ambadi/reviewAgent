@@ -18,6 +18,7 @@ def build_result_to_dict(result: BuildResult) -> dict:
         "build_step": result.build_step,
         "important_diagnostics": result.important_diagnostics,
         "artifact_manifest": result.artifact_manifest,
+        "artifact_references": result.artifact_references,
         "intelligence_summary": result.intelligence_summary,
         "stdout": result.stdout,
         "stderr": result.stderr,

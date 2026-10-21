@@ -25,6 +25,7 @@ class BuildResult:
     build_step: dict[str, Any] = field(default_factory=dict)
     important_diagnostics: List[str] = field(default_factory=list)
     artifact_manifest: List[dict[str, Any]] = field(default_factory=list)
+    artifact_references: List[dict[str, Any]] = field(default_factory=list)
     intelligence_summary: dict[str, Any] = field(default_factory=dict)
 
     started_at: str | None = None

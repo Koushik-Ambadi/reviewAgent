@@ -987,3 +987,16 @@ and third-party artifacts and must not be interpreted as effort or quality.
 - Build/artifact verification is currently blocked by a user-reported VPN
   failure. BUG-006 records the boundary, uncertainty, workaround, and closure
   evidence required before treating the build path as verified.
+
+### 13:07:09 +05:30 — Add build remediation and artifact provenance path
+
+- Added failure-only model remediation after deterministic build classification.
+  Full stdout/stderr remains in `build.json`; the bounded model prompt contains
+  diagnostic evidence, and the redacted request/response plus validated model
+  result is stored in `build-remediation.json`.
+- Added retained-run artifact references for failed builds. The current run's
+  `artifact_manifest` remains reserved for files it produced; references carry
+  `source_run_id`, relative module paths, and `reference_only: true`.
+- Verification passed three direct build tests, Python compilation, JavaScript
+  syntax, application import, and a read-only scan of retained artifacts. No
+  build command or live model call was made while VPN access is unavailable.

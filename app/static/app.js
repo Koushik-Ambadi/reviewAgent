@@ -548,16 +548,18 @@ function renderBuild(result) {
     const buildStep = result.build_step || { status: result.status || "failed", message: "Build did not return a step result." };
     const diagnostics = result.important_diagnostics || [];
     const artifacts = result.artifact_manifest || [];
+    const artifactReferences = result.artifact_references || [];
     const intelligence = result.intelligence_summary || {};
+    const remediation = intelligence.remediation || {};
     window.currentBuildState = statusName(result.status || buildStep.status);
     const output = [...(result.stdout || []), ...(result.stderr || [])].join("\n");
     document.getElementById("buildResult").innerHTML = `
         <div class="build-config"><span><strong>Formatting:</strong> ${escapeHtml(formatStep.command || "not configured")}</span><span><strong>Build:</strong> ${escapeHtml(result.build_script || "cmake-build.bat")}</span></div>
         <div class="summary build-summary"><div class="metric ${pillClass(buildStep.status)}"><div class="value">${escapeHtml(String(buildStep.status || result.status || "unknown").toUpperCase())}</div><div class="label">Build</div></div><div class="metric ${pillClass(formatStep.status)}"><div class="value">${escapeHtml(String(formatStep.status || "skipped").toUpperCase())}</div><div class="label">Formatting</div></div><div class="metric total"><div class="value">${escapeHtml(String(result.return_code ?? "—"))}</div><div class="label">Return code</div></div></div>
         <div class="build-grid">
-            <section class="glass panel"><h3>Build intelligence</h3><p><strong>Primary issue:</strong> ${escapeHtml(intelligence.primary_issue || intelligence.summary || buildStep.message || "Build result is available.")}</p>${intelligence.evidence?.length ? `<h4>Evidence</h4><ul>${intelligence.evidence.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : ""}${(intelligence.next_actions || intelligence.suggestions)?.length ? `<h4>Next actions</h4><ol>${(intelligence.next_actions || intelligence.suggestions).map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ol>` : `<p class="section-sub">Next action: ${escapeHtml(intelligence.next_action || "Review the build output.")}</p>`}</section>
+            <section class="glass panel"><h3>Build intelligence</h3><p><strong>Primary issue:</strong> ${escapeHtml(intelligence.primary_issue || intelligence.summary || buildStep.message || "Build result is available.")}</p>${intelligence.evidence?.length ? `<h4>Evidence</h4><ul>${intelligence.evidence.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : ""}${(intelligence.next_actions || intelligence.suggestions)?.length ? `<h4>Next actions</h4><ol>${(intelligence.next_actions || intelligence.suggestions).map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ol>` : `<p class="section-sub">Next action: ${escapeHtml(intelligence.next_action || "Review the build output.")}</p>`}${remediation.summary ? `<h4>Model remediation</h4><p><strong>${escapeHtml(remediation.summary)}</strong></p>${remediation.root_cause ? `<p>${escapeHtml(remediation.root_cause)}</p>` : ""}${remediation.actions?.length ? `<ol>${remediation.actions.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ol>` : ""}${remediation.verification ? `<p class="section-sub"><strong>Verify:</strong> ${escapeHtml(remediation.verification)}</p>` : ""}${remediation.limitation ? `<p class="section-sub">${escapeHtml(remediation.limitation)}</p>` : ""}` : ""}</section>
             <section class="glass panel"><h3>Important diagnostics</h3>${diagnostics.length ? `<ul class="diagnostic-list">${diagnostics.map(line => `<li>${escapeHtml(line)}</li>`).join("")}</ul>` : '<p class="section-sub">No important diagnostics were selected.</p>'}</section>
-            <section class="glass panel build-artifacts"><h3>Available artifacts</h3>${artifacts.length ? `<ul>${artifacts.map(artifact => `<li><strong>${escapeHtml(artifact.relative_path)}</strong><span>${escapeHtml(artifact.type)} · ${formatBytes(artifact.size_bytes)} · ${escapeHtml(formatDate(artifact.modified_at))}</span></li>`).join("")}</ul>` : '<p class="section-sub">No build artifacts were discovered.</p>'}</section>
+            <section class="glass panel build-artifacts"><h3>Available artifacts</h3>${artifacts.length ? `<ul>${artifacts.map(artifact => `<li><strong>${escapeHtml(artifact.relative_path)}</strong><span>${escapeHtml(artifact.type)} · ${formatBytes(artifact.size_bytes)} · ${escapeHtml(formatDate(artifact.modified_at))}</span></li>`).join("")}</ul>` : '<p class="section-sub">No artifacts were produced by this build.</p>'}${artifactReferences.length ? `<h4>Reference artifacts from successful run ${escapeHtml(artifactReferences[0].source_run_id || "")}</h4><ul>${artifactReferences.map(artifact => `<li><strong>${escapeHtml(artifact.relative_path)}</strong><span>${escapeHtml(artifact.type)} · ${formatBytes(artifact.size_bytes)} · retained reference only</span></li>`).join("")}</ul>` : ""}</section>
             <section class="glass panel build-output"><h3>Raw output</h3><pre>${escapeHtml(output || "No output was captured.")}</pre></section>
         </div>`;
     updateWorkspaceChrome("build");
@@ -592,11 +594,27 @@ async function pollBuildStatus() {
             return;
         }
         if (status.state === "failed") {
-            throw new Error(status.error || "Build worker failed before producing a result.");
+            renderBuildWorkerFailure(status);
+            return;
         }
         updateLiveBuild(status);
         await new Promise(resolve => setTimeout(resolve, 750));
     }
+}
+function renderBuildWorkerFailure(status) {
+    const output = [...(status.stdout || []), ...(status.stderr || [])].join("\n");
+    const result = {
+        status: "failed",
+        return_code: status.return_code ?? 1,
+        build_step: { status: "failed", message: status.error || "Build worker failed before producing a result." },
+        important_diagnostics: status.stderr || [],
+        stdout: status.stdout || [],
+        stderr: status.stderr || [],
+        intelligence_summary: { primary_issue: status.error || "Build worker failed before producing a result.", remediation: { status: "unsupported", summary: "Model build remediation was not reached.", limitation: "The worker failed before a normalized build result was produced." } }
+    };
+    if (window.currentReport) window.currentReport.build_result = result;
+    renderBuild(result);
+    if (!output) console.error(status.error || "Build worker failed before producing a result.");
 }
 
 document.getElementById("caseSearch").addEventListener("input", applyReportFilters);

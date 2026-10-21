@@ -28,6 +28,8 @@ def render_evidence_pack(
     build_step = build.get("build_step") or {}
     format_step = build.get("format_step") or {}
     intelligence = build.get("intelligence_summary") or {}
+    build_remediation = intelligence.get("remediation") or {}
+    artifact_references = build.get("artifact_references") or []
 
     metadata_rows = [
         ("Run ID", report.get("run_id")),
@@ -77,7 +79,8 @@ ul,ol{{margin:7px 0;padding-left:22px}}code{{font:12px Consolas,monospace;overfl
 <p><b>Primary issue:</b> {_text(intelligence.get('primary_issue') or intelligence.get('summary') or 'No build intelligence available.')}</p>
 {_named_list('Evidence', intelligence.get('evidence') or [])}{_named_list('Next actions', intelligence.get('next_actions') or intelligence.get('suggestions') or [], ordered=True)}</section>
 <section><h2>Important diagnostics</h2>{_plain_list(build.get('important_diagnostics') or [], code=True, empty='No important diagnostics were recorded.')}</section>
-<section><h2>Artifact manifest</h2>{_artifacts(build.get('artifact_manifest') or [])}</section>
+<section><h2>Build remediation</h2>{_build_remediation(build_remediation)}</section>
+<section><h2>Artifact manifest</h2>{_artifacts(build.get('artifact_manifest') or [])}{_artifact_references(artifact_references)}</section>
 </main></body></html>"""
 
 
@@ -85,6 +88,35 @@ def _text(value: Any) -> str:
     if value in (None, ""):
         return "—"
     return escape(str(value))
+
+
+def _build_remediation(remediation: dict[str, Any]) -> str:
+    if not remediation:
+        return "<p class='muted'>No model build remediation was recorded.</p>"
+    actions = _plain_list(remediation.get("actions") or [], ordered=True)
+    limitation = (
+        f"<p class='muted'>{_text(remediation.get('limitation'))}</p>"
+        if remediation.get("limitation")
+        else ""
+    )
+    return (
+        f"<p><b>{_text(remediation.get('summary'))}</b></p>"
+        f"<p>{_text(remediation.get('root_cause'))}</p>{actions}"
+        f"<p><b>Verification:</b> {_text(remediation.get('verification'))}</p>"
+        f"{limitation}"
+    )
+
+
+def _artifact_references(references: list[dict[str, Any]]) -> str:
+    if not references:
+        return ""
+    rows = "".join(
+        f"<li><code>{_text(item.get('relative_path'))}</code> — "
+        f"{_text(item.get('type'))}; source run {_text(item.get('source_run_id'))}; "
+        "retained reference only</li>"
+        for item in references
+    )
+    return f"<h3>Reference artifacts from a retained successful run</h3><ul>{rows}</ul>"
 
 
 def _metadata(rows: list[tuple[str, Any]]) -> str:

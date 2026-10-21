@@ -1,9 +1,30 @@
 from __future__ import annotations
 
+import json
+import os
 import re
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Any
+
+from repo_remediation.adapters import OpenAIResponsesClient
+from repo_remediation.contracts import RemediationProviderError
+from repo_remediation.observability import build_model_metrics, redact_sensitive
+
+
+class BuildRemediationProvider(ABC):
+    """Optional model-backed explanation for a failed build."""
+
+    provider_id: str
+
+    @abstractmethod
+    def remediate(
+        self,
+        *,
+        build_result: dict[str, Any],
+        deterministic_summary: dict[str, Any],
+    ) -> tuple[dict[str, Any], dict[str, Any] | None]:
+        raise NotImplementedError
 
 
 class BuildIntelligenceProvider(ABC):
@@ -72,6 +93,180 @@ class FutureOpenAIBuildIntelligenceProvider(BuildIntelligenceProvider):
 
     def summarize(self, build_result: dict[str, Any]) -> dict[str, Any]:
         raise NotImplementedError("OpenAI build intelligence is not configured.")
+
+
+class OpenAIBuildRemediationProvider(BuildRemediationProvider):
+    """Generate one structured, failure-only build remediation result."""
+
+    provider_id = "openai-responses-build-remediation-v1"
+    model = "gpt-5-nano"
+    profile_id = "openai-build-remediation-v1"
+    prompt_profile_id = "build-failure-remediation-v1"
+
+    def __init__(self, *, client: Any | None = None, model: str | None = None):
+        self.client = client or OpenAIResponsesClient()
+        self.model = model or os.getenv(
+            "OPENAI_BUILD_REMEDIATION_MODEL",
+            os.getenv("OPENAI_REMEDIATION_MODEL", self.model),
+        )
+
+    def remediate(
+        self,
+        *,
+        build_result: dict[str, Any],
+        deterministic_summary: dict[str, Any],
+    ) -> tuple[dict[str, Any], dict[str, Any] | None]:
+        payload = _build_remediation_payload(
+            self.model,
+            build_result=build_result,
+            deterministic_summary=deterministic_summary,
+        )
+        trace: dict[str, Any] = {
+            "provider": self.provider_id,
+            "model": self.model,
+            "model_profile_id": self.profile_id,
+            "prompt_profile_id": self.prompt_profile_id,
+            "request": payload,
+        }
+        try:
+            response = self.client.create(payload)
+        except RemediationProviderError as error:
+            trace["status"] = "provider_error"
+            trace["error"] = str(error)
+            trace["provider_trace"] = error.call_trace
+            return _unavailable_build_remediation(str(error)), trace
+
+        trace["status"] = "completed"
+        trace["response"] = redact_sensitive(response)
+        transport_trace = response.get("_remediation_transport_trace") or {}
+        try:
+            parsed = _parse_build_remediation(response)
+        except (ValueError, TypeError, json.JSONDecodeError) as error:
+            trace["status"] = "invalid_output"
+            trace["error"] = str(error)
+            return _unavailable_build_remediation(
+                "The model response could not be validated."
+            ), trace
+        parsed["provider"] = self.provider_id
+        parsed["model"] = self.model
+        parsed["model_profile_id"] = self.profile_id
+        parsed["prompt_profile_id"] = self.prompt_profile_id
+        parsed["status"] = "candidate_ready"
+        parsed["metrics"] = build_model_metrics(
+            response,
+            model=self.model,
+            model_profile_id=self.profile_id,
+            prompt_profile_id=self.prompt_profile_id,
+            transport_trace=transport_trace,
+        )
+        trace["metrics"] = parsed["metrics"]
+        return parsed, trace
+
+
+_BUILD_REMEDIATION_SCHEMA: dict[str, Any] = {
+    "type": "object",
+    "additionalProperties": False,
+    "properties": {
+        "summary": {"type": "string"},
+        "root_cause": {"type": "string"},
+        "actions": {"type": "array", "items": {"type": "string"}},
+        "verification": {"type": "string"},
+        "confidence": {"type": "string", "enum": ["low", "medium", "high"]},
+    },
+    "required": ["summary", "root_cause", "actions", "verification", "confidence"],
+}
+
+
+def _build_remediation_payload(
+    model: str,
+    *,
+    build_result: dict[str, Any],
+    deterministic_summary: dict[str, Any],
+) -> dict[str, Any]:
+    evidence = _bounded_build_strings(build_result)
+    user_input = {
+        "build_status": build_result.get("status"),
+        "return_code": build_result.get("return_code"),
+        "build_step": build_result.get("build_step") or {},
+        "deterministic_classification": {
+            "issue_code": deterministic_summary.get("issue_code"),
+            "primary_issue": deterministic_summary.get("primary_issue"),
+            "evidence": deterministic_summary.get("evidence") or [],
+        },
+        "captured_output": evidence,
+    }
+    return {
+        "model": model,
+        "store": False,
+        "reasoning": {"effort": "minimal"},
+        "max_output_tokens": 700,
+        "input": [
+            {
+                "role": "developer",
+                "content": (
+                    "You are a conservative build-failure remediation assistant. "
+                    "Use the deterministic classification and captured strings as "
+                    "evidence. Do not invent source changes, tool versions, paths, "
+                    "credentials, or network facts. Return JSON matching the schema. "
+                    "Give concrete next actions and a verification step."
+                ),
+            },
+            {"role": "user", "content": json.dumps(user_input, separators=(",", ":"))},
+        ],
+        "text": {
+            "format": {
+                "type": "json_schema",
+                "name": "build_remediation",
+                "strict": True,
+                "schema": _BUILD_REMEDIATION_SCHEMA,
+            },
+            "verbosity": "low",
+        },
+    }
+
+
+def _bounded_build_strings(build_result: dict[str, Any]) -> dict[str, list[str]]:
+    """Keep the full strings in build.json, but bound model prompt size."""
+    return {
+        "important_diagnostics": list(build_result.get("important_diagnostics") or [])[:20],
+        "stderr_tail": list(build_result.get("stderr") or [])[-40:],
+        "stdout_tail": list(build_result.get("stdout") or [])[-40:],
+    }
+
+
+def _parse_build_remediation(response: dict[str, Any]) -> dict[str, Any]:
+    for output in response.get("output", []):
+        if output.get("type") != "message":
+            continue
+        for content in output.get("content", []):
+            if content.get("type") == "refusal":
+                raise ValueError("The model refused build remediation.")
+            if content.get("type") == "output_text":
+                parsed = json.loads(content["text"])
+                if not isinstance(parsed, dict):
+                    raise ValueError("Build remediation output was not an object.")
+                for key in ("summary", "root_cause", "verification", "confidence"):
+                    if not isinstance(parsed.get(key), str) or not parsed[key].strip():
+                        raise ValueError(f"Build remediation field is invalid: {key}")
+                if not isinstance(parsed.get("actions"), list) or not all(
+                    isinstance(item, str) and item.strip() for item in parsed["actions"]
+                ):
+                    raise ValueError("Build remediation actions are invalid.")
+                return parsed
+    raise ValueError("Build remediation returned no structured output.")
+
+
+def _unavailable_build_remediation(message: str) -> dict[str, Any]:
+    return {
+        "status": "unsupported",
+        "provider": "openai-responses-build-remediation-v1",
+        "summary": "Model build remediation is unavailable.",
+        "root_cause": "",
+        "actions": [],
+        "verification": "Review the deterministic build classification and captured output.",
+        "confidence": "low",
+        "limitation": message,
+    }
 
 
 @dataclass(frozen=True)

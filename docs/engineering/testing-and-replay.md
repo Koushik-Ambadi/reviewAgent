@@ -493,3 +493,18 @@ provider call or visual browser check is represented by these tests.
 The first syntax command again passed a literal `*.py` path to Windows Python
 and reported `Errno 22`; the direct suite still executed and passed. The command
 was corrected to expand files with PowerShell before invoking `py_compile`.
+
+### Build remediation and retained artifact references
+
+The build remediation increment adds three direct tests. They validate strict
+structured model output, preservation of captured diagnostic strings in the
+model input, and relative artifact references sourced from a retained output
+set containing ELF, HEX, and MAP files. A read-only replay against the current
+workspace found three such references in retained run
+`20261017_171649_abddbcc4`; no build command or network call was made.
+
+No live model response was available because `OPENAI_API_KEY` is not configured
+in the application environment. The retained Green Hills failure logs remain
+the manual evidence fixture: deterministic classification identifies the
+unreachable license host, while the model path is tested with a fake structured
+response and remains explicitly unavailable until credentials are supplied.

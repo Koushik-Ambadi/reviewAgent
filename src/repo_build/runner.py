@@ -7,6 +7,8 @@ from .artifacts import discover_artifacts
 from .builder import OutputCallback, run_batch_script
 from .formatting import load_formatter_configuration, run_clang_format
 from .intelligence import (
+    BuildRemediationProvider,
+    OpenAIBuildRemediationProvider,
     PlaceholderBuildIntelligenceProvider,
     select_important_diagnostics,
 )
@@ -22,6 +24,7 @@ def execute_firmware_build(
     *,
     run_format: bool = True,
     on_output: OutputCallback | None = None,
+    intelligence_provider: BuildRemediationProvider | None = None,
 ) -> dict:
     repo_root = Path(repo_root).resolve()
     started_at = datetime.now(timezone.utc).isoformat()
@@ -66,6 +69,15 @@ def execute_firmware_build(
     result_data["intelligence_summary"] = (
         PlaceholderBuildIntelligenceProvider().summarize(result_data)
     )
+    if result_data["status"] == "failed":
+        provider = intelligence_provider or OpenAIBuildRemediationProvider()
+        remediation, trace = provider.remediate(
+            build_result=result_data,
+            deterministic_summary=result_data["intelligence_summary"],
+        )
+        result_data["intelligence_summary"]["remediation"] = remediation
+        if trace is not None:
+            result_data["_build_remediation_trace"] = trace
     return result_data
 
 
