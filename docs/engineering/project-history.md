@@ -968,3 +968,22 @@ and third-party artifacts and must not be interpreted as effort or quality.
   model call or visual UI claim was made. A literal
   Windows `*.py` compilation attempt failed with `Errno 22`; expanded file paths
   passed afterward.
+
+## 2026-10-21 — Browser verification observations and build-network block
+
+### 12:34:18 +05:30 — Record remediation hardening direction
+
+- User verification confirmed that model-generated remediation candidates are
+  now returned and rendered correctly in the browser.
+- The review identified five follow-up directions: check-specific prompt
+  builders; normalized ownership of product reports versus traces, model
+  configuration, telemetry, prompts, calls, and metrics; responsibility-based
+  modules/classes/contracts with deprecated smoke paths removed or quarantined;
+  documented model and token-setting rationale; and full applicable-policy
+  validation after compact failed-rule prompting.
+- These are recorded as proposed D023 and roadmap gate G11.1. No implementation
+  claim is made in this entry; the next gate requires retained-run inventory and
+  evaluation evidence.
+- Build/artifact verification is currently blocked by a user-reported VPN
+  failure. BUG-006 records the boundary, uncertainty, workaround, and closure
+  evidence required before treating the build path as verified.

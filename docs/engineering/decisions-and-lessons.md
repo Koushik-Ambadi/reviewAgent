@@ -558,6 +558,49 @@ No motive is attributed where the repository does not support it.
   recommends pinning production model behavior and maintaining tests/evaluation
   suites as prompts and model versions change.
 
+## D023 — Proposed remediation hardening and evidence ownership
+
+- Date: 2026-10-21
+- Status: proposed
+- Scope: check-specific prompts, remediation artifact boundaries, package
+  organization, model/profile rationale, and candidate safety validation
+- Trigger: visual browser verification showed that the current remediation
+  workflow produces useful candidates and renders them correctly, while also
+  exposing future maintainability and trust risks.
+- Observations recorded from verification:
+  - each check needs its own prompt builder because rules, repair strategies,
+    semantic limits, and context questions differ;
+  - report/UI artifacts should expose the product view while retry traces,
+    model configuration, telemetry, and raw prompt/call evidence remain in
+    their owning observability or provenance artifacts;
+  - responsibility-based modules, classes where stateful behavior warrants them,
+    and typed contracts should replace duplicated or deprecated smoke paths;
+  - model/profile selection, output/token limits, and settings require explicit
+    rationale and evaluation evidence;
+  - a compact prompt may show only failed rules, but every returned candidate
+    must be rerun through all applicable naming rules before acceptance.
+- Constraints and unknowns: this is a recorded design direction, not a claim
+  that the current artifacts are already fully normalized; the exact report,
+  trace, metrics, and configuration schemas still need an inventory and a
+  compatibility plan.
+- Options considered: continue expanding one shared prompt and mixed report
+  payloads; normalize ownership incrementally behind compatibility views; or
+  redesign all persistence at once. Incremental normalization is selected for
+  the next gate because retained runs and the current browser workflow must
+  remain readable while boundaries are tightened.
+- Decision: propose a remediation-hardening gate under G11. It must define
+  per-check prompt profiles, a single owner for each persisted fact, removal or
+  quarantine of deprecated smoke tests, documented model/profile settings, and
+  full applicable-policy validation before a candidate reaches the product
+  view.
+- Reconsideration trigger: a retained-run inventory or live evaluation shows
+  that an existing compatibility field is still required by a consumer, or
+  that per-check prompt specialization increases cost without improving
+  candidate validity or context-question quality.
+- Implementation references: `docs/engineering/remediation-generation.md`,
+  `docs/contracts/run-result.md`, `src/repo_remediation/generation/`,
+  `src/repo_remediation/results.py`, and `src/repo_remediation/observability/`.
+
 ## D022 — Route documentation from a high-level index to local module owners
 
 - Date: 2026-10-18

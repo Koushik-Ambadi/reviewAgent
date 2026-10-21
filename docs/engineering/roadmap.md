@@ -179,6 +179,26 @@ changes. Do not maintain a second project-wide gap inventory here.
   repository-wide collision/reference discovery, authorization, approved patch
   generation, and end-to-end browser/provider tests remain gated work.
 
+### G11.1 — Harden remediation prompts, artifacts, and candidate validation
+
+- Priority: P2 after the current visual prototype validation and before
+  broadening model-assisted remediation
+- Goal: make each check's prompt, persisted product view, provenance/trace,
+  metrics, model configuration, and validation boundary independently owned and
+  explainable.
+- Required work: define check-specific prompt profiles; inventory and normalize
+  duplicated report fields; quarantine/remove deprecated smoke paths; document
+  model, output-token, retry, and context settings with evaluation evidence;
+  and rerun every candidate against all applicable naming rules before it is
+  marked ready.
+- Dependencies: retained-run compatibility inventory, a frozen remediation
+  evaluation corpus, and successful build/artifact verification when build
+  context is part of the candidate.
+- Exit evidence: schema/ownership map, migrated compatibility fixtures,
+  prompt-size and candidate-validity comparison by check, settings rationale,
+  full-policy validation tests, and no unexplained model/telemetry duplication
+  in the product report.
+
 ### G12 — Govern symbol inventory audits
 
 - Priority: P3 after G02-G04 and the identity/authorization parts of G11

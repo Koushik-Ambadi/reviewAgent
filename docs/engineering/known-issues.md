@@ -2,7 +2,7 @@
 
 - Status: living
 - Created: 2026-10-13
-- Last reviewed: 2026-10-16
+- Last reviewed: 2026-10-21
 - Update trigger: a defect is observed, triaged, mitigated, scheduled, fixed,
   verified, accepted, or superseded
 - Source of truth for: project-wide non-urgent and deferred defect state
@@ -35,6 +35,40 @@ make an issue fixed. Status changes require dated evidence in the issue entry.
 | BUG-003 | ZIP ingestion deletes caller-owned archives | OPEN | No | High for direct/local ZIP callers | G01 ingestion ownership |
 | BUG-004 | Remediation calls lose raw request/response and turn lineage | RESOLVED | Yes | Closed by `bbacefa` | G11 remediation evidence |
 | BUG-005 | Mechanical naming failures can return unsupported model output | IN_PROGRESS | No | High for remediation reliability and cost | G11 prompt/evaluation remediation |
+| BUG-006 | VPN-dependent build environment is unavailable | OPEN | No | Blocks build/artifact verification | G05 operations and build portability |
+
+## BUG-006 — VPN-dependent build environment is unavailable
+
+- Status: OPEN
+- Fixed: No
+- First observed: 2026-10-21 during browser verification of the remediation
+  workflow and preparation to verify build/artifact integration
+- Last updated: 2026-10-21
+- Environment: user-reported VPN configuration required by the build
+  environment; exact client, endpoint, and error are not yet recorded
+- Affected paths: build execution and associated artifact linking; remediation
+  remains independently usable for the current run
+- Impact: build and artifact verification cannot start until the VPN is
+  available, so build-dependent acceptance evidence is incomplete
+- Evidence confidence: user-reported observation; not independently reproduced
+
+### Smallest known reproduction and boundary
+
+- Attempt to start the build from the existing run while the required VPN is
+  unavailable.
+- The exact command, endpoint, connection error, and whether the failure is
+  network, credential, routing, or build-adapter related are unknown.
+- No source or run artifact was changed as part of recording this issue.
+
+### Workaround, selected follow-up, and closure evidence
+
+- Workaround: continue remediation/UI verification, which does not require the
+  build network path. This does not establish build correctness.
+- Follow-up: once the VPN is available, capture the build request, adapter
+  status, failure/output, artifact paths, and run ID before changing code.
+- Closure requires a successful VPN-dependent build or a reproducible local
+  substitute, linked artifact evidence, and a regression/portability check that
+  distinguishes network setup failure from build implementation failure.
 
 ## BUG-005 — Mechanical naming failures can return unsupported model output
 
