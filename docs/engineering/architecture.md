@@ -374,10 +374,13 @@ provider boundary, diagnostic selection, and deterministic classification for
 known license, build-adapter, compiler-validation, and linker failures. Unknown
 output retains an explicit generic fallback.
 
-`orchestrator/build_jobs.py` runs UI-started builds on a bounded worker pool and
-persists `build-progress.json`; the final build still becomes `build.json` and
-`RunResult.build_result`. This lets the static UI poll live output without
-changing the synchronous API behavior used by callers that need a final result.
+  `orchestrator/build_jobs.py` runs UI-started builds on a bounded worker pool and
+  persists `build-progress.json`; progress read/modify/write operations are
+  serialized per run because output callbacks and terminal state updates share
+  the same atomic replacement path on Windows. The final build still becomes
+  `build.json` and `RunResult.build_result`. This lets the static UI poll live
+  output without changing the synchronous API behavior used by callers that need
+  a final result.
 
 ### `repo_remediation`
 

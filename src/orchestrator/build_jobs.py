@@ -13,6 +13,7 @@ from .run_store import RunNotFoundError, get_run_path, write_json
 _executor = ThreadPoolExecutor(max_workers=2, thread_name_prefix="review-build")
 _run_locks: defaultdict[str, threading.Lock] = defaultdict(threading.Lock)
 _start_locks: defaultdict[str, threading.Lock] = defaultdict(threading.Lock)
+_progress_locks: defaultdict[str, threading.RLock] = defaultdict(threading.RLock)
 _MAX_LIVE_LINES = 800
 
 
@@ -88,25 +89,31 @@ def _execute_job(run_id: str, run_format: bool) -> None:
 
 
 def _append_output(run_id: str, stream: str, line: str) -> None:
-    progress = get_build_status(run_id)
-    lines = progress.setdefault(stream, [])
-    lines.append(line)
-    if len(lines) > _MAX_LIVE_LINES:
-        del lines[:-_MAX_LIVE_LINES]
-        progress["output_truncated"] = True
-    progress["updated_at"] = _now()
-    _write_progress(run_id, progress)
+    # Read, mutate, and replace as one per-run operation.  Without this lock,
+    # output callbacks and state updates share the same `.tmp` path and can
+    # race during Windows' replace operation.
+    with _progress_locks[run_id]:
+        progress = get_build_status(run_id)
+        lines = progress.setdefault(stream, [])
+        lines.append(line)
+        if len(lines) > _MAX_LIVE_LINES:
+            del lines[:-_MAX_LIVE_LINES]
+            progress["output_truncated"] = True
+        progress["updated_at"] = _now()
+        _write_progress(run_id, progress)
 
 
 def _update_progress(run_id: str, **changes: Any) -> None:
-    progress = get_build_status(run_id)
-    progress.update(changes)
-    progress["updated_at"] = _now()
-    _write_progress(run_id, progress)
+    with _progress_locks[run_id]:
+        progress = get_build_status(run_id)
+        progress.update(changes)
+        progress["updated_at"] = _now()
+        _write_progress(run_id, progress)
 
 
 def _write_progress(run_id: str, progress: dict[str, Any]) -> None:
-    write_json(get_run_path(run_id) / "build-progress.json", progress)
+    with _progress_locks[run_id]:
+        write_json(get_run_path(run_id) / "build-progress.json", progress)
 
 
 def _now() -> str:

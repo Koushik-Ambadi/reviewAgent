@@ -36,6 +36,53 @@ make an issue fixed. Status changes require dated evidence in the issue entry.
 | BUG-004 | Remediation calls lose raw request/response and turn lineage | RESOLVED | Yes | Closed by `bbacefa` | G11 remediation evidence |
 | BUG-005 | Mechanical naming failures can return unsupported model output | IN_PROGRESS | No | High for remediation reliability and cost | G11 prompt/evaluation remediation |
 | BUG-006 | VPN-dependent build environment is unavailable | OPEN | No | Blocks build/artifact verification | G05 operations and build portability |
+| BUG-007 | Build worker can report failure after producing firmware artifacts | IN_PROGRESS | No | High for build result/artifact routing | G05 build orchestration |
+
+## BUG-007 — Build worker can report failure after producing firmware artifacts
+
+- Status: IN_PROGRESS
+- Fixed: No
+- First observed: 2026-10-22 in run `20261022_150752_17220702`
+- Last updated: 2026-10-22
+- Affected paths: `src/orchestrator/build_jobs.py`,
+  `src/orchestrator/run_store.py`, build status API, and the browser build
+  fallback renderer
+- Impact: concurrent progress writes can leave `build-progress.json` in
+  `failed` state without a normalized `build.json`; the UI then shows a worker
+  failure, does not receive the build result or artifact manifest, and cannot
+  persist/display model build remediation.
+- Evidence confidence: independently reproduced by inspecting the retained run;
+  the progress error is `[WinError 5] Access is denied` while replacing the
+  temporary progress file, while `shunt/build.log` ends with `Done` and the
+  current run contains `app.hex`, `shunt-component.elf`, and
+  `shunt-component.map`.
+- Work started: per-run serialization was added around progress read/modify/
+  replace operations; regression evidence is pending because this environment
+  does not have the project test dependencies installed.
+
+### Smallest known reproduction and boundary
+
+- Start the background build for the retained run and poll its status while
+  output callbacks are appending lines.
+- The retained status is `state=failed` with the atomic-replace error on
+  `build-progress.json.tmp`; no `build.json` or `build-remediation.json` was
+  persisted, and `report.json` still has an empty `build_result` object.
+- The compiler/linker exit code is not available because normalization did not
+  complete. The artifacts and terminal `Done` marker are evidence of build
+  progress/completion, not a persisted normalized pass result.
+
+### Workaround, selected follow-up, and closure evidence
+
+- Workaround: inspect the run's build log and artifact files directly; do not
+  treat the browser's synthetic worker-failure card as the compiler result.
+- Follow-up: serialize progress writes per run or use a collision-safe append/
+  snapshot strategy, then ensure worker exceptions still persist a normalized
+  result (or an explicit worker-failure result) before the status endpoint and
+  UI render it.
+- Closure requires a regression test that exercises concurrent output/status
+  updates, persists `build.json`/artifact references on successful completion,
+  preserves remediation on normalized failures, and verifies the browser route
+  for both paths.
 
 ## BUG-006 — VPN-dependent build environment is unavailable
 
