@@ -40,26 +40,29 @@ def start_build_job(run_id: str, *, run_format: bool = True) -> dict[str, Any]:
 
 
 def get_build_status(run_id: str) -> dict[str, Any]:
-    progress_path = get_run_path(run_id) / "build-progress.json"
-    if not progress_path.is_file():
-        build_path = get_run_path(run_id) / "build.json"
-        if build_path.is_file():
-            import json
+    # Readers must share the same per-run lock as writers.  On Windows an
+    # atomic replace can temporarily deny opens of the target file.
+    with _progress_locks[run_id]:
+        progress_path = get_run_path(run_id) / "build-progress.json"
+        if not progress_path.is_file():
+            build_path = get_run_path(run_id) / "build.json"
+            if build_path.is_file():
+                import json
 
-            with build_path.open(encoding="utf-8") as build_file:
-                return {"run_id": run_id, "state": "completed", "result": json.load(build_file)}
-        return {"run_id": run_id, "state": "idle", "stdout": [], "stderr": []}
+                with build_path.open(encoding="utf-8") as build_file:
+                    return {"run_id": run_id, "state": "completed", "result": json.load(build_file)}
+            return {"run_id": run_id, "state": "idle", "stdout": [], "stderr": []}
 
-    import json
+        import json
 
-    with progress_path.open(encoding="utf-8") as progress_file:
-        progress = json.load(progress_file)
-    if progress.get("state") == "completed":
-        build_path = get_run_path(run_id) / "build.json"
-        if build_path.is_file():
-            with build_path.open(encoding="utf-8") as build_file:
-                progress["result"] = json.load(build_file)
-    return progress
+        with progress_path.open(encoding="utf-8") as progress_file:
+            progress = json.load(progress_file)
+        if progress.get("state") == "completed":
+            build_path = get_run_path(run_id) / "build.json"
+            if build_path.is_file():
+                with build_path.open(encoding="utf-8") as build_file:
+                    progress["result"] = json.load(build_file)
+        return progress
 
 
 def _execute_job(run_id: str, run_format: bool) -> None:

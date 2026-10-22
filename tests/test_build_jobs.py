@@ -16,7 +16,12 @@ def test_progress_updates_are_serialized_per_run(tmp_path, monkeypatch):
     monkeypatch.setattr(build_jobs, "get_run_path", lambda _: run_path)
 
     with ThreadPoolExecutor(max_workers=8) as pool:
-        list(pool.map(lambda index: build_jobs._append_output(run_id, "stdout", f"line-{index}"), range(80)))
+        writes = [
+            pool.submit(build_jobs._append_output, run_id, "stdout", f"line-{index}")
+            for index in range(80)
+        ]
+        reads = [pool.submit(build_jobs.get_build_status, run_id) for _ in range(80)]
+        [future.result() for future in [*writes, *reads]]
 
     progress = json.loads(progress_path.read_text(encoding="utf-8"))
     assert progress["state"] == "running"
