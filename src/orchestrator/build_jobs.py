@@ -106,18 +106,24 @@ def _execute_job(run_id: str, run_format: bool) -> None:
 
 
 def _append_output(run_id: str, stream: str, line: str) -> None:
-    # Read, mutate, and replace as one per-run operation.  Without this lock,
-    # output callbacks and state updates share the same `.tmp` path and can
-    # race during Windows' replace operation.
-    with _progress_locks[run_id]:
-        progress = get_build_status(run_id)
-        lines = progress.setdefault(stream, [])
-        lines.append(line)
-        if len(lines) > _MAX_LIVE_LINES:
-            del lines[:-_MAX_LIVE_LINES]
-            progress["output_truncated"] = True
-        progress["updated_at"] = _now()
-        _write_progress(run_id, progress)
+    # Read, mutate, and replace as one per-run operation inside this process.
+    # Cross-process collisions are handled by run_store.write_json using
+    # unique temporary files and replacement retries.
+    try:
+        with _progress_locks[run_id]:
+            progress = get_build_status(run_id)
+            lines = progress.setdefault(stream, [])
+            lines.append(line)
+            if len(lines) > _MAX_LIVE_LINES:
+                del lines[:-_MAX_LIVE_LINES]
+                progress["output_truncated"] = True
+            progress["updated_at"] = _now()
+            _write_progress(run_id, progress)
+    except OSError:
+        # Live telemetry must not abort the compiler process or suppress its
+        # normalized result/remediation. The build log and final result remain
+        # the authoritative evidence if a progress snapshot cannot be saved.
+        return
 
 
 def _update_progress(run_id: str, **changes: Any) -> None:

@@ -377,7 +377,9 @@ output retains an explicit generic fallback.
   `orchestrator/build_jobs.py` runs UI-started builds on a bounded worker pool and
   persists `build-progress.json`; progress read/modify/write operations are
   serialized per run because output callbacks and terminal state updates share
-  the same atomic replacement path on Windows. The final build still becomes
+  an atomic replacement path on Windows. Persistence uses process-safe unique
+  temporary files and short replacement retries, and live telemetry failures
+  cannot abort the build. The final build still becomes
   `build.json` and `RunResult.build_result`. This lets the static UI poll live
   output without changing the synchronous API behavior used by callers that need
   a final result. Worker ownership is process-local; a queued/running snapshot

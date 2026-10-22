@@ -59,8 +59,10 @@ make an issue fixed. Status changes require dated evidence in the issue entry.
 - Work started: per-run serialization was added around progress read/modify/
   replace operations, and stale process-local `running` snapshots can now be
   restarted after an application reload. Output collection also has a bounded
-  post-process drain for inherited Windows pipe handles; regression evidence is
-  pending because this environment does not have the project test dependencies
+  post-process drain for inherited Windows pipe handles. Cross-process JSON
+  writes now use unique temporary files/replacement retries, and telemetry
+  write errors no longer abort the build. Regression evidence is pending
+  because this environment does not have the project test dependencies
   installed.
 
 ### Smallest known reproduction and boundary

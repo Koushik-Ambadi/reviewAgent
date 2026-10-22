@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import json
 import re
+import time
+from uuid import uuid4
 from pathlib import Path
 from typing import Any
 
@@ -40,10 +42,23 @@ def load_report(run_id: str) -> dict[str, Any]:
 
 
 def write_json(path: Path, content: dict[str, Any]) -> None:
-    temporary_path = path.with_suffix(f"{path.suffix}.tmp")
-    with temporary_path.open("w", encoding="utf-8") as output_file:
-        json.dump(content, output_file, indent=2)
-    temporary_path.replace(path)
+    # A process-shared fixed `.tmp` name allows reload workers to overwrite or
+    # replace one another's temporary file. Use a unique sibling and retry a
+    # short-lived Windows sharing violation on the destination replacement.
+    temporary_path = path.with_name(f"{path.name}.{uuid4().hex}.tmp")
+    try:
+        with temporary_path.open("w", encoding="utf-8") as output_file:
+            json.dump(content, output_file, indent=2)
+        for attempt in range(8):
+            try:
+                temporary_path.replace(path)
+                return
+            except PermissionError:
+                if attempt == 7:
+                    raise
+                time.sleep(0.05 * (attempt + 1))
+    finally:
+        temporary_path.unlink(missing_ok=True)
 
 
 def update_report_extension(
