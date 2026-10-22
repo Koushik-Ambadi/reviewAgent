@@ -1000,3 +1000,30 @@ and third-party artifacts and must not be interpreted as effort or quality.
 - Verification passed three direct build tests, Python compilation, JavaScript
   syntax, application import, and a read-only scan of retained artifacts. No
   build command or live model call was made while VPN access is unavailable.
+
+## 2026-10-22 — Expand the engineering roadmap into a cross-module evidence graph
+
+### 14:41:38 +05:30 — Update the roadmap view and owning engineering records
+
+- Request: make the front-end Roadmap describe the proposed cross-module graph
+  platform, future use cases, integrations, and optional AI extensions.
+- Starting point: branch `codex/atomic-naming-rules` at `59d759b`, two commits
+  ahead of its upstream. A pre-existing deletion of
+  `src/repo_remediation/manual_single_case_test.py` was present and remains
+  untouched.
+- Changed: replaced four broad roadmap cards with staged sections for code graph
+  and evidence foundations, requirements/verification/delivery workflows, and
+  later evidence-grounded assistance and prediction experiments. Candidate
+  integrations are labeled for evaluation; no future action is presented as
+  implemented.
+- Owning records: `docs/engineering/roadmap.md` defines gates G13–G15 and
+  expands G08/G09; `docs/engineering/architecture.md` describes the current
+  static Roadmap surface; D013 now records its staged informational behavior.
+- Evidence boundary: current roadmap facts are descriptive plans. Joern/CPG,
+  SARIF, ReqIF, and ASAM XIL references were checked against official
+  specifications/documentation on 2026-10-22; compatibility, licensing and
+  embedded-project fit remain unverified.
+- Verification: focused source/diff inspection only; no tests or application
+  startup were run for this static content/presentation update.
+- Next state: inspect the complete diff, commit only the five roadmap-owned
+  paths, and preserve the unrelated pre-existing deletion.

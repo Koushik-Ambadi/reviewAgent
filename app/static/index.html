@@ -1124,11 +1124,28 @@ html,body{background:var(--bg)}
 .roadmap-hero .eyebrow{margin-bottom:12px;background:#dbeafe;border-color:#bfdbfe;color:#1d4ed8}
 .roadmap-hero h2{font-size:30px;letter-spacing:-.04em;margin-bottom:8px}
 .roadmap-hero p{max-width:780px;color:#526176;line-height:1.65}
+.roadmap-intro{display:flex;align-items:flex-start;justify-content:space-between;gap:22px}
+.roadmap-intro-copy{max-width:800px}
+.roadmap-principle{flex:0 0 250px;padding:14px 16px;border:1px solid #bfdbfe;border-radius:12px;background:rgba(255,255,255,.72);color:#334155;font-size:12px;line-height:1.6}
+.roadmap-principle strong{display:block;color:#1e3a8a;font-size:12px;margin-bottom:4px}
+.roadmap-section{margin:24px 0 10px}
+.roadmap-section-heading{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:12px}
+.roadmap-section-heading h3{font-size:18px;color:#172033}
+.roadmap-section-heading p{color:#64748b;font-size:12px;line-height:1.5}
 .roadmap-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 .roadmap-card{position:relative;padding:20px;border:1px solid #dbe3ee;border-radius:16px;background:#fff;box-shadow:0 7px 20px rgba(30,49,75,.06)}
 .roadmap-card .pill{display:inline-flex;margin-bottom:12px}
 .roadmap-card h3{font-size:17px;color:#172033;margin-bottom:7px}
 .roadmap-card p{color:#5f6f85;font-size:13px;line-height:1.6}
+.roadmap-card ul{margin:12px 0 0;padding-left:19px;color:#5f6f85;font-size:12px;line-height:1.6}
+.roadmap-card li+li{margin-top:4px}
+.roadmap-card.foundation{border-top:3px solid #3b82f6}
+.roadmap-card.workflow{border-top:3px solid #0f766e}
+.roadmap-card.intelligence{border-top:3px solid #7c3aed}
+.roadmap-callout{margin-top:18px;padding:17px 20px;border:1px solid #dbe3ee;border-radius:14px;background:#f8fafc}
+.roadmap-callout h3{font-size:15px;color:#172033;margin-bottom:6px}
+.roadmap-callout p{color:#5f6f85;font-size:12px;line-height:1.6}
+.roadmap-source{display:block;margin-top:10px;color:#64748b;font-size:11px;line-height:1.5}
 .tab-badge.planned{background:#ede9fe;color:#6d28d9}
 
 @media(max-width:1100px){
@@ -1136,6 +1153,10 @@ html,body{background:var(--bg)}
     .preview{padding:20px}
     .executive-strip{margin-top:24px}
     .roadmap-grid{grid-template-columns:1fr}
+    .roadmap-intro{display:block}
+    .roadmap-principle{margin-top:16px}
+    .roadmap-section-heading{display:block}
+    .roadmap-section-heading p{margin-top:4px}
 }
 @media(max-width:700px){
     .hero-content,.panel{padding:20px}
@@ -1523,17 +1544,49 @@ html,body{background:var(--bg)}
             </nav>
 
             <div class="roadmap-hero">
-                <span class="eyebrow">Placeholder view</span>
-                <h2>Planned workspace capabilities</h2>
-                <p>These are deliberate next steps, not active controls. They extend the current run workspace after its evidence, build, and remediation foundations are stable.</p>
+                <div class="roadmap-intro">
+                    <div class="roadmap-intro-copy">
+                        <span class="eyebrow">Future direction · evidence first</span>
+                        <h2>From repository review to engineering intelligence</h2>
+                        <p>Connect the embedded modules and their code, requirements, tests, builds, findings, and delivery history. The graph is a shared evidence model; developers, testers, managers, product owners, auditors, and customers get focused views for the questions they need to answer.</p>
+                    </div>
+                    <aside class="roadmap-principle"><strong>How to read this roadmap</strong>Every capability below is planned or exploratory. Compiler facts, test observations, imported records, human decisions, and model suggestions must remain distinguishable and traceable to their source.</aside>
+                </div>
             </div>
 
-            <div class="roadmap-grid">
-                <article class="roadmap-card"><span class="pill warning">Planned</span><h3>Pull request and approvals</h3><p>Create a governed handoff for manager approval, source-control changes, and auditable release decisions instead of exposing a premature Raise PR button.</p></article>
-                <article class="roadmap-card"><span class="pill warning">Planned</span><h3>Multi-run workspace</h3><p>Compare review runs, modules, profiles, and trends across projects. Module and profile filters belong here rather than inside a single run.</p></article>
-                <article class="roadmap-card"><span class="pill warning">Planned</span><h3>Configurable profiles</h3><p>Add validated project profiles and build adapters once profile selection, schema migration, and project ownership are defined.</p></article>
-                <article class="roadmap-card"><span class="pill warning">Planned</span><h3>Optional assisted intelligence</h3><p>Keep deterministic classification first, then add opt-in model analysis for unknown failures with evidence, provenance, and provider-independent outputs.</p></article>
-            </div>
+            <section class="roadmap-section" aria-labelledby="roadmap-foundation-title">
+                <div class="roadmap-section-heading"><h3 id="roadmap-foundation-title">1 · Build the shared evidence foundation</h3><p>Roadmap gates G02, G08, G09 and G12</p></div>
+                <div class="roadmap-grid">
+                    <article class="roadmap-card foundation"><span class="pill warning">Planned · G08</span><h3>Cross-module code graph</h3><p>Move from file-scoped symbol lists to versioned, linked program facts across all modules, with exact source and configuration provenance.</p><ul><li>Stable symbol identity; declarations, definitions and references</li><li>Include, interface, global-state and direct caller/callee edges</li><li>Per-function statements, control-flow and selected data-flow</li><li>Generated, third-party, indirect-call and parse-coverage labels</li></ul></article>
+                    <article class="roadmap-card foundation"><span class="pill warning">Planned · G02 / G12</span><h3>Reproducible evidence and audit history</h3><p>Make each graph and decision reproducible for a specific source revision, policy, build configuration and toolchain.</p><ul><li>Versioned run manifests, tool versions, input/output hashes</li><li>Artifact integrity and provenance checks, with signature validation when supported</li><li>Inventory reconciliation and reviewer/approver decisions</li><li>Finding, deviation and approval links with actor and policy history</li><li>Explicit partial, skipped, uncertain and unavailable evidence</li></ul></article>
+                    <article class="roadmap-card foundation"><span class="pill warning">Planned · G09</span><h3>Rule and compliance evidence</h3><p>Grow deterministic checks from naming into graph-aware rules while retaining rule scope, applicability, exceptions and review evidence.</p><ul><li>Function metrics, recursion and architecture boundaries</li><li>Static-analysis imports with rule and source locations</li><li>MISRA, AUTOSAR and project-rule evidence by version</li><li>Deviation records and manual review where automation cannot decide</li></ul></article>
+                    <article class="roadmap-card foundation"><span class="pill warning">Exploration</span><h3>Analysis engine and format adapters</h3><p>Keep the production compiler authoritative. Evaluate graph-analysis engines and standard interchange formats against representative embedded C before selecting adapters.</p><ul><li>Compare Clang/LibTooling with code-property-graph tooling such as Joern</li><li>Import findings through SARIF; preserve GHS diagnostics and build evidence</li><li>Evaluate ReqIF requirements links and ASAM XIL test-bench connections</li><li>Record licensing, configuration fidelity, unresolved symbols and coverage</li></ul></article>
+                </div>
+            </section>
+
+            <section class="roadmap-section" aria-labelledby="roadmap-workflow-title">
+                <div class="roadmap-section-heading"><h3 id="roadmap-workflow-title">2 · Connect engineering work to verification and delivery</h3><p>Future gates after provenance and graph foundations</p></div>
+                <div class="roadmap-grid">
+                    <article class="roadmap-card workflow"><span class="pill warning">Future · G13</span><h3>Requirements-to-release traceability</h3><p>Link customer and software requirements to modules, interfaces, code, findings, test cases, execution results and release artifacts.</p><ul><li>Show requirements implemented, unverified, blocked or missing evidence</li><li>Attach build, binary, map, calibration and configuration identities</li><li>Export a reviewable evidence package for client and auditor handoff</li></ul></article>
+                    <article class="roadmap-card workflow"><span class="pill warning">Future · G14</span><h3>Change impact, debugging and test selection</h3><p>Compare graph snapshots for a commit or PR, connect incidents to their tested baseline, and explain affected modules, requirements, risks and tests.</p><ul><li>Rank direct and indirect impact with uncertainty visible</li><li>Recommend regression tests across MIL, SIL and HIL</li><li>Trace observed signals and logs to relevant writers, call paths and recent changes</li><li>Surface coupling, complexity and performance hotspots with measurement evidence</li><li>Link test results, coverage and defects to the exact revision/configuration</li></ul></article>
+                    <article class="roadmap-card workflow"><span class="pill warning">Planned · G11</span><h3>Governed PR, tickets and approvals</h3><p>Turn findings and impact evidence into proposed work, with authorized owners, external IDs, review history and explicit approval transitions.</p><ul><li>Provider-backed issue, source-control and CI integrations</li><li>Idempotent actions, role checks and durable audit events</li><li>Preview-only manager controls stay labeled until writes are real</li></ul></article>
+                    <article class="roadmap-card workflow"><span class="pill warning">Planned · G11</span><h3>Portfolio and progress views</h3><p>Give managers and product owners a cross-run view of evidence completeness and delivery risk rather than activity counts alone.</p><ul><li>Compare modules, profiles, revisions and release configurations</li><li>Track requirement, review, test and deviation states</li><li>Show blockers, trends, ownership and confidence with drill-down evidence</li></ul></article>
+                </div>
+            </section>
+
+            <section class="roadmap-section" aria-labelledby="roadmap-intelligence-title">
+                <div class="roadmap-section-heading"><h3 id="roadmap-intelligence-title">3 · Add assistance after the evidence is dependable</h3><p>Future gate G15 · opt-in and evaluated</p></div>
+                <div class="roadmap-grid">
+                    <article class="roadmap-card intelligence"><span class="pill warning">Future · G15</span><h3>Neuro-symbolic engineering assistant</h3><p>Pair deterministic graph queries, rule checks and test evidence with optional language-model synthesis and retrieval over approved engineering records.</p><ul><li>Explain a finding or failure through its code and evidence paths</li><li>Draft review notes, test plans and investigation steps for human review</li><li>Keep compiler facts, observed results, document claims and model suggestions visibly distinct</li></ul></article>
+                    <article class="roadmap-card intelligence"><span class="pill warning">Research · gated by history</span><h3>Risk and failure prediction</h3><p>Explore statistical or graph-learning models only after enough labeled changes, failures and test outcomes exist to compare against a simple baseline.</p><ul><li>Potential heads: defect risk, affected tests, recurring failures and review priority</li><li>Evaluate by module, configuration, time period and false-negative cost</li><li>Show calibrated uncertainty; predictions never become compliance verdicts</li></ul></article>
+                </div>
+            </section>
+
+            <aside class="roadmap-callout">
+                <h3>First validation slice</h3>
+                <p>Start with the shunt module: generate a deterministic graph, review one real change, trace its callers and affected modules, connect the available tests and findings, and compare the result with an engineer’s hand-checked impact analysis. Expand to all ten modules only after identity, coverage and provenance hold up.</p>
+                <span class="roadmap-source">Related engineering gates: G02, G08, G09, G11, G12 and proposed G13–G15. These roadmap items describe future work; they are not active controls or delivered compliance evidence.</span>
+            </aside>
         </div>
     </section>
 

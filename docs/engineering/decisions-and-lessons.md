@@ -271,14 +271,18 @@ No motive is attributed where the repository does not support it.
   on their owning pages; show run/profile metadata under a titled disclosure
   collapsed by default; fit landing and setup into a normal desktop dynamic
   viewport; make the setup cards equal-height with a flexible activity log; and
-  expose deferred capabilities in an inert Roadmap tab backed by roadmap G11.
+  expose deferred capabilities as a static, staged Roadmap view backed by the
+  engineering roadmap. The view explains dependencies and planned value without
+  presenting future integrations or workflows as active controls.
 - Rationale: tabs answer “where am I,” page actions answer “what can I do here,”
   and metadata answers “what context produced this result.” Separating those
   concerns improves discoverability without adding a new application shell.
 - Fallbacks: short and narrow viewports may scroll rather than clip content;
   legacy reports use the existing profile display defaults; simulated activity
-  remains clearly documented as non-telemetry; the Roadmap provides explanatory
-  text only until its dependency gates are met.
+  remains clearly documented as non-telemetry; the Roadmap is informational
+  until its dependency gates are met. Its current staged view covers the graph
+  foundation, cross-lifecycle traceability and workflows, and later AI-assisted
+  analysis; candidate engines and standards adapters remain unevaluated.
 - Alternatives rejected: hiding metadata completely; leaving metadata as a
   permanently expanded untitled card; keeping review actions in the tab bar;
   disabling scrolling at all sizes; and presenting future actions as clickable

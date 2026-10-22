@@ -320,9 +320,14 @@ The API returns templates; the pipeline owns execution-time loading.
   setup configuration and activity panels share one height, while the activity
   log flexes inside its panel. Narrow or short displays retain page scrolling as
   an accessibility and content-safety fallback.
-- The Roadmap tab is placeholder content mapped to roadmap gate G11. It does not
-  expose callable actions or claim that approvals, multi-run comparison,
-  configurable profiles, or model-assisted analysis are implemented.
+- The Roadmap tab is a static, staged description mapped to engineering gates
+  G02/G08/G09/G11/G12 and proposed future gates G13–G15. It presents cross-module
+  code/evidence graphs, requirements and test traceability, change impact,
+  governed delivery workflows, and later evidence-grounded assistance. Engine
+  and interchange options remain evaluations; no roadmap item is a callable
+  action or an implemented capability. Approval, compliance, integration, and
+  prediction claims remain gated by their documented evidence and authorization
+  requirements.
 - The progress display is explicitly simulated (`startFakeProgress`); it is not
   server-side stage telemetry. Its purpose is perceived activity during the
   current synchronous review request, not operational observability.

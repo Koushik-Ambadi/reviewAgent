@@ -2,7 +2,7 @@
 
 - Status: living
 - Created: 2026-10-06
-- Last reviewed: 2026-10-13
+- Last reviewed: 2026-10-22
 - Update trigger: priority, dependency, acceptance evidence, or gate status changes
 - Source of truth for: future engineering gates and their ordering
 - Does not own: current behavior, module constraints, test status, or rule-level
@@ -119,21 +119,38 @@ changes. Do not maintain a second project-wide gap inventory here.
 
 - Priority: P2
 - Goal: provide durable analysis artifacts required by the next rule families.
-- In scope: token/comment inventory, include/dependency graph, call graph,
-  control-flow graph, provenance for generated/third-party symbols, parse
-  coverage diagnostics.
+- In scope: token/comment inventory; canonical symbol identities with
+  declaration, definition, and reference occurrences; include/dependency,
+  caller/callee, and recursion graphs; per-function statement/control-flow and
+  selected data-flow facts; provenance for generated/third-party symbols;
+  configuration-aware parse coverage diagnostics across the connected modules.
+- Engine decision: retain Clang/LibTooling as the programmable analysis
+  candidate and compare it with established code-property-graph tooling such as
+  Joern on representative embedded C before selecting a durable internal schema
+  or storage engine. Keep GHS as production-build authority and evaluate its
+  available machine-readable evidence as an adapter, not an assumed AST source.
+- Required graph evidence: node/edge kind, stable identity, source revision,
+  translation-unit/configuration, producer/tool version, source location,
+  completeness, and whether the relation is compiler-derived, inferred, or
+  observed. Indirect calls and unresolved relations must remain explicit.
 - Acceptance evidence: graph/schema contracts, representative C fixtures,
-  coverage/diagnostic metrics, deterministic IDs.
+  coverage/diagnostic metrics, deterministic IDs, cross-translation-unit header
+  deduplication, and a hand-checked shunt change-impact slice.
 - Enables: metrics, dead-code signals, impact analysis, interface checks, and
   semantic review assistance.
+- Candidate reference: [Code Property Graph specification](https://cpg.joern.io/)
+  and [Joern graph export](https://docs.joern.io/export/) describe established
+  AST/CFG/data-dependence graph layers. These are candidates for evaluation, not
+  selected runtime dependencies. Reviewed 2026-10-22.
 
 ### G09 — Implement coding-standard families incrementally
 
 - Priority: P2/P3 according to organizational value and evidence readiness
 - Goal: expand beyond naming without claiming unsupported compliance.
 - Sequence: deterministic lexical/file rules; declaration/type rules; function
-  and control-flow rules; graph metrics; static-analysis imports; manual evidence
-  workflows.
+  and control-flow rules; graph metrics; static-analysis imports; versioned rule
+  applicability and deviation evidence; manual review workflows. Importing a
+  tool result does not itself establish compliance.
 - Acceptance evidence per check: source rule mapping, applicability/exceptions,
   policy schema, hand-checkable fixtures, actionable atomic reasons, typed result,
   catalog/audit update.
@@ -219,6 +236,78 @@ changes. Do not maintain a second project-wide gap inventory here.
   and transition tests, replayable decision history, skipped-file reconciliation,
   and developer/manager end-to-end audit summaries.
 
+### G13 — Connect requirements, verification, and release evidence
+
+- Priority: P3 after G02, G08, and the relevant G09/G12 result contracts
+- Goal: trace each customer/software requirement through implementation,
+  verification, findings, decisions, and released artifacts across modules.
+- In scope: versioned requirement identities; module/interface/code allocation;
+  test-case and MIL/SIL/HIL execution links; build, binary, map, calibration,
+  and configuration identities; artifact integrity/provenance checks (hashes,
+  and signature validation where supported); finding/deviation/approval links;
+  client-ready evidence-pack projections.
+- Interoperability candidates: ReqIF for requirements exchange, SARIF for
+  static-analysis results, and ASAM XIL for test-automation/test-bench
+  integration. Confirm supported versions, permissions, tool availability,
+  licensing, and lossless field mappings before adopting a connector.
+- Required boundaries: imported claims retain their source and revision;
+  unlinked evidence is reported as missing, not inferred; system-generated
+  traceability is not represented as formal certification.
+- Acceptance evidence: round-trip/import fixtures, explicit link coverage and
+  orphan metrics, revision/configuration-aware traceability, access controls,
+  and a manually audited sample delivery package.
+- Candidate references reviewed 2026-10-22: [OMG ReqIF](https://www.omg.org/spec/ReqIF),
+  [OASIS SARIF 2.1](https://docs.oasis-open.org/sarif/sarif/v2.1.0/os/sarif-v2.1.0-os.pdf),
+  and [ASAM XIL 3.0](https://www.asam.net/standards/detail/xil/).
+
+### G14 — Deliver graph-based change impact and verification planning
+
+- Priority: P3 after G08 and G13; requires reliable graph snapshots and test
+  execution links
+- Goal: explain the likely impact of a commit/PR and identify verification
+  evidence that should be rerun.
+- In scope: graph snapshot/diff; affected symbols, interfaces, modules,
+  requirements, findings, variants, and tests; ranked MIL/SIL/HIL regression
+  recommendations; coupling/complexity/performance hotspots tied to measured
+  evidence; links from test results, coverage, signals, logs, and defects to the
+  exact tested revision.
+- Required boundaries: distinguish direct impact from possible/transitive
+  impact; record unresolved dynamic/function-pointer paths; recommendations are
+  advisory until validated against project-specific test selection criteria.
+- Acceptance evidence: deterministic graph diffs, representative changed-module
+  fixtures, hand-checked impact sets, test-selection precision/recall and missed
+  critical-path analysis, and a PR workflow that preserves source provenance.
+- Test-bench integration candidate: [ASAM XIL](https://www.asam.net/standards/detail/xil/)
+  defines an interface for test automation across MIL, SIL, and HIL; adapters
+  remain conditional on the existing bench APIs and available licences.
+
+### G15 — Add evaluated, evidence-grounded engineering assistance
+
+- Priority: P3 after G02/G08/G13 evidence quality is measurable; prediction is
+  experimental until sufficient labeled history exists
+- Goal: help users query and understand linked engineering evidence while
+  keeping deterministic facts and human decisions authoritative.
+- In scope: bounded natural-language-to-graph queries; retrieval over approved
+  requirements, design records, tickets, logs, and test reports; source-linked
+  summaries; draft review notes, test plans, and investigation steps; later
+  experiments for defect risk, test prioritization, recurring failures, and
+  review priority.
+- Required boundaries: each response identifies source paths and revisions;
+  compiler-derived, observed, imported, human-approved, and model-suggested
+  facts retain distinct provenance; predictions include uncertainty and are
+  evaluated against a deterministic baseline; no model output is a compliance
+  verdict, approval, or autonomous ticket/PR mutation.
+- Acceptance evidence: query/task evaluation corpus; groundedness and citation
+  checks; permission and data-retention review; latency/cost measurements;
+  false-negative analysis by module/configuration; abstention behavior; human
+  review and correction feedback.
+- Research context reviewed 2026-10-22: [GraphRAG architecture](https://microsoft.github.io/graphrag/index/architecture/)
+  describes graph-assisted retrieval over document corpora, while
+  [Devign](https://papers.nips.cc/paper_files/paper/2019/hash/49265d2447bc3bbfe9e76306ce40a31f-Abstract.html)
+  is evidence that graph-learning approaches have been studied for vulnerability
+  classification. Neither result proves quality on this project's embedded
+  modules; transfer requires a local evaluation.
+
 ## Product workflow evolution
 
 The current product has two deliberately different scopes:
@@ -236,10 +325,12 @@ retries, pagination/retention behavior, and end-to-end verification. Only after
 that gate should preview labels be removed or manager actions transmit data.
 
 Intelligence should evolve through the existing insight wrapper: deterministic
-classifiers and policy-derived remediation first, then optional model-generated
-analysis with evidence, provider/model provenance, confidence/uncertainty, and
-human-review boundaries. The canonical run record remains the evidence source;
-the intelligence layer must not silently replace or recalculate it.
+classifiers and policy-derived remediation first, then bounded graph/document
+retrieval and optional model-generated analysis with evidence, provider/model
+provenance, confidence/uncertainty, evaluation, and human-review boundaries.
+Predictive heads depend on labeled history and must be compared with simple
+heuristics. The canonical run record remains the evidence source; the
+intelligence layer must not silently replace or recalculate it.
 
 Remediation conversation is a later, bounded interaction gate. A developer may
 eventually ask for a specific candidate revision, but that requires a typed
@@ -262,6 +353,10 @@ G03 automated baseline
         +--> G07 structure checks --> G08 analysis foundations --> G09 rule expansion
         +--> G11 planned workspace capabilities (after G01-G05)
         `--> G12 symbol inventory audits (after G02-G04 and G11 identity/roles)
+
+G02 + G08 + relevant G09/G12 contracts --> G13 requirements/test/release evidence
+G08 + G13 test links --> G14 change impact and test planning
+G02 + G08 + G13 measurable provenance/coverage --> G15 evidence-grounded assistance
 ```
 
 Security, provenance, and regression protection should precede a large increase
