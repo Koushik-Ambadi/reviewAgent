@@ -14,6 +14,8 @@ _executor = ThreadPoolExecutor(max_workers=2, thread_name_prefix="review-build")
 _run_locks: defaultdict[str, threading.Lock] = defaultdict(threading.Lock)
 _start_locks: defaultdict[str, threading.Lock] = defaultdict(threading.Lock)
 _progress_locks: defaultdict[str, threading.RLock] = defaultdict(threading.RLock)
+_active_jobs: set[str] = set()
+_active_jobs_lock = threading.Lock()
 _MAX_LIVE_LINES = 800
 
 
@@ -22,7 +24,9 @@ def start_build_job(run_id: str, *, run_format: bool = True) -> dict[str, Any]:
     with lock:
         progress = get_build_status(run_id)
         if progress.get("state") in {"queued", "running"}:
-            return progress
+            with _active_jobs_lock:
+                if run_id in _active_jobs:
+                    return progress
 
         started_at = _now()
         progress = {
@@ -35,7 +39,14 @@ def start_build_job(run_id: str, *, run_format: bool = True) -> dict[str, Any]:
             "stderr": [],
         }
         _write_progress(run_id, progress)
-        _executor.submit(_execute_job, run_id, run_format)
+        with _active_jobs_lock:
+            _active_jobs.add(run_id)
+        try:
+            _executor.submit(_execute_job, run_id, run_format)
+        except Exception:
+            with _active_jobs_lock:
+                _active_jobs.discard(run_id)
+            raise
     return progress
 
 
@@ -68,8 +79,8 @@ def get_build_status(run_id: str) -> dict[str, Any]:
 def _execute_job(run_id: str, run_format: bool) -> None:
     lock = _run_locks[run_id]
     with lock:
-        _update_progress(run_id, state="running")
         try:
+            _update_progress(run_id, state="running")
             result = build_run(
                 run_id,
                 run_format=run_format,
@@ -89,6 +100,9 @@ def _execute_job(run_id: str, run_format: bool) -> None:
                 completed_at=_now(),
                 error=str(error),
             )
+        finally:
+            with _active_jobs_lock:
+                _active_jobs.discard(run_id)
 
 
 def _append_output(run_id: str, stream: str, line: str) -> None:

@@ -380,7 +380,8 @@ output retains an explicit generic fallback.
   the same atomic replacement path on Windows. The final build still becomes
   `build.json` and `RunResult.build_result`. This lets the static UI poll live
   output without changing the synchronous API behavior used by callers that need
-  a final result.
+  a final result. Worker ownership is process-local; a queued/running snapshot
+  left by a server restart is treated as stale and can be restarted.
 
 ### `repo_remediation`
 

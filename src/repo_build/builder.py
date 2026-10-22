@@ -3,12 +3,14 @@ from __future__ import annotations
 import queue
 import subprocess
 import threading
+import time
 from collections.abc import Callable
 from pathlib import Path
 from typing import Literal
 
 
 OutputStream = Literal["stdout", "stderr"]
+_PROCESS_EXIT_DRAIN_SECONDS = 5.0
 OutputCallback = Callable[[OutputStream, str], None]
 
 
@@ -111,8 +113,24 @@ def _collect_process_output(
             on_output(stream, line)
 
     completed_streams = 0
+    exited_at: float | None = None
     while completed_streams < len(readers):
-        stream, line = lines.get()
+        try:
+            stream, line = lines.get(timeout=0.5)
+        except queue.Empty:
+            if process.poll() is None:
+                continue
+            if exited_at is None:
+                exited_at = time.monotonic()
+            if time.monotonic() - exited_at < _PROCESS_EXIT_DRAIN_SECONDS:
+                continue
+            # Some Windows tools leave inherited pipe handles open after the
+            # parent batch process exits. Do not leave the build worker stuck
+            # forever; the build log remains available for diagnostics.
+            for handle in (process.stdout, process.stderr):
+                if handle is not None:
+                    handle.close()
+            break
         if line is None:
             completed_streams += 1
         elif line:
@@ -127,7 +145,7 @@ def _collect_process_output(
         if line:
             publish(stream, line)
     for reader in readers:
-        reader.join()
+        reader.join(timeout=1.0)
     return {
         "process_return_code": return_code,
         "stdout": captured["stdout"],

@@ -57,8 +57,11 @@ make an issue fixed. Status changes require dated evidence in the issue entry.
   current run contains `app.hex`, `shunt-component.elf`, and
   `shunt-component.map`.
 - Work started: per-run serialization was added around progress read/modify/
-  replace operations; regression evidence is pending because this environment
-  does not have the project test dependencies installed.
+  replace operations, and stale process-local `running` snapshots can now be
+  restarted after an application reload. Output collection also has a bounded
+  post-process drain for inherited Windows pipe handles; regression evidence is
+  pending because this environment does not have the project test dependencies
+  installed.
 
 ### Smallest known reproduction and boundary
 
