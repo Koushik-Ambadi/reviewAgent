@@ -7,6 +7,12 @@
 - Source of truth for: consequential technical rationale and durable problems
 - Does not own: daily chronology, current architecture, or future priorities
 
+> Compatibility notice (2026-10-23): [`docs/decisions.md`](../decisions.md) is
+> now the canonical decision entry point under the shared skills standard. This
+> combined file temporarily preserves D001-D023 and P001-P007 while stable IDs,
+> inbound links, and historical evidence are migrated incrementally. Do not add
+> new substantial decisions or new problem/lesson entries here.
+
 These records were created after the implementation. “Confidence” describes
 the evidence for the rationale, not confidence that the decision was optimal.
 No motive is attributed where the repository does not support it.

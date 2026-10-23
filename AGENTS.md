@@ -15,6 +15,12 @@
   the task is substantial and no skill applies, state that briefly as well.
 - Re-evaluate skill relevance when the user materially changes the task; do not
   assume that a skill selected for an earlier turn still applies.
+- When shared skills materially govern the work, record the skills revision and
+  compare the affected project convention with that revision. Repair safe drift
+  or record the compatibility mapping, migration owner, and revisit trigger in
+  the documentation index. Surface reusable discrepancies through the
+  project's persistent skills contribution branch instead of creating a second
+  local standard.
 
 ## Documentation is part of completion
 
@@ -40,6 +46,13 @@
   planned, simulated, and unavailable behavior sound equivalent.
 - In the final report, name the documentation updated. If no documentation was
   needed, state why.
+- Use `docs/decisions.md` as the canonical decision entry point. Existing D001
+  through D023 records remain temporarily in
+  `docs/engineering/decisions-and-lessons.md` through the compatibility map;
+  new substantial decisions use `docs/decisions/DNNN-short-title.md`. Migrate
+  legacy decisions incrementally without changing stable IDs, and relocate the
+  mixed problem/lesson ledger to its owning issue, module, testing, or history
+  records when those areas are next changed.
 
 ## Deferred defect register
 

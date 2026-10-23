@@ -16,8 +16,10 @@ Current project knowledge lives in [`engineering/`](engineering/):
   prompt/output boundaries, local validation, extension points, and maturity.
 - [Project history](engineering/project-history.md) -- append-only daily and
   commit chronology.
-- [Decisions and lessons](engineering/decisions-and-lessons.md) -- reconstructed
-  rationale, alternatives, problems, and durable lessons.
+- [Decision index](decisions.md) -- canonical IDs, status, and record links.
+- [Legacy decisions and lessons](engineering/decisions-and-lessons.md) --
+  compatibility owner for reconstructed D001-D023 records and the mixed
+  problem/lesson ledger while incremental migration is pending.
 - [Testing and replay](engineering/testing-and-replay.md) -- verification status,
   retained runs, hashes, constraints, and isolated replay procedure.
 - [Roadmap](engineering/roadmap.md) -- future gates, dependencies, priorities,
@@ -98,3 +100,19 @@ instructions or active application modules. See the
   delete evidence.
 - Store generated run output under `workspace/runs/`, not in this directory.
 - Update this index and all affected relative links whenever a document moves.
+
+## Shared-skill conformance
+
+- Standard: skills proposal commit
+  `b3a619d2ae6347d64433b60bd80e7037df308555` on
+  `project/skills-repository`, containing the 2026-10-23 indexed-hybrid decision
+  convention.
+- Current compatibility state: `docs/decisions.md` is the canonical entry point;
+  D001-D023 still link to the legacy combined record.
+- Required migration: preserve IDs while moving substantial decisions into
+  `docs/decisions/DNNN-short-title.md`; distribute P001-P007 material to the
+  appropriate known-issue, module, testing, or history owner.
+- Owner: the next change touching each decision or problem area.
+- Verification: the decision index resolves every ID and status, inbound links
+  resolve, no decision detail has two owners, and the legacy combined record is
+  retired only after all content has an authoritative destination.
