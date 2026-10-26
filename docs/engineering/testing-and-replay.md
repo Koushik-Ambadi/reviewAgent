@@ -2,7 +2,7 @@
 
 - Status: living
 - Created: 2026-10-06
-- Last reviewed: 2026-10-10
+- Last reviewed: 2026-10-26
 - Update trigger: test command, environment, artifact schema, retention, or replay
   contract changes
 - Source of truth for: current verification status and reproducible inspection
@@ -441,6 +441,15 @@ It does not persist a run or call log.
 Syntax/import verification does not make a network call. The live output is
 user-run experimental evidence and must not be represented as a regression
 pass until its actual result is retained.
+
+On 2026-10-26 the tracked file was restored after an uncommitted deletion so
+this narrow experiment remains reviewable. The local check imports the module,
+exercises `_output_text` with a synthetic Responses payload, and verifies the
+three required schema fields. It passed in `venv313` with `PYTHONPATH=src` and
+bytecode disabled, making no provider call. An initial inline synthetic-JSON
+command failed before import because PowerShell quoting malformed the fixture;
+the corrected plain-text fixture passed. This is parser/import evidence only,
+not model-quality or live API evidence.
 
 ### Compact model-input compiler
 
