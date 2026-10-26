@@ -33,6 +33,7 @@
 | D021 | Persist remediation as run → check → case → turn hierarchy | Accepted prototype | [Legacy record](engineering/decisions-and-lessons.md) |
 | D022 | Route documentation from a high-level index to local module owners | Accepted | [Legacy record](engineering/decisions-and-lessons.md) |
 | D023 | Proposed remediation hardening and evidence ownership | Proposed | [Legacy record](engineering/decisions-and-lessons.md) |
+| D024 | Adopt published shared-skill conformance | Accepted | [Record](decisions/D024-shared-skill-conformance.md) |
 
 New substantial decisions use `docs/decisions/DNNN-short-title.md` and are linked
 from this table. Small decisions may be recorded directly here when a separate

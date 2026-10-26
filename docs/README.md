@@ -26,6 +26,8 @@ Current project knowledge lives in [`engineering/`](engineering/):
   and acceptance evidence derived from current engineering records.
 - [Known issues](engineering/known-issues.md) -- authoritative status,
   evidence, selected remediation, and resolution proof for deferred defects.
+- [Project-specific rules](project-rules.md) -- scoped local exceptions and
+  durable operating conventions.
 
 ## Module guides
 
@@ -103,16 +105,24 @@ instructions or active application modules. See the
 
 ## Shared-skill conformance
 
-- Standard: skills proposal commit
-  `b3a619d2ae6347d64433b60bd80e7037df308555` on
-  `project/skills-repository`, containing the 2026-10-23 indexed-hybrid decision
-  convention.
-- Current compatibility state: `docs/decisions.md` is the canonical entry point;
-  D001-D023 still link to the legacy combined record.
-- Required migration: preserve IDs while moving substantial decisions into
-  `docs/decisions/DNNN-short-title.md`; distribute P001-P007 material to the
-  appropriate known-issue, module, testing, or history owner.
-- Owner: the next change touching each decision or problem area.
-- Verification: the decision index resolves every ID and status, inbound links
-  resolve, no decision detail has two owners, and the legacy combined record is
-  retired only after all content has an authoritative destination.
+- Approved shared baseline: [`skills` `main` at `d5b8fa3`](../skills/README.md),
+  reviewed 2026-10-26. The former proposal-only reference `b3a619d` is now
+  reachable through that approved history and is no longer the project baseline.
+- Persistent contribution branch: `project/review-agent`, currently equal to
+  approved `main`; it is reserved for evidence-backed reusable proposals and is
+  not active policy while it diverges.
+- Decision navigation: conforms. [`decisions.md`](decisions.md) is the canonical
+  entry point; D001-D023 retain legacy links until safely migrated, while new
+  substantial choices use `decisions/DNNN-short-title.md`.
+- Documentation layout: PRJ-001 records the intentional compatibility mapping
+  from the shared canonical names to this repository's established
+  `docs/engineering/` owners. Semantics and update triggers match; no mass move
+  is performed while existing links and the root project policy bind those paths.
+- Technical-skill routing: use `structured-llm-reliability` from the shared
+  baseline when changing model-backed remediation or build-remediation contracts,
+  provider calls, retries, fallbacks, pending work, trace retention, or model
+  evaluation. It is not loaded for ordinary review-pipeline work.
+- Verification: relative links resolve, the decision index resolves each ID and
+  status, every compatibility exception has a rule, and no decision detail has
+  two authoritative owners. Revisit the mapping when root project policy changes
+  or a dedicated documentation-topology migration is approved.

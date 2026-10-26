@@ -1027,3 +1027,26 @@ and third-party artifacts and must not be interpreted as effort or quality.
   startup were run for this static content/presentation update.
 - Next state: inspect the complete diff, commit only the five roadmap-owned
   paths, and preserve the unrelated pre-existing deletion.
+
+## 2026-10-26 — Reconcile shared-skill governance before repository consolidation
+
+### 17:10:05 +05:30 — Adopt published shared baseline and preserve local layout safely
+
+- Audited all local and remote project branches plus the separate skills
+  repository. The active feature branch contains `master` and is 27 commits
+  ahead; its work can be retained through a fast-forward integration.
+- Found that the project had recorded proposal `b3a619d` as its skills baseline.
+  The shared repository now publishes it through `main` revision `d5b8fa3` with
+  cross-project conformance, technical-knowledge capture, and structured-LLM
+  reliability guidance.
+- Adopted D024, created the persistent `project/review-agent` skills branch,
+  and recorded PRJ-001. The repository keeps its established
+  `docs/engineering/` grouping as a bounded compatibility mapping because root
+  policy and existing links bind those paths; no bulk documentation move occurs.
+- `structured-llm-reliability` is now the routed technical skill for future
+  changes to remediation/build-model contracts, retries, fallbacks, trace
+  retention, or model evaluation. No model or application behavior changed in
+  this governance increment.
+- The uncommitted deletion of `src/repo_remediation/manual_single_case_test.py`
+  predates this work and remains untouched. It blocks a fully clean working tree
+  until its owner chooses to restore or commit it.

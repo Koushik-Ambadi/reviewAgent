@@ -47,7 +47,8 @@ fully reproducible benchmark evidence.
 | Documentation navigation | [`../README.md`](../README.md) | Folder ownership and document map | Document added, moved, or superseded |
 | Historical chronology | [`project-history.md`](project-history.md) | Append-only dates, commits, challenges, responses, evidence | Commit or recovered historical evidence |
 | Current architecture | [`architecture.md`](architecture.md) | Present modules, interfaces, flows, data structures, and technology | Boundary or contract change |
-| Decisions and durable lessons | [`decisions-and-lessons.md`](decisions-and-lessons.md) | Reconstructed decisions with confidence, alternatives, consequences | Decision accepted, superseded, or better evidence recovered |
+| Decision index | [`../decisions.md`](../decisions.md) | Canonical decision IDs, status, and record routes | Decision accepted, superseded, or migrated |
+| Legacy decisions and lessons | [`decisions-and-lessons.md`](decisions-and-lessons.md) | Compatibility owner for D001-D023 and mixed historical ledger material | Legacy decision/problem owner is migrated |
 | Verification and reproduction | [`testing-and-replay.md`](testing-and-replay.md) | Test status, run inventory, commands, isolation, provenance | Test/run/environment contract changes |
 | Future gates | [`roadmap.md`](roadmap.md) | Prioritized future work, dependencies, and acceptance evidence derived from current records | Priority, dependency, evidence, or gate status changes |
 | Deferred defects | [`known-issues.md`](known-issues.md) | Status, evidence, remediation selection, and closure proof for non-urgent project-wide bugs | Defect observed, triaged, mitigated, scheduled, fixed, verified, accepted, or superseded |
@@ -57,6 +58,8 @@ fully reproducible benchmark evidence.
 | Result schema | [`../contracts/run-result.md`](../contracts/run-result.md) | `RunResult` field and persistence contract | Schema or envelope changes |
 | Module coverage map | [`../README.md#module-guides`](../README.md#module-guides) | Routes material responsibilities to code entry points and local owners | Module boundary, entry point, or local owner changes |
 | Local module behavior | [`../modules/README.md`](../modules/README.md) | Detailed inputs, outputs, constructs, verification, and operational posture | Material module behavior or integration changes |
+| Project-specific rules | [`../project-rules.md`](../project-rules.md) | Scoped local exceptions to shared guidance | Local convention is added, changed, or retired |
+| Shared-skill conformance | [`../README.md#shared-skill-conformance`](../README.md#shared-skill-conformance) | Approved revision, contribution branch, compatibility mapping, and activation routes | Shared revision or project compatibility state changes |
 
 ## Competency evidence configuration
 
