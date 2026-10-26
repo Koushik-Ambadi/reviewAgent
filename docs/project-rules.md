@@ -3,7 +3,8 @@
 - Status: living
 - Project identity: repository review agent
 - Last reviewed: 2026-10-26
-- Shared baseline: `skills` `main` at `d5b8fa3`
+- Shared baseline: `skills` `main` at `b800dfc` (locally resolved from
+  `origin/main`; live fetch authentication was unavailable during this review)
 - Reset policy: replace this file when a different project is initialized; do
   not copy these rules into another repository.
 
@@ -16,7 +17,7 @@
 - Source: root `AGENTS.md` documentation ownership rules and D024.
 - Applies to: `docs/engineering/`, `docs/contracts/`, `docs/standards/`,
   `docs/modules/`, and all inbound documentation links.
-- Shared rule and revision: `d5b8fa3` cross-project conformance and canonical
+- Shared rule and revision: `b800dfc` cross-project conformance and canonical
   documentation paths.
 - Rule: retain the existing `docs/engineering/` owners for architecture,
   roadmap, testing/replay, known issues, evidence, and legacy decisions;

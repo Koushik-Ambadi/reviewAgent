@@ -3,8 +3,9 @@
 - Status: living index with legacy compatibility links
 - Canonical standard: `docs/decisions.md` is the project decision entry point;
   substantial records belong under `docs/decisions/`.
-- Shared proposal: `b3a619d2ae6347d64433b60bd80e7037df308555`
-  on `project/skills-repository`.
+- Approved shared baseline: `b800dfc`; the persistent contribution branch is
+  `project/review-agent`. The older `b3a619d` proposal remains historical
+  provenance, not the active baseline.
 - Migration state: D001-D023 retain their existing IDs and remain in the legacy
   combined record until each owning area is changed and migrated safely.
 
@@ -34,6 +35,7 @@
 | D022 | Route documentation from a high-level index to local module owners | Accepted | [Legacy record](engineering/decisions-and-lessons.md) |
 | D023 | Proposed remediation hardening and evidence ownership | Proposed | [Legacy record](engineering/decisions-and-lessons.md) |
 | D024 | Adopt published shared-skill conformance | Accepted | [Record](decisions/D024-shared-skill-conformance.md) |
+| D025 | Retain duplicate historical commits through archive tags | Accepted | [Record](decisions/D025-retain-duplicate-history.md) |
 
 New substantial decisions use `docs/decisions/DNNN-short-title.md` and are linked
 from this table. Small decisions may be recorded directly here when a separate

@@ -1050,3 +1050,21 @@ and third-party artifacts and must not be interpreted as effort or quality.
 - The uncommitted deletion of `src/repo_remediation/manual_single_case_test.py`
   predates this work and remains untouched. It blocks a fully clean working tree
   until its owner chooses to restore or commit it.
+
+## 2026-10-26 — Retain duplicate historical commits and restore test evidence
+
+### Time not captured — Resolve unreferenced history without rewriting it
+
+- Reviewed two unreachable commit objects. `8040358` and `9710314` each have a
+  reachable reissue with the same parent, timestamp, and subject (`46e6e21`
+  and `af5c71e`). Tree comparison found only follow-up refinements in the
+  reachable versions, so no missing feature should be merged.
+- The cause of the lost references is unknown. No reset, rebase, or deletion is
+  asserted because no contemporary evidence establishes one.
+- D025 retains the original objects as archive tags rather than cherry-picking
+  duplicate patches or allowing eventual garbage collection. The frozen review
+  records the alternatives, exact refs, and isolated replay boundary.
+- The shared skills checkout advanced from `d5b8fa3` to locally resolved
+  `b800dfc`. Its one-outcome branch guidance applies forward without rewriting
+  retained history. Live fetch authentication was unavailable, so currency
+  beyond the tracked revision remains unknown.

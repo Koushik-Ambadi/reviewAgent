@@ -60,6 +60,7 @@ fully reproducible benchmark evidence.
 | Local module behavior | [`../modules/README.md`](../modules/README.md) | Detailed inputs, outputs, constructs, verification, and operational posture | Material module behavior or integration changes |
 | Project-specific rules | [`../project-rules.md`](../project-rules.md) | Scoped local exceptions to shared guidance | Local convention is added, changed, or retired |
 | Shared-skill conformance | [`../README.md#shared-skill-conformance`](../README.md#shared-skill-conformance) | Approved revision, contribution branch, compatibility mapping, and activation routes | Shared revision or project compatibility state changes |
+| Frozen historical reviews | [`../reviews/`](../reviews/) | Bounded forensic method, evidence confidence, and disposition | A history, artifact, or conformance review is completed |
 
 ## Competency evidence configuration
 

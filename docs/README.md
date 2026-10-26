@@ -79,6 +79,15 @@ snapshots. These files are retained as historical evidence and are not current
 instructions or active application modules. See the
 [archive README](archive/README.md) before reusing them.
 
+## Frozen reviews
+
+[`reviews/`](reviews/) contains dated, scope-bounded evidence reviews. These
+records explain the method, observed facts, options considered, and disposition
+at the time of review; they do not replace living architecture, decision,
+testing, or history owners. The current [historical commit review](reviews/2026-10-26-unreachable-commits.md)
+records why two duplicate commits were retained as archive tags rather than
+being reintroduced into the current implementation.
+
 ## Update rules
 
 - Put current project-wide engineering truth under `engineering/`.
@@ -105,9 +114,12 @@ instructions or active application modules. See the
 
 ## Shared-skill conformance
 
-- Approved shared baseline: [`skills` `main` at `d5b8fa3`](../skills/README.md),
+- Approved shared baseline: [`skills` `main` at `b800dfc`](../skills/README.md),
   reviewed 2026-10-26. The former proposal-only reference `b3a619d` is now
-  reachable through that approved history and is no longer the project baseline.
+  reachable through approved history and is no longer the project baseline.
+  The locally tracked `origin/main` resolved to this revision, although this
+  session's live fetch could not authenticate; refresh before claiming it is
+  still the remote tip.
 - Persistent contribution branch: `project/review-agent`, currently equal to
   approved `main`; it is reserved for evidence-backed reusable proposals and is
   not active policy while it diverges.
@@ -122,6 +134,9 @@ instructions or active application modules. See the
   baseline when changing model-backed remediation or build-remediation contracts,
   provider calls, retries, fallbacks, pending work, trace retention, or model
   evaluation. It is not loaded for ordinary review-pipeline work.
+- Delivery routing: apply the current one-outcome branch rule to new product
+  work. Historical mixed or duplicate commits are retained and reviewed rather
+  than rewritten; see [D025](decisions/D025-retain-duplicate-history.md).
 - Verification: relative links resolve, the decision index resolves each ID and
   status, every compatibility exception has a rule, and no decision detail has
   two authoritative owners. Revisit the mapping when root project policy changes
