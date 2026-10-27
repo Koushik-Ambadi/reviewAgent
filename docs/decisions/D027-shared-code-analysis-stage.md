@@ -1,7 +1,7 @@
 # D027 — Parse source once in a shared code-analysis stage
 
 - Date: 2026-10-27
-- Status: accepted; migration in progress
+- Status: accepted; single-parse integration landed, compatibility migration in progress
 - Scope: compilation-database parsing, AST fact extraction, review inventory,
   graph snapshots, and independent graph consumers
 - Context: review currently owns compilation-database generation and a legacy
@@ -29,13 +29,18 @@
 - Rejected alternatives and why: duplicate parsers can diverge and double cost;
   review ownership prevents independent graph use; view-owned parsing mixes
   source authority with derived presentation.
-- Consequences and trade-offs: migration requires a compatibility adapter and
-  characterization tests for `symbols.json`. Until that adapter lands, the old
-  review parser remains active and the shared-once goal is not complete.
+- Consequences and trade-offs: review and graph extraction now share one
+  libclang translation-unit parse and write `symbols.json` plus
+  `code-intelligence.json` in the same analysis increment. Two cursor projections
+  remain temporarily: the legacy inventory walker and canonical graph extractor.
+  Migration still requires a graph-to-inventory compatibility adapter before the
+  legacy walker can be removed.
 - Reconsideration trigger: the common stage cannot preserve legacy review
   behavior on representative fixtures, or a selected external analysis engine
   requires a different canonical ingestion boundary.
-- Implementation references: `src/code_intelligence/`, D026, and the upcoming
-  compilation-database runner and review compatibility adapter.
-- Observed impact and validation: decision and capability inventory only in this
-  increment; no single-parse integration is claimed yet.
+- Implementation references: `src/code_intelligence/analysis.py`,
+  `src/code_intelligence/compiler.py`,
+  `src/repo_review/analysis/symbol_inventory/extractor.py`, and D026.
+- Observed impact and validation: a real temporary compilation database fixture
+  produced the legacy inventory and schema 1.1 graph snapshot from one parsed
+  translation unit. Independent graph-only orchestration remains pending.

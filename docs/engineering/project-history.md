@@ -27,6 +27,9 @@ and third-party artifacts and must not be interpreted as effort or quality.
 - Extended the shared AST facts with scoped variables, conservative access,
   type-size estimates, versioned complexity, and exact body-token fingerprints;
   added their four initial projections and verified a real libclang fixture.
+- Moved libclang setup, compile-argument sanitization, and translation-unit
+  parsing into `code_intelligence`; the review stage now emits the legacy symbol
+  inventory and canonical graph snapshot from the same parsed cursor.
 
 ## 2026-05-14 — Establish repository and AST foundations
 

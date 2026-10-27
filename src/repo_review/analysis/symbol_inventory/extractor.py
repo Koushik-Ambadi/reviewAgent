@@ -4,10 +4,16 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+import subprocess
 from typing import TYPE_CHECKING, Any
 
+from code_intelligence.analysis import parse_translation_unit
+from code_intelligence.extraction import extract_translation_unit
+from code_intelligence.graph import KnowledgeGraph
+from code_intelligence.models import GraphFragment
+from code_intelligence.storage import write_snapshot
+
 from .ast_walker import walk_ast
-from .compile_args import sanitize_compile_args
 from .libclang_resolver import configure_libclang
 from .symbol_extractors import is_within_root
 
@@ -27,42 +33,21 @@ def extract_symbols(
     index: Index,
     compdb: CompilationDatabase,
     target_folders: list[Path],
+    graph_fragments: list[GraphFragment] | None = None,
 ) -> dict[str, Any] | None:
 
-    from clang.cindex import TranslationUnit
-
-    commands = compdb.getCompileCommands(str(file_path))
-
-    if not commands:
-        return None
-
-    command = list(commands)[0]
-
-    raw_args = list(command.arguments)[1:]
-
-    if raw_args:
-        try:
-            if Path(raw_args[-1]).resolve() == file_path:
-                raw_args = raw_args[:-1]
-        except Exception:
-            pass
-
-    args = sanitize_compile_args(raw_args)
-
-    parse_options = (
-        TranslationUnit.PARSE_DETAILED_PROCESSING_RECORD
-    )
-
     try:
-        tu = index.parse(
-            str(file_path),
-            args=args,
-            options=parse_options,
+        tu = parse_translation_unit(
+            file_path,
+            index=index,
+            compilation_database=compdb,
         )
     except Exception:
         return None
+    if tu is None:
+        return None
 
-    
+
     relative_file = file_path.resolve().relative_to(
         repo_root.resolve()
     )
@@ -90,7 +75,46 @@ def extract_symbols(
         target_folders,
     )
 
+    if graph_fragments is not None:
+        graph_fragments.append(
+            extract_translation_unit(
+                tu.cursor,
+                repo_root=repo_root,
+                translation_unit=file_path,
+            )
+        )
+
     return result
+
+
+def _source_provenance(repo_root: Path) -> dict[str, Any]:
+    revision = "unversioned"
+    dirty: bool | None = None
+    try:
+        revision_result = subprocess.run(
+            ["git", "-C", str(repo_root), "rev-parse", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+        revision = revision_result.stdout.strip() or revision
+        dirty_result = subprocess.run(
+            ["git", "-C", str(repo_root), "status", "--porcelain"],
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+        dirty = bool(dirty_result.stdout.strip())
+    except (OSError, subprocess.SubprocessError):
+        pass
+    return {
+        "source_revision": revision,
+        "dirty": dirty,
+        "producer": "repo_review.analysis",
+        "producer_version": "0.1.0",
+    }
 
 def build_symbol_inventory(
     repo_root: Path,
@@ -166,6 +190,8 @@ def build_symbol_inventory(
 
     all_results: list[dict[str, Any]] = []
 
+    graph_fragments: list[GraphFragment] = []
+
     skipped_files: list[dict[str, str]] = []
 
     for entry in compile_data:
@@ -216,6 +242,7 @@ def build_symbol_inventory(
             index=index,
             compdb=compdb,
             target_folders=target_folders,
+            graph_fragments=graph_fragments,
         )
 
         if result:
@@ -241,6 +268,14 @@ def build_symbol_inventory(
             ensure_ascii=True,
         )
 
+    graph = KnowledgeGraph.from_fragments(graph_fragments)
+    graph_path = analysis_dir / "code-intelligence.json"
+    write_snapshot(
+        graph,
+        graph_path,
+        provenance=_source_provenance(repo_root),
+    )
+
     return {
         **artifact,
         "status": "success",
@@ -248,4 +283,7 @@ def build_symbol_inventory(
         "skipped_files": skipped_files,
         "results": all_results,
         "written": output_path.exists(),
+        "graph_path": str(graph_path),
+        "graph_nodes": len(graph.nodes),
+        "graph_edges": len(graph.edges),
     }

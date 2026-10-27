@@ -74,6 +74,9 @@ one exact-clone edge, three complexity nodes, and a four-byte global-storage
 estimate.
 `PYTHONPATH=src python scripts/build_code_intelligence_example.py` regenerates
 the checked-in JSON and Mermaid-backed Markdown example deterministically.
+`tests/test_shared_analysis_stage.py` builds a temporary compilation database
+and verifies that the review inventory and provenance-bearing schema 1.1 graph
+snapshot are produced together from the common parse boundary.
 
 | Check | Result | What it proves |
 |---|---|---|

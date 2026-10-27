@@ -2,7 +2,7 @@
 
 - Status: living
 - Created: 2026-10-06
-- Last reviewed: 2026-10-13 for the deferred ZIP-ingestion defect boundary
+- Last reviewed: 2026-10-27 for the shared code-analysis boundary
 - Update trigger: module boundary, interface, data contract, dependency, or
   execution-flow change
 - Source of truth for: current system shape and module responsibilities
@@ -44,7 +44,9 @@ PipelineContext -> structure -> analysis -> naming -> reporting
   |                |            |           |
   |                |            |           `-- report.json (RunResult v2.0)
   |                |            `-- checks read analysis/symbols.json
-  |                `-- cmake_build/compile_commands.json -> symbols.json
+  |                `-- cmake_build/compile_commands.json
+  |                    -> one libclang parse per translation unit
+  |                    -> symbols.json + code-intelligence.json
   `-- stage_results accumulate typed results
   |
   +--> web UI renders stages/checks/cases
@@ -84,23 +86,23 @@ skills/                ignored local lifecycle skill used to maintain records
 workspace/runs/        ignored generated run inputs and evidence
 ```
 
-`code_intelligence` is currently an isolated foundation rather than an active
-pipeline stage. It extracts deterministic graph fragments from clang cursors
-without changing the existing `repo_review` symbol inventory, merges fragments
+`code_intelligence` is now an active analysis dependency. It owns libclang
+configuration, compile-argument sanitization, and translation-unit parsing;
+the review analysis stage passes each parsed cursor to both the compatibility
+inventory walker and graph extractor, then merges deterministic graph fragments
 into an invariant-checked canonical graph, atomically writes provenance-bearing
 snapshots, and derives call/include, explicit-root reachability/call-depth,
 file-module dependency, changed-node impact, variable-access, exact-clone,
 complexity, and type-size memory-estimate projections. D026 selects it as
 the eventual shared owner because review, build, and agent workflows may all consume
-repository intelligence. Compilation-database orchestration and run persistence
-are not yet wired into the application.
+repository intelligence. The resulting `code-intelligence.json` snapshot is
+persisted beside `symbols.json`; independent graph-only orchestration is not yet
+wired into the application.
 
-D027 fixes the next boundary: `code_intelligence` will own compilation-database
-loading and parse every translation unit once. Review inventory/reporting and
-independent graph workflows become consumers of that shared result. During the
-migration, the legacy `repo_review.analysis` parser remains active to preserve
-`symbols.json`; the repository must not claim single-parse execution until its
-compatibility adapter is verified.
+D027 fixes the boundary: `code_intelligence` parses every translation unit once.
+Review inventory and graph extraction currently project the same cursor. The
+legacy inventory cursor walker remains only to preserve `symbols.json`; removing
+it requires a verified graph-to-inventory compatibility adapter.
 
 ## Public interfaces
 
@@ -137,6 +139,7 @@ other accumulated state.
 | `<module>/` | orchestrator ingestion | analysis, structure checks, build | Ignored generated copy |
 | `analysis/cmake_build/compile_commands.json` | CMake source index | libclang compilation database | Ignored generated evidence |
 | `analysis/symbols.json` | symbol inventory | naming checks, manual inspection | Ignored generated evidence |
+| `analysis/code-intelligence.json` | canonical schema 1.1 graph plus provenance | graph views and future review/build/agent consumers | Ignored generated evidence |
 | `report.json` | reporting stage | UI response, agent GET, build repo resolution | Ignored generated evidence |
 | `remediation.json` | remediation service | Report drawer, later decision workflow | Ignored generated evidence |
 | `remediation-calls.jsonl` | remediation service | Call diagnosis, retry audit, and turn replay | Ignored append-only generated evidence |

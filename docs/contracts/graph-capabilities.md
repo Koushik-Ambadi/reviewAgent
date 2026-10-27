@@ -32,7 +32,7 @@
 
 | ID | Graph / aliases | Required evidence | Current coverage | Status | Next gate |
 |---|---|---|---|---|---|
-| GR-001 | Unified software knowledge graph / AI knowledge graph | Stable nodes and edges, source/configuration/tool provenance, unresolved relations | Canonical graph, AST fragments, deterministic merge, validation, snapshots | IMPLEMENTED | Connect real compilation database and run persistence |
+| GR-001 | Unified software knowledge graph / AI knowledge graph | Stable nodes and edges, source/configuration/tool provenance, unresolved relations | Compilation-database parse, canonical graph, deterministic merge/validation, and run-local snapshot persistence | IMPLEMENTED | Add graph-only orchestration and configuration coverage summary |
 | GR-002 | Call graph | Function identities and direct/indirect call sites | Direct calls and named unresolved calls; indirect target sets absent | IMPLEMENTED | Add indirect-call evidence and configuration coverage |
 | GR-003 | Reachability / dead-code graph | Call graph plus explicit roots/exported entry points and configuration | Explicit-root projection classifies reachable/unreachable functions and exposes unresolved boundaries | IMPLEMENTED | Add project entry-point/configuration discovery |
 | GR-004 | Call-depth graph | Call graph, roots, recursion/SCC handling | Explicit-root projection condenses recursive SCCs and reports bounded depth | IMPLEMENTED | Add project entry-point/configuration discovery |

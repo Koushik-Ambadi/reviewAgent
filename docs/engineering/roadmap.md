@@ -119,13 +119,15 @@ changes. Do not maintain a second project-wide gap inventory here.
 
 - Priority: P2
 - Current state (2026-10-27): active. D026 defines the unified graph contract,
-  and the first isolated AST slice now emits stable file/symbol nodes plus
+  and the shared AST slice now emits stable file/symbol nodes plus
   containment, declaration/definition, include, and call relations. Deterministic
   fragment merge, invariant validation, provenance-required atomic snapshots,
   and call/include, explicit-root reachability/depth, file-module dependency,
   changed-node impact, variable-access, exact-token clone, AST-complexity, and
-  type-size memory-estimate views are implemented. The package is not yet
-  connected to the compilation database or run pipeline.
+  type-size memory-estimate views are implemented. The review analysis pipeline
+  now emits `code-intelligence.json` and `symbols.json` from one libclang parse;
+  graph-only application orchestration and the inventory compatibility adapter
+  remain pending.
 - Coverage authority: the [graph capability matrix](../contracts/graph-capabilities.md)
   records all 21 discussed graph types and distinguishes currently extractable
   facts from engine, project-model, and external-evidence dependencies.

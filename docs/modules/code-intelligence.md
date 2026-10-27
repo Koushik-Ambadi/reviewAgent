@@ -27,7 +27,7 @@ facts and extracts one graph fragment from a clang translation-unit cursor. It
 is an additive foundation: the existing `repo_review` symbol inventory remains
 unchanged and continues to support naming checks and report inventory.
 
-Current maturity is an isolated extraction and graph-foundation slice. It emits
+Current maturity is a shared analysis-stage and graph-foundation slice. It emits
 file, function, type, global/scoped-variable, field, enum-constant, and macro
 nodes; physical/scoped containment plus declaration/definition, include, call,
 and conservative variable-access edges; stable USR-
@@ -37,8 +37,9 @@ snapshots are written atomically with required replay provenance, and call,
 include, explicit-root reachability/call-depth, file-module dependency, and
 changed-node impact projections are available. Exact-token clone, versioned AST
 complexity, and clearly labeled type-size memory estimates are also available.
-The package does not yet parse
-compilation databases itself or write application run artifacts.
+The package owns the compilation-database parse primitive and the review stage
+writes `analysis/code-intelligence.json` beside `symbols.json`. A standalone
+graph-only application entry point remains pending.
 
 ## Flow and invariants
 

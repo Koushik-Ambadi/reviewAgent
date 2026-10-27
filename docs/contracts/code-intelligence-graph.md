@@ -92,6 +92,10 @@ requires `source_revision`, `dirty`, `producer`, and `producer_version`, writes
 deterministic JSON bytes to a sibling temporary file, flushes them, and then
 atomically replaces the target.
 
+The review analysis stage writes the snapshot to
+`analysis/code-intelligence.json` from the same parsed translation-unit cursors
+used for the compatibility `symbols.json` inventory.
+
 Call, include, reachability/depth, file-module dependency, changed-node impact,
 variable access, exact-token clone, complexity, and memory-estimate views derive
 from the canonical graph. They are runtime projections and are not written as
