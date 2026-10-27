@@ -17,6 +17,14 @@ definitions in [`evidence-index.md`](evidence-index.md).
 Use `git show <hash>` to inspect an entire event. Statistics include generated
 and third-party artifacts and must not be interpreted as effort or quality.
 
+## 2026-10-27 — First derived code-graph views
+
+- Added deterministic reachability and recursive-SCC-aware call-depth views.
+- Added file-as-module dependency aggregation backed by call/include evidence.
+- Added changed-node reverse impact traversal over calls, includes, and
+  containment, keeping it explicitly separate from test selection or proof of
+  runtime impact.
+
 ## 2026-05-14 — Establish repository and AST foundations
 
 ### `bddb1a0` — Initial repository reviewer

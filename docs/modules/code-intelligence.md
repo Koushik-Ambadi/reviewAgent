@@ -30,9 +30,10 @@ function, struct, enum, typedef, global-variable, and macro nodes; physical
 containment plus declaration/definition, include, and call edges; stable USR-
 first identity; repository-relative locations; and explicit external/unresolved
 relations. Fragments merge into one invariant-checked graph, canonical
-snapshots are written atomically with required replay provenance, and call and
-include projections are available. The package does not yet parse compilation
-databases itself or write application run artifacts.
+snapshots are written atomically with required replay provenance, and call,
+include, explicit-root reachability/call-depth, file-module dependency, and
+changed-node impact projections are available. The package does not yet parse
+compilation databases itself or write application run artifacts.
 
 ## Flow and invariants
 
@@ -43,7 +44,7 @@ clang translation-unit cursor
   -> source-occurrence edges with resolution state
   -> deterministic GraphFragment ordering
   -> stable-identity merge and invariant validation
-  -> canonical snapshot or call/include projection
+  -> canonical snapshot or deterministic graph projection
 ```
 
 - Repository-owned declarations outside the configured repository root are
@@ -67,7 +68,9 @@ clang translation-unit cursor
 The fake-cursor unit fixtures prove extraction semantics without requiring a
 machine-specific libclang installation. Pure graph fixtures prove deterministic
 merge, definition preference, conflict/dangling-edge rejection, projections,
-required provenance, and repeatable atomic snapshot bytes. A real representative
+required provenance, repeatable atomic snapshot bytes, recursive call-depth
+handling, reachability, file-module dependencies, and reverse impact traversal.
+A real representative
 C fixture and compilation-database runner remain the next integration gate.
 Indirect calls, conditional-compilation coverage, configuration identity, and
 cross-translation-unit semantic reconciliation beyond stable-ID merge remain

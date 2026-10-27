@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 from code_intelligence.graph import KnowledgeGraph
@@ -18,6 +18,7 @@ class GraphProjection:
     kind: str
     nodes: tuple[GraphNode, ...]
     edges: tuple[GraphEdge, ...]
+    metadata: dict[str, Any] = field(default_factory=dict)
 
     @property
     def unresolved_edges(self) -> int:
@@ -35,6 +36,7 @@ class GraphProjection:
                 "edges": len(self.edges),
                 "unresolved_edges": self.unresolved_edges,
             },
+            "metadata": self.metadata,
         }
 
 

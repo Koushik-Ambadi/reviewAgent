@@ -58,6 +58,12 @@ responsive card layout remains a focused visual check at normal browser zoom.
 
 ### Code-intelligence AST verification — 2026-10-27
 
+The derived-view fixture in `tests/test_code_intelligence_derived_views.py`
+verifies explicit-root reachability, unreachable classification,
+recursive-SCC call depth, file-as-module dependency aggregation, reverse
+direct/transitive impact, and invalid input rejection. It is a pure graph test
+and does not require libclang.
+
 | Check | Result | What it proves |
 |---|---|---|
 | `venv313` direct invocation of the three functions in `tests/test_code_intelligence_ast.py` with temporary roots | Passed | USR-first and fallback identities are deterministic; file/function/global/macro nodes and contains/declares/defines/includes/calls edges are emitted; unresolved calls remain explicit; every edge endpoint exists; external declarations are excluded |

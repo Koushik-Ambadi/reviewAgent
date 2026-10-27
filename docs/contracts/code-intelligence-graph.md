@@ -12,8 +12,8 @@
 ## Canonical shape
 
 The graph authority is one deterministic node/edge collection. Call, include,
-module, reachability, and future views are projections; they are not separate
-authoritative stores.
+module, reachability, call-depth, impact, and future views are projections; they
+are not separate authoritative stores.
 
 ```json
 {

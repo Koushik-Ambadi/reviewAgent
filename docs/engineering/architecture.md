@@ -88,8 +88,9 @@ workspace/runs/        ignored generated run inputs and evidence
 pipeline stage. It extracts deterministic graph fragments from clang cursors
 without changing the existing `repo_review` symbol inventory, merges fragments
 into an invariant-checked canonical graph, atomically writes provenance-bearing
-snapshots, and derives call/include projections. D026 selects it as the eventual
-shared owner because review, build, and agent workflows may all consume
+snapshots, and derives call/include, explicit-root reachability/call-depth,
+file-module dependency, and changed-node impact projections. D026 selects it as
+the eventual shared owner because review, build, and agent workflows may all consume
 repository intelligence. Compilation-database orchestration and run persistence
 are not yet wired into the application.
 

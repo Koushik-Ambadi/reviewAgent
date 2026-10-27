@@ -34,14 +34,14 @@
 |---|---|---|---|---|---|
 | GR-001 | Unified software knowledge graph / AI knowledge graph | Stable nodes and edges, source/configuration/tool provenance, unresolved relations | Canonical graph, AST fragments, deterministic merge, validation, snapshots | IMPLEMENTED | Connect real compilation database and run persistence |
 | GR-002 | Call graph | Function identities and direct/indirect call sites | Direct calls and named unresolved calls; indirect target sets absent | IMPLEMENTED | Add indirect-call evidence and configuration coverage |
-| GR-003 | Reachability / dead-code graph | Call graph plus explicit roots/exported entry points and configuration | Call graph available; roots absent | DERIVABLE | Accept roots and classify reachable, unreachable, and unresolved |
-| GR-004 | Call-depth graph | Call graph, roots, recursion/SCC handling | Call graph available | DERIVABLE | Condense cycles and compute bounded depth per root |
+| GR-003 | Reachability / dead-code graph | Call graph plus explicit roots/exported entry points and configuration | Explicit-root projection classifies reachable/unreachable functions and exposes unresolved boundaries | IMPLEMENTED | Add project entry-point/configuration discovery |
+| GR-004 | Call-depth graph | Call graph, roots, recursion/SCC handling | Explicit-root projection condenses recursive SCCs and reports bounded depth | IMPLEMENTED | Add project entry-point/configuration discovery |
 | GR-005 | Control-flow graph (CFG) | Per-function basic blocks, branch/loop/switch/return edges, exceptional/unreachable exits | Function boundaries only | ENGINE_REQUIRED | Evaluate Clang CFG/LibTooling or a compatible CPG layer on embedded C |
 | GR-006 | Data-flow / lineage graph | Definitions, uses, assignments, aliases, pointer targets, interprocedural flow, configuration | No def-use or alias model | ENGINE_REQUIRED | Build on validated CFG plus alias/data-flow engine |
 | GR-007 | Variable-access / data-access graph | Variable identities, function scope, read/write/read-write/reference occurrences | Global nodes only; no access edges | AST_EXPANSION | Add parameter/local/field identities and conservative access edges |
 | GR-008 | Include graph | Source file, include spelling, resolved target, configuration | Resolved, external, and unresolved include edges | IMPLEMENTED | Add translation-unit/configuration coverage summaries |
-| GR-009 | Module-dependency / architecture graph | File ownership, file-to-symbol containment, include/call/data dependencies, module grouping policy | File containment, include, and calls available; file-as-module policy recorded in chat | DERIVABLE | Produce file-module view first; add explicit grouping policy later |
-| GR-010 | Dependency-impact / change-impact graph | Changed node set plus reverse/transitive typed dependencies and unresolved boundary | Required call/include/containment facts available for initial slice | DERIVABLE | Implement typed reverse traversal with direct/transitive labels |
+| GR-009 | Module-dependency / architecture graph | File ownership, file-to-symbol containment, include/call/data dependencies, module grouping policy | File-as-module projection groups call/include evidence into dependency edges | IMPLEMENTED | Add explicit module grouping and data dependencies |
+| GR-010 | Dependency-impact / change-impact graph | Changed node set plus reverse/transitive typed dependencies and unresolved boundary | Reverse traversal reports direct/transitive impact over calls, includes, and containment | IMPLEMENTED | Add changed-line-to-node mapping and unresolved-boundary reporting |
 | GR-011 | State-machine graph | State identities, transition guards/actions, initialization, generated-model mapping | Enums alone cannot prove states or transitions | PROJECT_MODEL_REQUIRED | Import annotations/configuration or evaluated Stateflow/generated-code mapping |
 | GR-012 | Scheduler / task graph | Task identities, periods, priorities, activation/call relationships, RTOS configuration | Function/call facts only | PROJECT_MODEL_REQUIRED | Define task configuration/annotation contract and import it |
 | GR-013 | Interrupt-interaction graph | ISR identities, priorities, shared data, masking/locking, task handoff | No ISR or concurrency semantics | PROJECT_MODEL_REQUIRED | Import target/compiler attributes and platform interrupt configuration |
@@ -56,9 +56,11 @@
 
 ## Extraction conclusions
 
-The existing graph contains all source facts needed to implement the first
-reachability, call-depth, file-module dependency, and dependency-impact views.
-Those views may proceed without reparsing source.
+The existing graph contains all source facts needed for the first reachability,
+call-depth, file-module dependency, and dependency-impact views. Those views
+are now implemented without reparsing source; their remaining gates concern
+project configuration, richer grouping, changed-line mapping, and unresolved
+boundaries rather than another AST walk.
 
 The common AST layer must next add parameter, local-variable, field, and enum-
 constant identities; conservative variable references/accesses; type/size

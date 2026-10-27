@@ -21,6 +21,7 @@ class EdgeKind(StrEnum):
     INCLUDES = "includes"
     DECLARES = "declares"
     DEFINES = "defines"
+    DEPENDS_ON = "depends_on"
 
 
 class RelationResolution(StrEnum):
