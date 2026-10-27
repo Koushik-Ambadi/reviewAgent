@@ -17,6 +17,8 @@
 - Downstream: graph merger, snapshot persistence, deterministic graph views,
   later review/build/agent consumers
 - Verification: `tests/test_code_intelligence_ast.py`
+- Inspectable example: [generated graphs](../examples/code-intelligence-graphs.md)
+  and the adjacent canonical/projection JSON
 
 ## Responsibility and current maturity
 
@@ -25,14 +27,17 @@ facts and extracts one graph fragment from a clang translation-unit cursor. It
 is an additive foundation: the existing `repo_review` symbol inventory remains
 unchanged and continues to support naming checks and report inventory.
 
-Current maturity is an isolated extraction and graph-foundation slice. It emits file,
-function, struct, enum, typedef, global-variable, and macro nodes; physical
-containment plus declaration/definition, include, and call edges; stable USR-
+Current maturity is an isolated extraction and graph-foundation slice. It emits
+file, function, type, global/scoped-variable, field, enum-constant, and macro
+nodes; physical/scoped containment plus declaration/definition, include, call,
+and conservative variable-access edges; stable USR-
 first identity; repository-relative locations; and explicit external/unresolved
 relations. Fragments merge into one invariant-checked graph, canonical
 snapshots are written atomically with required replay provenance, and call,
 include, explicit-root reachability/call-depth, file-module dependency, and
-changed-node impact projections are available. The package does not yet parse
+changed-node impact projections are available. Exact-token clone, versioned AST
+complexity, and clearly labeled type-size memory estimates are also available.
+The package does not yet parse
 compilation databases itself or write application run artifacts.
 
 ## Flow and invariants
@@ -62,6 +67,9 @@ clang translation-unit cursor
   closed rather than being silently overwritten.
 - Snapshot persistence requires source revision, dirty state, producer, and
   producer version and uses same-directory atomic replacement.
+- Function metrics and clone fingerprints are computed during the same cursor
+  traversal. Memory totals are type-size estimates only; exact stack, section,
+  address, and heap claims require external build/runtime evidence.
 
 ## Known limits and next boundary
 

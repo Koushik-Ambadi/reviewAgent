@@ -24,6 +24,9 @@ and third-party artifacts and must not be interpreted as effort or quality.
 - Added changed-node reverse impact traversal over calls, includes, and
   containment, keeping it explicitly separate from test selection or proof of
   runtime impact.
+- Extended the shared AST facts with scoped variables, conservative access,
+  type-size estimates, versioned complexity, and exact body-token fingerprints;
+  added their four initial projections and verified a real libclang fixture.
 
 ## 2026-05-14 — Establish repository and AST foundations
 

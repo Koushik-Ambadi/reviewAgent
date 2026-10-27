@@ -64,6 +64,16 @@ recursive-SCC call depth, file-as-module dependency aggregation, reverse
 direct/transitive impact, and invalid input rejection. It is a pure graph test
 and does not require libclang.
 
+The expanded AST fixture verifies scoped identities, type sizes, conservative
+read/write classification, function metrics, and exact body-token fingerprints.
+`tests/test_code_intelligence_analysis_views.py` verifies variable-access,
+exact-clone, complexity, and explicitly non-authoritative memory estimates. A
+real parse of `tests/fixtures/code_intelligence/sample.c` with the installed
+libclang produced 12 nodes, 37 edges, 17 access occurrences, one exact-clone
+edge, three complexity nodes, and a four-byte global-storage estimate.
+`PYTHONPATH=src python scripts/build_code_intelligence_example.py` regenerates
+the checked-in JSON and Mermaid-backed Markdown example deterministically.
+
 | Check | Result | What it proves |
 |---|---|---|
 | `venv313` direct invocation of the three functions in `tests/test_code_intelligence_ast.py` with temporary roots | Passed | USR-first and fallback identities are deterministic; file/function/global/macro nodes and contains/declares/defines/includes/calls edges are emitted; unresolved calls remain explicit; every edge endpoint exists; external declarations are excluded |

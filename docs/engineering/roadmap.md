@@ -123,7 +123,8 @@ changes. Do not maintain a second project-wide gap inventory here.
   containment, declaration/definition, include, and call relations. Deterministic
   fragment merge, invariant validation, provenance-required atomic snapshots,
   and call/include, explicit-root reachability/depth, file-module dependency,
-  and changed-node impact views are implemented. The package is not yet
+  changed-node impact, variable-access, exact-token clone, AST-complexity, and
+  type-size memory-estimate views are implemented. The package is not yet
   connected to the compilation database or run pipeline.
 - Coverage authority: the [graph capability matrix](../contracts/graph-capabilities.md)
   records all 21 discussed graph types and distinguishes currently extractable

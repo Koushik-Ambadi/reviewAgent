@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -26,6 +27,32 @@ _SYMBOL_KINDS = {
     "ENUM_DECL": NodeKind.ENUM,
     "TYPEDEF_DECL": NodeKind.TYPEDEF,
     "MACRO_DEFINITION": NodeKind.MACRO,
+    "PARM_DECL": NodeKind.PARAMETER,
+    "FIELD_DECL": NodeKind.FIELD,
+    "ENUM_CONSTANT_DECL": NodeKind.ENUM_CONSTANT,
+}
+
+_DECISION_KINDS = {
+    "IF_STMT",
+    "FOR_STMT",
+    "WHILE_STMT",
+    "DO_STMT",
+    "CASE_STMT",
+    "CONDITIONAL_OPERATOR",
+}
+
+_ASSIGNMENT_OPERATORS = {
+    "=",
+    "+=",
+    "-=",
+    "*=",
+    "/=",
+    "%=",
+    "<<=",
+    ">>=",
+    "&=",
+    "|=",
+    "^=",
 }
 
 
@@ -38,6 +65,59 @@ def _children(cursor: Any) -> Iterable[Any]:
         return cursor.get_children()
     except AttributeError:
         return ()
+
+
+def _tokens(cursor: Any) -> tuple[str, ...]:
+    try:
+        return tuple(str(token.spelling) for token in cursor.get_tokens())
+    except (AttributeError, RuntimeError):
+        return ()
+
+
+def _type_attributes(cursor: Any) -> dict[str, Any]:
+    cursor_type = getattr(cursor, "type", None)
+    attributes: dict[str, Any] = {}
+    spelling = getattr(cursor_type, "spelling", None)
+    if spelling:
+        attributes["type"] = str(spelling)
+    try:
+        size = int(cursor_type.get_size())
+    except (AttributeError, RuntimeError, TypeError, ValueError):
+        size = -1
+    if size >= 0:
+        attributes["size_bytes"] = size
+    return attributes
+
+
+def _function_metrics(cursor: Any) -> dict[str, Any]:
+    decisions = 0
+    statements = 0
+    pending = list(_children(cursor))
+    while pending:
+        child = pending.pop()
+        kind_name = _kind_name(child)
+        if kind_name in _DECISION_KINDS:
+            decisions += 1
+        if kind_name.endswith("_STMT") and kind_name != "COMPOUND_STMT":
+            statements += 1
+        if kind_name == "BINARY_OPERATOR":
+            decisions += sum(token in {"&&", "||"} for token in _tokens(child))
+        pending.extend(_children(child))
+    tokens = _tokens(cursor)
+    attributes: dict[str, Any] = {
+        "complexity_method": "ast_cyclomatic_v1",
+        "cyclomatic_complexity": 1 + decisions,
+        "statement_count": statements,
+    }
+    if tokens:
+        body_tokens = tokens[tokens.index("{") :] if "{" in tokens else tokens
+        normalized = "\x1f".join(body_tokens)
+        attributes["token_fingerprint_method"] = "clang_tokens_sha256_v1"
+        attributes["token_fingerprint"] = hashlib.sha256(
+            normalized.encode("utf-8")
+        ).hexdigest()
+        attributes["token_count"] = len(body_tokens)
+    return attributes
 
 
 def _path_from_file(file_value: Any) -> Path | None:
@@ -114,7 +194,13 @@ class _FragmentBuilder:
             )
         )
 
-    def symbol_node(self, cursor: Any, kind: NodeKind) -> GraphNode | None:
+    def symbol_node(
+        self,
+        cursor: Any,
+        kind: NodeKind,
+        *,
+        scope: str | None = None,
+    ) -> GraphNode | None:
         name = str(getattr(cursor, "spelling", "") or "")
         path_value = _cursor_path(cursor)
         if not name or path_value is None:
@@ -128,14 +214,21 @@ class _FragmentBuilder:
             )
             if result_type:
                 attributes["return_type"] = str(result_type)
-        elif kind == NodeKind.GLOBAL_VARIABLE:
-            type_spelling = getattr(getattr(cursor, "type", None), "spelling", None)
-            if type_spelling:
-                attributes["type"] = str(type_spelling)
+            if _is_definition(cursor):
+                attributes.update(_function_metrics(cursor))
+        elif kind in {
+            NodeKind.GLOBAL_VARIABLE,
+            NodeKind.PARAMETER,
+            NodeKind.LOCAL_VARIABLE,
+            NodeKind.FIELD,
+        }:
+            attributes.update(_type_attributes(cursor))
+        if scope:
+            attributes["scope"] = scope
 
         return self.add_node(
             GraphNode(
-                id=node_id(kind, name=name, path=path, usr=usr),
+                id=node_id(kind, name=name, path=path, usr=usr, scope=scope),
                 kind=kind,
                 name=name,
                 location=_location(cursor, path),
@@ -176,6 +269,45 @@ class _FragmentBuilder:
             RelationResolution.UNRESOLVED,
         )
 
+    def reference_variable(
+        self,
+        reference_cursor: Any,
+        *,
+        scope: str | None,
+    ) -> GraphNode | None:
+        referenced = getattr(reference_cursor, "referenced", None)
+        if referenced is None:
+            return None
+        kind_name = _kind_name(referenced)
+        kind = {
+            "PARM_DECL": NodeKind.PARAMETER,
+            "FIELD_DECL": NodeKind.FIELD,
+            "ENUM_CONSTANT_DECL": NodeKind.ENUM_CONSTANT,
+        }.get(kind_name)
+        if kind_name == "VAR_DECL":
+            parent_kind = _kind_name(getattr(referenced, "semantic_parent", None))
+            kind = (
+                NodeKind.GLOBAL_VARIABLE
+                if parent_kind == "TRANSLATION_UNIT"
+                else NodeKind.LOCAL_VARIABLE
+            )
+        if kind is None:
+            return None
+        reference_scope = scope if kind in {
+            NodeKind.PARAMETER,
+            NodeKind.LOCAL_VARIABLE,
+        } else None
+        semantic_parent = getattr(referenced, "semantic_parent", None)
+        parent_kind = _SYMBOL_KINDS.get(_kind_name(semantic_parent))
+        if kind in {NodeKind.FIELD, NodeKind.ENUM_CONSTANT} and parent_kind in {
+            NodeKind.STRUCT,
+            NodeKind.ENUM,
+        }:
+            parent_node = self.symbol_node(semantic_parent, parent_kind)
+            if parent_node is not None:
+                reference_scope = parent_node.id
+        return self.symbol_node(referenced, kind, scope=reference_scope)
+
     def finish(self) -> GraphFragment:
         self.fragment.nodes = sorted(
             self._nodes.values(), key=lambda node: (node.kind.value, node.id)
@@ -184,6 +316,26 @@ class _FragmentBuilder:
             self._edges.values(), key=lambda edge: (edge.kind.value, edge.id)
         )
         return self.fragment
+
+
+def _access_kinds(parent: Any | None, child_index: int | None) -> tuple[EdgeKind, ...]:
+    parent_kind = _kind_name(parent)
+    tokens = _tokens(parent) if parent is not None else ()
+    if parent_kind == "BINARY_OPERATOR" and any(
+        token in _ASSIGNMENT_OPERATORS for token in tokens
+    ):
+        if child_index == 0:
+            compound = any(
+                token != "=" for token in tokens if token in _ASSIGNMENT_OPERATORS
+            )
+            return (EdgeKind.READS, EdgeKind.WRITES) if compound else (EdgeKind.WRITES,)
+        return (EdgeKind.READS,)
+    if parent_kind == "UNARY_OPERATOR":
+        if any(token in {"++", "--"} for token in tokens):
+            return (EdgeKind.READS, EdgeKind.WRITES)
+        if "&" in tokens:
+            return (EdgeKind.REFERENCES,)
+    return (EdgeKind.READS,)
 
 
 def extract_translation_unit(
@@ -197,7 +349,13 @@ def extract_translation_unit(
     builder = _FragmentBuilder(repo_root, translation_unit)
     builder.file_node(translation_unit)
 
-    def visit(node: Any, current_function_id: str | None = None) -> None:
+    def visit(
+        node: Any,
+        current_function_id: str | None = None,
+        current_owner_id: str | None = None,
+        parent: Any | None = None,
+        child_index: int | None = None,
+    ) -> None:
         kind_name = _kind_name(node)
         cursor_path = _cursor_path(node)
         if cursor_path is not None:
@@ -210,13 +368,27 @@ def extract_translation_unit(
         symbol_kind = _SYMBOL_KINDS.get(kind_name)
         if kind_name == "VAR_DECL":
             parent_kind = _kind_name(getattr(node, "semantic_parent", None))
-            if parent_kind == "TRANSLATION_UNIT":
-                symbol_kind = NodeKind.GLOBAL_VARIABLE
+            symbol_kind = (
+                NodeKind.GLOBAL_VARIABLE
+                if parent_kind == "TRANSLATION_UNIT"
+                else NodeKind.LOCAL_VARIABLE
+            )
 
         next_function_id = current_function_id
+        next_owner_id = current_owner_id
         if symbol_kind is not None:
-            symbol = builder.symbol_node(node, symbol_kind)
-            if symbol is not None and physical_file is not None:
+            nested = symbol_kind in {
+                NodeKind.PARAMETER,
+                NodeKind.LOCAL_VARIABLE,
+                NodeKind.FIELD,
+                NodeKind.ENUM_CONSTANT,
+            }
+            owner_id = current_function_id if symbol_kind in {
+                NodeKind.PARAMETER,
+                NodeKind.LOCAL_VARIABLE,
+            } else current_owner_id
+            symbol = builder.symbol_node(node, symbol_kind, scope=owner_id)
+            if symbol is not None and physical_file is not None and not nested:
                 relation_kind = (
                     EdgeKind.DEFINES if symbol.is_definition else EdgeKind.DECLARES
                 )
@@ -235,8 +407,55 @@ def extract_translation_unit(
                             location=symbol.location,
                         )
                     )
+            if symbol is not None and owner_id is not None and nested:
+                relation_kind = {
+                    NodeKind.PARAMETER: EdgeKind.PARAMETER_OF,
+                    NodeKind.FIELD: EdgeKind.FIELD_OF,
+                    NodeKind.ENUM_CONSTANT: EdgeKind.MEMBER_OF,
+                }.get(symbol_kind, EdgeKind.CONTAINS)
+                builder.add_edge(
+                    GraphEdge(
+                        id=edge_id(
+                            relation_kind,
+                            source=owner_id,
+                            target=symbol.id,
+                        ),
+                        kind=relation_kind,
+                        source=owner_id,
+                        target=symbol.id,
+                        resolution=RelationResolution.COMPILER_DERIVED,
+                        location=symbol.location,
+                    )
+                )
+                if (
+                    symbol_kind == NodeKind.LOCAL_VARIABLE
+                    and current_function_id is not None
+                    and any(True for _ in _children(node))
+                ):
+                    builder.add_edge(
+                        GraphEdge(
+                            id=edge_id(
+                                EdgeKind.WRITES,
+                                source=current_function_id,
+                                target=symbol.id,
+                                discriminator=(
+                                    f"initializer:{symbol.location.path}:"
+                                    f"{symbol.location.line}:{symbol.location.column}"
+                                ),
+                            ),
+                            kind=EdgeKind.WRITES,
+                            source=current_function_id,
+                            target=symbol.id,
+                            resolution=RelationResolution.COMPILER_DERIVED,
+                            location=symbol.location,
+                            attributes={"context": "initializer"},
+                        )
+                    )
             if symbol_kind == NodeKind.FUNCTION and symbol is not None:
                 next_function_id = symbol.id
+                next_owner_id = symbol.id
+            elif symbol_kind in {NodeKind.STRUCT, NodeKind.ENUM} and symbol is not None:
+                next_owner_id = symbol.id
 
         if kind_name == "INCLUSION_DIRECTIVE" and physical_file is not None:
             included = None
@@ -304,8 +523,35 @@ def extract_translation_unit(
                     )
                 )
 
-        for child in _children(node):
-            visit(child, next_function_id)
+        if kind_name in {"DECL_REF_EXPR", "MEMBER_REF_EXPR"} and current_function_id:
+            target = builder.reference_variable(node, scope=current_function_id)
+            if target is not None:
+                location_path = builder.fragment.translation_unit
+                if cursor_path is not None:
+                    location_path, _ = normalized_path(cursor_path, builder.repo_root)
+                location = _location(node, location_path)
+                for access_kind in _access_kinds(parent, child_index):
+                    builder.add_edge(
+                        GraphEdge(
+                            id=edge_id(
+                                access_kind,
+                                source=current_function_id,
+                                target=target.id,
+                                discriminator=(
+                                    f"{location.path}:{location.line}:"
+                                    f"{location.column}"
+                                ),
+                            ),
+                            kind=access_kind,
+                            source=current_function_id,
+                            target=target.id,
+                            resolution=RelationResolution.COMPILER_DERIVED,
+                            location=location,
+                        )
+                    )
+
+        for index, child in enumerate(_children(node)):
+            visit(child, next_function_id, next_owner_id, node, index)
 
     visit(cursor)
     return builder.finish()

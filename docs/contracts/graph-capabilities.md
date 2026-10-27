@@ -38,7 +38,7 @@
 | GR-004 | Call-depth graph | Call graph, roots, recursion/SCC handling | Explicit-root projection condenses recursive SCCs and reports bounded depth | IMPLEMENTED | Add project entry-point/configuration discovery |
 | GR-005 | Control-flow graph (CFG) | Per-function basic blocks, branch/loop/switch/return edges, exceptional/unreachable exits | Function boundaries only | ENGINE_REQUIRED | Evaluate Clang CFG/LibTooling or a compatible CPG layer on embedded C |
 | GR-006 | Data-flow / lineage graph | Definitions, uses, assignments, aliases, pointer targets, interprocedural flow, configuration | No def-use or alias model | ENGINE_REQUIRED | Build on validated CFG plus alias/data-flow engine |
-| GR-007 | Variable-access / data-access graph | Variable identities, function scope, read/write/read-write/reference occurrences | Global nodes only; no access edges | AST_EXPANSION | Add parameter/local/field identities and conservative access edges |
+| GR-007 | Variable-access / data-access graph | Variable identities, function scope, read/write/read-write/reference occurrences | Parameters, locals, fields, globals, and conservative AST-context access edges | IMPLEMENTED | Validate pointer/member and macro-heavy access classification on project fixtures |
 | GR-008 | Include graph | Source file, include spelling, resolved target, configuration | Resolved, external, and unresolved include edges | IMPLEMENTED | Add translation-unit/configuration coverage summaries |
 | GR-009 | Module-dependency / architecture graph | File ownership, file-to-symbol containment, include/call/data dependencies, module grouping policy | File-as-module projection groups call/include evidence into dependency edges | IMPLEMENTED | Add explicit module grouping and data dependencies |
 | GR-010 | Dependency-impact / change-impact graph | Changed node set plus reverse/transitive typed dependencies and unresolved boundary | Reverse traversal reports direct/transitive impact over calls, includes, and containment | IMPLEMENTED | Add changed-line-to-node mapping and unresolved-boundary reporting |
@@ -47,11 +47,11 @@
 | GR-013 | Interrupt-interaction graph | ISR identities, priorities, shared data, masking/locking, task handoff | No ISR or concurrency semantics | PROJECT_MODEL_REQUIRED | Import target/compiler attributes and platform interrupt configuration |
 | GR-014 | Requirement-traceability graph | Versioned requirements and explicit implementation links | No requirement source or link contract | EXTERNAL_EVIDENCE_REQUIRED | Define/import ReqIF or project mapping with revision provenance |
 | GR-015 | Test-coverage graph | Test identities, test-to-code mapping, execution and coverage artifacts for exact revision/configuration | No test execution or coverage import | EXTERNAL_EVIDENCE_REQUIRED | Define coverage/test-result adapters and identity contract |
-| GR-016 | Clone / duplicate-code graph | Function boundaries, normalized tokens/AST fingerprints, similarity method and threshold | Function boundaries available; fingerprints absent | AST_EXPANSION | Retain deterministic function token fingerprints, then start with exact clones |
-| GR-017 | Complexity graph | Function boundaries and branch/decision facts; metric definition/version | Function boundaries available; metrics absent | AST_EXPANSION | Add versioned AST cyclomatic approximation and statement counts |
-| GR-018 | Stack-usage graph | Call graph plus compiler stack-usage artifacts or ABI-aware local/frame calculation | Call graph available; exact frame sizes absent | EXTERNAL_EVIDENCE_REQUIRED | Import compiler `.su`/map evidence; allow clearly labeled local-storage estimate |
+| GR-016 | Clone / duplicate-code graph | Function boundaries, normalized tokens/AST fingerprints, similarity method and threshold | Exact body-token fingerprints and exact-clone groups | IMPLEMENTED | Evaluate normalized and near-clone method separately |
+| GR-017 | Complexity graph | Function boundaries and branch/decision facts; metric definition/version | Versioned AST cyclomatic approximation and statement count | IMPLEMENTED | Compare representative functions against CFG-backed reference metrics |
+| GR-018 | Stack-usage graph | Call graph plus compiler stack-usage artifacts or ABI-aware local/frame calculation | Local/parameter type-size estimate available; exact frame sizes absent | EXTERNAL_EVIDENCE_REQUIRED | Import compiler `.su`/map evidence; keep estimates distinctly labeled |
 | GR-019 | Execution-time / timing graph | Measured or bounded timing by task/function/configuration/hardware | No runtime or WCET evidence | EXTERNAL_EVIDENCE_REQUIRED | Import SIL/HIL/profiler/WCET evidence with clock/configuration identity |
-| GR-020 | Memory-usage graph | Symbol sizes/sections/addresses plus linker map and runtime heap evidence | Global identities available; sizes/sections absent | AST_EXPANSION | Add type-size estimates, then import linker map for authoritative placement |
+| GR-020 | Memory-usage graph | Symbol sizes/sections/addresses plus linker map and runtime heap evidence | Compiler type-size and aggregate storage estimates available; sections/addresses/heap absent | EXTERNAL_EVIDENCE_REQUIRED | Import linker map and runtime evidence for authoritative placement/usage |
 | GR-021 | Failure-propagation graph | Failure modes, propagation rules, control/data dependencies, mitigations and safety assumptions | Call/include facts only; no failure semantics | EXTERNAL_EVIDENCE_REQUIRED | Import FMEA/safety model and join it to validated data/control flow |
 
 ## Extraction conclusions
@@ -62,12 +62,12 @@ are now implemented without reparsing source; their remaining gates concern
 project configuration, richer grouping, changed-line mapping, and unresolved
 boundaries rather than another AST walk.
 
-The common AST layer must next add parameter, local-variable, field, and enum-
+The common AST layer now emits parameter, local-variable, field, and enum-
 constant identities; conservative variable references/accesses; type/size
-metadata; versioned per-function complexity facts; and deterministic token
-fingerprints. These facts support GR-007, GR-016, GR-017, and the estimate-only
-part of GR-020. They must be extracted in the same translation-unit traversal
-used by review and graph generation.
+metadata; versioned per-function complexity facts; and deterministic exact body-
+token fingerprints. These facts implement initial GR-007, GR-016, and GR-017
+views and the estimate-only portion of GR-018/GR-020 in the same translation-
+unit traversal.
 
 CFG, interprocedural data flow, aliasing, requirements, tests, scheduler/ISR
 semantics, timing, exact stack, linker memory, and failure propagation cannot be

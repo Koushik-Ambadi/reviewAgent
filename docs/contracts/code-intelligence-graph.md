@@ -1,7 +1,7 @@
 # Code Intelligence Graph Contract
 
 - Status: living, initial extraction contract
-- Schema version: `1.0`
+- Schema version: `1.1`
 - Last reviewed: 2026-10-27
 - Source of truth for: node, edge, identity, resolution, and source-location
   semantics for compiler-derived repository intelligence
@@ -17,7 +17,7 @@ are not separate authoritative stores.
 
 ```json
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "nodes": [],
   "edges": []
 }
@@ -31,19 +31,21 @@ serialization.
 
 ## Nodes
 
-Initial node kinds are `file`, `function`, `struct`, `enum`, `typedef`,
-`global_variable`, and `macro`. Each node records:
+Node kinds are `file`, `function`, `struct`, `enum`, `typedef`,
+`global_variable`, `parameter`, `local_variable`, `field`, `enum_constant`, and
+`macro`. Each node records:
 
 - stable ID;
 - kind and source spelling;
 - optional source location and clang USR;
 - definition state where clang exposes it;
-- bounded attributes such as return type, variable type, external status, or
-  unresolved status.
+- bounded attributes such as return/variable type, compiler-reported type size,
+  external status, unresolved status, or versioned function metrics.
 
-Parameters and local variables remain symbol-inventory evidence but are not
-first-class graph nodes in schema 1.0. Anonymous symbols without a stable
-spelling are not emitted by the initial extractor.
+Function definitions retain `ast_cyclomatic_v1` complexity, statement count,
+and a SHA-256 fingerprint over their exact clang body-token stream. These are
+source estimates and clone candidates, not CFG complexity or semantic clone
+proof. Anonymous symbols without a stable spelling are not emitted.
 
 ## Identity
 
@@ -56,7 +58,7 @@ Use a non-empty clang USR as the primary symbol identity:
 When clang supplies no USR, use:
 
 ```text
-<kind>:fallback:<repository-relative-path>:<name>
+<kind>:fallback:<repository-relative-path>:[<scope>:]<name>
 ```
 
 The fallback is deterministic but may not survive a rename or move. It is an
@@ -66,13 +68,16 @@ and must not be mistaken for repository-owned definitions.
 
 ## Edges
 
-Initial edge kinds are:
+Source and derived edge kinds are:
 
 - `contains`: physical file ownership of a symbol occurrence;
 - `declares`: file contains a non-definition declaration;
 - `defines`: file contains a definition;
 - `calls`: caller function invokes a referenced or unresolved callee;
 - `includes`: source file includes a resolved or unresolved file.
+- `parameter_of`, `field_of`, and `member_of`: scoped symbol ownership;
+- `reads`, `writes`, and `references`: conservative AST-context access;
+- `depends_on` and `clone_of`: projection-derived relationships.
 
 Every edge references existing node IDs. Edge IDs are SHA-256 identities over
 kind, source, target, and a source-occurrence discriminator. Resolution is one
@@ -87,15 +92,16 @@ requires `source_revision`, `dirty`, `producer`, and `producer_version`, writes
 deterministic JSON bytes to a sibling temporary file, flushes them, and then
 atomically replaces the target.
 
-Call and include views filter the canonical graph and report node/edge totals
-plus unresolved-edge count. They are runtime projections and are not written as
+Call, include, reachability/depth, file-module dependency, changed-node impact,
+variable access, exact-token clone, complexity, and memory-estimate views derive
+from the canonical graph. They are runtime projections and are not written as
 competing authorities.
 
 ## Compatibility and limits
 
 This contract does not change `analysis/symbols.json`, which remains owned by
 the existing naming and inventory workflow. The new extractor is additive.
-Schema 1.0 does not yet claim complete indirect-call resolution, preprocessing
+Schema 1.1 does not claim complete indirect-call resolution, preprocessing
 configuration equivalence, cross-translation-unit header deduplication,
-control/data flow, semantic roles, final-binary reachability, or an application
-runner that supplies snapshot provenance.
+CFG/data flow, semantic roles, authoritative linker/stack memory, final-binary
+reachability, or an application runner that supplies snapshot provenance.

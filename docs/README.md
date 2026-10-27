@@ -79,6 +79,8 @@ automation map:
 - [Graph capability matrix](contracts/graph-capabilities.md) lists every graph
   discussed, its required evidence, current extraction coverage, and the gate
   that prevents unsupported graphs from appearing complete.
+- [Generated code-intelligence graph example](examples/code-intelligence-graphs.md)
+  renders the checked-in fixture and links to its canonical/projection JSON.
 - [`diagrams/review-agent.drawio`](diagrams/review-agent.drawio) is the editable
   architecture diagram source.
 

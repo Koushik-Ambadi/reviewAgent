@@ -12,6 +12,10 @@ class NodeKind(StrEnum):
     ENUM = "enum"
     TYPEDEF = "typedef"
     GLOBAL_VARIABLE = "global_variable"
+    PARAMETER = "parameter"
+    LOCAL_VARIABLE = "local_variable"
+    FIELD = "field"
+    ENUM_CONSTANT = "enum_constant"
     MACRO = "macro"
 
 
@@ -22,6 +26,13 @@ class EdgeKind(StrEnum):
     DECLARES = "declares"
     DEFINES = "defines"
     DEPENDS_ON = "depends_on"
+    PARAMETER_OF = "parameter_of"
+    FIELD_OF = "field_of"
+    MEMBER_OF = "member_of"
+    READS = "reads"
+    WRITES = "writes"
+    REFERENCES = "references"
+    CLONE_OF = "clone_of"
 
 
 class RelationResolution(StrEnum):

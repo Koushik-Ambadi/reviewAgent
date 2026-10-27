@@ -30,10 +30,12 @@ def node_id(
     name: str,
     path: str,
     usr: str | None = None,
+    scope: str | None = None,
 ) -> str:
     if usr:
         return f"{kind.value}:usr:{usr}"
-    return f"{kind.value}:fallback:{path}:{name}"
+    scoped_name = f"{scope}:{name}" if scope else name
+    return f"{kind.value}:fallback:{path}:{scoped_name}"
 
 
 def edge_id(

@@ -11,7 +11,7 @@ class GraphConflictError(ValueError):
 
 
 class KnowledgeGraph:
-    schema_version = "1.0"
+    schema_version = "1.1"
 
     def __init__(self) -> None:
         self._nodes: dict[str, GraphNode] = {}

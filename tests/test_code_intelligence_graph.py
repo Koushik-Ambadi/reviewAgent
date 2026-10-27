@@ -151,7 +151,7 @@ def test_snapshot_is_atomic_and_deterministic(tmp_path: Path):
     assert first == second == expected
     assert not output.with_suffix(".json.tmp").exists()
     payload = json.loads(first)
-    assert payload["schema_version"] == "1.0"
+    assert payload["schema_version"] == "1.1"
     assert payload["provenance"]["source_revision"] == "abc123"
 
 

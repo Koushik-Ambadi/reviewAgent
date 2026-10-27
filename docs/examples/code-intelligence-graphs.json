@@ -1,0 +1,2725 @@
+{
+  "graph": {
+    "diagnostics": [],
+    "edges": [
+      {
+        "attributes": {},
+        "id": "edge:0a01e8b66d7107533b15bdd6993bf98ed4e3919bc5e291113a0189a82cbfbb01",
+        "kind": "calls",
+        "location": {
+          "column": 21,
+          "end_column": 33,
+          "end_line": 12,
+          "line": 12,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "resolution": "compiler_derived",
+        "source": "function:usr:c:@F@control_step",
+        "target": "function:usr:c:sample.c@F@read_state"
+      },
+      {
+        "attributes": {},
+        "id": "edge:306146a2b2cf22ca0c8cd492f70796b68263c09953777a170a1dc02c20173f9d",
+        "kind": "calls",
+        "location": {
+          "column": 21,
+          "end_column": 33,
+          "end_line": 23,
+          "line": 23,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "resolution": "compiler_derived",
+        "source": "function:usr:c:@F@duplicate_step",
+        "target": "function:usr:c:sample.c@F@read_state"
+      },
+      {
+        "attributes": {},
+        "id": "edge:1b030f39c7fdef217cb10f2805c46675dfaa7e3bc08af208e906b2fec3d08fbd",
+        "kind": "contains",
+        "location": {
+          "column": 10,
+          "end_column": 42,
+          "end_line": 5,
+          "line": 5,
+          "path": "tests/fixtures/code_intelligence/sample.h"
+        },
+        "resolution": "compiler_derived",
+        "source": "file:fallback:tests/fixtures/code_intelligence/sample.h:tests/fixtures/code_intelligence/sample.h",
+        "target": "function:usr:c:@F@duplicate_step"
+      },
+      {
+        "attributes": {},
+        "id": "edge:217375a0f9b6565b8bb7a8fb49ba769ae97954ff0402fdf639ef47b6fe323d82",
+        "kind": "contains",
+        "location": {
+          "column": 10,
+          "end_column": 40,
+          "end_line": 4,
+          "line": 4,
+          "path": "tests/fixtures/code_intelligence/sample.h"
+        },
+        "resolution": "compiler_derived",
+        "source": "file:fallback:tests/fixtures/code_intelligence/sample.h:tests/fixtures/code_intelligence/sample.h",
+        "target": "function:usr:c:@F@control_step"
+      },
+      {
+        "attributes": {},
+        "id": "edge:3a13b217f25958f0acf41b1e3cc11d1c9c8697207aa57d860d8501b886d0b905",
+        "kind": "contains",
+        "location": {
+          "column": 10,
+          "end_column": 2,
+          "end_line": 30,
+          "line": 21,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "resolution": "compiler_derived",
+        "source": "file:fallback:tests/fixtures/code_intelligence/sample.c:tests/fixtures/code_intelligence/sample.c",
+        "target": "function:usr:c:@F@duplicate_step"
+      },
+      {
+        "attributes": {},
+        "id": "edge:3d340c34c2ca197a40ff0c0d8f23c9570f6c0534457cf0f6b03f9090878b6bb0",
+        "kind": "contains",
+        "location": {
+          "column": 10,
+          "end_column": 2,
+          "end_line": 19,
+          "line": 10,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "resolution": "compiler_derived",
+        "source": "file:fallback:tests/fixtures/code_intelligence/sample.c:tests/fixtures/code_intelligence/sample.c",
+        "target": "function:usr:c:@F@control_step"
+      },
+      {
+        "attributes": {},
+        "id": "edge:582b4d5a44f9710859f9adc6c9915d0fc46f0d25587917776d6f9e9d368ca66a",
+        "kind": "contains",
+        "location": {
+          "column": 14,
+          "end_column": 33,
+          "end_line": 12,
+          "line": 12,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "resolution": "compiler_derived",
+        "source": "function:usr:c:@F@control_step",
+        "target": "local_variable:usr:c:sample.c@154@F@control_step@next"
+      },
+      {
+        "attributes": {},
+        "id": "edge:7df4eb52e797992997890707c9bc01aae8580e08162308f0dc32fcc218bbaaa5",
+        "kind": "contains",
+        "location": {
+          "column": 17,
+          "end_column": 2,
+          "end_line": 8,
+          "line": 5,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "resolution": "compiler_derived",
+        "source": "file:fallback:tests/fixtures/code_intelligence/sample.c:tests/fixtures/code_intelligence/sample.c",
+        "target": "function:usr:c:sample.c@F@read_state"
+      },
+      {
+        "attributes": {},
+        "id": "edge:92895115926c543470c2a1edaab34b10389f761415e76ff035eebce2776455f9",
+        "kind": "contains",
+        "location": {
+          "column": 14,
+          "end_column": 33,
+          "end_line": 23,
+          "line": 23,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "resolution": "compiler_derived",
+        "source": "function:usr:c:@F@duplicate_step",
+        "target": "local_variable:usr:c:sample.c@334@F@duplicate_step@next"
+      },
+      {
+        "attributes": {},
+        "id": "edge:e83de1e48aface6759c54d224a5eaad30720d968ec8363a6706973fc7344a4e4",
+        "kind": "contains",
+        "location": {
+          "column": 10,
+          "end_column": 22,
+          "end_line": 3,
+          "line": 3,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "resolution": "compiler_derived",
+        "source": "file:fallback:tests/fixtures/code_intelligence/sample.c:tests/fixtures/code_intelligence/sample.c",
+        "target": "global_variable:usr:c:@system_state"
+      },
+      {
+        "attributes": {},
+        "id": "edge:ea9713006e5a288c62bdb7b3f40870acae01f8368d66e51bce021014f27ffabb",
+        "kind": "contains",
+        "location": {
+          "column": 9,
+          "end_column": 35,
+          "end_line": 2,
+          "line": 2,
+          "path": "tests/fixtures/code_intelligence/sample.h"
+        },
+        "resolution": "compiler_derived",
+        "source": "file:fallback:tests/fixtures/code_intelligence/sample.h:tests/fixtures/code_intelligence/sample.h",
+        "target": "macro:usr:c:sample.h@43@macro@CODE_INTELLIGENCE_SAMPLE_H"
+      },
+      {
+        "attributes": {},
+        "id": "edge:125f45b261ef125607d9553e8646c47db6d1f3a38522fff4bc9b30e0ad28a470",
+        "kind": "declares",
+        "location": {
+          "column": 10,
+          "end_column": 40,
+          "end_line": 4,
+          "line": 4,
+          "path": "tests/fixtures/code_intelligence/sample.h"
+        },
+        "resolution": "compiler_derived",
+        "source": "file:fallback:tests/fixtures/code_intelligence/sample.h:tests/fixtures/code_intelligence/sample.h",
+        "target": "function:usr:c:@F@control_step"
+      },
+      {
+        "attributes": {},
+        "id": "edge:154f72580c688c0bbc13d2c967c883061d76947275411bf26616a3a8ed5b7849",
+        "kind": "declares",
+        "location": {
+          "column": 9,
+          "end_column": 35,
+          "end_line": 2,
+          "line": 2,
+          "path": "tests/fixtures/code_intelligence/sample.h"
+        },
+        "resolution": "compiler_derived",
+        "source": "file:fallback:tests/fixtures/code_intelligence/sample.h:tests/fixtures/code_intelligence/sample.h",
+        "target": "macro:usr:c:sample.h@43@macro@CODE_INTELLIGENCE_SAMPLE_H"
+      },
+      {
+        "attributes": {},
+        "id": "edge:1c2ef0f9ce5f13bdc36a50b53c2acb04767c16e01787fc9d775a17cb86752135",
+        "kind": "declares",
+        "location": {
+          "column": 10,
+          "end_column": 42,
+          "end_line": 5,
+          "line": 5,
+          "path": "tests/fixtures/code_intelligence/sample.h"
+        },
+        "resolution": "compiler_derived",
+        "source": "file:fallback:tests/fixtures/code_intelligence/sample.h:tests/fixtures/code_intelligence/sample.h",
+        "target": "function:usr:c:@F@duplicate_step"
+      },
+      {
+        "attributes": {},
+        "id": "edge:a450d2cf3bda7436a55c41a39af25c471253309a79297b90bfba00763a09f252",
+        "kind": "declares",
+        "location": {
+          "column": 10,
+          "end_column": 22,
+          "end_line": 3,
+          "line": 3,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "resolution": "compiler_derived",
+        "source": "file:fallback:tests/fixtures/code_intelligence/sample.c:tests/fixtures/code_intelligence/sample.c",
+        "target": "global_variable:usr:c:@system_state"
+      },
+      {
+        "attributes": {},
+        "id": "edge:4fb4e03769d6f450574d5335af3b06ac61fc09359533cea3d88f58879e2f6d3f",
+        "kind": "defines",
+        "location": {
+          "column": 17,
+          "end_column": 2,
+          "end_line": 8,
+          "line": 5,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "resolution": "compiler_derived",
+        "source": "file:fallback:tests/fixtures/code_intelligence/sample.c:tests/fixtures/code_intelligence/sample.c",
+        "target": "function:usr:c:sample.c@F@read_state"
+      },
+      {
+        "attributes": {},
+        "id": "edge:8121cb17189c2ebb7d1b73149d7f7108d1f4dceb3624031e3ebdab9fa3ec1543",
+        "kind": "defines",
+        "location": {
+          "column": 10,
+          "end_column": 2,
+          "end_line": 19,
+          "line": 10,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "resolution": "compiler_derived",
+        "source": "file:fallback:tests/fixtures/code_intelligence/sample.c:tests/fixtures/code_intelligence/sample.c",
+        "target": "function:usr:c:@F@control_step"
+      },
+      {
+        "attributes": {},
+        "id": "edge:b845b860fd6fcf455c85d07d5a697764422aea16edc526f62de49de53bf98ad9",
+        "kind": "defines",
+        "location": {
+          "column": 10,
+          "end_column": 2,
+          "end_line": 30,
+          "line": 21,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "resolution": "compiler_derived",
+        "source": "file:fallback:tests/fixtures/code_intelligence/sample.c:tests/fixtures/code_intelligence/sample.c",
+        "target": "function:usr:c:@F@duplicate_step"
+      },
+      {
+        "attributes": {
+          "include": "sample.h"
+        },
+        "id": "edge:ae754a8679ac750db2171514c1843ba0cc0f7bf74811f4d186a50af4d4f55458",
+        "kind": "includes",
+        "location": {
+          "column": 1,
+          "end_column": 20,
+          "end_line": 1,
+          "line": 1,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "resolution": "compiler_derived",
+        "source": "file:fallback:tests/fixtures/code_intelligence/sample.c:tests/fixtures/code_intelligence/sample.c",
+        "target": "file:fallback:tests/fixtures/code_intelligence/sample.h:tests/fixtures/code_intelligence/sample.h"
+      },
+      {
+        "attributes": {},
+        "id": "edge:38acf88a69393957b143de02f511c254e8f271401a4228e83b1f825182dd620b",
+        "kind": "parameter_of",
+        "location": {
+          "column": 34,
+          "end_column": 41,
+          "end_line": 21,
+          "line": 21,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "resolution": "compiler_derived",
+        "source": "function:usr:c:@F@duplicate_step",
+        "target": "parameter:usr:c:sample.c@310@F@duplicate_step@request"
+      },
+      {
+        "attributes": {},
+        "id": "edge:b29a4b675ca7245b3eded4431bd0005818d92c7df4c40cf928f0e4f3f2df4f9a",
+        "kind": "parameter_of",
+        "location": {
+          "column": 32,
+          "end_column": 39,
+          "end_line": 4,
+          "line": 4,
+          "path": "tests/fixtures/code_intelligence/sample.h"
+        },
+        "resolution": "compiler_derived",
+        "source": "function:usr:c:@F@control_step",
+        "target": "parameter:usr:c:sample.h@93@F@control_step@request"
+      },
+      {
+        "attributes": {},
+        "id": "edge:d86e904fcb204576c9611358589e79c41bf793cef722b13320e0a4f37f8387e1",
+        "kind": "parameter_of",
+        "location": {
+          "column": 32,
+          "end_column": 39,
+          "end_line": 10,
+          "line": 10,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "resolution": "compiler_derived",
+        "source": "function:usr:c:@F@control_step",
+        "target": "parameter:usr:c:sample.c@130@F@control_step@request"
+      },
+      {
+        "attributes": {},
+        "id": "edge:fae410c345bc2008d2beaaef75072dd378b4410e2b1d1c915e84f27708f4c7c1",
+        "kind": "parameter_of",
+        "location": {
+          "column": 34,
+          "end_column": 41,
+          "end_line": 5,
+          "line": 5,
+          "path": "tests/fixtures/code_intelligence/sample.h"
+        },
+        "resolution": "compiler_derived",
+        "source": "function:usr:c:@F@duplicate_step",
+        "target": "parameter:usr:c:sample.h@136@F@duplicate_step@request"
+      },
+      {
+        "attributes": {},
+        "id": "edge:00f11c2544af792b58224ef4c3034b4530529e6ef8e46d2d77b5eddd4af43eaf",
+        "kind": "reads",
+        "location": {
+          "column": 9,
+          "end_column": 16,
+          "end_line": 25,
+          "line": 25,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "resolution": "compiler_derived",
+        "source": "function:usr:c:@F@duplicate_step",
+        "target": "parameter:usr:c:sample.c@310@F@duplicate_step@request"
+      },
+      {
+        "attributes": {},
+        "id": "edge:093577a4eeb545d73993d73de6a1b1a983c8df4cb5bab610a21165a33dc5d63a",
+        "kind": "reads",
+        "location": {
+          "column": 20,
+          "end_column": 24,
+          "end_line": 28,
+          "line": 28,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "resolution": "compiler_derived",
+        "source": "function:usr:c:@F@duplicate_step",
+        "target": "local_variable:usr:c:sample.c@334@F@duplicate_step@next"
+      },
+      {
+        "attributes": {},
+        "id": "edge:168d1331dab73e726a8604665a0d41d9b9ec658cd1be96559edd63c649a168f2",
+        "kind": "reads",
+        "location": {
+          "column": 12,
+          "end_column": 16,
+          "end_line": 29,
+          "line": 29,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "resolution": "compiler_derived",
+        "source": "function:usr:c:@F@duplicate_step",
+        "target": "local_variable:usr:c:sample.c@334@F@duplicate_step@next"
+      },
+      {
+        "attributes": {},
+        "id": "edge:3586c5123b0c63401d0cdc0a3249540462f95cabbb063f4057dab42621a2dae1",
+        "kind": "reads",
+        "location": {
+          "column": 12,
+          "end_column": 24,
+          "end_line": 7,
+          "line": 7,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "resolution": "compiler_derived",
+        "source": "function:usr:c:sample.c@F@read_state",
+        "target": "global_variable:usr:c:@system_state"
+      },
+      {
+        "attributes": {},
+        "id": "edge:4712cfb6485c1c3b731ebacab0c9fed7f6578f9ffff76ec58d0883ae49b147b1",
+        "kind": "reads",
+        "location": {
+          "column": 12,
+          "end_column": 16,
+          "end_line": 18,
+          "line": 18,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "resolution": "compiler_derived",
+        "source": "function:usr:c:@F@control_step",
+        "target": "local_variable:usr:c:sample.c@154@F@control_step@next"
+      },
+      {
+        "attributes": {},
+        "id": "edge:b3e27fa00e12cf210a9a51bdec1290280dc422ab8a321c93c5a76a25ce8ae263",
+        "kind": "reads",
+        "location": {
+          "column": 19,
+          "end_column": 23,
+          "end_line": 25,
+          "line": 25,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "resolution": "compiler_derived",
+        "source": "function:usr:c:@F@duplicate_step",
+        "target": "local_variable:usr:c:sample.c@334@F@duplicate_step@next"
+      },
+      {
+        "attributes": {},
+        "id": "edge:c466482b9359aed7d52ce863b70d205483b96106382c3c5d662b3d6253556541",
+        "kind": "reads",
+        "location": {
+          "column": 20,
+          "end_column": 24,
+          "end_line": 17,
+          "line": 17,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "resolution": "compiler_derived",
+        "source": "function:usr:c:@F@control_step",
+        "target": "local_variable:usr:c:sample.c@154@F@control_step@next"
+      },
+      {
+        "attributes": {},
+        "id": "edge:c49460c99a71184d275cacc18b08143cf80f91929ac763702e085217d9c4d4d6",
+        "kind": "reads",
+        "location": {
+          "column": 19,
+          "end_column": 23,
+          "end_line": 14,
+          "line": 14,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "resolution": "compiler_derived",
+        "source": "function:usr:c:@F@control_step",
+        "target": "local_variable:usr:c:sample.c@154@F@control_step@next"
+      },
+      {
+        "attributes": {},
+        "id": "edge:c595ff8c5d35ebfa3c48e80fc46b34ee20502a2a54c5af19743e725e0e59762f",
+        "kind": "reads",
+        "location": {
+          "column": 9,
+          "end_column": 16,
+          "end_line": 14,
+          "line": 14,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "resolution": "compiler_derived",
+        "source": "function:usr:c:@F@control_step",
+        "target": "parameter:usr:c:sample.c@130@F@control_step@request"
+      },
+      {
+        "attributes": {},
+        "id": "edge:d973dc80d79903072f2c6a0b51f5c99e2bdfb140e959cf813bae57516d72d42d",
+        "kind": "reads",
+        "location": {
+          "column": 16,
+          "end_column": 23,
+          "end_line": 26,
+          "line": 26,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "resolution": "compiler_derived",
+        "source": "function:usr:c:@F@duplicate_step",
+        "target": "parameter:usr:c:sample.c@310@F@duplicate_step@request"
+      },
+      {
+        "attributes": {},
+        "id": "edge:e8472696787660c1d5cce9d33400fc16cf08fcb1980d546d6efbb6ec621c5f2c",
+        "kind": "reads",
+        "location": {
+          "column": 16,
+          "end_column": 23,
+          "end_line": 15,
+          "line": 15,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "resolution": "compiler_derived",
+        "source": "function:usr:c:@F@control_step",
+        "target": "parameter:usr:c:sample.c@130@F@control_step@request"
+      },
+      {
+        "attributes": {},
+        "id": "edge:0ed8454e6ac7957edaaf9f847ce664f7a04285d6147841131d7687b06e345f16",
+        "kind": "writes",
+        "location": {
+          "column": 5,
+          "end_column": 17,
+          "end_line": 28,
+          "line": 28,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "resolution": "compiler_derived",
+        "source": "function:usr:c:@F@duplicate_step",
+        "target": "global_variable:usr:c:@system_state"
+      },
+      {
+        "attributes": {},
+        "id": "edge:1782bbeb8dee3737e45ef48086cc8f1a49787573d2baaffc5c6779dae2400f34",
+        "kind": "writes",
+        "location": {
+          "column": 5,
+          "end_column": 17,
+          "end_line": 17,
+          "line": 17,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "resolution": "compiler_derived",
+        "source": "function:usr:c:@F@control_step",
+        "target": "global_variable:usr:c:@system_state"
+      },
+      {
+        "attributes": {},
+        "id": "edge:23fc3aa6d9ef6c73ce31d64959a9da919c07006871243fc6244a5554c1f18f3e",
+        "kind": "writes",
+        "location": {
+          "column": 9,
+          "end_column": 13,
+          "end_line": 15,
+          "line": 15,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "resolution": "compiler_derived",
+        "source": "function:usr:c:@F@control_step",
+        "target": "local_variable:usr:c:sample.c@154@F@control_step@next"
+      },
+      {
+        "attributes": {
+          "context": "initializer"
+        },
+        "id": "edge:517b3a09e9b0ddfdbdc6a459dd2494eb287694e347b0cb109db2af97e828fdaa",
+        "kind": "writes",
+        "location": {
+          "column": 14,
+          "end_column": 33,
+          "end_line": 12,
+          "line": 12,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "resolution": "compiler_derived",
+        "source": "function:usr:c:@F@control_step",
+        "target": "local_variable:usr:c:sample.c@154@F@control_step@next"
+      },
+      {
+        "attributes": {},
+        "id": "edge:b3ff785cce3dce2c4705e98c4f18e4e901f82d4dcd9643cdacde58ab53c6abca",
+        "kind": "writes",
+        "location": {
+          "column": 9,
+          "end_column": 13,
+          "end_line": 26,
+          "line": 26,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "resolution": "compiler_derived",
+        "source": "function:usr:c:@F@duplicate_step",
+        "target": "local_variable:usr:c:sample.c@334@F@duplicate_step@next"
+      },
+      {
+        "attributes": {
+          "context": "initializer"
+        },
+        "id": "edge:f9121d28633a355ea2a3b2ac7dd728f9aca85a219c0c7aefc50a8ad8d362115c",
+        "kind": "writes",
+        "location": {
+          "column": 14,
+          "end_column": 33,
+          "end_line": 23,
+          "line": 23,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "resolution": "compiler_derived",
+        "source": "function:usr:c:@F@duplicate_step",
+        "target": "local_variable:usr:c:sample.c@334@F@duplicate_step@next"
+      }
+    ],
+    "nodes": [
+      {
+        "attributes": {
+          "external": false,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "id": "file:fallback:tests/fixtures/code_intelligence/sample.c:tests/fixtures/code_intelligence/sample.c",
+        "is_definition": null,
+        "kind": "file",
+        "location": {
+          "column": null,
+          "end_column": null,
+          "end_line": null,
+          "line": null,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "name": "sample.c",
+        "usr": null
+      },
+      {
+        "attributes": {
+          "external": false,
+          "path": "tests/fixtures/code_intelligence/sample.h"
+        },
+        "id": "file:fallback:tests/fixtures/code_intelligence/sample.h:tests/fixtures/code_intelligence/sample.h",
+        "is_definition": null,
+        "kind": "file",
+        "location": {
+          "column": null,
+          "end_column": null,
+          "end_line": null,
+          "line": null,
+          "path": "tests/fixtures/code_intelligence/sample.h"
+        },
+        "name": "sample.h",
+        "usr": null
+      },
+      {
+        "attributes": {
+          "complexity_method": "ast_cyclomatic_v1",
+          "cyclomatic_complexity": 2,
+          "external": false,
+          "return_type": "unsigned int",
+          "statement_count": 3,
+          "token_count": 28,
+          "token_fingerprint": "9ad33e064e923222b92407674c000caae2fd906cad1e0b98443b58b9249a4852",
+          "token_fingerprint_method": "clang_tokens_sha256_v1"
+        },
+        "id": "function:usr:c:@F@control_step",
+        "is_definition": true,
+        "kind": "function",
+        "location": {
+          "column": 10,
+          "end_column": 2,
+          "end_line": 19,
+          "line": 10,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "name": "control_step",
+        "usr": "c:@F@control_step"
+      },
+      {
+        "attributes": {
+          "complexity_method": "ast_cyclomatic_v1",
+          "cyclomatic_complexity": 2,
+          "external": false,
+          "return_type": "unsigned int",
+          "statement_count": 3,
+          "token_count": 28,
+          "token_fingerprint": "9ad33e064e923222b92407674c000caae2fd906cad1e0b98443b58b9249a4852",
+          "token_fingerprint_method": "clang_tokens_sha256_v1"
+        },
+        "id": "function:usr:c:@F@duplicate_step",
+        "is_definition": true,
+        "kind": "function",
+        "location": {
+          "column": 10,
+          "end_column": 2,
+          "end_line": 30,
+          "line": 21,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "name": "duplicate_step",
+        "usr": "c:@F@duplicate_step"
+      },
+      {
+        "attributes": {
+          "complexity_method": "ast_cyclomatic_v1",
+          "cyclomatic_complexity": 1,
+          "external": false,
+          "return_type": "unsigned int",
+          "statement_count": 1,
+          "token_count": 5,
+          "token_fingerprint": "6169ec7bf778e9cc9b8a8506901951e69f4eda7572c3103933b70edf7ff4aa6c",
+          "token_fingerprint_method": "clang_tokens_sha256_v1"
+        },
+        "id": "function:usr:c:sample.c@F@read_state",
+        "is_definition": true,
+        "kind": "function",
+        "location": {
+          "column": 17,
+          "end_column": 2,
+          "end_line": 8,
+          "line": 5,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "name": "read_state",
+        "usr": "c:sample.c@F@read_state"
+      },
+      {
+        "attributes": {
+          "external": false,
+          "size_bytes": 4,
+          "type": "unsigned int"
+        },
+        "id": "global_variable:usr:c:@system_state",
+        "is_definition": false,
+        "kind": "global_variable",
+        "location": {
+          "column": 10,
+          "end_column": 22,
+          "end_line": 3,
+          "line": 3,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "name": "system_state",
+        "usr": "c:@system_state"
+      },
+      {
+        "attributes": {
+          "external": false,
+          "scope": "function:usr:c:@F@control_step",
+          "size_bytes": 4,
+          "type": "unsigned int"
+        },
+        "id": "local_variable:usr:c:sample.c@154@F@control_step@next",
+        "is_definition": true,
+        "kind": "local_variable",
+        "location": {
+          "column": 14,
+          "end_column": 33,
+          "end_line": 12,
+          "line": 12,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "name": "next",
+        "usr": "c:sample.c@154@F@control_step@next"
+      },
+      {
+        "attributes": {
+          "external": false,
+          "scope": "function:usr:c:@F@duplicate_step",
+          "size_bytes": 4,
+          "type": "unsigned int"
+        },
+        "id": "local_variable:usr:c:sample.c@334@F@duplicate_step@next",
+        "is_definition": true,
+        "kind": "local_variable",
+        "location": {
+          "column": 14,
+          "end_column": 33,
+          "end_line": 23,
+          "line": 23,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "name": "next",
+        "usr": "c:sample.c@334@F@duplicate_step@next"
+      },
+      {
+        "attributes": {
+          "external": false
+        },
+        "id": "macro:usr:c:sample.h@43@macro@CODE_INTELLIGENCE_SAMPLE_H",
+        "is_definition": false,
+        "kind": "macro",
+        "location": {
+          "column": 9,
+          "end_column": 35,
+          "end_line": 2,
+          "line": 2,
+          "path": "tests/fixtures/code_intelligence/sample.h"
+        },
+        "name": "CODE_INTELLIGENCE_SAMPLE_H",
+        "usr": "c:sample.h@43@macro@CODE_INTELLIGENCE_SAMPLE_H"
+      },
+      {
+        "attributes": {
+          "external": false,
+          "scope": "function:usr:c:@F@control_step",
+          "size_bytes": 4,
+          "type": "unsigned int"
+        },
+        "id": "parameter:usr:c:sample.c@130@F@control_step@request",
+        "is_definition": true,
+        "kind": "parameter",
+        "location": {
+          "column": 32,
+          "end_column": 39,
+          "end_line": 10,
+          "line": 10,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "name": "request",
+        "usr": "c:sample.c@130@F@control_step@request"
+      },
+      {
+        "attributes": {
+          "external": false,
+          "scope": "function:usr:c:@F@duplicate_step",
+          "size_bytes": 4,
+          "type": "unsigned int"
+        },
+        "id": "parameter:usr:c:sample.c@310@F@duplicate_step@request",
+        "is_definition": true,
+        "kind": "parameter",
+        "location": {
+          "column": 34,
+          "end_column": 41,
+          "end_line": 21,
+          "line": 21,
+          "path": "tests/fixtures/code_intelligence/sample.c"
+        },
+        "name": "request",
+        "usr": "c:sample.c@310@F@duplicate_step@request"
+      },
+      {
+        "attributes": {
+          "external": false,
+          "scope": "function:usr:c:@F@duplicate_step",
+          "size_bytes": 4,
+          "type": "unsigned int"
+        },
+        "id": "parameter:usr:c:sample.h@136@F@duplicate_step@request",
+        "is_definition": true,
+        "kind": "parameter",
+        "location": {
+          "column": 34,
+          "end_column": 41,
+          "end_line": 5,
+          "line": 5,
+          "path": "tests/fixtures/code_intelligence/sample.h"
+        },
+        "name": "request",
+        "usr": "c:sample.h@136@F@duplicate_step@request"
+      },
+      {
+        "attributes": {
+          "external": false,
+          "scope": "function:usr:c:@F@control_step",
+          "size_bytes": 4,
+          "type": "unsigned int"
+        },
+        "id": "parameter:usr:c:sample.h@93@F@control_step@request",
+        "is_definition": true,
+        "kind": "parameter",
+        "location": {
+          "column": 32,
+          "end_column": 39,
+          "end_line": 4,
+          "line": 4,
+          "path": "tests/fixtures/code_intelligence/sample.h"
+        },
+        "name": "request",
+        "usr": "c:sample.h@93@F@control_step@request"
+      }
+    ],
+    "schema_version": "1.1",
+    "translation_units": [
+      "tests/fixtures/code_intelligence/sample.c"
+    ]
+  },
+  "projections": {
+    "call_depth_graph": {
+      "edges": [
+        {
+          "attributes": {},
+          "id": "edge:0a01e8b66d7107533b15bdd6993bf98ed4e3919bc5e291113a0189a82cbfbb01",
+          "kind": "calls",
+          "location": {
+            "column": 21,
+            "end_column": 33,
+            "end_line": 12,
+            "line": 12,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "function:usr:c:@F@control_step",
+          "target": "function:usr:c:sample.c@F@read_state"
+        }
+      ],
+      "kind": "call_depth_graph",
+      "metadata": {
+        "depth_by_node": {
+          "function:usr:c:@F@control_step": 0,
+          "function:usr:c:sample.c@F@read_state": 1
+        },
+        "maximum_depth": 1,
+        "recursive_components": [],
+        "roots": [
+          "function:usr:c:@F@control_step"
+        ]
+      },
+      "nodes": [
+        {
+          "attributes": {
+            "complexity_method": "ast_cyclomatic_v1",
+            "cyclomatic_complexity": 2,
+            "external": false,
+            "return_type": "unsigned int",
+            "statement_count": 3,
+            "token_count": 28,
+            "token_fingerprint": "9ad33e064e923222b92407674c000caae2fd906cad1e0b98443b58b9249a4852",
+            "token_fingerprint_method": "clang_tokens_sha256_v1"
+          },
+          "id": "function:usr:c:@F@control_step",
+          "is_definition": true,
+          "kind": "function",
+          "location": {
+            "column": 10,
+            "end_column": 2,
+            "end_line": 19,
+            "line": 10,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "control_step",
+          "usr": "c:@F@control_step"
+        },
+        {
+          "attributes": {
+            "complexity_method": "ast_cyclomatic_v1",
+            "cyclomatic_complexity": 1,
+            "external": false,
+            "return_type": "unsigned int",
+            "statement_count": 1,
+            "token_count": 5,
+            "token_fingerprint": "6169ec7bf778e9cc9b8a8506901951e69f4eda7572c3103933b70edf7ff4aa6c",
+            "token_fingerprint_method": "clang_tokens_sha256_v1"
+          },
+          "id": "function:usr:c:sample.c@F@read_state",
+          "is_definition": true,
+          "kind": "function",
+          "location": {
+            "column": 17,
+            "end_column": 2,
+            "end_line": 8,
+            "line": 5,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "read_state",
+          "usr": "c:sample.c@F@read_state"
+        }
+      ],
+      "summary": {
+        "edges": 1,
+        "nodes": 2,
+        "unresolved_edges": 0
+      }
+    },
+    "call_graph": {
+      "edges": [
+        {
+          "attributes": {},
+          "id": "edge:0a01e8b66d7107533b15bdd6993bf98ed4e3919bc5e291113a0189a82cbfbb01",
+          "kind": "calls",
+          "location": {
+            "column": 21,
+            "end_column": 33,
+            "end_line": 12,
+            "line": 12,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "function:usr:c:@F@control_step",
+          "target": "function:usr:c:sample.c@F@read_state"
+        },
+        {
+          "attributes": {},
+          "id": "edge:306146a2b2cf22ca0c8cd492f70796b68263c09953777a170a1dc02c20173f9d",
+          "kind": "calls",
+          "location": {
+            "column": 21,
+            "end_column": 33,
+            "end_line": 23,
+            "line": 23,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "function:usr:c:@F@duplicate_step",
+          "target": "function:usr:c:sample.c@F@read_state"
+        }
+      ],
+      "kind": "call_graph",
+      "metadata": {},
+      "nodes": [
+        {
+          "attributes": {
+            "complexity_method": "ast_cyclomatic_v1",
+            "cyclomatic_complexity": 2,
+            "external": false,
+            "return_type": "unsigned int",
+            "statement_count": 3,
+            "token_count": 28,
+            "token_fingerprint": "9ad33e064e923222b92407674c000caae2fd906cad1e0b98443b58b9249a4852",
+            "token_fingerprint_method": "clang_tokens_sha256_v1"
+          },
+          "id": "function:usr:c:@F@control_step",
+          "is_definition": true,
+          "kind": "function",
+          "location": {
+            "column": 10,
+            "end_column": 2,
+            "end_line": 19,
+            "line": 10,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "control_step",
+          "usr": "c:@F@control_step"
+        },
+        {
+          "attributes": {
+            "complexity_method": "ast_cyclomatic_v1",
+            "cyclomatic_complexity": 2,
+            "external": false,
+            "return_type": "unsigned int",
+            "statement_count": 3,
+            "token_count": 28,
+            "token_fingerprint": "9ad33e064e923222b92407674c000caae2fd906cad1e0b98443b58b9249a4852",
+            "token_fingerprint_method": "clang_tokens_sha256_v1"
+          },
+          "id": "function:usr:c:@F@duplicate_step",
+          "is_definition": true,
+          "kind": "function",
+          "location": {
+            "column": 10,
+            "end_column": 2,
+            "end_line": 30,
+            "line": 21,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "duplicate_step",
+          "usr": "c:@F@duplicate_step"
+        },
+        {
+          "attributes": {
+            "complexity_method": "ast_cyclomatic_v1",
+            "cyclomatic_complexity": 1,
+            "external": false,
+            "return_type": "unsigned int",
+            "statement_count": 1,
+            "token_count": 5,
+            "token_fingerprint": "6169ec7bf778e9cc9b8a8506901951e69f4eda7572c3103933b70edf7ff4aa6c",
+            "token_fingerprint_method": "clang_tokens_sha256_v1"
+          },
+          "id": "function:usr:c:sample.c@F@read_state",
+          "is_definition": true,
+          "kind": "function",
+          "location": {
+            "column": 17,
+            "end_column": 2,
+            "end_line": 8,
+            "line": 5,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "read_state",
+          "usr": "c:sample.c@F@read_state"
+        }
+      ],
+      "summary": {
+        "edges": 2,
+        "nodes": 3,
+        "unresolved_edges": 0
+      }
+    },
+    "complexity_graph": {
+      "edges": [],
+      "kind": "complexity_graph",
+      "metadata": {
+        "metrics_by_function": {
+          "function:usr:c:@F@control_step": {
+            "cyclomatic_complexity": 2,
+            "method": "ast_cyclomatic_v1",
+            "statement_count": 3
+          },
+          "function:usr:c:@F@duplicate_step": {
+            "cyclomatic_complexity": 2,
+            "method": "ast_cyclomatic_v1",
+            "statement_count": 3
+          },
+          "function:usr:c:sample.c@F@read_state": {
+            "cyclomatic_complexity": 1,
+            "method": "ast_cyclomatic_v1",
+            "statement_count": 1
+          }
+        }
+      },
+      "nodes": [
+        {
+          "attributes": {
+            "complexity_method": "ast_cyclomatic_v1",
+            "cyclomatic_complexity": 2,
+            "external": false,
+            "return_type": "unsigned int",
+            "statement_count": 3,
+            "token_count": 28,
+            "token_fingerprint": "9ad33e064e923222b92407674c000caae2fd906cad1e0b98443b58b9249a4852",
+            "token_fingerprint_method": "clang_tokens_sha256_v1"
+          },
+          "id": "function:usr:c:@F@control_step",
+          "is_definition": true,
+          "kind": "function",
+          "location": {
+            "column": 10,
+            "end_column": 2,
+            "end_line": 19,
+            "line": 10,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "control_step",
+          "usr": "c:@F@control_step"
+        },
+        {
+          "attributes": {
+            "complexity_method": "ast_cyclomatic_v1",
+            "cyclomatic_complexity": 2,
+            "external": false,
+            "return_type": "unsigned int",
+            "statement_count": 3,
+            "token_count": 28,
+            "token_fingerprint": "9ad33e064e923222b92407674c000caae2fd906cad1e0b98443b58b9249a4852",
+            "token_fingerprint_method": "clang_tokens_sha256_v1"
+          },
+          "id": "function:usr:c:@F@duplicate_step",
+          "is_definition": true,
+          "kind": "function",
+          "location": {
+            "column": 10,
+            "end_column": 2,
+            "end_line": 30,
+            "line": 21,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "duplicate_step",
+          "usr": "c:@F@duplicate_step"
+        },
+        {
+          "attributes": {
+            "complexity_method": "ast_cyclomatic_v1",
+            "cyclomatic_complexity": 1,
+            "external": false,
+            "return_type": "unsigned int",
+            "statement_count": 1,
+            "token_count": 5,
+            "token_fingerprint": "6169ec7bf778e9cc9b8a8506901951e69f4eda7572c3103933b70edf7ff4aa6c",
+            "token_fingerprint_method": "clang_tokens_sha256_v1"
+          },
+          "id": "function:usr:c:sample.c@F@read_state",
+          "is_definition": true,
+          "kind": "function",
+          "location": {
+            "column": 17,
+            "end_column": 2,
+            "end_line": 8,
+            "line": 5,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "read_state",
+          "usr": "c:sample.c@F@read_state"
+        }
+      ],
+      "summary": {
+        "edges": 0,
+        "nodes": 3,
+        "unresolved_edges": 0
+      }
+    },
+    "dependency_impact_graph": {
+      "edges": [
+        {
+          "attributes": {},
+          "id": "edge:0a01e8b66d7107533b15bdd6993bf98ed4e3919bc5e291113a0189a82cbfbb01",
+          "kind": "calls",
+          "location": {
+            "column": 21,
+            "end_column": 33,
+            "end_line": 12,
+            "line": 12,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "function:usr:c:@F@control_step",
+          "target": "function:usr:c:sample.c@F@read_state"
+        },
+        {
+          "attributes": {},
+          "id": "edge:306146a2b2cf22ca0c8cd492f70796b68263c09953777a170a1dc02c20173f9d",
+          "kind": "calls",
+          "location": {
+            "column": 21,
+            "end_column": 33,
+            "end_line": 23,
+            "line": 23,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "function:usr:c:@F@duplicate_step",
+          "target": "function:usr:c:sample.c@F@read_state"
+        },
+        {
+          "attributes": {},
+          "id": "edge:1b030f39c7fdef217cb10f2805c46675dfaa7e3bc08af208e906b2fec3d08fbd",
+          "kind": "contains",
+          "location": {
+            "column": 10,
+            "end_column": 42,
+            "end_line": 5,
+            "line": 5,
+            "path": "tests/fixtures/code_intelligence/sample.h"
+          },
+          "resolution": "compiler_derived",
+          "source": "file:fallback:tests/fixtures/code_intelligence/sample.h:tests/fixtures/code_intelligence/sample.h",
+          "target": "function:usr:c:@F@duplicate_step"
+        },
+        {
+          "attributes": {},
+          "id": "edge:217375a0f9b6565b8bb7a8fb49ba769ae97954ff0402fdf639ef47b6fe323d82",
+          "kind": "contains",
+          "location": {
+            "column": 10,
+            "end_column": 40,
+            "end_line": 4,
+            "line": 4,
+            "path": "tests/fixtures/code_intelligence/sample.h"
+          },
+          "resolution": "compiler_derived",
+          "source": "file:fallback:tests/fixtures/code_intelligence/sample.h:tests/fixtures/code_intelligence/sample.h",
+          "target": "function:usr:c:@F@control_step"
+        },
+        {
+          "attributes": {},
+          "id": "edge:3a13b217f25958f0acf41b1e3cc11d1c9c8697207aa57d860d8501b886d0b905",
+          "kind": "contains",
+          "location": {
+            "column": 10,
+            "end_column": 2,
+            "end_line": 30,
+            "line": 21,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "file:fallback:tests/fixtures/code_intelligence/sample.c:tests/fixtures/code_intelligence/sample.c",
+          "target": "function:usr:c:@F@duplicate_step"
+        },
+        {
+          "attributes": {},
+          "id": "edge:3d340c34c2ca197a40ff0c0d8f23c9570f6c0534457cf0f6b03f9090878b6bb0",
+          "kind": "contains",
+          "location": {
+            "column": 10,
+            "end_column": 2,
+            "end_line": 19,
+            "line": 10,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "file:fallback:tests/fixtures/code_intelligence/sample.c:tests/fixtures/code_intelligence/sample.c",
+          "target": "function:usr:c:@F@control_step"
+        },
+        {
+          "attributes": {},
+          "id": "edge:582b4d5a44f9710859f9adc6c9915d0fc46f0d25587917776d6f9e9d368ca66a",
+          "kind": "contains",
+          "location": {
+            "column": 14,
+            "end_column": 33,
+            "end_line": 12,
+            "line": 12,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "function:usr:c:@F@control_step",
+          "target": "local_variable:usr:c:sample.c@154@F@control_step@next"
+        },
+        {
+          "attributes": {},
+          "id": "edge:7df4eb52e797992997890707c9bc01aae8580e08162308f0dc32fcc218bbaaa5",
+          "kind": "contains",
+          "location": {
+            "column": 17,
+            "end_column": 2,
+            "end_line": 8,
+            "line": 5,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "file:fallback:tests/fixtures/code_intelligence/sample.c:tests/fixtures/code_intelligence/sample.c",
+          "target": "function:usr:c:sample.c@F@read_state"
+        },
+        {
+          "attributes": {},
+          "id": "edge:92895115926c543470c2a1edaab34b10389f761415e76ff035eebce2776455f9",
+          "kind": "contains",
+          "location": {
+            "column": 14,
+            "end_column": 33,
+            "end_line": 23,
+            "line": 23,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "function:usr:c:@F@duplicate_step",
+          "target": "local_variable:usr:c:sample.c@334@F@duplicate_step@next"
+        },
+        {
+          "attributes": {},
+          "id": "edge:e83de1e48aface6759c54d224a5eaad30720d968ec8363a6706973fc7344a4e4",
+          "kind": "contains",
+          "location": {
+            "column": 10,
+            "end_column": 22,
+            "end_line": 3,
+            "line": 3,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "file:fallback:tests/fixtures/code_intelligence/sample.c:tests/fixtures/code_intelligence/sample.c",
+          "target": "global_variable:usr:c:@system_state"
+        },
+        {
+          "attributes": {},
+          "id": "edge:ea9713006e5a288c62bdb7b3f40870acae01f8368d66e51bce021014f27ffabb",
+          "kind": "contains",
+          "location": {
+            "column": 9,
+            "end_column": 35,
+            "end_line": 2,
+            "line": 2,
+            "path": "tests/fixtures/code_intelligence/sample.h"
+          },
+          "resolution": "compiler_derived",
+          "source": "file:fallback:tests/fixtures/code_intelligence/sample.h:tests/fixtures/code_intelligence/sample.h",
+          "target": "macro:usr:c:sample.h@43@macro@CODE_INTELLIGENCE_SAMPLE_H"
+        },
+        {
+          "attributes": {
+            "include": "sample.h"
+          },
+          "id": "edge:ae754a8679ac750db2171514c1843ba0cc0f7bf74811f4d186a50af4d4f55458",
+          "kind": "includes",
+          "location": {
+            "column": 1,
+            "end_column": 20,
+            "end_line": 1,
+            "line": 1,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "file:fallback:tests/fixtures/code_intelligence/sample.c:tests/fixtures/code_intelligence/sample.c",
+          "target": "file:fallback:tests/fixtures/code_intelligence/sample.h:tests/fixtures/code_intelligence/sample.h"
+        }
+      ],
+      "kind": "dependency_impact_graph",
+      "metadata": {
+        "changed": [
+          "function:usr:c:sample.c@F@read_state"
+        ],
+        "directly_impacted": [
+          "file:fallback:tests/fixtures/code_intelligence/sample.c:tests/fixtures/code_intelligence/sample.c",
+          "function:usr:c:@F@control_step",
+          "function:usr:c:@F@duplicate_step"
+        ],
+        "distance_from_change": {
+          "file:fallback:tests/fixtures/code_intelligence/sample.c:tests/fixtures/code_intelligence/sample.c": 1,
+          "file:fallback:tests/fixtures/code_intelligence/sample.h:tests/fixtures/code_intelligence/sample.h": 2,
+          "function:usr:c:@F@control_step": 1,
+          "function:usr:c:@F@duplicate_step": 1,
+          "function:usr:c:sample.c@F@read_state": 0,
+          "global_variable:usr:c:@system_state": 2,
+          "local_variable:usr:c:sample.c@154@F@control_step@next": 2,
+          "local_variable:usr:c:sample.c@334@F@duplicate_step@next": 2,
+          "macro:usr:c:sample.h@43@macro@CODE_INTELLIGENCE_SAMPLE_H": 3
+        },
+        "transitively_impacted": [
+          "file:fallback:tests/fixtures/code_intelligence/sample.h:tests/fixtures/code_intelligence/sample.h",
+          "global_variable:usr:c:@system_state",
+          "local_variable:usr:c:sample.c@154@F@control_step@next",
+          "local_variable:usr:c:sample.c@334@F@duplicate_step@next",
+          "macro:usr:c:sample.h@43@macro@CODE_INTELLIGENCE_SAMPLE_H"
+        ]
+      },
+      "nodes": [
+        {
+          "attributes": {
+            "external": false,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "id": "file:fallback:tests/fixtures/code_intelligence/sample.c:tests/fixtures/code_intelligence/sample.c",
+          "is_definition": null,
+          "kind": "file",
+          "location": {
+            "column": null,
+            "end_column": null,
+            "end_line": null,
+            "line": null,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "sample.c",
+          "usr": null
+        },
+        {
+          "attributes": {
+            "external": false,
+            "path": "tests/fixtures/code_intelligence/sample.h"
+          },
+          "id": "file:fallback:tests/fixtures/code_intelligence/sample.h:tests/fixtures/code_intelligence/sample.h",
+          "is_definition": null,
+          "kind": "file",
+          "location": {
+            "column": null,
+            "end_column": null,
+            "end_line": null,
+            "line": null,
+            "path": "tests/fixtures/code_intelligence/sample.h"
+          },
+          "name": "sample.h",
+          "usr": null
+        },
+        {
+          "attributes": {
+            "complexity_method": "ast_cyclomatic_v1",
+            "cyclomatic_complexity": 2,
+            "external": false,
+            "return_type": "unsigned int",
+            "statement_count": 3,
+            "token_count": 28,
+            "token_fingerprint": "9ad33e064e923222b92407674c000caae2fd906cad1e0b98443b58b9249a4852",
+            "token_fingerprint_method": "clang_tokens_sha256_v1"
+          },
+          "id": "function:usr:c:@F@control_step",
+          "is_definition": true,
+          "kind": "function",
+          "location": {
+            "column": 10,
+            "end_column": 2,
+            "end_line": 19,
+            "line": 10,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "control_step",
+          "usr": "c:@F@control_step"
+        },
+        {
+          "attributes": {
+            "complexity_method": "ast_cyclomatic_v1",
+            "cyclomatic_complexity": 2,
+            "external": false,
+            "return_type": "unsigned int",
+            "statement_count": 3,
+            "token_count": 28,
+            "token_fingerprint": "9ad33e064e923222b92407674c000caae2fd906cad1e0b98443b58b9249a4852",
+            "token_fingerprint_method": "clang_tokens_sha256_v1"
+          },
+          "id": "function:usr:c:@F@duplicate_step",
+          "is_definition": true,
+          "kind": "function",
+          "location": {
+            "column": 10,
+            "end_column": 2,
+            "end_line": 30,
+            "line": 21,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "duplicate_step",
+          "usr": "c:@F@duplicate_step"
+        },
+        {
+          "attributes": {
+            "complexity_method": "ast_cyclomatic_v1",
+            "cyclomatic_complexity": 1,
+            "external": false,
+            "return_type": "unsigned int",
+            "statement_count": 1,
+            "token_count": 5,
+            "token_fingerprint": "6169ec7bf778e9cc9b8a8506901951e69f4eda7572c3103933b70edf7ff4aa6c",
+            "token_fingerprint_method": "clang_tokens_sha256_v1"
+          },
+          "id": "function:usr:c:sample.c@F@read_state",
+          "is_definition": true,
+          "kind": "function",
+          "location": {
+            "column": 17,
+            "end_column": 2,
+            "end_line": 8,
+            "line": 5,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "read_state",
+          "usr": "c:sample.c@F@read_state"
+        },
+        {
+          "attributes": {
+            "external": false,
+            "size_bytes": 4,
+            "type": "unsigned int"
+          },
+          "id": "global_variable:usr:c:@system_state",
+          "is_definition": false,
+          "kind": "global_variable",
+          "location": {
+            "column": 10,
+            "end_column": 22,
+            "end_line": 3,
+            "line": 3,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "system_state",
+          "usr": "c:@system_state"
+        },
+        {
+          "attributes": {
+            "external": false,
+            "scope": "function:usr:c:@F@control_step",
+            "size_bytes": 4,
+            "type": "unsigned int"
+          },
+          "id": "local_variable:usr:c:sample.c@154@F@control_step@next",
+          "is_definition": true,
+          "kind": "local_variable",
+          "location": {
+            "column": 14,
+            "end_column": 33,
+            "end_line": 12,
+            "line": 12,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "next",
+          "usr": "c:sample.c@154@F@control_step@next"
+        },
+        {
+          "attributes": {
+            "external": false,
+            "scope": "function:usr:c:@F@duplicate_step",
+            "size_bytes": 4,
+            "type": "unsigned int"
+          },
+          "id": "local_variable:usr:c:sample.c@334@F@duplicate_step@next",
+          "is_definition": true,
+          "kind": "local_variable",
+          "location": {
+            "column": 14,
+            "end_column": 33,
+            "end_line": 23,
+            "line": 23,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "next",
+          "usr": "c:sample.c@334@F@duplicate_step@next"
+        },
+        {
+          "attributes": {
+            "external": false
+          },
+          "id": "macro:usr:c:sample.h@43@macro@CODE_INTELLIGENCE_SAMPLE_H",
+          "is_definition": false,
+          "kind": "macro",
+          "location": {
+            "column": 9,
+            "end_column": 35,
+            "end_line": 2,
+            "line": 2,
+            "path": "tests/fixtures/code_intelligence/sample.h"
+          },
+          "name": "CODE_INTELLIGENCE_SAMPLE_H",
+          "usr": "c:sample.h@43@macro@CODE_INTELLIGENCE_SAMPLE_H"
+        }
+      ],
+      "summary": {
+        "edges": 12,
+        "nodes": 9,
+        "unresolved_edges": 0
+      }
+    },
+    "exact_clone_graph": {
+      "edges": [
+        {
+          "attributes": {
+            "method": "exact_function_tokens_v1"
+          },
+          "id": "edge:62edbf9ffe8dcaef7411ac711ed324ce4f65acbc7b9ad75d10b0c69eb371dbcd",
+          "kind": "clone_of",
+          "location": null,
+          "resolution": "compiler_derived",
+          "source": "function:usr:c:@F@duplicate_step",
+          "target": "function:usr:c:@F@control_step"
+        }
+      ],
+      "kind": "exact_clone_graph",
+      "metadata": {
+        "clone_groups": [
+          [
+            "function:usr:c:@F@control_step",
+            "function:usr:c:@F@duplicate_step"
+          ]
+        ]
+      },
+      "nodes": [
+        {
+          "attributes": {
+            "complexity_method": "ast_cyclomatic_v1",
+            "cyclomatic_complexity": 2,
+            "external": false,
+            "return_type": "unsigned int",
+            "statement_count": 3,
+            "token_count": 28,
+            "token_fingerprint": "9ad33e064e923222b92407674c000caae2fd906cad1e0b98443b58b9249a4852",
+            "token_fingerprint_method": "clang_tokens_sha256_v1"
+          },
+          "id": "function:usr:c:@F@control_step",
+          "is_definition": true,
+          "kind": "function",
+          "location": {
+            "column": 10,
+            "end_column": 2,
+            "end_line": 19,
+            "line": 10,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "control_step",
+          "usr": "c:@F@control_step"
+        },
+        {
+          "attributes": {
+            "complexity_method": "ast_cyclomatic_v1",
+            "cyclomatic_complexity": 2,
+            "external": false,
+            "return_type": "unsigned int",
+            "statement_count": 3,
+            "token_count": 28,
+            "token_fingerprint": "9ad33e064e923222b92407674c000caae2fd906cad1e0b98443b58b9249a4852",
+            "token_fingerprint_method": "clang_tokens_sha256_v1"
+          },
+          "id": "function:usr:c:@F@duplicate_step",
+          "is_definition": true,
+          "kind": "function",
+          "location": {
+            "column": 10,
+            "end_column": 2,
+            "end_line": 30,
+            "line": 21,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "duplicate_step",
+          "usr": "c:@F@duplicate_step"
+        }
+      ],
+      "summary": {
+        "edges": 1,
+        "nodes": 2,
+        "unresolved_edges": 0
+      }
+    },
+    "include_graph": {
+      "edges": [
+        {
+          "attributes": {
+            "include": "sample.h"
+          },
+          "id": "edge:ae754a8679ac750db2171514c1843ba0cc0f7bf74811f4d186a50af4d4f55458",
+          "kind": "includes",
+          "location": {
+            "column": 1,
+            "end_column": 20,
+            "end_line": 1,
+            "line": 1,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "file:fallback:tests/fixtures/code_intelligence/sample.c:tests/fixtures/code_intelligence/sample.c",
+          "target": "file:fallback:tests/fixtures/code_intelligence/sample.h:tests/fixtures/code_intelligence/sample.h"
+        }
+      ],
+      "kind": "include_graph",
+      "metadata": {},
+      "nodes": [
+        {
+          "attributes": {
+            "external": false,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "id": "file:fallback:tests/fixtures/code_intelligence/sample.c:tests/fixtures/code_intelligence/sample.c",
+          "is_definition": null,
+          "kind": "file",
+          "location": {
+            "column": null,
+            "end_column": null,
+            "end_line": null,
+            "line": null,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "sample.c",
+          "usr": null
+        },
+        {
+          "attributes": {
+            "external": false,
+            "path": "tests/fixtures/code_intelligence/sample.h"
+          },
+          "id": "file:fallback:tests/fixtures/code_intelligence/sample.h:tests/fixtures/code_intelligence/sample.h",
+          "is_definition": null,
+          "kind": "file",
+          "location": {
+            "column": null,
+            "end_column": null,
+            "end_line": null,
+            "line": null,
+            "path": "tests/fixtures/code_intelligence/sample.h"
+          },
+          "name": "sample.h",
+          "usr": null
+        }
+      ],
+      "summary": {
+        "edges": 1,
+        "nodes": 2,
+        "unresolved_edges": 0
+      }
+    },
+    "memory_estimate_graph": {
+      "edges": [
+        {
+          "attributes": {},
+          "id": "edge:582b4d5a44f9710859f9adc6c9915d0fc46f0d25587917776d6f9e9d368ca66a",
+          "kind": "contains",
+          "location": {
+            "column": 14,
+            "end_column": 33,
+            "end_line": 12,
+            "line": 12,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "function:usr:c:@F@control_step",
+          "target": "local_variable:usr:c:sample.c@154@F@control_step@next"
+        },
+        {
+          "attributes": {},
+          "id": "edge:92895115926c543470c2a1edaab34b10389f761415e76ff035eebce2776455f9",
+          "kind": "contains",
+          "location": {
+            "column": 14,
+            "end_column": 33,
+            "end_line": 23,
+            "line": 23,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "function:usr:c:@F@duplicate_step",
+          "target": "local_variable:usr:c:sample.c@334@F@duplicate_step@next"
+        },
+        {
+          "attributes": {},
+          "id": "edge:e83de1e48aface6759c54d224a5eaad30720d968ec8363a6706973fc7344a4e4",
+          "kind": "contains",
+          "location": {
+            "column": 10,
+            "end_column": 22,
+            "end_line": 3,
+            "line": 3,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "file:fallback:tests/fixtures/code_intelligence/sample.c:tests/fixtures/code_intelligence/sample.c",
+          "target": "global_variable:usr:c:@system_state"
+        },
+        {
+          "attributes": {},
+          "id": "edge:38acf88a69393957b143de02f511c254e8f271401a4228e83b1f825182dd620b",
+          "kind": "parameter_of",
+          "location": {
+            "column": 34,
+            "end_column": 41,
+            "end_line": 21,
+            "line": 21,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "function:usr:c:@F@duplicate_step",
+          "target": "parameter:usr:c:sample.c@310@F@duplicate_step@request"
+        },
+        {
+          "attributes": {},
+          "id": "edge:b29a4b675ca7245b3eded4431bd0005818d92c7df4c40cf928f0e4f3f2df4f9a",
+          "kind": "parameter_of",
+          "location": {
+            "column": 32,
+            "end_column": 39,
+            "end_line": 4,
+            "line": 4,
+            "path": "tests/fixtures/code_intelligence/sample.h"
+          },
+          "resolution": "compiler_derived",
+          "source": "function:usr:c:@F@control_step",
+          "target": "parameter:usr:c:sample.h@93@F@control_step@request"
+        },
+        {
+          "attributes": {},
+          "id": "edge:d86e904fcb204576c9611358589e79c41bf793cef722b13320e0a4f37f8387e1",
+          "kind": "parameter_of",
+          "location": {
+            "column": 32,
+            "end_column": 39,
+            "end_line": 10,
+            "line": 10,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "function:usr:c:@F@control_step",
+          "target": "parameter:usr:c:sample.c@130@F@control_step@request"
+        },
+        {
+          "attributes": {},
+          "id": "edge:fae410c345bc2008d2beaaef75072dd378b4410e2b1d1c915e84f27708f4c7c1",
+          "kind": "parameter_of",
+          "location": {
+            "column": 34,
+            "end_column": 41,
+            "end_line": 5,
+            "line": 5,
+            "path": "tests/fixtures/code_intelligence/sample.h"
+          },
+          "resolution": "compiler_derived",
+          "source": "function:usr:c:@F@duplicate_step",
+          "target": "parameter:usr:c:sample.h@136@F@duplicate_step@request"
+        }
+      ],
+      "kind": "memory_estimate_graph",
+      "metadata": {
+        "authority": "type_size_estimate_not_linker_or_stack_evidence",
+        "global_storage_estimate_bytes": 4,
+        "local_and_parameter_storage_estimate_by_function": {
+          "function:usr:c:@F@control_step": 12,
+          "function:usr:c:@F@duplicate_step": 12
+        },
+        "size_bytes_by_symbol": {
+          "global_variable:usr:c:@system_state": 4,
+          "local_variable:usr:c:sample.c@154@F@control_step@next": 4,
+          "local_variable:usr:c:sample.c@334@F@duplicate_step@next": 4,
+          "parameter:usr:c:sample.c@130@F@control_step@request": 4,
+          "parameter:usr:c:sample.c@310@F@duplicate_step@request": 4,
+          "parameter:usr:c:sample.h@136@F@duplicate_step@request": 4,
+          "parameter:usr:c:sample.h@93@F@control_step@request": 4
+        },
+        "unknown_size_symbols": []
+      },
+      "nodes": [
+        {
+          "attributes": {
+            "external": false,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "id": "file:fallback:tests/fixtures/code_intelligence/sample.c:tests/fixtures/code_intelligence/sample.c",
+          "is_definition": null,
+          "kind": "file",
+          "location": {
+            "column": null,
+            "end_column": null,
+            "end_line": null,
+            "line": null,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "sample.c",
+          "usr": null
+        },
+        {
+          "attributes": {
+            "complexity_method": "ast_cyclomatic_v1",
+            "cyclomatic_complexity": 2,
+            "external": false,
+            "return_type": "unsigned int",
+            "statement_count": 3,
+            "token_count": 28,
+            "token_fingerprint": "9ad33e064e923222b92407674c000caae2fd906cad1e0b98443b58b9249a4852",
+            "token_fingerprint_method": "clang_tokens_sha256_v1"
+          },
+          "id": "function:usr:c:@F@control_step",
+          "is_definition": true,
+          "kind": "function",
+          "location": {
+            "column": 10,
+            "end_column": 2,
+            "end_line": 19,
+            "line": 10,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "control_step",
+          "usr": "c:@F@control_step"
+        },
+        {
+          "attributes": {
+            "complexity_method": "ast_cyclomatic_v1",
+            "cyclomatic_complexity": 2,
+            "external": false,
+            "return_type": "unsigned int",
+            "statement_count": 3,
+            "token_count": 28,
+            "token_fingerprint": "9ad33e064e923222b92407674c000caae2fd906cad1e0b98443b58b9249a4852",
+            "token_fingerprint_method": "clang_tokens_sha256_v1"
+          },
+          "id": "function:usr:c:@F@duplicate_step",
+          "is_definition": true,
+          "kind": "function",
+          "location": {
+            "column": 10,
+            "end_column": 2,
+            "end_line": 30,
+            "line": 21,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "duplicate_step",
+          "usr": "c:@F@duplicate_step"
+        },
+        {
+          "attributes": {
+            "external": false,
+            "size_bytes": 4,
+            "type": "unsigned int"
+          },
+          "id": "global_variable:usr:c:@system_state",
+          "is_definition": false,
+          "kind": "global_variable",
+          "location": {
+            "column": 10,
+            "end_column": 22,
+            "end_line": 3,
+            "line": 3,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "system_state",
+          "usr": "c:@system_state"
+        },
+        {
+          "attributes": {
+            "external": false,
+            "scope": "function:usr:c:@F@control_step",
+            "size_bytes": 4,
+            "type": "unsigned int"
+          },
+          "id": "local_variable:usr:c:sample.c@154@F@control_step@next",
+          "is_definition": true,
+          "kind": "local_variable",
+          "location": {
+            "column": 14,
+            "end_column": 33,
+            "end_line": 12,
+            "line": 12,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "next",
+          "usr": "c:sample.c@154@F@control_step@next"
+        },
+        {
+          "attributes": {
+            "external": false,
+            "scope": "function:usr:c:@F@duplicate_step",
+            "size_bytes": 4,
+            "type": "unsigned int"
+          },
+          "id": "local_variable:usr:c:sample.c@334@F@duplicate_step@next",
+          "is_definition": true,
+          "kind": "local_variable",
+          "location": {
+            "column": 14,
+            "end_column": 33,
+            "end_line": 23,
+            "line": 23,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "next",
+          "usr": "c:sample.c@334@F@duplicate_step@next"
+        },
+        {
+          "attributes": {
+            "external": false,
+            "scope": "function:usr:c:@F@control_step",
+            "size_bytes": 4,
+            "type": "unsigned int"
+          },
+          "id": "parameter:usr:c:sample.c@130@F@control_step@request",
+          "is_definition": true,
+          "kind": "parameter",
+          "location": {
+            "column": 32,
+            "end_column": 39,
+            "end_line": 10,
+            "line": 10,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "request",
+          "usr": "c:sample.c@130@F@control_step@request"
+        },
+        {
+          "attributes": {
+            "external": false,
+            "scope": "function:usr:c:@F@duplicate_step",
+            "size_bytes": 4,
+            "type": "unsigned int"
+          },
+          "id": "parameter:usr:c:sample.c@310@F@duplicate_step@request",
+          "is_definition": true,
+          "kind": "parameter",
+          "location": {
+            "column": 34,
+            "end_column": 41,
+            "end_line": 21,
+            "line": 21,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "request",
+          "usr": "c:sample.c@310@F@duplicate_step@request"
+        },
+        {
+          "attributes": {
+            "external": false,
+            "scope": "function:usr:c:@F@duplicate_step",
+            "size_bytes": 4,
+            "type": "unsigned int"
+          },
+          "id": "parameter:usr:c:sample.h@136@F@duplicate_step@request",
+          "is_definition": true,
+          "kind": "parameter",
+          "location": {
+            "column": 34,
+            "end_column": 41,
+            "end_line": 5,
+            "line": 5,
+            "path": "tests/fixtures/code_intelligence/sample.h"
+          },
+          "name": "request",
+          "usr": "c:sample.h@136@F@duplicate_step@request"
+        },
+        {
+          "attributes": {
+            "external": false,
+            "scope": "function:usr:c:@F@control_step",
+            "size_bytes": 4,
+            "type": "unsigned int"
+          },
+          "id": "parameter:usr:c:sample.h@93@F@control_step@request",
+          "is_definition": true,
+          "kind": "parameter",
+          "location": {
+            "column": 32,
+            "end_column": 39,
+            "end_line": 4,
+            "line": 4,
+            "path": "tests/fixtures/code_intelligence/sample.h"
+          },
+          "name": "request",
+          "usr": "c:sample.h@93@F@control_step@request"
+        }
+      ],
+      "summary": {
+        "edges": 7,
+        "nodes": 10,
+        "unresolved_edges": 0
+      }
+    },
+    "module_dependency_graph": {
+      "edges": [
+        {
+          "attributes": {
+            "evidence_edge_ids": [
+              "edge:ae754a8679ac750db2171514c1843ba0cc0f7bf74811f4d186a50af4d4f55458"
+            ],
+            "evidence_kinds": [
+              "includes"
+            ],
+            "grouping": "file_as_module"
+          },
+          "id": "edge:8174556ae789fa3dcba1a10aa02ead7cf60022514f012255ba1c26622302982c",
+          "kind": "depends_on",
+          "location": null,
+          "resolution": "compiler_derived",
+          "source": "file:fallback:tests/fixtures/code_intelligence/sample.c:tests/fixtures/code_intelligence/sample.c",
+          "target": "file:fallback:tests/fixtures/code_intelligence/sample.h:tests/fixtures/code_intelligence/sample.h"
+        }
+      ],
+      "kind": "module_dependency_graph",
+      "metadata": {
+        "grouping": "file_as_module"
+      },
+      "nodes": [
+        {
+          "attributes": {
+            "external": false,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "id": "file:fallback:tests/fixtures/code_intelligence/sample.c:tests/fixtures/code_intelligence/sample.c",
+          "is_definition": null,
+          "kind": "file",
+          "location": {
+            "column": null,
+            "end_column": null,
+            "end_line": null,
+            "line": null,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "sample.c",
+          "usr": null
+        },
+        {
+          "attributes": {
+            "external": false,
+            "path": "tests/fixtures/code_intelligence/sample.h"
+          },
+          "id": "file:fallback:tests/fixtures/code_intelligence/sample.h:tests/fixtures/code_intelligence/sample.h",
+          "is_definition": null,
+          "kind": "file",
+          "location": {
+            "column": null,
+            "end_column": null,
+            "end_line": null,
+            "line": null,
+            "path": "tests/fixtures/code_intelligence/sample.h"
+          },
+          "name": "sample.h",
+          "usr": null
+        }
+      ],
+      "summary": {
+        "edges": 1,
+        "nodes": 2,
+        "unresolved_edges": 0
+      }
+    },
+    "reachability_graph": {
+      "edges": [
+        {
+          "attributes": {},
+          "id": "edge:0a01e8b66d7107533b15bdd6993bf98ed4e3919bc5e291113a0189a82cbfbb01",
+          "kind": "calls",
+          "location": {
+            "column": 21,
+            "end_column": 33,
+            "end_line": 12,
+            "line": 12,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "function:usr:c:@F@control_step",
+          "target": "function:usr:c:sample.c@F@read_state"
+        },
+        {
+          "attributes": {},
+          "id": "edge:306146a2b2cf22ca0c8cd492f70796b68263c09953777a170a1dc02c20173f9d",
+          "kind": "calls",
+          "location": {
+            "column": 21,
+            "end_column": 33,
+            "end_line": 23,
+            "line": 23,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "function:usr:c:@F@duplicate_step",
+          "target": "function:usr:c:sample.c@F@read_state"
+        }
+      ],
+      "kind": "reachability_graph",
+      "metadata": {
+        "reachable": [
+          "function:usr:c:@F@control_step",
+          "function:usr:c:sample.c@F@read_state"
+        ],
+        "roots": [
+          "function:usr:c:@F@control_step"
+        ],
+        "unreachable": [
+          "function:usr:c:@F@duplicate_step"
+        ],
+        "unresolved_boundary_edges": []
+      },
+      "nodes": [
+        {
+          "attributes": {
+            "complexity_method": "ast_cyclomatic_v1",
+            "cyclomatic_complexity": 2,
+            "external": false,
+            "return_type": "unsigned int",
+            "statement_count": 3,
+            "token_count": 28,
+            "token_fingerprint": "9ad33e064e923222b92407674c000caae2fd906cad1e0b98443b58b9249a4852",
+            "token_fingerprint_method": "clang_tokens_sha256_v1"
+          },
+          "id": "function:usr:c:@F@control_step",
+          "is_definition": true,
+          "kind": "function",
+          "location": {
+            "column": 10,
+            "end_column": 2,
+            "end_line": 19,
+            "line": 10,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "control_step",
+          "usr": "c:@F@control_step"
+        },
+        {
+          "attributes": {
+            "complexity_method": "ast_cyclomatic_v1",
+            "cyclomatic_complexity": 2,
+            "external": false,
+            "return_type": "unsigned int",
+            "statement_count": 3,
+            "token_count": 28,
+            "token_fingerprint": "9ad33e064e923222b92407674c000caae2fd906cad1e0b98443b58b9249a4852",
+            "token_fingerprint_method": "clang_tokens_sha256_v1"
+          },
+          "id": "function:usr:c:@F@duplicate_step",
+          "is_definition": true,
+          "kind": "function",
+          "location": {
+            "column": 10,
+            "end_column": 2,
+            "end_line": 30,
+            "line": 21,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "duplicate_step",
+          "usr": "c:@F@duplicate_step"
+        },
+        {
+          "attributes": {
+            "complexity_method": "ast_cyclomatic_v1",
+            "cyclomatic_complexity": 1,
+            "external": false,
+            "return_type": "unsigned int",
+            "statement_count": 1,
+            "token_count": 5,
+            "token_fingerprint": "6169ec7bf778e9cc9b8a8506901951e69f4eda7572c3103933b70edf7ff4aa6c",
+            "token_fingerprint_method": "clang_tokens_sha256_v1"
+          },
+          "id": "function:usr:c:sample.c@F@read_state",
+          "is_definition": true,
+          "kind": "function",
+          "location": {
+            "column": 17,
+            "end_column": 2,
+            "end_line": 8,
+            "line": 5,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "read_state",
+          "usr": "c:sample.c@F@read_state"
+        }
+      ],
+      "summary": {
+        "edges": 2,
+        "nodes": 3,
+        "unresolved_edges": 0
+      }
+    },
+    "variable_access_graph": {
+      "edges": [
+        {
+          "attributes": {},
+          "id": "edge:00f11c2544af792b58224ef4c3034b4530529e6ef8e46d2d77b5eddd4af43eaf",
+          "kind": "reads",
+          "location": {
+            "column": 9,
+            "end_column": 16,
+            "end_line": 25,
+            "line": 25,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "function:usr:c:@F@duplicate_step",
+          "target": "parameter:usr:c:sample.c@310@F@duplicate_step@request"
+        },
+        {
+          "attributes": {},
+          "id": "edge:093577a4eeb545d73993d73de6a1b1a983c8df4cb5bab610a21165a33dc5d63a",
+          "kind": "reads",
+          "location": {
+            "column": 20,
+            "end_column": 24,
+            "end_line": 28,
+            "line": 28,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "function:usr:c:@F@duplicate_step",
+          "target": "local_variable:usr:c:sample.c@334@F@duplicate_step@next"
+        },
+        {
+          "attributes": {},
+          "id": "edge:168d1331dab73e726a8604665a0d41d9b9ec658cd1be96559edd63c649a168f2",
+          "kind": "reads",
+          "location": {
+            "column": 12,
+            "end_column": 16,
+            "end_line": 29,
+            "line": 29,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "function:usr:c:@F@duplicate_step",
+          "target": "local_variable:usr:c:sample.c@334@F@duplicate_step@next"
+        },
+        {
+          "attributes": {},
+          "id": "edge:3586c5123b0c63401d0cdc0a3249540462f95cabbb063f4057dab42621a2dae1",
+          "kind": "reads",
+          "location": {
+            "column": 12,
+            "end_column": 24,
+            "end_line": 7,
+            "line": 7,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "function:usr:c:sample.c@F@read_state",
+          "target": "global_variable:usr:c:@system_state"
+        },
+        {
+          "attributes": {},
+          "id": "edge:4712cfb6485c1c3b731ebacab0c9fed7f6578f9ffff76ec58d0883ae49b147b1",
+          "kind": "reads",
+          "location": {
+            "column": 12,
+            "end_column": 16,
+            "end_line": 18,
+            "line": 18,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "function:usr:c:@F@control_step",
+          "target": "local_variable:usr:c:sample.c@154@F@control_step@next"
+        },
+        {
+          "attributes": {},
+          "id": "edge:b3e27fa00e12cf210a9a51bdec1290280dc422ab8a321c93c5a76a25ce8ae263",
+          "kind": "reads",
+          "location": {
+            "column": 19,
+            "end_column": 23,
+            "end_line": 25,
+            "line": 25,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "function:usr:c:@F@duplicate_step",
+          "target": "local_variable:usr:c:sample.c@334@F@duplicate_step@next"
+        },
+        {
+          "attributes": {},
+          "id": "edge:c466482b9359aed7d52ce863b70d205483b96106382c3c5d662b3d6253556541",
+          "kind": "reads",
+          "location": {
+            "column": 20,
+            "end_column": 24,
+            "end_line": 17,
+            "line": 17,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "function:usr:c:@F@control_step",
+          "target": "local_variable:usr:c:sample.c@154@F@control_step@next"
+        },
+        {
+          "attributes": {},
+          "id": "edge:c49460c99a71184d275cacc18b08143cf80f91929ac763702e085217d9c4d4d6",
+          "kind": "reads",
+          "location": {
+            "column": 19,
+            "end_column": 23,
+            "end_line": 14,
+            "line": 14,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "function:usr:c:@F@control_step",
+          "target": "local_variable:usr:c:sample.c@154@F@control_step@next"
+        },
+        {
+          "attributes": {},
+          "id": "edge:c595ff8c5d35ebfa3c48e80fc46b34ee20502a2a54c5af19743e725e0e59762f",
+          "kind": "reads",
+          "location": {
+            "column": 9,
+            "end_column": 16,
+            "end_line": 14,
+            "line": 14,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "function:usr:c:@F@control_step",
+          "target": "parameter:usr:c:sample.c@130@F@control_step@request"
+        },
+        {
+          "attributes": {},
+          "id": "edge:d973dc80d79903072f2c6a0b51f5c99e2bdfb140e959cf813bae57516d72d42d",
+          "kind": "reads",
+          "location": {
+            "column": 16,
+            "end_column": 23,
+            "end_line": 26,
+            "line": 26,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "function:usr:c:@F@duplicate_step",
+          "target": "parameter:usr:c:sample.c@310@F@duplicate_step@request"
+        },
+        {
+          "attributes": {},
+          "id": "edge:e8472696787660c1d5cce9d33400fc16cf08fcb1980d546d6efbb6ec621c5f2c",
+          "kind": "reads",
+          "location": {
+            "column": 16,
+            "end_column": 23,
+            "end_line": 15,
+            "line": 15,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "function:usr:c:@F@control_step",
+          "target": "parameter:usr:c:sample.c@130@F@control_step@request"
+        },
+        {
+          "attributes": {},
+          "id": "edge:0ed8454e6ac7957edaaf9f847ce664f7a04285d6147841131d7687b06e345f16",
+          "kind": "writes",
+          "location": {
+            "column": 5,
+            "end_column": 17,
+            "end_line": 28,
+            "line": 28,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "function:usr:c:@F@duplicate_step",
+          "target": "global_variable:usr:c:@system_state"
+        },
+        {
+          "attributes": {},
+          "id": "edge:1782bbeb8dee3737e45ef48086cc8f1a49787573d2baaffc5c6779dae2400f34",
+          "kind": "writes",
+          "location": {
+            "column": 5,
+            "end_column": 17,
+            "end_line": 17,
+            "line": 17,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "function:usr:c:@F@control_step",
+          "target": "global_variable:usr:c:@system_state"
+        },
+        {
+          "attributes": {},
+          "id": "edge:23fc3aa6d9ef6c73ce31d64959a9da919c07006871243fc6244a5554c1f18f3e",
+          "kind": "writes",
+          "location": {
+            "column": 9,
+            "end_column": 13,
+            "end_line": 15,
+            "line": 15,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "function:usr:c:@F@control_step",
+          "target": "local_variable:usr:c:sample.c@154@F@control_step@next"
+        },
+        {
+          "attributes": {
+            "context": "initializer"
+          },
+          "id": "edge:517b3a09e9b0ddfdbdc6a459dd2494eb287694e347b0cb109db2af97e828fdaa",
+          "kind": "writes",
+          "location": {
+            "column": 14,
+            "end_column": 33,
+            "end_line": 12,
+            "line": 12,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "function:usr:c:@F@control_step",
+          "target": "local_variable:usr:c:sample.c@154@F@control_step@next"
+        },
+        {
+          "attributes": {},
+          "id": "edge:b3ff785cce3dce2c4705e98c4f18e4e901f82d4dcd9643cdacde58ab53c6abca",
+          "kind": "writes",
+          "location": {
+            "column": 9,
+            "end_column": 13,
+            "end_line": 26,
+            "line": 26,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "function:usr:c:@F@duplicate_step",
+          "target": "local_variable:usr:c:sample.c@334@F@duplicate_step@next"
+        },
+        {
+          "attributes": {
+            "context": "initializer"
+          },
+          "id": "edge:f9121d28633a355ea2a3b2ac7dd728f9aca85a219c0c7aefc50a8ad8d362115c",
+          "kind": "writes",
+          "location": {
+            "column": 14,
+            "end_column": 33,
+            "end_line": 23,
+            "line": 23,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "resolution": "compiler_derived",
+          "source": "function:usr:c:@F@duplicate_step",
+          "target": "local_variable:usr:c:sample.c@334@F@duplicate_step@next"
+        }
+      ],
+      "kind": "variable_access_graph",
+      "metadata": {
+        "access_counts": {
+          "reads": 11,
+          "references": 0,
+          "writes": 6
+        },
+        "classification": "conservative_ast_context_v1"
+      },
+      "nodes": [
+        {
+          "attributes": {
+            "complexity_method": "ast_cyclomatic_v1",
+            "cyclomatic_complexity": 2,
+            "external": false,
+            "return_type": "unsigned int",
+            "statement_count": 3,
+            "token_count": 28,
+            "token_fingerprint": "9ad33e064e923222b92407674c000caae2fd906cad1e0b98443b58b9249a4852",
+            "token_fingerprint_method": "clang_tokens_sha256_v1"
+          },
+          "id": "function:usr:c:@F@control_step",
+          "is_definition": true,
+          "kind": "function",
+          "location": {
+            "column": 10,
+            "end_column": 2,
+            "end_line": 19,
+            "line": 10,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "control_step",
+          "usr": "c:@F@control_step"
+        },
+        {
+          "attributes": {
+            "complexity_method": "ast_cyclomatic_v1",
+            "cyclomatic_complexity": 2,
+            "external": false,
+            "return_type": "unsigned int",
+            "statement_count": 3,
+            "token_count": 28,
+            "token_fingerprint": "9ad33e064e923222b92407674c000caae2fd906cad1e0b98443b58b9249a4852",
+            "token_fingerprint_method": "clang_tokens_sha256_v1"
+          },
+          "id": "function:usr:c:@F@duplicate_step",
+          "is_definition": true,
+          "kind": "function",
+          "location": {
+            "column": 10,
+            "end_column": 2,
+            "end_line": 30,
+            "line": 21,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "duplicate_step",
+          "usr": "c:@F@duplicate_step"
+        },
+        {
+          "attributes": {
+            "complexity_method": "ast_cyclomatic_v1",
+            "cyclomatic_complexity": 1,
+            "external": false,
+            "return_type": "unsigned int",
+            "statement_count": 1,
+            "token_count": 5,
+            "token_fingerprint": "6169ec7bf778e9cc9b8a8506901951e69f4eda7572c3103933b70edf7ff4aa6c",
+            "token_fingerprint_method": "clang_tokens_sha256_v1"
+          },
+          "id": "function:usr:c:sample.c@F@read_state",
+          "is_definition": true,
+          "kind": "function",
+          "location": {
+            "column": 17,
+            "end_column": 2,
+            "end_line": 8,
+            "line": 5,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "read_state",
+          "usr": "c:sample.c@F@read_state"
+        },
+        {
+          "attributes": {
+            "external": false,
+            "size_bytes": 4,
+            "type": "unsigned int"
+          },
+          "id": "global_variable:usr:c:@system_state",
+          "is_definition": false,
+          "kind": "global_variable",
+          "location": {
+            "column": 10,
+            "end_column": 22,
+            "end_line": 3,
+            "line": 3,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "system_state",
+          "usr": "c:@system_state"
+        },
+        {
+          "attributes": {
+            "external": false,
+            "scope": "function:usr:c:@F@control_step",
+            "size_bytes": 4,
+            "type": "unsigned int"
+          },
+          "id": "local_variable:usr:c:sample.c@154@F@control_step@next",
+          "is_definition": true,
+          "kind": "local_variable",
+          "location": {
+            "column": 14,
+            "end_column": 33,
+            "end_line": 12,
+            "line": 12,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "next",
+          "usr": "c:sample.c@154@F@control_step@next"
+        },
+        {
+          "attributes": {
+            "external": false,
+            "scope": "function:usr:c:@F@duplicate_step",
+            "size_bytes": 4,
+            "type": "unsigned int"
+          },
+          "id": "local_variable:usr:c:sample.c@334@F@duplicate_step@next",
+          "is_definition": true,
+          "kind": "local_variable",
+          "location": {
+            "column": 14,
+            "end_column": 33,
+            "end_line": 23,
+            "line": 23,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "next",
+          "usr": "c:sample.c@334@F@duplicate_step@next"
+        },
+        {
+          "attributes": {
+            "external": false,
+            "scope": "function:usr:c:@F@control_step",
+            "size_bytes": 4,
+            "type": "unsigned int"
+          },
+          "id": "parameter:usr:c:sample.c@130@F@control_step@request",
+          "is_definition": true,
+          "kind": "parameter",
+          "location": {
+            "column": 32,
+            "end_column": 39,
+            "end_line": 10,
+            "line": 10,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "request",
+          "usr": "c:sample.c@130@F@control_step@request"
+        },
+        {
+          "attributes": {
+            "external": false,
+            "scope": "function:usr:c:@F@duplicate_step",
+            "size_bytes": 4,
+            "type": "unsigned int"
+          },
+          "id": "parameter:usr:c:sample.c@310@F@duplicate_step@request",
+          "is_definition": true,
+          "kind": "parameter",
+          "location": {
+            "column": 34,
+            "end_column": 41,
+            "end_line": 21,
+            "line": 21,
+            "path": "tests/fixtures/code_intelligence/sample.c"
+          },
+          "name": "request",
+          "usr": "c:sample.c@310@F@duplicate_step@request"
+        }
+      ],
+      "summary": {
+        "edges": 17,
+        "nodes": 8,
+        "unresolved_edges": 0
+      }
+    }
+  },
+  "source": "tests/fixtures/code_intelligence/sample.c"
+}

@@ -35,6 +35,15 @@ class FakeExtent:
 @dataclass
 class FakeType:
     spelling: str
+    size: int = -1
+
+    def get_size(self) -> int:
+        return self.size
+
+
+@dataclass
+class FakeToken:
+    spelling: str
 
 
 class FakeCursor:
@@ -53,6 +62,8 @@ class FakeCursor:
         included_file: Path | None = None,
         semantic_parent_kind: str | None = None,
         type_spelling: str = "",
+        type_size: int = -1,
+        tokens: list[str] | None = None,
     ) -> None:
         self.kind = FakeKind(kind)
         self.spelling = spelling
@@ -62,13 +73,14 @@ class FakeCursor:
         self._children = children or []
         self.referenced = referenced
         self._included_file = included_file
+        self._tokens = tokens or []
         file_value = FakeFile(path) if path else None
         self.location = FakePosition(file_value, line, 2)
         self.extent = FakeExtent(FakePosition(file_value, line + 1, 1))
         self.semantic_parent = (
             FakeCursor(semantic_parent_kind) if semantic_parent_kind else None
         )
-        self.type = FakeType(type_spelling)
+        self.type = FakeType(type_spelling, type_size)
         self.result_type = FakeType(type_spelling)
 
     def get_children(self):
@@ -82,6 +94,9 @@ class FakeCursor:
 
     def get_included_file(self):
         return FakeFile(self._included_file) if self._included_file else None
+
+    def get_tokens(self):
+        return iter(FakeToken(token) for token in self._tokens)
 
 
 def test_ast_extracts_stable_nodes_and_relationships(tmp_path: Path):
@@ -222,3 +237,100 @@ def test_fallback_identity_is_deterministic(tmp_path: Path):
     assert first.to_dict() == second.to_dict()
     macro = next(node for node in first.nodes if node.kind == NodeKind.MACRO)
     assert macro.id == "macro:fallback:src/control.c:CONTROL_LIMIT"
+
+
+def test_ast_extracts_scoped_symbols_accesses_and_function_facts(tmp_path: Path):
+    source = tmp_path / "src" / "control.c"
+    global_variable = FakeCursor(
+        "VAR_DECL",
+        path=source,
+        spelling="system_state",
+        definition=True,
+        semantic_parent_kind="TRANSLATION_UNIT",
+        type_spelling="uint32_t",
+        type_size=4,
+        line=2,
+    )
+    parameter = FakeCursor(
+        "PARM_DECL",
+        path=source,
+        spelling="request",
+        usr="c:control_step@request",
+        type_spelling="uint8_t",
+        type_size=1,
+        line=4,
+    )
+    local = FakeCursor(
+        "VAR_DECL",
+        path=source,
+        spelling="next",
+        type_spelling="uint32_t",
+        type_size=4,
+        line=5,
+    )
+    local_write = FakeCursor(
+        "DECL_REF_EXPR", path=source, spelling="next", referenced=local, line=6
+    )
+    global_read = FakeCursor(
+        "DECL_REF_EXPR",
+        path=source,
+        spelling="system_state",
+        referenced=global_variable,
+        line=6,
+    )
+    assignment = FakeCursor(
+        "BINARY_OPERATOR",
+        path=source,
+        children=[local_write, global_read],
+        tokens=["next", "=", "system_state"],
+        line=6,
+    )
+    function = FakeCursor(
+        "FUNCTION_DECL",
+        path=source,
+        spelling="control_step",
+        usr="c:@F@control_step",
+        definition=True,
+        type_spelling="void",
+        tokens=["void", "control_step", "(", ")", "{", "}"],
+        children=[
+            parameter,
+            local,
+            assignment,
+            FakeCursor("IF_STMT", path=source, line=7),
+        ],
+        line=3,
+    )
+    root = FakeCursor(
+        "TRANSLATION_UNIT", children=[global_variable, function]
+    )
+
+    fragment = extract_translation_unit(
+        root, repo_root=tmp_path, translation_unit=source
+    )
+
+    nodes = {node.id: node for node in fragment.nodes}
+    function_node = nodes["function:usr:c:@F@control_step"]
+    assert function_node.attributes["cyclomatic_complexity"] == 2
+    assert function_node.attributes["statement_count"] == 1
+    assert function_node.attributes["token_count"] == 2
+    local_node = next(
+        node for node in nodes.values() if node.kind == NodeKind.LOCAL_VARIABLE
+    )
+    parameter_node = next(
+        node for node in nodes.values() if node.kind == NodeKind.PARAMETER
+    )
+    global_node = next(
+        node for node in nodes.values() if node.kind == NodeKind.GLOBAL_VARIABLE
+    )
+    assert sum(node.kind == NodeKind.GLOBAL_VARIABLE for node in nodes.values()) == 1
+    assert local_node.attributes["size_bytes"] == 4
+    assert parameter_node.attributes["size_bytes"] == 1
+    assert global_node.attributes["size_bytes"] == 4
+    assert function_node.id in local_node.id
+
+    edges = {(edge.kind, edge.source, edge.target) for edge in fragment.edges}
+    assert (EdgeKind.PARAMETER_OF, function_node.id, parameter_node.id) in edges
+    assert (EdgeKind.CONTAINS, function_node.id, local_node.id) in edges
+    assert (EdgeKind.WRITES, function_node.id, local_node.id) in edges
+    assert (EdgeKind.READS, function_node.id, global_node.id) in edges
