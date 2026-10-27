@@ -1,7 +1,7 @@
 # D026 — Adopt a unified code-intelligence graph without changing symbol inventory
 
 - Date: 2026-10-27
-- Status: accepted; initial AST extraction implemented
+- Status: accepted; AST extraction and graph foundation implemented
 - Scope: code-intelligence package, graph contract, AST extraction, and future
   graph projections
 - Context: the existing symbol inventory is a stable input to naming checks and
@@ -40,9 +40,10 @@
   contract; or an evaluated external CPG engine provides a demonstrably safer
   canonical representation.
 - Implementation references: `src/code_intelligence/`,
-  `tests/test_code_intelligence_ast.py`, and
+  `tests/test_code_intelligence_ast.py`,
+  `tests/test_code_intelligence_graph.py`, and
   `docs/contracts/code-intelligence-graph.md`.
-- Observed impact and validation: three pure extraction scenarios pass by
-  direct assertion invocation in the supported Python 3.13 environment. Pytest
-  Black, and Ruff are not installed, so their attempted commands were
-  environment failures and are not reported as passes.
+- Observed impact and validation: three pure extraction and five pure graph/
+  snapshot scenarios pass by direct assertion invocation in the supported
+  Python 3.13 environment. Pytest, Black, and Ruff are not installed, so their
+  attempted commands were environment failures and are not reported as passes.

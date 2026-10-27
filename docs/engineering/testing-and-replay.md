@@ -69,6 +69,16 @@ The fixture intentionally uses fake cursor objects so the isolated contract can
 be tested without machine-specific libclang. A real compilation-database
 fixture is required when the runner and snapshot integration are added.
 
+### Code-intelligence graph verification — 2026-10-27
+
+| Check | Result | What it proves |
+|---|---|---|
+| `venv313` direct invocation of the five functions in `tests/test_code_intelligence_graph.py` | Passed | Definition facts win deterministic merge; call/include projections use the canonical graph; identity conflicts and dangling edges fail closed; snapshot bytes are repeatable and atomically replace the target; required replay provenance cannot be omitted |
+| Python AST parse and 88-column scan over `src/code_intelligence` and both focused test modules | Passed | All new Python parses and the repository's configured line-length boundary is met |
+
+Pytest, Black, and Ruff remain unavailable in `venv313`; the focused direct
+assertions and deterministic byte comparison are the executed evidence.
+
 ## Current test inventory
 
 ### `src/repo_review/tests/manual/smoke_test.py`

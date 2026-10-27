@@ -1107,3 +1107,21 @@ and third-party artifacts and must not be interpreted as effort or quality.
   as environment limitations rather than passes.
 - Next state: merge translation-unit fragments into one deterministic snapshot,
   persist it atomically, and implement call/include views over that authority.
+
+### Time not captured — Implement the first unified graph and projections
+
+- Added stable-identity fragment merge with deterministic ordering and explicit
+  failure on incompatible node/edge facts or dangling endpoints. Definition
+  metadata wins over declaration-only metadata for a shared symbol identity.
+- Added canonical snapshot serialization with required source revision, dirty
+  state, producer, and producer-version provenance. Writes flush a sibling
+  temporary file and atomically replace the target; failures remove the partial
+  temporary file.
+- Added call and include projections that select nodes and edges from the
+  canonical graph and expose unresolved-edge totals without writing separate
+  graph authorities.
+- Five focused graph scenarios and the three AST scenarios pass by direct
+  invocation; Python syntax and the configured 88-column boundary also pass.
+- Next state: connect a compilation database and real libclang translation units
+  to the package, capture configuration/tool provenance, then write one graph
+  snapshot under the run analysis directory.

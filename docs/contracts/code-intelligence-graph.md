@@ -22,10 +22,11 @@ authoritative stores.
 }
 ```
 
-The current AST boundary produces one `GraphFragment` per translation unit.
-Fragments identify their translation unit and carry nodes, edges, and extraction
-diagnostics. A later merger owns cross-translation-unit deduplication and the
-snapshot envelope.
+The AST boundary produces one `GraphFragment` per translation unit. Fragments
+identify their translation unit and carry nodes, edges, and extraction
+diagnostics. `KnowledgeGraph` merges fragments by stable identity, rejects
+incompatible facts or dangling edges, and sorts all retained facts before
+serialization.
 
 ## Nodes
 
@@ -77,10 +78,23 @@ kind, source, target, and a source-occurrence discriminator. Resolution is one
 of `compiler_derived`, `external`, or `unresolved`. Source location identifies
 the observed occurrence; it is provenance, not part of symbol identity.
 
+## Snapshot and views
+
+The canonical snapshot contains schema version, sorted translation units,
+nodes, edges, diagnostics, and caller-supplied provenance. Snapshot writing
+requires `source_revision`, `dirty`, `producer`, and `producer_version`, writes
+deterministic JSON bytes to a sibling temporary file, flushes them, and then
+atomically replaces the target.
+
+Call and include views filter the canonical graph and report node/edge totals
+plus unresolved-edge count. They are runtime projections and are not written as
+competing authorities.
+
 ## Compatibility and limits
 
 This contract does not change `analysis/symbols.json`, which remains owned by
 the existing naming and inventory workflow. The new extractor is additive.
 Schema 1.0 does not yet claim complete indirect-call resolution, preprocessing
 configuration equivalence, cross-translation-unit header deduplication,
-control/data flow, semantic roles, final-binary reachability, or persistence.
+control/data flow, semantic roles, final-binary reachability, or an application
+runner that supplies snapshot provenance.

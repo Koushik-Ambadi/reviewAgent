@@ -8,7 +8,8 @@
 - Decision: [D026](../decisions/D026-unified-code-intelligence-graph.md)
 - Code entry points: `src/code_intelligence/models.py`,
   `src/code_intelligence/identity.py`, and
-  `src/code_intelligence/extraction/ast_extractor.py`
+  `src/code_intelligence/extraction/ast_extractor.py`; merge/view/storage entry
+  points under `src/code_intelligence/graph`, `views`, and `storage`
 - Upstream: repository root, compilation database, translation-unit cursor, and
   libclang source/reference facts
 - Downstream: graph merger, snapshot persistence, deterministic graph views,
@@ -22,12 +23,14 @@ facts and extracts one graph fragment from a clang translation-unit cursor. It
 is an additive foundation: the existing `repo_review` symbol inventory remains
 unchanged and continues to support naming checks and report inventory.
 
-Current maturity is an isolated, pure extraction slice. It emits file,
+Current maturity is an isolated extraction and graph-foundation slice. It emits file,
 function, struct, enum, typedef, global-variable, and macro nodes; physical
 containment plus declaration/definition, include, and call edges; stable USR-
 first identity; repository-relative locations; and explicit external/unresolved
-relations. It does not yet parse compilation databases itself or write run
-artifacts.
+relations. Fragments merge into one invariant-checked graph, canonical
+snapshots are written atomically with required replay provenance, and call and
+include projections are available. The package does not yet parse compilation
+databases itself or write application run artifacts.
 
 ## Flow and invariants
 
@@ -37,6 +40,8 @@ clang translation-unit cursor
   -> graph nodes with USR-first identity
   -> source-occurrence edges with resolution state
   -> deterministic GraphFragment ordering
+  -> stable-identity merge and invariant validation
+  -> canonical snapshot or call/include projection
 ```
 
 - Repository-owned declarations outside the configured repository root are
@@ -50,12 +55,18 @@ clang translation-unit cursor
   node/edge ID. Definitions replace declaration-only node metadata when both
   share an ID.
 - Output ordering is deterministic and contains no timestamp or random UUID.
+- Conflicting facts for one stable identity and edges with absent endpoints fail
+  closed rather than being silently overwritten.
+- Snapshot persistence requires source revision, dirty state, producer, and
+  producer version and uses same-directory atomic replacement.
 
 ## Known limits and next boundary
 
 The fake-cursor unit fixtures prove extraction semantics without requiring a
-machine-specific libclang installation. A real representative C fixture and
-compilation-database runner remain the next integration gate. Cross-translation-
-unit merge, snapshot provenance, call/include projections, indirect calls,
-conditional compilation coverage, and configuration identity are not yet
-implemented.
+machine-specific libclang installation. Pure graph fixtures prove deterministic
+merge, definition preference, conflict/dangling-edge rejection, projections,
+required provenance, and repeatable atomic snapshot bytes. A real representative
+C fixture and compilation-database runner remain the next integration gate.
+Indirect calls, conditional-compilation coverage, configuration identity, and
+cross-translation-unit semantic reconciliation beyond stable-ID merge remain
+unimplemented.
