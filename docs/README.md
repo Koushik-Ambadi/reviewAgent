@@ -16,6 +16,9 @@ Current project knowledge lives in [`engineering/`](engineering/):
   prompt/output boundaries, local validation, extension points, and maturity.
 - [Project history](engineering/project-history.md) -- append-only daily and
   commit chronology.
+- [Conversation provenance](engineering/conversation-provenance.md) -- saved
+  project-chat inventory, design evolution, superseded proposals, and refresh
+  completeness boundary.
 - [Decision index](decisions.md) -- canonical IDs, status, and record links.
 - [Legacy decisions and lessons](engineering/decisions-and-lessons.md) --
   compatibility owner for reconstructed D001-D023 records and the mixed

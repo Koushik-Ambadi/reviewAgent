@@ -34,3 +34,28 @@
   shared guidance introduces an incompatible semantic requirement.
 - Related: [D024](decisions/D024-shared-skill-conformance.md) and
   [shared-skill conformance](README.md#shared-skill-conformance).
+
+### PRJ-002 -- Reconcile saved project conversations when design context changes
+
+- Status: active
+- Added: 2026-10-27
+- Source: current project-owner request.
+- Applies to: architecture, feature planning, technical strategy, decisions,
+  and project-history reconstruction.
+- Rule: use the saved `reviewer` ChatGPT project as historical evidence when a
+  task depends on prior design intent. Enumerate the project and compare the
+  conversation manifest before re-reading unchanged threads; reconcile added or
+  changed material into its normal documentation owner.
+- Authority boundary: current user direction, current code and tests, and
+  accepted decisions override older or conflicting chat proposals. Assistant
+  suggestions remain proposals unless accepted or subsequently implemented.
+- Privacy and retention: store stable source IDs, hashes, concise engineering
+  extracts, and completeness limits. Do not commit full transcripts, secrets,
+  credentials, or personal material.
+- Verification: follow the repository-local
+  `reviewer-conversation-context` skill and validate the manifest helper against
+  a normalized fixture. Content-change detection requires a local export or
+  complete capture; browser listing alone detects new conversation IDs only.
+- Review trigger: the project link changes, a new conversation appears, a
+  content hash changes, or ChatGPT exposes a supported authenticated export.
+- Related: [conversation provenance](engineering/conversation-provenance.md).

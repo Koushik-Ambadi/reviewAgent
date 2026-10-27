@@ -1068,3 +1068,25 @@ and third-party artifacts and must not be interpreted as effort or quality.
   `b800dfc`. Its one-outcome branch guidance applies forward without rewriting
   retained history. Live fetch authentication was unavailable, so currency
   beyond the tracked revision remains unknown.
+
+## 2026-10-27 — Reconcile saved design conversations and start graph foundations
+
+### Time not captured — Establish authenticated conversation provenance
+
+- Opened the project-owner-supplied private ChatGPT project and enumerated ten
+  saved conversations. Selectively inspected the original pipeline design,
+  high-level code-intelligence design, stabilization estimate, and latest graph
+  design threads.
+- Reconciled the evolution from regex/AST inventory through modular review,
+  isolated ingestion, optional build, removed local MCP, policy-guided agent
+  use, remediation, and the current unified knowledge-graph direction.
+- Added PRJ-002 and the repository-local `reviewer-conversation-context` skill.
+  The helper normalizes a user-authorized local export/capture and computes
+  content SHA-256 values; it does not scrape or authenticate to ChatGPT.
+- Current capture is explicitly partial because the project page exposed no
+  export or WebMCP tool. No full transcript, secret, or personal content was
+  copied into the repository, and null content hashes are not presented as
+  change evidence.
+- Next state: validate and commit the provenance increment, then extend the AST
+  as a separate compatibility-safe code-intelligence package before building
+  graph projections.
