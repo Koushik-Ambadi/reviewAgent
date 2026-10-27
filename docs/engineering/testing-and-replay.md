@@ -56,6 +56,19 @@ projection over the extractor result already returned in memory; regenerating
 machine-specific CMake/libclang artifacts would be disproportionate. The
 responsive card layout remains a focused visual check at normal browser zoom.
 
+### Code-intelligence AST verification — 2026-10-27
+
+| Check | Result | What it proves |
+|---|---|---|
+| `venv313` direct invocation of the three functions in `tests/test_code_intelligence_ast.py` with temporary roots | Passed | USR-first and fallback identities are deterministic; file/function/global/macro nodes and contains/declares/defines/includes/calls edges are emitted; unresolved calls remain explicit; every edge endpoint exists; external declarations are excluded |
+| `python -m pytest tests/test_code_intelligence_ast.py -q` | Not executed: `venv313` has no `pytest` module | Environment limitation is distinct from product behavior |
+| `python -m black --check ...` | Not executed: `venv313` has no `black` module | Formatting command remains unavailable; focused diff and syntax checks are required before commit |
+| `python -m ruff check ...` | Not executed: `venv313` has no `ruff` module | Lint tooling is unavailable in the supported environment; no lint pass is claimed |
+
+The fixture intentionally uses fake cursor objects so the isolated contract can
+be tested without machine-specific libclang. A real compilation-database
+fixture is required when the runner and snapshot integration are added.
+
 ## Current test inventory
 
 ### `src/repo_review/tests/manual/smoke_test.py`

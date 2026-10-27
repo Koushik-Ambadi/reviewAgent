@@ -1090,3 +1090,20 @@ and third-party artifacts and must not be interpreted as effort or quality.
 - Next state: validate and commit the provenance increment, then extend the AST
   as a separate compatibility-safe code-intelligence package before building
   graph projections.
+
+### Time not captured — Add the compatibility-safe AST graph fact boundary
+
+- Added an independent `code_intelligence` contract and extractor rather than
+  changing the established `symbols.json` shape consumed by naming and report
+  inventory.
+- D026 accepts one canonical node/edge graph with USR-first identities,
+  deterministic fallbacks, repository-relative locations, and explicit
+  compiler-derived, external, and unresolved relation states.
+- The initial extractor covers file, function, struct, enum, typedef, global,
+  and macro nodes plus contains, declares, defines, includes, and calls edges.
+  It keeps named unresolved targets as labeled nodes so no edge dangles.
+- Three focused pure-Python scenarios passed by direct invocation. The supported
+  environment lacks both pytest and Black; those command attempts were recorded
+  as environment limitations rather than passes.
+- Next state: merge translation-unit fragments into one deterministic snapshot,
+  persist it atomically, and implement call/include views over that authority.

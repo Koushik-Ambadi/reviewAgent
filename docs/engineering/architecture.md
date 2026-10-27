@@ -67,6 +67,7 @@ app/
   services/            upload, policy, and agent-response application services
   static/              single-page HTML/CSS/JavaScript client
 src/
+  code_intelligence/     additive compiler-derived graph contracts and extraction
   orchestrator/        run workspace, source ingestion, review/build sequencing
   repo_build/          firmware build execution and result DTO
   repo_review/
@@ -82,6 +83,13 @@ docs/                  indexed engineering, standards, contracts, diagrams, arch
 skills/                ignored local lifecycle skill used to maintain records
 workspace/runs/        ignored generated run inputs and evidence
 ```
+
+`code_intelligence` is currently an isolated foundation rather than an active
+pipeline stage. It extracts deterministic graph fragments from clang cursors
+without changing the existing `repo_review` symbol inventory. D026 selects it
+as the eventual shared owner because review, build, and agent workflows may all
+consume repository intelligence. Compilation-database orchestration, merged
+snapshots, and run persistence are not yet wired into the application.
 
 ## Public interfaces
 

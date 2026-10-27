@@ -45,6 +45,7 @@ related decisions. It owns local mechanics; architecture summarizes the whole.
 | C/C++ analysis inventory | [analysis-inventory](modules/analysis-inventory.md) | `analysis/source_index`, `analysis/symbol_inventory`, `analysis/runner.py` | repository, CMake, YAML policy | symbol JSON, checks, inventory | living |
 | Policy-driven checks | [policy-driven-checks](modules/policy-driven-checks.md) | `checks/`, `policies/default.yaml` | structure tree, symbol inventory, policy | typed check results and report stages | living |
 | Result contract and reporting | [result-contract-and-reporting](modules/result-contract-and-reporting.md) | `contracts/`, `reporting/` | stage results and projections | report, API/UI/manager consumers | living |
+| Code intelligence | [code-intelligence](modules/code-intelligence.md) | `code_intelligence/models.py`, `identity.py`, `extraction/ast_extractor.py` | clang translation-unit cursor and repository root | graph merge, snapshots, views, later review/build/agent consumers | initial extraction slice |
 
 The existing [remediation generation](engineering/remediation-generation.md)
 record remains the detailed owner for the model-assisted workflow.
@@ -72,6 +73,9 @@ automation map:
 
 - [Run result contract](contracts/run-result.md) documents the serialized
   Run/Stage/Check/Case hierarchy and current persistence boundary.
+- [Code-intelligence graph contract](contracts/code-intelligence-graph.md)
+  defines compiler-derived nodes, edges, identities, resolution states, and the
+  compatibility boundary with `symbols.json`.
 - [`diagrams/review-agent.drawio`](diagrams/review-agent.drawio) is the editable
   architecture diagram source.
 

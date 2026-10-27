@@ -118,6 +118,10 @@ changes. Do not maintain a second project-wide gap inventory here.
 ### G08 — Expand source analysis foundations
 
 - Priority: P2
+- Current state (2026-10-27): active. D026 defines the unified graph contract,
+  and the first isolated AST slice now emits stable file/symbol nodes plus
+  containment, declaration/definition, include, and call relations. It is not
+  yet connected to the run pipeline or persisted as a merged snapshot.
 - Goal: provide durable analysis artifacts required by the next rule families.
 - In scope: token/comment inventory; canonical symbol identities with
   declaration, definition, and reference occurrences; include/dependency,
