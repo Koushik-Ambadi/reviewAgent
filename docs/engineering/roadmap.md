@@ -124,6 +124,9 @@ changes. Do not maintain a second project-wide gap inventory here.
   fragment merge, invariant validation, provenance-required atomic snapshots,
   and call/include views are implemented. The package is not yet connected to
   the compilation database or run pipeline.
+- Coverage authority: the [graph capability matrix](../contracts/graph-capabilities.md)
+  records all 21 discussed graph types and distinguishes currently extractable
+  facts from engine, project-model, and external-evidence dependencies.
 - Goal: provide durable analysis artifacts required by the next rule families.
 - In scope: token/comment inventory; canonical symbol identities with
   declaration, definition, and reference occurrences; include/dependency,

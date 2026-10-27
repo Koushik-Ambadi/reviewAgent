@@ -5,7 +5,9 @@
 - Project index: [docs README](../README.md)
 - Architecture: [current architecture](../engineering/architecture.md)
 - Contract: [code-intelligence graph](../contracts/code-intelligence-graph.md)
+- Capability matrix: [all discussed graphs and evidence gates](../contracts/graph-capabilities.md)
 - Decision: [D026](../decisions/D026-unified-code-intelligence-graph.md)
+- Shared-stage decision: [D027](../decisions/D027-shared-code-analysis-stage.md)
 - Code entry points: `src/code_intelligence/models.py`,
   `src/code_intelligence/identity.py`, and
   `src/code_intelligence/extraction/ast_extractor.py`; merge/view/storage entry
@@ -70,3 +72,9 @@ C fixture and compilation-database runner remain the next integration gate.
 Indirect calls, conditional-compilation coverage, configuration identity, and
 cross-translation-unit semantic reconciliation beyond stable-ID merge remain
 unimplemented.
+
+The accepted target is one common compiler-analysis stage owned here. Review
+will derive its compatibility inventory from the shared result, while graph
+views and graph-only execution consume the same snapshot. The current branch
+has not completed that migration yet: `repo_review.analysis` still performs its
+legacy parse separately.

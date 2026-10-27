@@ -76,6 +76,9 @@ automation map:
 - [Code-intelligence graph contract](contracts/code-intelligence-graph.md)
   defines compiler-derived nodes, edges, identities, resolution states, and the
   compatibility boundary with `symbols.json`.
+- [Graph capability matrix](contracts/graph-capabilities.md) lists every graph
+  discussed, its required evidence, current extraction coverage, and the gate
+  that prevents unsupported graphs from appearing complete.
 - [`diagrams/review-agent.drawio`](diagrams/review-agent.drawio) is the editable
   architecture diagram source.
 

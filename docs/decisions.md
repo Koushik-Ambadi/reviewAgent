@@ -37,6 +37,7 @@
 | D024 | Adopt published shared-skill conformance | Accepted | [Record](decisions/D024-shared-skill-conformance.md) |
 | D025 | Retain duplicate historical commits through archive tags | Accepted | [Record](decisions/D025-retain-duplicate-history.md) |
 | D026 | Adopt a unified code-intelligence graph without changing symbol inventory | Accepted; AST extraction and graph foundation implemented | [Record](decisions/D026-unified-code-intelligence-graph.md) |
+| D027 | Parse source once in a shared code-analysis stage | Accepted; migration in progress | [Record](decisions/D027-shared-code-analysis-stage.md) |
 
 New substantial decisions use `docs/decisions/DNNN-short-title.md` and are linked
 from this table. Small decisions may be recorded directly here when a separate

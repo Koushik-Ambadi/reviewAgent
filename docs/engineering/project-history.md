@@ -1125,3 +1125,21 @@ and third-party artifacts and must not be interpreted as effort or quality.
 - Next state: connect a compilation database and real libclang translation units
   to the package, capture configuration/tool provenance, then write one graph
   snapshot under the run analysis directory.
+
+### Time not captured — Inventory all discussed graphs and choose shared analysis ownership
+
+- Re-enumerated the authenticated project conversation list; the same ten
+  conversation IDs remain, so no new thread required import.
+- Consolidated aliases into 21 distinct graph capabilities and recorded the
+  exact source, engine, project-model, or external evidence each requires.
+- Confirmed that reachability, call depth, file-module dependency, and initial
+  dependency impact are derivable from the current canonical graph. Variable
+  access, exact-clone candidates, complexity, and memory estimates require a
+  bounded AST expansion. CFG/data flow, requirements, tests, timing, exact
+  stack, and failure propagation cannot be made complete from symbol fields.
+- D027 assigns compilation-database parsing and normalized AST facts to the
+  shared `code_intelligence` package. Review and graph workflows will consume
+  one analysis result; the existing duplicate review parse remains a truthful
+  migration limitation until compatibility is verified.
+- Next state: commit the capability contract, then implement current-fact views
+  before expanding AST facts and moving compilation-database parsing.

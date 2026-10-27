@@ -93,6 +93,13 @@ shared owner because review, build, and agent workflows may all consume
 repository intelligence. Compilation-database orchestration and run persistence
 are not yet wired into the application.
 
+D027 fixes the next boundary: `code_intelligence` will own compilation-database
+loading and parse every translation unit once. Review inventory/reporting and
+independent graph workflows become consumers of that shared result. During the
+migration, the legacy `repo_review.analysis` parser remains active to preserve
+`symbols.json`; the repository must not claim single-parse execution until its
+compatibility adapter is verified.
+
 ## Public interfaces
 
 ### HTTP API

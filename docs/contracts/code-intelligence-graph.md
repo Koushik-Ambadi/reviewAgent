@@ -7,6 +7,7 @@
   semantics for compiler-derived repository intelligence
 - Does not own: review result schema, symbol inventory compatibility, graph
   persistence lifecycle, or higher-level semantic claims
+- Capability coverage: [graph capability and evidence matrix](graph-capabilities.md)
 
 ## Canonical shape
 
