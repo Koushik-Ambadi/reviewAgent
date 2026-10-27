@@ -68,9 +68,10 @@ The expanded AST fixture verifies scoped identities, type sizes, conservative
 read/write classification, function metrics, and exact body-token fingerprints.
 `tests/test_code_intelligence_analysis_views.py` verifies variable-access,
 exact-clone, complexity, and explicitly non-authoritative memory estimates. A
-real parse of `tests/fixtures/code_intelligence/sample.c` with the installed
-libclang produced 12 nodes, 37 edges, 17 access occurrences, one exact-clone
-edge, three complexity nodes, and a four-byte global-storage estimate.
+real detailed-processing parse of `tests/fixtures/code_intelligence/sample.c`
+with the installed libclang produced 13 nodes, 40 edges, 17 access occurrences,
+one exact-clone edge, three complexity nodes, and a four-byte global-storage
+estimate.
 `PYTHONPATH=src python scripts/build_code_intelligence_example.py` regenerates
 the checked-in JSON and Mermaid-backed Markdown example deterministically.
 
