@@ -19,6 +19,8 @@
 - Verification: `tests/test_code_intelligence_ast.py`
 - Inspectable example: [generated graphs](../examples/code-intelligence-graphs.md)
   and the adjacent canonical/projection JSON
+- UI/API contract: [graph workspace API](../contracts/graph-workspace-api.md)
+- Use-case owner: [graph use cases](../engineering/graph-use-cases.md)
 
 ## Responsibility and current maturity
 
@@ -40,6 +42,12 @@ complexity, and clearly labeled type-size memory estimates are also available.
 The package owns the compilation-database parse primitive and the review stage
 writes `analysis/code-intelligence.json` beside `symbols.json`. A standalone
 graph-only application entry point remains pending.
+
+The read-only application adapter projects a run graph at file or module scope
+and aggregates the newest graph-bearing run per module for inter-module views.
+It never rewrites the canonical artifact. Available overlays are calls, includes,
+and conservative reads/writes/references; CFG and definition-use data flow remain
+explicitly disabled evidence gates.
 
 ## Flow and invariants
 

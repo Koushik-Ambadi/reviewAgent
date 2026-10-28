@@ -78,6 +78,18 @@ the checked-in JSON and Mermaid-backed Markdown example deterministically.
 and verifies that the review inventory and provenance-bearing schema 1.1 graph
 snapshot are produced together from the common parse boundary.
 
+### Graph workspace backend verification — 2026-10-28
+
+`tests/test_graph_service.py` verifies file/module overlay projection and
+cross-module signal direction over two synthetic run artifacts. The retained
+`20261022_154215_6b44447a` shunt source was reparsed without replacing its legacy
+`symbols.json`: two policy-owned translation units produced 309 nodes and 1,242
+edges in 7.542 seconds. The module projection contains nine repository-owned
+file nodes and 32 selected relationships; `src/shunt.c` contains 83 displayed
+nodes and 236 selected/hierarchy relationships. Only shunt currently has a
+graph artifact, so the inter-module result honestly contains one module and no
+cross-module relationships.
+
 | Check | Result | What it proves |
 |---|---|---|
 | `venv313` direct invocation of the three functions in `tests/test_code_intelligence_ast.py` with temporary roots | Passed | USR-first and fallback identities are deterministic; file/function/global/macro nodes and contains/declares/defines/includes/calls edges are emitted; unresolved calls remain explicit; every edge endpoint exists; external declarations are excluded |

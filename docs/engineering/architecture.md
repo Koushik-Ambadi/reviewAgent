@@ -65,8 +65,8 @@ improvements in the history.
 
 ```text
 app/
-  api/                 FastAPI route adapters
-  services/            upload, policy, and agent-response application services
+  api/                 FastAPI route adapters, including read-only graph views
+  services/            upload, policy, graph, and agent-response services
   static/              single-page HTML/CSS/JavaScript client
 src/
   code_intelligence/     additive compiler-derived graph contracts and extraction
@@ -113,6 +113,8 @@ it requires a verified graph-to-inventory compatibility adapter.
 | `POST /api/review` | Multipart `.zip` | `{run_id, report}` where report is serialized `RunResult` | `app/api/review.py` |
 | `POST /api/agent/review` | Multipart `.zip` | Compact failed/skipped summary | `app/api/review.py`, service formatter |
 | `GET /api/agent/review/{run_id}` | Run ID path value | Detailed agent-oriented failure text | `app/api/review.py`, service formatter |
+| `GET /api/runs/{run_id}/graphs` | Run, file/module scope, optional file and overlays | Read-only graph workspace projection | `app/api/graphs.py`, `app/services/graph_service.py` |
+| `GET /api/graphs/inter-module` | Optional module names and overlays | Latest-per-module interactions and signal directions | `app/api/graphs.py`, `app/services/graph_service.py` |
 | `POST /api/runs/{run_id}/build` | Run ID path value | Final `BuildResult`, or queued job with `background=true` | `app/api/build.py` |
 | `GET /api/runs/{run_id}/build/status` | Run ID path value | Persisted build job state and recent raw output | `app/api/build.py` |
 | `POST /api/runs/{run_id}/remediations` | Scope plus failed check/case IDs | `{run_id, remediation}` | `app/api/remediation.py` |

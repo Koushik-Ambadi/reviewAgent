@@ -17,6 +17,14 @@ definitions in [`evidence-index.md`](evidence-index.md).
 Use `git show <hash>` to inspect an entire event. Statistics include generated
 and third-party artifacts and must not be interpreted as effort or quality.
 
+## 2026-10-28 — Validate retained source and expose graph workspace projections
+
+- Ran schema 1.1 extraction against the retained shunt source and compilation
+  database while preserving its existing compatibility inventory.
+- Added read-only file, module, and inter-module API projections with selectable
+  call/include/access overlays and explicit CFG/data-flow evidence gates.
+- Recorded the graph workspace placement decision and a use-case/insight map.
+
 ## 2026-10-27 — First derived code-graph views
 
 - Added deterministic reachability and recursive-SCC-aware call-depth views.

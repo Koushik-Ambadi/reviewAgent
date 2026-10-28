@@ -81,6 +81,10 @@ automation map:
   that prevents unsupported graphs from appearing complete.
 - [Generated code-intelligence graph example](examples/code-intelligence-graphs.md)
   renders the checked-in fixture and links to its canonical/projection JSON.
+- [Graph workspace API](contracts/graph-workspace-api.md) defines file, module,
+  inter-module, and selectable-layer behavior.
+- [Graph use cases](engineering/graph-use-cases.md) maps supported problems and
+  evidence-gated insights.
 - [`diagrams/review-agent.drawio`](diagrams/review-agent.drawio) is the editable
   architecture diagram source.
 
