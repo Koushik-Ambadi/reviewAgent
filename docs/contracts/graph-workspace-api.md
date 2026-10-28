@@ -28,6 +28,14 @@ artifact. Query parameters:
 module. Repeated `modules=<name>` parameters select a subset. Repeated `layers`
 parameters use the same overlay vocabulary.
 
+`GET /api/runs/{run_id}/graphs/nodes` returns the searchable graph-node index
+for the expandable trace playground.
+
+`GET /api/runs/{run_id}/graphs/neighborhood` accepts `node_id`,
+`direction=incoming|outgoing|both`, and repeated `layers`. It returns the
+canonical center, directly related canonical nodes, and aggregated occurrence
+edges across the whole run graph, independent of an overview file selection.
+
 Both endpoints are read-only. A missing run or graph returns 404. Unsafe run
 IDs, unknown files, scopes, or unavailable layers return 400.
 
@@ -57,6 +65,25 @@ function when not promoted.
 Selection is a focus operation: the selected node is centered, incident edges
 and one-hop nodes retain emphasis, and unrelated nodes/edges are dimmed. A
 selected aggregate module edge exposes its bounded underlying interactions.
+Parallel relationship kinds use deterministic lanes and type-specific color or
+dash styles. Identical source-kind-target occurrences aggregate into one edge
+with a count and bounded location list. Arrowheads terminate at node boundaries;
+hover exposes relation, direction, endpoints, and occurrence count.
+
+File-projection node payloads may contain bounded `declarations`, `definitions`,
+`incoming_interactions`, and `outgoing_interactions`. Each interaction includes
+its relation kind, endpoint IDs/labels/kinds, and source location. These lists
+are cross-file symbol evidence for inspection, not execution-ordered traces.
+
+## Trace playground contract
+
+The client may create multiple visual instances for one canonical node. Every
+instance carries `canonical_id`; instance IDs are presentation-local and must
+never be persisted as analysis identities. Double-click expansion is bounded to
+depth 20 to prevent accidental cycling, but does not silently truncate a
+neighborhood's relationship groups. Collapsing removes only the instance's
+descendants. Edge direction and occurrence evidence remain canonical even when
+the same symbol appears in several branches.
 
 `control_flow` and `data_flow` are advertised with `available: false` and an
 evidence-gate explanation. The workspace must render them disabled rather than

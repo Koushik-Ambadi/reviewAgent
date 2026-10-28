@@ -138,6 +138,15 @@ changes. Do not maintain a second project-wide gap inventory here.
   is conservative AST value flow (arguments, initializers/assignments, returns,
   and call results); CFG/control dependence and alias analysis remain separate
   gates rather than being inferred from read/write access.
+- Interaction increment (2026-10-28): parallel relation lanes, boundary-clipped
+  arrows, hover labels, repeated-occurrence aggregation, crossing-reduction
+  heuristics, and cross-file symbol inspection are implemented. Toolchain code-
+  size/map ingestion and ABI-aware stack composition remain future evidence
+  adapters, not AST guesses.
+- Progressive-disclosure increment (2026-10-28): the existing overviews remain,
+  and a run-wide expandable/collapsible trace playground can now follow one
+  structural branch at a time. Visual symbol duplication is presentation-only;
+  ordered runtime/value traces remain gated on CFG and value-flow evidence.
 - Coverage authority: the [graph capability matrix](../contracts/graph-capabilities.md)
   records all 21 discussed graph types and distinguishes currently extractable
   facts from engine, project-model, and external-evidence dependencies.

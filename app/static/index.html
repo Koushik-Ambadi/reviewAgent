@@ -1625,11 +1625,26 @@ html,body{background:var(--bg)}
             <div class="graph-workspace">
                 <aside class="graph-controls" aria-label="Graph controls">
                     <label class="graph-field"><span>Graph run</span><select id="graphRun"></select></label>
+                    <label class="graph-field"><span>Presentation</span><select id="graphViewMode">
+                        <option value="overview" selected>Overview graphs</option>
+                        <option value="trace">Expandable trace playground</option>
+                    </select></label>
                     <label class="graph-field"><span>Scope</span><select id="graphScope">
                         <option value="file">File internals</option>
                         <option value="module" selected>Module internals</option>
                         <option value="inter_module">Inter-module</option>
                     </select></label>
+                    <fieldset id="graphTraceField" class="graph-field" hidden>
+                        <legend>Trace root</legend>
+                        <select id="graphTraceRoot"></select>
+                        <select id="graphTraceDirection">
+                            <option value="both">Incoming + outgoing</option>
+                            <option value="outgoing">Outgoing</option>
+                            <option value="incoming">Incoming</option>
+                        </select>
+                        <button id="graphTraceStart" class="btn secondary" type="button">Start trace</button>
+                        <small>Double-click any trace node to expand or collapse that branch.</small>
+                    </fieldset>
                     <label id="graphFileField" class="graph-field" hidden><span>File</span><select id="graphFile"></select></label>
                     <fieldset id="graphModuleField" class="graph-field graph-module-field" hidden>
                         <legend>Modules</legend><div id="graphModules" class="graph-module-options"></div>
@@ -1657,6 +1672,7 @@ html,body{background:var(--bg)}
                     </div>
                     <div id="graphCanvasWrap" class="graph-canvas-wrap">
                         <canvas id="graphCanvas" aria-label="Interactive code graph"></canvas>
+                        <div id="graphEdgeTooltip" class="graph-edge-tooltip" role="tooltip" hidden></div>
                         <div id="graphLoading" class="graph-loading">Choose a graph to begin.</div>
                     </div>
                     <div id="graphLimitations" class="graph-limitations"></div>

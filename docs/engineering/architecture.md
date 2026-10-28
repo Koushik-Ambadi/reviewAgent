@@ -351,6 +351,15 @@ The API returns templates; the pipeline owns execution-time loading.
   dims unrelated facts; aggregate module edges expose bounded underlying symbol
   interactions. The dependency-ranked layout reduces crossings heuristically,
   without claiming a minimum-crossing solution.
+- Edges are clipped to node boundaries. Different relationship kinds receive
+  stable parallel lanes, while repeated occurrences of the same relationship
+  aggregate with retained locations. File-projection symbols carry bounded
+  cross-file declaration/definition and incoming/outgoing interaction evidence
+  for side-panel inspection; these facts remain unordered.
+- The graph workspace has two presentations over one canonical artifact:
+  overview projections and an expandable trace playground. Trace expansion uses
+  run-wide node-index and neighborhood projections; branch-local instance IDs
+  may duplicate a canonical symbol visually but always retain `canonical_id`.
 - Landing and setup use dynamic viewport sizing on normal desktop layouts. The
   setup configuration and activity panels share one height, while the activity
   log flexes inside its panel. Narrow or short displays retain page scrolling as

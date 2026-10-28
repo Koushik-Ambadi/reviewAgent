@@ -85,8 +85,9 @@ cross-module signal direction over two synthetic run artifacts. The retained
 `20261022_154215_6b44447a` shunt source was reparsed without replacing its legacy
 `symbols.json`: two policy-owned translation units produced 309 nodes and 1,242
 edges in 7.542 seconds. The module projection contains nine repository-owned
-file nodes and 32 selected relationships; `src/shunt.c` contains 83 displayed
-nodes and 236 selected/hierarchy relationships. Only shunt currently has a
+file nodes and 32 selected relationships; the original occurrence-level
+`src/shunt.c` projection contained 83 displayed nodes and 236 selected/hierarchy
+rows before repeated relationships were aggregated. Only shunt currently has a
 graph artifact, so the inter-module result honestly contains one module and no
 cross-module relationships.
 
@@ -103,10 +104,42 @@ module/inter-module aggregate interaction evidence, owned-detail controls, node
 focus, edge
 inspection, and hierarchy suppression from the default canvas. `node --check`
 and direct invocation of the three focused graph tests passed. The refreshed
-Uvicorn projection returned 7 module nodes/20 selected aggregate relationships
-and 83 file nodes/236 selected-plus-hierarchy relationships. Browser binding was
+Uvicorn projection returned 7 module nodes/20 selected aggregate relationships.
+After occurrence aggregation, the default `src/shunt.c` projection returns 86
+nodes and 170 selected-plus-hierarchy relationships. Browser binding was
 again blocked by Work settings, so the user-visible localhost tab remains the
 visual acceptance surface.
+
+The parallel-edge and symbol-inspection increment verifies declaration,
+definition, and incoming/outgoing interaction evidence; repeated relationship
+aggregation with retained occurrences; hover and shared route geometry; and
+JavaScript syntax. `scripts/verify_graph_source_alignment.py` separately checks
+canonical endpoints and semantic occurrence locations against retained source.
+On the shunt artifact it checked all 309 nodes and 1,242 edges, including 288
+source-owned node locations and 714 semantic edge locations: zero hard issues,
+zero exact duplicate occurrences, and 173 repeated
+source-target relation groups. Four compiler-resolved calls use macro names at
+the source line (`SHUNT_GET_*`) rather than their resolved target function name;
+these are recorded informationally, not treated as inconsistencies. Visual
+crossing reduction remains manual acceptance because browser automation is
+disabled in Work settings.
+
+Re-run the source-alignment check with:
+
+```powershell
+.\venv313\Scripts\python.exe scripts\verify_graph_source_alignment.py `
+  workspace\runs\20261022_154215_6b44447a\analysis\code-intelligence.json `
+  workspace\runs\20261022_154215_6b44447a\shunt --summary
+```
+
+The command exits non-zero for hard inconsistencies or exact duplicate
+occurrences. Repeated relations at distinct source locations are informational.
+
+The trace-playground increment verifies the run-wide semantic-node index and
+incoming/outgoing neighborhood projection with aggregated occurrences. Static
+checks require the presentation selector, trace root/direction controls, and
+expand/collapse implementation hooks. HTTP smoke covers both new endpoints;
+ordered execution remains explicitly outside this verification claim.
 
 | Check | Result | What it proves |
 |---|---|---|

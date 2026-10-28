@@ -55,6 +55,18 @@ unless a user explicitly promotes those node kinds. Aggregate file edges expose
 bounded source/target interaction evidence. This presentation does not add or
 reinterpret compiler facts.
 
+File projections enrich displayed symbols with bounded occurrence evidence from
+the same canonical graph: declaration and definition sites plus incoming and
+outgoing calls, reads, writes, and references. Repeated occurrences aggregate
+for display while retaining locations. This avoids a second graph authority and
+lets variable inspection cross file boundaries. Occurrence order is not control
+flow.
+
+The run-wide trace adapter exposes a semantic-node index and one-hop
+neighborhood projection over the same graph. The UI may instantiate one
+canonical symbol more than once in different trace branches; `canonical_id`
+preserves identity and the duplicated instance is never persisted as analysis.
+
 ## Flow and invariants
 
 ```text

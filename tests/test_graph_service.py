@@ -7,6 +7,8 @@ from app.services.graph_service import (
     get_graph_catalog,
     get_inter_module_graph,
     get_run_graph,
+    get_run_graph_neighborhood,
+    get_run_graph_nodes,
 )
 import orchestrator.run_store as run_store
 
@@ -103,6 +105,9 @@ def test_run_graph_supports_file_and_module_scopes(tmp_path: Path):
         _edge("owns:signal", "contains", "file:b", "global:signal"),
         _edge("call", "calls", "fn:a", "fn:b"),
         _edge("read", "reads", "fn:a", "global:signal"),
+        _edge("read-again", "reads", "fn:a", "global:signal"),
+        _edge("declares:a", "declares", "file:a", "fn:a"),
+        _edge("defines:a", "defines", "file:a", "fn:a"),
     ]
     _write_run(tmp_path, "run-a", "module-a", nodes, edges)
     original_root = run_store.WORKSPACE_ROOT
@@ -117,6 +122,10 @@ def test_run_graph_supports_file_and_module_scopes(tmp_path: Path):
         module_graph = get_run_graph(
             "run-a", scope="module", layers=["calls", "reads"]
         )
+        node_index = get_run_graph_nodes("run-a")
+        neighborhood = get_run_graph_neighborhood(
+            "run-a", "fn:a", direction="outgoing", layers=["calls", "reads"]
+        )
     finally:
         run_store.WORKSPACE_ROOT = original_root
 
@@ -125,10 +134,41 @@ def test_run_graph_supports_file_and_module_scopes(tmp_path: Path):
         "calls",
         "reads",
     }
+    projected_read = next(
+        edge for edge in file_graph["edges"] if edge["kind"] == "reads"
+    )
+    assert projected_read["count"] == 2
+    assert len(projected_read["occurrences"]) == 2
+    projected_function = next(
+        node for node in file_graph["nodes"] if node["id"] == "fn:a"
+    )
+    assert projected_function["declarations"][0]["owner_label"] == "a.c"
+    assert projected_function["definitions"][0]["owner_label"] == "a.c"
+    assert [
+        interaction["kind"]
+        for interaction in projected_function["outgoing_interactions"]
+    ] == ["calls", "reads", "reads"]
+    assert projected_function["outgoing_interactions"][1]["target_label"] == "signal"
+    assert {node["id"] for node in node_index["nodes"]} == {
+        "file:a",
+        "file:b",
+        "fn:a",
+        "fn:b",
+        "global:signal",
+    }
+    assert {node["id"] for node in neighborhood["nodes"]} == {
+        "fn:a",
+        "fn:b",
+        "global:signal",
+    }
+    assert {(edge["kind"], edge["count"]) for edge in neighborhood["edges"]} == {
+        ("calls", 1),
+        ("reads", 2),
+    }
     assert {node["label"] for node in module_graph["nodes"]} == {"a.c", "b.c"}
     assert {(edge["kind"], edge["count"]) for edge in module_graph["edges"]} == {
         ("calls", 1),
-        ("reads", 1),
+        ("reads", 2),
     }
     call_edge = next(edge for edge in module_graph["edges"] if edge["kind"] == "calls")
     assert call_edge["interactions"] == [

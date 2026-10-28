@@ -1185,3 +1185,34 @@ and third-party artifacts and must not be interpreted as effort or quality.
 - Focused graph tests, JavaScript syntax, and live HTTP projections passed.
   Browser automation remained disabled by Work settings; the user's open local
   preview is the visual acceptance surface.
+
+### 2026-10-28 — Separate relations and verify graph/source alignment
+
+- Routed relationship kinds between one node pair into deterministic parallel
+  lanes, clipped arrowheads at node boundaries, added type-specific line styles,
+  hover descriptions, and a bounded crossing-reduction heuristic.
+- Aggregated identical source-kind-target occurrences for display while keeping
+  their count and source locations. The apparently repeated moderate-fault
+  reads are four real source occurrences at lines 951, 958, 1242, and 1248.
+- File symbols now retain cross-file declaration/definition sites and direct
+  incoming/outgoing call, read, write, and reference occurrences.
+- Added a source-alignment verifier. The retained shunt artifact has no dangling
+  endpoints, exact duplicate occurrences, missing source locations, or hard
+  target mismatches across 288 node and 714 semantic-edge locations. Four call
+  targets
+  differ textually because `SHUNT_GET_*` macros resolve to compiler-known
+  functions; they remain explicit informational notes.
+- D030 records why these interactions are unordered and why code size, exact
+  frames, and maximum call-chain stack await toolchain and CFG evidence.
+
+### 2026-10-28 — Add progressive expandable traces
+
+- Kept file/module/inter-module overviews and added a separate run-wide trace
+  playground starting from any file or semantic symbol.
+- Each double-click expands or collapses one branch using incoming, outgoing,
+  or combined structural neighbors. Depth and per-expansion breadth are bounded.
+- The same canonical global/function may appear as multiple branch-local visual
+  instances to avoid long fan-out lines; every instance retains canonical
+  identity and the graph artifact remains singular.
+- D031 records the distinction between this structural trace and a future
+  runtime-ordered CFG/value-flow trace.

@@ -56,3 +56,13 @@
   writes, parameter declarations, local declarations, and return type. Showing
   where each argument value originated or how it influences a returned value is
   gated on the value-flow relations in D029.
+- Symbol inspection shows recorded declaration/definition sites and direct
+  incoming/outgoing call, read, write, and reference occurrences across files.
+  Their order is deliberately unspecified until CFG evidence exists.
+- Parameter and local type-size sums are useful storage estimates, not function
+  code size, exact stack-frame size, or maximum caller-chain stack. Those claims
+  require object/map and ABI-aware compiler stack evidence as recorded in D030.
+- Use overview graphs for architectural shape and the trace playground for one
+  progressively disclosed investigation. Repeated visual instances reduce
+  crossings but always refer back to one canonical symbol; their tree order is
+  navigation order, not runtime order.

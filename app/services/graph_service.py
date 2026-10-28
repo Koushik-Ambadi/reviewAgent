@@ -116,6 +116,70 @@ def get_run_graph(
     }
 
 
+def get_run_graph_nodes(run_id: str) -> dict[str, Any]:
+    run_path = get_run_path(run_id)
+    graph = _load_graph(run_path)
+    nodes = [
+        _node_payload(node)
+        for node in graph.get("nodes") or []
+        if node.get("kind") != "translation_unit"
+    ]
+    nodes.sort(key=lambda node: (node["kind"], node["label"], node["id"]))
+    return {"run_id": run_id, "nodes": nodes}
+
+
+def get_run_graph_neighborhood(
+    run_id: str,
+    node_id: str,
+    *,
+    direction: str = "both",
+    layers: Iterable[str] | None = None,
+) -> dict[str, Any]:
+    if direction not in {"incoming", "outgoing", "both"}:
+        raise ValueError("Direction must be 'incoming', 'outgoing', or 'both'.")
+    run_path = get_run_path(run_id)
+    graph = _load_graph(run_path)
+    nodes = {str(node["id"]): node for node in graph.get("nodes") or []}
+    if node_id not in nodes:
+        raise ValueError(f"Unknown graph node: {node_id}")
+    selected_layers = _selected_layers(layers)
+    center_kind = str(nodes[node_id].get("kind"))
+    selected_edges = []
+    included = {node_id}
+    for edge in graph.get("edges") or []:
+        kind = str(edge.get("kind"))
+        source = str(edge.get("source"))
+        target = str(edge.get("target"))
+        hierarchy_allowed = (
+            kind == "contains" and center_kind == "file"
+        ) or (
+            kind == "parameter_of" and center_kind == "function"
+        ) or (
+            kind in {"contains", "parameter_of", "field_of", "member_of"}
+            and target == node_id
+        )
+        if kind not in selected_layers and not hierarchy_allowed:
+            continue
+        if direction in {"outgoing", "both"} and source == node_id:
+            selected_edges.append(edge)
+            included.add(target)
+        elif direction in {"incoming", "both"} and target == node_id:
+            selected_edges.append(edge)
+            included.add(source)
+    evidence = _node_evidence(nodes, graph.get("edges") or [])
+    return {
+        "run_id": run_id,
+        "node_id": node_id,
+        "direction": direction,
+        "nodes": [
+            _node_payload(nodes[identity], evidence=evidence.get(identity))
+            for identity in sorted(included)
+        ],
+        "edges": _aggregate_occurrence_edges(selected_edges, nodes),
+        "limitations": _projection_limitations(),
+    }
+
+
 def get_inter_module_graph(
     *,
     module_names: Iterable[str] | None = None,
@@ -268,15 +332,18 @@ def _file_projection(
     )
     owned = _descendants(str(file_node["id"]), edges)
     owned.add(str(file_node["id"]))
-    projected_edges = []
+    selected_occurrence_edges = []
     included_nodes = set(owned)
     for edge in edges:
         kind = str(edge.get("kind"))
         source = str(edge.get("source"))
         target = str(edge.get("target"))
         if kind in selected_layers and source in owned:
-            projected_edges.append(_edge_payload(edge, nodes))
+            selected_occurrence_edges.append(edge)
             included_nodes.update((source, target))
+    projected_edges = _aggregate_occurrence_edges(
+        selected_occurrence_edges, nodes
+    )
     hierarchy_edges = [
         _edge_payload(edge, nodes)
         for edge in edges
@@ -285,11 +352,13 @@ def _file_projection(
         and str(edge.get("target")) in owned
     ]
     projected_edges.extend(hierarchy_edges)
+    node_evidence = _node_evidence(nodes, edges)
     return {
         "selected_file": selected_file,
         "available_files": available_files,
         "nodes": [
-            _node_payload(nodes[identity]) for identity in sorted(included_nodes)
+            _node_payload(nodes[identity], evidence=node_evidence.get(identity))
+            for identity in sorted(included_nodes)
         ],
         "edges": sorted(projected_edges, key=_edge_sort_key),
         "summary": _summary(included_nodes, projected_edges),
@@ -406,10 +475,12 @@ def _file_owners(
     return owners
 
 
-def _node_payload(node: dict[str, Any]) -> dict[str, Any]:
+def _node_payload(
+    node: dict[str, Any], *, evidence: dict[str, list[dict[str, Any]]] | None = None
+) -> dict[str, Any]:
     attributes = node.get("attributes") or {}
     location = node.get("location") or {}
-    return {
+    payload = {
         "id": str(node["id"]),
         "kind": str(node.get("kind")),
         "label": str(node.get("name") or node["id"]),
@@ -426,6 +497,67 @@ def _node_payload(node: dict[str, Any]) -> dict[str, Any]:
             if key in attributes
         },
     }
+    if evidence is not None:
+        payload["declarations"] = evidence["declarations"]
+        payload["definitions"] = evidence["definitions"]
+        payload["incoming_interactions"] = evidence["incoming"]
+        payload["outgoing_interactions"] = evidence["outgoing"]
+    return payload
+
+
+def _node_evidence(
+    nodes: dict[str, dict[str, Any]], edges: list[dict[str, Any]]
+) -> dict[str, dict[str, list[dict[str, Any]]]]:
+    evidence: dict[str, dict[str, list[dict[str, Any]]]] = defaultdict(
+        lambda: {
+            "declarations": [],
+            "definitions": [],
+            "incoming": [],
+            "outgoing": [],
+        }
+    )
+    for edge in edges:
+        kind = str(edge.get("kind"))
+        source_id = str(edge.get("source"))
+        target_id = str(edge.get("target"))
+        if kind in {"declares", "defines"}:
+            location = edge.get("location") or {}
+            source = nodes.get(source_id) or {}
+            occurrence = {
+                "owner_id": source_id,
+                "owner_label": str(source.get("name") or source_id),
+                "path": str(location.get("path") or ""),
+                "line": location.get("line"),
+            }
+            key = "declarations" if kind == "declares" else "definitions"
+            if len(evidence[target_id][key]) < 50:
+                evidence[target_id][key].append(occurrence)
+        if kind not in {"calls", "reads", "writes", "references"}:
+            continue
+        interaction = {"kind": kind, **_interaction_payload(edge, nodes)}
+        if len(evidence[source_id]["outgoing"]) < 100:
+            evidence[source_id]["outgoing"].append(interaction)
+        if len(evidence[target_id]["incoming"]) < 100:
+            evidence[target_id]["incoming"].append(interaction)
+    for node_evidence in evidence.values():
+        for key in ("declarations", "definitions"):
+            node_evidence[key].sort(
+                key=lambda item: (
+                    item.get("path") or "",
+                    item.get("line") or 0,
+                )
+            )
+        for key in ("incoming", "outgoing"):
+            node_evidence[key].sort(
+                key=lambda item: (
+                    item.get("path") or "",
+                    item.get("line") or 0,
+                    item.get("kind") or "",
+                    item.get("source_label") or "",
+                    item.get("target_label") or "",
+                )
+            )
+    return evidence
 
 
 def _edge_payload(
@@ -444,6 +576,57 @@ def _edge_payload(
         "path": str(location.get("path") or ""),
         "line": location.get("line"),
     }
+
+
+def _aggregate_occurrence_edges(
+    edges: list[dict[str, Any]], nodes: dict[str, dict[str, Any]]
+) -> list[dict[str, Any]]:
+    aggregates: dict[tuple[str, str, str], dict[str, Any]] = {}
+    for edge in edges:
+        key = (
+            str(edge.get("source")),
+            str(edge.get("target")),
+            str(edge.get("kind")),
+        )
+        aggregate = aggregates.get(key)
+        if aggregate is None:
+            aggregate = _edge_payload(edge, nodes)
+            aggregate["id"] = "::".join(key)
+            aggregate["count"] = 0
+            aggregate["occurrences"] = []
+            aggregate["interactions"] = []
+            aggregates[key] = aggregate
+        aggregate["count"] += 1
+        location = edge.get("location") or {}
+        if len(aggregate["occurrences"]) < 100:
+            aggregate["occurrences"].append(
+                {
+                    "path": str(location.get("path") or ""),
+                    "line": location.get("line"),
+                    "column": location.get("column"),
+                }
+            )
+        if len(aggregate["interactions"]) < 50:
+            aggregate["interactions"].append(
+                _interaction_payload(edge, nodes)
+            )
+    for aggregate in aggregates.values():
+        aggregate["occurrences"].sort(
+            key=lambda item: (
+                item.get("path") or "",
+                item.get("line") or 0,
+                item.get("column") or 0,
+            )
+        )
+        aggregate["interactions"].sort(
+            key=lambda item: (
+                item.get("path") or "",
+                item.get("line") or 0,
+                item.get("source_label") or "",
+                item.get("target_label") or "",
+            )
+        )
+    return sorted(aggregates.values(), key=_edge_sort_key)
 
 
 def _interaction_payload(

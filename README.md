@@ -56,6 +56,16 @@ File scope starts with functions as the readable skeleton; parameters and locals
 are nested in function inspection and can be expanded explicitly. Selecting a
 node centers and isolates its one-hop neighborhood, while selecting a module
 edge lists the concrete function or signal interactions it summarizes.
+Parallel relationship kinds are separated into styled lanes and explain
+themselves on hover; repeated occurrences aggregate with their count and source
+locations. Function and variable inspectors show recorded declaration,
+definition, incoming, and outgoing evidence. Storage totals are type-size
+estimates; code size and call-chain stack remain toolchain-gated.
+Choose **Expandable trace playground** to start from any file or symbol and
+progressively expand or collapse incoming/outgoing branches. A canonical symbol
+can appear in
+multiple branches for readability; double-clicking an instance changes only its
+local branch, not the underlying graph evidence.
 
 The supported development launcher is `run.bat`, which activates `venv313`,
 sets `PYTHONPATH=src`, and starts Uvicorn with reload. Reproduction constraints,

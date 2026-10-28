@@ -8,12 +8,16 @@ def test_graph_workspace_shell_exposes_scopes_layers_and_accessible_fallback():
     for identity in (
         'id="graphsPage"',
         'id="graphRun"',
+        'id="graphViewMode"',
+        'id="graphTraceRoot"',
+        'id="graphTraceStart"',
         'id="graphScope"',
         'id="graphFile"',
         'id="graphModules"',
         'id="graphLayers"',
         'id="graphNodeDetails"',
         'id="graphCanvas"',
+        'id="graphEdgeTooltip"',
         'id="graphRelationships"',
     ):
         assert identity in html
@@ -30,3 +34,12 @@ def test_graph_workspace_shell_exposes_scopes_layers_and_accessible_fallback():
     assert "focusGraphNode(node)" in script
     assert "renderGraphEdgeInspector(edge)" in script
     assert '["contains", "parameter_of", "field_of", "member_of"]' in script
+    assert "function graphEdgeRoutes" in script
+    assert "function rectangleBoundary" in script
+    assert "renderGraphEdgeTooltip(edge" in script
+    assert "incoming_interactions" in script
+    assert "Code size requires object/map evidence" in script
+    assert "/graphs/nodes" in script
+    assert "/graphs/neighborhood" in script
+    assert "function toggleTraceNode" in script
+    assert "function collapseTraceNode" in script

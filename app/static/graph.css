@@ -96,6 +96,16 @@
     color: #172033;
 }
 
+.graph-field small {
+    color: #64748b;
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+#graphTraceField .btn {
+    padding: 10px 12px;
+}
+
 .graph-layer-options,
 .graph-module-options {
     display: grid;
@@ -184,11 +194,23 @@
 .graph-legend span::before {
     content: "";
     display: inline-block;
-    width: 9px;
-    height: 9px;
+    width: 18px;
+    height: 0;
     margin-right: 5px;
-    border-radius: 50%;
-    background: var(--legend-color);
+    border-top: 3px solid var(--legend-color);
+    vertical-align: middle;
+}
+
+.graph-legend span[data-kind="includes"]::before {
+    border-top-style: dashed;
+}
+
+.graph-legend span[data-kind="reads"]::before {
+    border-top-style: dotted;
+}
+
+.graph-legend span[data-kind="references"]::before {
+    border-top: 3px double var(--legend-color);
 }
 
 .graph-canvas-wrap {
@@ -213,6 +235,29 @@
 
 #graphCanvas:active {
     cursor: grabbing;
+}
+
+.graph-edge-tooltip {
+    position: absolute;
+    z-index: 3;
+    max-width: 320px;
+    padding: 8px 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: rgba(15, 23, 42, .96);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, .2);
+    color: #fff;
+    font-size: 11px;
+    line-height: 1.4;
+    pointer-events: none;
+}
+
+.graph-edge-tooltip strong {
+    color: #bae6fd;
+}
+
+.graph-edge-tooltip[hidden] {
+    display: none;
 }
 
 .graph-loading {
