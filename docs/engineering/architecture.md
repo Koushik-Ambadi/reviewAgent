@@ -346,6 +346,11 @@ The API returns templates; the pipeline owns execution-time loading.
   inter-module scopes, keeps a textual relationship fallback, and drills from
   high-level nodes to lower scopes. Disabled CFG/data-flow controls explain the
   missing engine instead of implying an empty result.
+- File graphs are function-centric: parameters and locals remain owned details
+  in the inspector unless explicitly expanded. Selection centers one node and
+  dims unrelated facts; aggregate module edges expose bounded underlying symbol
+  interactions. The dependency-ranked layout reduces crossings heuristically,
+  without claiming a minimum-crossing solution.
 - Landing and setup use dynamic viewport sizing on normal desktop layouts. The
   setup configuration and activity panels share one height, while the activity
   log flexes inside its panel. Narrow or short displays retain page scrolling as

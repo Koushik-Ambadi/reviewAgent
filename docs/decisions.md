@@ -39,6 +39,7 @@
 | D026 | Adopt a unified code-intelligence graph without changing symbol inventory | Accepted; AST extraction and graph foundation implemented | [Record](decisions/D026-unified-code-intelligence-graph.md) |
 | D027 | Parse source once in a shared code-analysis stage | Accepted; migration in progress | [Record](decisions/D027-shared-code-analysis-stage.md) |
 | D028 | Put layered code graphs in the developer workspace | Accepted | [Record](decisions/D028-layered-graph-workspace.md) |
+| D029 | Make the graph workspace a function-centric program skeleton | Accepted; value-flow extension proposed | [Record](decisions/D029-function-centric-program-skeleton.md) |
 
 New substantial decisions use `docs/decisions/DNNN-short-title.md` and are linked
 from this table. Small decisions may be recorded directly here when a separate

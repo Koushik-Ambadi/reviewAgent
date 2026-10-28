@@ -132,6 +132,12 @@ changes. Do not maintain a second project-wide gap inventory here.
   now renders retained file/module/inter-module projections with combined
   available overlays. Cross-module insight remains evidence-limited until more
   than one module has a graph-bearing run and stable identities match.
+- Readability increment (2026-10-28): file scope now defaults to a function
+  skeleton with nested owned declarations, focus/dimming, optional detail-node
+  expansion, and inspectable aggregate-edge evidence. Next analysis increment
+  is conservative AST value flow (arguments, initializers/assignments, returns,
+  and call results); CFG/control dependence and alias analysis remain separate
+  gates rather than being inferred from read/write access.
 - Coverage authority: the [graph capability matrix](../contracts/graph-capabilities.md)
   records all 21 discussed graph types and distinguishes currently extractable
   facts from engine, project-model, and external-evidence dependencies.

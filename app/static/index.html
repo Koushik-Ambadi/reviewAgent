@@ -1635,8 +1635,17 @@ html,body{background:var(--bg)}
                         <legend>Modules</legend><div id="graphModules" class="graph-module-options"></div>
                     </fieldset>
                     <fieldset class="graph-layer-field">
-                        <legend>Internal overlays</legend>
+                        <legend>Relationships</legend>
                         <div id="graphLayers" class="graph-layer-options"></div>
+                    </fieldset>
+                    <fieldset class="graph-layer-field">
+                        <legend>Expand owned details</legend>
+                        <div id="graphNodeDetails" class="graph-layer-options">
+                            <label class="graph-layer"><input type="checkbox" value="global_variable"><span><strong>Globals</strong><small>Show shared storage as nodes.</small></span></label>
+                            <label class="graph-layer"><input type="checkbox" value="parameter"><span><strong>Parameters</strong><small>Normally nested in their function.</small></span></label>
+                            <label class="graph-layer"><input type="checkbox" value="local_variable"><span><strong>Locals</strong><small>Normally nested in their function.</small></span></label>
+                            <label class="graph-layer"><input type="checkbox" value="macro"><span><strong>Macros</strong><small>Show referenced definitions as nodes.</small></span></label>
+                        </div>
                     </fieldset>
                     <div class="graph-gate-note"><strong>Evidence gates</strong><p>Control flow and definition-use data flow stay disabled until validated engines are connected.</p></div>
                 </aside>
@@ -1644,7 +1653,7 @@ html,body{background:var(--bg)}
                 <main class="graph-stage">
                     <div class="graph-toolbar">
                         <div id="graphLegend" class="graph-legend"></div>
-                        <button id="graphReset" class="btn secondary" type="button">Reset view</button>
+                        <div class="graph-toolbar-actions"><span id="graphScopeHelp" class="graph-scope-help"></span><button id="graphReset" class="btn secondary" type="button">Reset view</button></div>
                     </div>
                     <div id="graphCanvasWrap" class="graph-canvas-wrap">
                         <canvas id="graphCanvas" aria-label="Interactive code graph"></canvas>
@@ -1668,7 +1677,7 @@ html,body{background:var(--bg)}
                 <aside id="graphInspector" class="graph-inspector" aria-live="polite">
                     <span class="eyebrow">Selection</span>
                     <h3>No node selected</h3>
-                    <p>Select a node to inspect its path, metrics, incoming signals, and outgoing signals.</p>
+                    <p>Select a node to isolate and center its direct neighborhood. Owned parameters and locals appear here without cluttering the canvas.</p>
                 </aside>
             </div>
         </div>

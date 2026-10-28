@@ -46,3 +46,13 @@
   must not label read/write access as data flow or call hierarchy as control flow.
 - Counts summarize occurrences; users can drill down to named targets and source
   paths rather than treating node size or color as a verdict.
+- Parameters are input bindings owned by a function; locals are storage owned by
+  a function. They can share a type or name but are not the same semantic role.
+- In module scope, a file-to-file call edge means one or more named functions in
+  the source file call functions in the target file. Selecting the edge reveals
+  those pairs. A read/write edge similarly reveals the underlying function and
+  variable rather than claiming the whole file performed one opaque operation.
+- Function inspection can currently show ownership, callers, callees, reads,
+  writes, parameter declarations, local declarations, and return type. Showing
+  where each argument value originated or how it influences a returned value is
+  gated on the value-flow relations in D029.

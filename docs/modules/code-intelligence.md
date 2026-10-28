@@ -49,6 +49,12 @@ It never rewrites the canonical artifact. Available overlays are calls, includes
 and conservative reads/writes/references; CFG and definition-use data flow remain
 explicitly disabled evidence gates.
 
+The UI projection is deliberately function-centric. Ownership facts still
+travel in the payload, but parameters and locals are nested under their function
+unless a user explicitly promotes those node kinds. Aggregate file edges expose
+bounded source/target interaction evidence. This presentation does not add or
+reinterpret compiler facts.
+
 ## Flow and invariants
 
 ```text
@@ -92,6 +98,12 @@ C fixture and compilation-database runner remain the next integration gate.
 Indirect calls, conditional-compilation coverage, configuration identity, and
 cross-translation-unit semantic reconciliation beyond stable-ID merge remain
 unimplemented.
+
+The next safe semantic extension is conservative value-flow evidence for
+call-site arguments, initializers/assignments, return expressions, and received
+call results. Path-sensitive control dependence and pointer/alias resolution are
+separate CFG/data-flow gates and must not be inferred from existing read/write
+occurrences.
 
 The accepted target is one common compiler-analysis stage owned here. Review
 will derive its compatibility inventory from the shared result, while graph

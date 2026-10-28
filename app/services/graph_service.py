@@ -326,6 +326,7 @@ def _module_projection(
                 "target": target_file,
                 "count": 0,
                 "signals": set(),
+                "interactions": [],
                 "resolution": str(edge.get("resolution") or "compiler_derived"),
             },
         )
@@ -333,6 +334,10 @@ def _module_projection(
         if kind in {"reads", "writes", "references", "calls"}:
             target_name = (nodes.get(target) or {}).get("name") or target
             aggregate["signals"].add(str(target_name))
+        if len(aggregate["interactions"]) < 50:
+            aggregate["interactions"].append(
+                _interaction_payload(edge, nodes)
+            )
     result_edges = [
         {**edge, "signals": sorted(edge["signals"])}
         for edge in sorted(aggregates.values(), key=_edge_sort_key)
@@ -403,6 +408,10 @@ def _node_payload(node: dict[str, Any]) -> dict[str, Any]:
         "path": str(attributes.get("path") or location.get("path") or ""),
         "line": location.get("line"),
         "external": bool(attributes.get("external")),
+        "definition": node.get("is_definition"),
+        "type": attributes.get("type"),
+        "return_type": attributes.get("return_type"),
+        "owner_id": attributes.get("scope"),
         "metrics": {
             key: attributes[key]
             for key in ("cyclomatic_complexity", "statement_count", "size_bytes")
@@ -415,6 +424,7 @@ def _edge_payload(
     edge: dict[str, Any], nodes: dict[str, dict[str, Any]]
 ) -> dict[str, Any]:
     target = nodes.get(str(edge.get("target"))) or {}
+    location = edge.get("location") or {}
     return {
         "id": str(edge.get("id")),
         "kind": str(edge.get("kind")),
@@ -423,6 +433,26 @@ def _edge_payload(
         "count": 1,
         "signals": [str(target.get("name"))] if target.get("name") else [],
         "resolution": str(edge.get("resolution") or "compiler_derived"),
+        "path": str(location.get("path") or ""),
+        "line": location.get("line"),
+    }
+
+
+def _interaction_payload(
+    edge: dict[str, Any], nodes: dict[str, dict[str, Any]]
+) -> dict[str, Any]:
+    source = nodes.get(str(edge.get("source"))) or {}
+    target = nodes.get(str(edge.get("target"))) or {}
+    location = edge.get("location") or {}
+    return {
+        "source_id": str(edge.get("source")),
+        "source_label": str(source.get("name") or edge.get("source")),
+        "source_kind": str(source.get("kind") or "unknown"),
+        "target_id": str(edge.get("target")),
+        "target_label": str(target.get("name") or edge.get("target")),
+        "target_kind": str(target.get("kind") or "unknown"),
+        "path": str(location.get("path") or ""),
+        "line": location.get("line"),
     }
 
 

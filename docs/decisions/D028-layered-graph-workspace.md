@@ -31,3 +31,6 @@
   three scopes, combined overlays, pan/zoom, selection, text fallback, and
   double-click drill-down. HTTP/static smoke passed; browser visual review is
   pending because local browser use is disabled in Work settings.
+- Follow-up: user visual review identified hierarchy clutter and weak focus in
+  the first canvas. D029 supersedes the equal-rank file presentation while
+  retaining this decision's scopes, overlay model, and evidence gates.

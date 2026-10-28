@@ -130,6 +130,19 @@ def test_run_graph_supports_file_and_module_scopes(tmp_path: Path):
         ("calls", 1),
         ("reads", 1),
     }
+    call_edge = next(edge for edge in module_graph["edges"] if edge["kind"] == "calls")
+    assert call_edge["interactions"] == [
+        {
+            "source_id": "fn:a",
+            "source_label": "step_a",
+            "source_kind": "function",
+            "target_id": "fn:b",
+            "target_label": "step_b",
+            "target_kind": "function",
+            "path": "",
+            "line": None,
+        }
+    ]
 
 
 def test_inter_module_graph_reports_signal_direction(tmp_path: Path):

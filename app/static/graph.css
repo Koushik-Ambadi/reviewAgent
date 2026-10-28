@@ -158,6 +158,21 @@
     margin-bottom: 8px;
 }
 
+.graph-toolbar-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.graph-scope-help {
+    max-width: 360px;
+    color: #475569;
+    font-size: 11px;
+    line-height: 1.35;
+    text-align: right;
+}
+
 .graph-legend {
     display: flex;
     gap: 10px;
@@ -240,6 +255,30 @@
     color: #64748b;
     font-size: 12px;
     line-height: 1.5;
+}
+
+.graph-inspector h4 {
+    margin: 15px 0 5px;
+    color: #334155;
+    font-size: 11px;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.graph-inspector ul {
+    max-height: 180px;
+    margin: 0;
+    padding-left: 18px;
+    overflow: auto;
+}
+
+.graph-evidence-note {
+    margin-top: 14px;
+    padding: 9px 10px;
+    border: 1px solid #fed7aa;
+    border-radius: 9px;
+    background: #fff7ed;
+    color: #9a3412 !important;
 }
 
 .graph-inspector dl {
@@ -339,6 +378,15 @@
     .graph-toolbar {
         align-items: stretch;
         flex-direction: column;
+    }
+
+    .graph-toolbar-actions {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .graph-scope-help {
+        text-align: left;
     }
 
     .graph-summary {

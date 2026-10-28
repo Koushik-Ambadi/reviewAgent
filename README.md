@@ -52,6 +52,10 @@ runs. The developer **Code graphs** tab switches between file, module, and
 inter-module scopes; call/include/read/write/reference overlays can be combined.
 Double-click a module or file node to drill down. Control-flow and true data-flow
 overlays are visible but disabled until their required analysis engines exist.
+File scope starts with functions as the readable skeleton; parameters and locals
+are nested in function inspection and can be expanded explicitly. Selecting a
+node centers and isolates its one-hop neighborhood, while selecting a module
+edge lists the concrete function or signal interactions it summarizes.
 
 The supported development launcher is `run.bat`, which activates `venv313`,
 sets `PYTHONPATH=src`, and starts Uvicorn with reload. Reproduction constraints,

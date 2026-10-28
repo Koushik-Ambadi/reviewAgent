@@ -35,19 +35,27 @@ IDs, unknown files, scopes, or unavailable layers return 400.
 
 | Scope | Nodes | Relationships | Intended question |
 |---|---|---|---|
-| File | Selected file, recursively owned symbols, and referenced boundary targets | Hierarchy plus selected call/access/include occurrences | What is inside this file and what does it touch? |
+| File | Functions by default; optional globals, parameters, locals, and macros | Selected call/access/include occurrences; ownership remains inspector structure | What is the file's functional skeleton and what does each function touch? |
 | Module | Repository-owned files in one run | Aggregated call/include/read/write/reference evidence between files | Which internal files depend on or exchange signals with each other? |
 | Inter-module | Latest graph-bearing run per selected module | Matching stable symbol identities observed across module boundaries | Which modules call, read, or write interfaces owned by another module? |
 
-Module and inter-module edges contain an occurrence `count` and bounded signal
-or target names. Inter-module nodes expose `inputs` and `outputs` derived from
+Module edges contain an occurrence `count`, bounded signal names, and up to 50
+`interactions` naming the underlying source/target symbols and source location.
+Inter-module nodes expose `inputs` and `outputs` derived from
 cross-module reads and writes. These directions describe compiler observations,
 not calibrated physical I/O or runtime timing.
 
 ## Layer contract
 
 Available overlays are `calls`, `includes`, `reads`, `writes`, and `references`.
-They may be combined. File scope retains ownership hierarchy as visual context.
+They may be combined. Relationship controls do not remove node kinds. Separate
+file-detail controls can promote globals, parameters, locals, or macros to
+canvas nodes; parameters and locals remain available under their owning
+function when not promoted.
+
+Selection is a focus operation: the selected node is centered, incident edges
+and one-hop nodes retain emphasis, and unrelated nodes/edges are dimmed. A
+selected aggregate module edge exposes its bounded underlying interactions.
 
 `control_flow` and `data_flow` are advertised with `available: false` and an
 evidence-gate explanation. The workspace must render them disabled rather than

@@ -12,6 +12,7 @@ def test_graph_workspace_shell_exposes_scopes_layers_and_accessible_fallback():
         'id="graphFile"',
         'id="graphModules"',
         'id="graphLayers"',
+        'id="graphNodeDetails"',
         'id="graphCanvas"',
         'id="graphRelationships"',
     ):
@@ -26,3 +27,6 @@ def test_graph_workspace_shell_exposes_scopes_layers_and_accessible_fallback():
     assert "Control flow and definition-use data flow stay disabled" in html
     assert 'canvas.addEventListener("dblclick"' in script
     assert 'fetch("/api/graphs/catalog")' in script
+    assert "focusGraphNode(node)" in script
+    assert "renderGraphEdgeInspector(edge)" in script
+    assert '["contains", "parameter_of", "field_of", "member_of"]' in script

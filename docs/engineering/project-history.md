@@ -1168,3 +1168,20 @@ and third-party artifacts and must not be interpreted as effort or quality.
   migration limitation until compatibility is verified.
 - Next state: commit the capability contract, then implement current-fact views
   before expanding AST facts and moving compilation-database parsing.
+
+### 2026-10-28 — Refocus graphs on the program skeleton
+
+- User visual review found that equal-rank parameter, local, macro, global, and
+  function nodes plus ownership arrows obscured call and access flow.
+- D029 makes functions the default file-level skeleton. Owned parameters and
+  locals move into the inspector, detail-node expansion is explicit, selection
+  centers and dims to one hop, and aggregate file edges expose the concrete
+  interactions beneath their counts.
+- The layout now uses deterministic dependency ranks and curved lanes to reduce
+  avoidable crossings; it is a heuristic, not a minimum-crossing guarantee.
+- Current facts can explain ownership, direct calls, and conservative reads and
+  writes. Argument origin, transformations, return lineage, branch dependence,
+  and aliases remain evidence-gated for the next AST/CFG increments.
+- Focused graph tests, JavaScript syntax, and live HTTP projections passed.
+  Browser automation remained disabled by Work settings; the user's open local
+  preview is the visual acceptance surface.
