@@ -4,7 +4,8 @@ Review Agent is a policy-driven repository review service for embedded C
 projects. It accepts a repository ZIP, creates an isolated run workspace,
 generates a CMake compilation database, extracts C symbols with libclang,
 applies repository-structure and naming checks, persists a versioned JSON
-report, and renders the result in a FastAPI-hosted web UI. A separate endpoint
+report plus canonical code graph, and renders the result in a FastAPI-hosted
+web UI. A separate endpoint
 can invoke the uploaded firmware repository's `cmake-build.bat`.
 
 The current checkout documents 31 linear commits from 14 May through
@@ -42,8 +43,15 @@ POST /api/review (ZIP)
   -> orchestrator workspace and ingestion
   -> repo_review structure -> analysis -> naming -> reporting
   -> workspace/runs/<run_id>/report.json
+  -> workspace/runs/<run_id>/analysis/code-intelligence.json
   -> browser or agent-oriented response
 ```
+
+The landing page’s **Explore code graphs** action opens retained graph-bearing
+runs. The developer **Code graphs** tab switches between file, module, and
+inter-module scopes; call/include/read/write/reference overlays can be combined.
+Double-click a module or file node to drill down. Control-flow and true data-flow
+overlays are visible but disabled until their required analysis engines exist.
 
 The supported development launcher is `run.bat`, which activates `venv313`,
 sets `PYTHONPATH=src`, and starts Uvicorn with reload. Reproduction constraints,

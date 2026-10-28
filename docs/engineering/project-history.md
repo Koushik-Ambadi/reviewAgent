@@ -24,6 +24,9 @@ and third-party artifacts and must not be interpreted as effort or quality.
 - Added read-only file, module, and inter-module API projections with selectable
   call/include/access overlays and explicit CFG/data-flow evidence gates.
 - Recorded the graph workspace placement decision and a use-case/insight map.
+- Added the developer Code graphs tab with retained-run selection, three scopes,
+  combinable overlays, canvas pan/zoom, node inspection, accessible relationship
+  fallback, and high-level-to-internal double-click drill-down.
 
 ## 2026-10-27 — First derived code-graph views
 

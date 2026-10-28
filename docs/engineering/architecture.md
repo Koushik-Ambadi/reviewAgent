@@ -113,6 +113,7 @@ it requires a verified graph-to-inventory compatibility adapter.
 | `POST /api/review` | Multipart `.zip` | `{run_id, report}` where report is serialized `RunResult` | `app/api/review.py` |
 | `POST /api/agent/review` | Multipart `.zip` | Compact failed/skipped summary | `app/api/review.py`, service formatter |
 | `GET /api/agent/review/{run_id}` | Run ID path value | Detailed agent-oriented failure text | `app/api/review.py`, service formatter |
+| `GET /api/graphs/catalog` | None | Latest graph-bearing run per module | `app/api/graphs.py`, `app/services/graph_service.py` |
 | `GET /api/runs/{run_id}/graphs` | Run, file/module scope, optional file and overlays | Read-only graph workspace projection | `app/api/graphs.py`, `app/services/graph_service.py` |
 | `GET /api/graphs/inter-module` | Optional module names and overlays | Latest-per-module interactions and signal directions | `app/api/graphs.py`, `app/services/graph_service.py` |
 | `POST /api/runs/{run_id}/build` | Run ID path value | Final `BuildResult`, or queued job with `background=true` | `app/api/build.py` |
@@ -340,6 +341,11 @@ The API returns templates; the pipeline owns execution-time loading.
   is available from both evidence-bearing views. Run/profile metadata is titled
   and collapsed by default because it is supporting context; its summary retains
   the selected profile and module.
+- The Code graphs tab is the interactive engineering view over canonical run
+  artifacts. It combines available overlays across file, module, and
+  inter-module scopes, keeps a textual relationship fallback, and drills from
+  high-level nodes to lower scopes. Disabled CFG/data-flow controls explain the
+  missing engine instead of implying an empty result.
 - Landing and setup use dynamic viewport sizing on normal desktop layouts. The
   setup configuration and activity panels share one height, while the activity
   log flexes inside its panel. Narrow or short displays retain page scrolling as

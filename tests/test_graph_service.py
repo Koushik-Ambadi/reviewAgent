@@ -3,7 +3,11 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from app.services.graph_service import get_inter_module_graph, get_run_graph
+from app.services.graph_service import (
+    get_graph_catalog,
+    get_inter_module_graph,
+    get_run_graph,
+)
 import orchestrator.run_store as run_store
 
 
@@ -182,3 +186,9 @@ def test_inter_module_graph_reports_signal_direction(tmp_path: Path):
     producer = next(node for node in graph["nodes"] if node["id"] == "producer")
     assert consumer["inputs"] == ["shared_signal"]
     assert producer["outputs"] == ["shared_signal"]
+    catalog = get_graph_catalog(workspace_root=tmp_path)
+    assert catalog["count"] == 2
+    assert [item["module_name"] for item in catalog["modules"]] == [
+        "consumer",
+        "producer",
+    ]

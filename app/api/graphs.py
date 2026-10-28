@@ -4,6 +4,7 @@ from fastapi import APIRouter, HTTPException, Query
 
 from app.services.graph_service import (
     GraphArtifactNotFoundError,
+    get_graph_catalog,
     get_inter_module_graph,
     get_run_graph,
 )
@@ -11,6 +12,11 @@ from orchestrator.run_store import RunNotFoundError, RunStoreError
 
 
 router = APIRouter()
+
+
+@router.get("/graphs/catalog")
+async def read_graph_catalog():
+    return get_graph_catalog()
 
 
 @router.get("/runs/{run_id}/graphs")

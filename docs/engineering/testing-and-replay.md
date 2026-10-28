@@ -90,6 +90,14 @@ nodes and 236 selected/hierarchy relationships. Only shunt currently has a
 graph artifact, so the inter-module result honestly contains one module and no
 cross-module relationships.
 
+`tests/test_graph_workspace_static.py` verifies the graph page, three scope
+selectors, layer host, canvas, accessible relationship list, stylesheet/script
+delivery, catalog loading, and double-click drill-down hooks. `node --check`
+passes for `graph.js`, `app.js`, and `manager.js`. A local Uvicorn smoke returned
+200 for the catalog, shunt module/file projections, inter-module projection,
+HTML shell, and graph script. Browser visual verification was not executed
+because local browser use is disabled in Work settings.
+
 | Check | Result | What it proves |
 |---|---|---|
 | `venv313` direct invocation of the three functions in `tests/test_code_intelligence_ast.py` with temporary roots | Passed | USR-first and fallback identities are deterministic; file/function/global/macro nodes and contains/declares/defines/includes/calls edges are emitted; unresolved calls remain explicit; every edge endpoint exists; external declarations are excluded |

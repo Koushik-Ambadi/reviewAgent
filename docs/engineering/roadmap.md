@@ -128,6 +128,10 @@ changes. Do not maintain a second project-wide gap inventory here.
   now emits `code-intelligence.json` and `symbols.json` from one libclang parse;
   graph-only application orchestration and the inventory compatibility adapter
   remain pending.
+- Workspace state (2026-10-28): an initial read-only developer graph workspace
+  now renders retained file/module/inter-module projections with combined
+  available overlays. Cross-module insight remains evidence-limited until more
+  than one module has a graph-bearing run and stable identities match.
 - Coverage authority: the [graph capability matrix](../contracts/graph-capabilities.md)
   records all 21 discussed graph types and distinguishes currently extractable
   facts from engine, project-model, and external-evidence dependencies.

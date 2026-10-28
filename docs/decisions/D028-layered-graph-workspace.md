@@ -27,4 +27,7 @@
 - Implementation references: `app/api/graphs.py`,
   `app/services/graph_service.py`, and the graph workspace UI.
 - Observed impact and validation: backend projections are verified against pure
-  fixtures and the retained shunt run; UI verification is the next increment.
+  fixtures and the retained shunt run. The developer workspace now provides the
+  three scopes, combined overlays, pan/zoom, selection, text fallback, and
+  double-click drill-down. HTTP/static smoke passed; browser visual review is
+  pending because local browser use is disabled in Work settings.

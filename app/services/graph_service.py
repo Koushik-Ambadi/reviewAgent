@@ -61,6 +61,28 @@ class GraphArtifactNotFoundError(FileNotFoundError):
     """Raised when a run has no canonical graph artifact."""
 
 
+def get_graph_catalog(
+    *, workspace_root: Path = WORKSPACE_ROOT
+) -> dict[str, Any]:
+    records = _latest_graphs_by_module(workspace_root)
+    modules = []
+    for module_name, record in sorted(records.items()):
+        graph = record["graph"]
+        modules.append(
+            {
+                "module_name": module_name,
+                "run_id": record["run_id"],
+                "generated_at": record["generated"].isoformat(),
+                "source_revision": (graph.get("provenance") or {}).get(
+                    "source_revision"
+                ),
+                "nodes": len(graph.get("nodes") or []),
+                "edges": len(graph.get("edges") or []),
+            }
+        )
+    return {"modules": modules, "count": len(modules)}
+
+
 def get_run_graph(
     run_id: str,
     *,

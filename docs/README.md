@@ -45,7 +45,7 @@ related decisions. It owns local mechanics; architecture summarizes the whole.
 | C/C++ analysis inventory | [analysis-inventory](modules/analysis-inventory.md) | `analysis/source_index`, `analysis/symbol_inventory`, `analysis/runner.py` | repository, CMake, YAML policy | symbol JSON, checks, inventory | living |
 | Policy-driven checks | [policy-driven-checks](modules/policy-driven-checks.md) | `checks/`, `policies/default.yaml` | structure tree, symbol inventory, policy | typed check results and report stages | living |
 | Result contract and reporting | [result-contract-and-reporting](modules/result-contract-and-reporting.md) | `contracts/`, `reporting/` | stage results and projections | report, API/UI/manager consumers | living |
-| Code intelligence | [code-intelligence](modules/code-intelligence.md) | `code_intelligence/models.py`, `identity.py`, `extraction/ast_extractor.py` | clang translation-unit cursor and repository root | graph merge, snapshots, views, later review/build/agent consumers | initial extraction slice |
+| Code intelligence | [code-intelligence](modules/code-intelligence.md) | `code_intelligence/`, `app/services/graph_service.py`, `app/static/graph.js` | compilation database, run graph artifacts, user scope/layer selection | graph snapshots, interactive views, later review/build/agent consumers | initial interactive slice |
 
 The existing [remediation generation](engineering/remediation-generation.md)
 record remains the detailed owner for the model-assisted workflow.

@@ -12,6 +12,10 @@
 
 ## Endpoints
 
+`GET /api/graphs/catalog` lists the newest graph-bearing run for each module so
+the workspace can inspect retained evidence without relying on browser session
+state.
+
 `GET /api/runs/{run_id}/graphs` returns a projection from one canonical run
 artifact. Query parameters:
 
