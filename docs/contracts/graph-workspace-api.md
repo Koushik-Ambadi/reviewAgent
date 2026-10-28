@@ -39,7 +39,8 @@ IDs, unknown files, scopes, or unavailable layers return 400.
 | Module | Repository-owned files in one run | Aggregated call/include/read/write/reference evidence between files | Which internal files depend on or exchange signals with each other? |
 | Inter-module | Latest graph-bearing run per selected module | Matching stable symbol identities observed across module boundaries | Which modules call, read, or write interfaces owned by another module? |
 
-Module edges contain an occurrence `count`, bounded signal names, and up to 50
+Module and inter-module edges contain an occurrence `count`, bounded signal
+names, and up to 50
 `interactions` naming the underlying source/target symbols and source location.
 Inter-module nodes expose `inputs` and `outputs` derived from
 cross-module reads and writes. These directions describe compiler observations,

@@ -195,6 +195,8 @@ def test_inter_module_graph_reports_signal_direction(tmp_path: Path):
     assert graph["edges"][0]["source"] == "consumer"
     assert graph["edges"][0]["target"] == "producer"
     assert graph["edges"][0]["signals"] == ["shared_signal"]
+    assert graph["edges"][0]["interactions"][0]["source_label"] == "consume"
+    assert graph["edges"][0]["interactions"][0]["target_label"] == "shared_signal"
     consumer = next(node for node in graph["nodes"] if node["id"] == "consumer")
     producer = next(node for node in graph["nodes"] if node["id"] == "producer")
     assert consumer["inputs"] == ["shared_signal"]

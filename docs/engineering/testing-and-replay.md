@@ -99,7 +99,8 @@ HTML shell, and graph script. Browser visual verification was not executed
 because local browser use is disabled in Work settings.
 
 The function-centric readability increment adds focused assertions for bounded
-aggregate interaction evidence, owned-detail controls, node focus, edge
+module/inter-module aggregate interaction evidence, owned-detail controls, node
+focus, edge
 inspection, and hierarchy suppression from the default canvas. `node --check`
 and direct invocation of the three focused graph tests passed. The refreshed
 Uvicorn projection returned 7 module nodes/20 selected aggregate relationships

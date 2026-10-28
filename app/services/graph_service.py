@@ -164,10 +164,18 @@ def get_inter_module_graph(
                         "target": target_module,
                         "count": 0,
                         "signals": set(),
+                        "interactions": [],
+                        "resolution": str(
+                            edge.get("resolution") or "compiler_derived"
+                        ),
                     },
                 )
                 aggregate["count"] += 1
                 aggregate["signals"].add(label)
+                if len(aggregate["interactions"]) < 50:
+                    aggregate["interactions"].append(
+                        _interaction_payload(edge, nodes)
+                    )
                 if kind == "reads":
                     inputs[source_module].add(label)
                     outputs[target_module].add(label)
