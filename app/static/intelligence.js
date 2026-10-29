@@ -7,6 +7,9 @@ const relationWords = {calls:'calls', reads:'reads from', writes:'updates', incl
     references:'refers to', resolves_to:'implemented by', control_flow:'can continue to',
     def_use:'supplies an operand to', memory_flow:'may supply a saved value to', contains:'contains', same_tokens:'has identical tokens to'};
 const relationLabel = edge => edge.display_relation || relationWords[edge.kind] || edge.kind;
+const edgeLabel = edge => edge.kind === 'control_flow' ?
+    ({successor:'then',true:'if true',false:'if false'}[edge.attributes?.label] || edge.attributes?.label || relationLabel(edge)) :
+    edge.attributes?.label || relationLabel(edge);
 
 function flowTitle(node) {
     const a = node.attributes || {};
@@ -119,7 +122,7 @@ function renderIntelligenceResult() {
         <h4>File cycles</h4>${groupsHtml(a.file_cycles,new Map(a.file_nodes.map(n=>[n.id,n.name])))}
         <p>Architecture rules: ${ie(a.architecture.status)} · ${a.architecture.findings.length} matching forbidden dependencies.</p>
         <pre>${ie(JSON.stringify(a.architecture.findings,null,2))}</pre></details>`;
-    iq('iqRelationships').innerHTML=r.edges.map(e=>`<li><button data-inspect="${ie(e.source)}">${ie(names.get(e.source))}</button> ${ie(relationLabel(e))} <button data-inspect="${ie(e.target)}">${ie(names.get(e.target))}</button>${e.attributes?.label?` · ${ie(e.attributes.label)}`:''}${e.count?` (${e.count} observations)`:''}</li>`).join('')||'<li>No relationships in this view.</li>';
+    iq('iqRelationships').innerHTML=r.edges.map(e=>`<li><button data-inspect="${ie(e.source)}">${ie(names.get(e.source))}</button> ${ie(edgeLabel(e))} <button data-inspect="${ie(e.target)}">${ie(names.get(e.target))}</button>${e.count?` (${e.count} observations)`:''}</li>`).join('')||'<li>No relationships in this view.</li>';
     renderIntelligenceMap();
     iq('iqInspector').innerHTML=(r.structures||[]).map(contextHtml).join('') || '<p>Inspect a map item to see its source, inputs, outputs and compiler evidence. Use “Add to selection” to combine it with other items.</p>';
 }
@@ -128,14 +131,17 @@ function groupsHtml(groups,names) {return `<ul>${groups.map(g=>`<li>${g.map(id=>
 
 function renderIntelligenceMap() {
     const r=intelligence.result; if(!r)return;
+    const dense=r.edges.length>20;
+    iq('iqMapHelp').textContent=dense ?
+        'Dense map: repeated arrow labels are hidden for readability. Decision branches still show true/false. Inspect a card or open the relationship list for every labeled connection.' : '';
     const nodes=layoutIntelligence(r.nodes,r.edges), byId=new Map(nodes.map(n=>[n.id,n]));
     const width=Math.max(800,...nodes.map(n=>n.x+270)),height=Math.max(350,...nodes.map(n=>n.y+110));
     const edges=r.edges.map((e,index)=>{const s=byId.get(e.source),t=byId.get(e.target);if(!s||!t)return '';
         const x=s.x+230,y=s.y+40,tx=t.x,ty=t.y+40;
         const curve=s.id===t.id?`M ${x-30} ${y-40} C ${x+70} ${y-110}, ${x+100} ${y+80}, ${x} ${y+20}`:
             `M ${x} ${y} C ${x+55} ${y+(tx<=x?65:0)}, ${tx-55} ${ty+(tx<=x?65:0)}, ${tx} ${ty}`;
-        const label=e.attributes?.label||relationLabel(e);
-        return `<g><path d="${curve}" class="iq-edge ${e.kind==='memory_flow'?'iq-memory':''}" marker-end="url(#iqArrow)"><title>${ie(s.name)} ${ie(label)} ${ie(t.name)}</title></path><text x="${(x+tx)/2}" y="${(y+ty)/2-8-(index%2)*12}" class="iq-edge-label">${ie(label)}</text></g>`;}).join('');
+        const label=edgeLabel(e), showLabel=!dense || (e.kind==='control_flow' && (label==='if true'||label==='if false'));
+        return `<g><path d="${curve}" class="iq-edge ${e.kind==='memory_flow'?'iq-memory':''}" marker-end="url(#iqArrow)"><title>${ie(s.name)} ${ie(label)} ${ie(t.name)}</title></path>${showLabel?`<text x="${(x+tx)/2}" y="${(y+ty)/2-8-(index%2)*12}" class="iq-edge-label">${ie(label)}</text>`:''}</g>`;}).join('');
     const cards=nodes.map(n=>`<g class="iq-node ${intelligence.selected.has(n.id)?'selected':''}" data-inspect="${ie(n.id)}" role="button" tabindex="0" aria-label="Inspect ${ie(flowTitle(n))}" transform="translate(${n.x},${n.y})"><rect width="230" height="85" rx="12"/><text x="12" y="23">${ie(flowTitle(n).slice(0,29))}</text><text x="12" y="44" class="iq-node-kind">${ie(n.kind.replaceAll('_',' '))} · ${ie(n.module||'')}</text><text x="12" y="66" class="iq-node-kind">${ie((n.location?.path||n.attributes?.ir||'Inspect for details').slice(0,34))}</text><title>${ie(n.name)}</title></g>`).join('');
     iq('iqMap').innerHTML=nodes.length?`<svg width="${width*intelligence.zoom}" height="${height*intelligence.zoom}" viewBox="0 0 ${width} ${height}" role="img" aria-label="${ie(r.title)}"><defs><marker id="iqArrow" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#6b829f"/></marker></defs>${edges}${cards}</svg>`:'<p class="iq-empty">No graph evidence for this selection. Select a function with a verified flow bundle for decisions and values.</p>';
 }

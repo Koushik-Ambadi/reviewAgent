@@ -741,12 +741,13 @@ same native LLVM reader; source semantics and memory-analysis correctness are
   instructions. Native IR/source/hash audit passes both. Four total Shunt/SOC
   bundles now attach without warnings. Compact evidence is retained in
   `docs/examples/intelligence-verification.json`; no original graph was overwritten.
-- Visual browser acceptance is NOT performed: local browser use is disabled
-  in Work settings. Web retrieval of the shared discussion also returned cache
-  miss on resume; saved provenance from the earlier read is retained as recorded
-  evidence, not a claimed fresh reread. This is the outstanding UI review gate.
-- Manual acceptance when browser access is available: open Code graphs; select
-  Shunt and SOC; search/select two functions; Explore connections, upstream and
-  downstream; inspect source; select a flow-backed function and open CFG/DFD;
-  confirm readable labels, keyboard inspection, zoom/scroll, explicit truncation,
-  and the existing-tools toggle. Report pass/fail plus any visible error.
+- Browser access was enabled later in the session. In Chrome at local port 8765,
+  both modules loaded with four matching bundles and no attachment warnings.
+  Selecting `Shunt_task` and `Shunt_currentcalculation` showed one direct call
+  with source-backed context for the latter. `Shunt_task` CFG displayed 80 blocks,
+  108 transitions and 41 hidden blocks; DFD displayed 80 values/operations,
+  112 links and 402 hidden items. Dense arrows now suppress repeated labels,
+  retaining branch labels, tooltips and the relationship list. Analytics showed
+  76 function rows, and the existing overview/trace toggle remained functional.
+  The map is scrollable and deliberately bounded; dense whole-function DFDs still
+  require focusing the selection/limit and reading the source inspector or list.

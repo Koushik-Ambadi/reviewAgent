@@ -121,3 +121,9 @@ accepts graph/analytics exploration, excludes requirements workflows, and
 explicitly defers version comparisons. Older suggestions to prioritize requirements
 are therefore superseded for this increment. Runtime, tests, model mappings and
 learned predictions still require their stated evidence; no results are invented.
+
+Browser access became available later on 2026-10-29. The exact shared URL was
+opened again and its current-snapshot feature list checked against the guided
+workspace. The rendered discussion and the `Application Features Identified`
+project chat agree on the graph/analytics categories. The attachment remains
+unimported, so this is still a partial capture without a content hash.

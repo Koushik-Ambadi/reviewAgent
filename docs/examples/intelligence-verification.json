@@ -152,5 +152,5 @@
       "bundle": "workspace/runs/intelligence-flow/soc-soc_model-20261029"
     }
   ],
-  "visual_verification": "not_performed_local_browser_disabled"
+  "visual_verification": "chrome_localhost_shunt_soc_multi_select_source_cfg_dfd_analytics_legacy_toggle_passed_20261029"
 }

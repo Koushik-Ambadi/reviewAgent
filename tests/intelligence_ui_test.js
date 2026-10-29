@@ -19,6 +19,10 @@ toggleIntelligenceSelection('a',false);if(intelligence.selected.has('a'))throw E
 intelligence.result={nodes,edges,title:'Connections'};renderIntelligenceMap();
 if(!iq('iqMap').innerHTML.includes('tabindex="0"'))throw Error('Missing keyboard controls');
 if(iq('iqMap').innerHTML.includes('<img'))throw Error('Unescaped graph text');
+const denseEdges=Array.from({length:21},(_,i)=>({id:'d'+i,source:'a',target:'b',kind:'def_use'}));
+intelligence.result={nodes,edges:denseEdges,title:'Values'};renderIntelligenceMap();
+if(!iq('iqMapHelp').textContent.includes('Dense map') || iq('iqMap').innerHTML.includes('iq-edge-label'))throw Error('Dense edge labels obscure map');
+if(edgeLabel({kind:'control_flow',attributes:{label:'true'}})!=='if true')throw Error('Branch label unclear');
 const html=contextHtml({node:nodes[0],notes:[],source:{text:'<script>bad()</script>',path:'a.c',match:'verified'},relationships:[],regions:[]});
 if(html.includes('<script>'))throw Error('Unescaped source excerpt');
 `,context);

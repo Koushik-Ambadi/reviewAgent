@@ -1328,3 +1328,9 @@ and third-party artifacts and must not be interpreted as effort or quality.
   `project/review-agent` as skills PR #7. Consumed project baseline stays b800dfc;
   new upstream changes are unrelated templates/competency documentation and the
   proposal is not silently adopted as active policy.
+
+- After browser access became available, reread the exact shared link and
+  visually checked the local Shunt/SOC workspace. Repeated labels obscured dense
+  flow maps, so the follow-up presentation increment keeps branch labels and
+  hides repeated text above 20 edges. Source inspection, multi-selection,
+  CFG/DFD, analytics and the legacy toggle were checked in Chrome.

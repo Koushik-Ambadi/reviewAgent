@@ -53,7 +53,9 @@ on catalog refresh. Module changes discard out-of-scope selections.
 The map uses deterministic bounded levels with distinct cards even in cyclic
 or disconnected graphs; it does not imply time or promise crossing-free edges.
 Zoom and scrolling handle larger graphs; a relationship list provides an
-accessible alternative. Source-derived text is escaped. A request generation
+accessible alternative. Above 20 connections, repeated labels are hidden from
+the map to reduce overlap; branch true/false labels remain, and every edge keeps
+its tooltip and list entry. Source-derived text is escaped. A request generation
 counter and abort signal prevent older query responses replacing newer ones.
 Results expose omitted/frontier counts. JSON download exports the exact query
 payload including evidence, scope, limits and analytics, not a new authority.
