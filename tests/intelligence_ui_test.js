@@ -1,0 +1,26 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const elements=new Map();
+function element(id){if(!elements.has(id))elements.set(id,{value:'',innerHTML:'',textContent:'',hidden:false,disabled:false,addEventListener(){},setAttribute(){}});return elements.get(id);}
+const context={console,document:{getElementById:element,addEventListener(){}},AbortController,fetch:async()=>{throw Error('unexpected network')},URL,Blob};
+vm.createContext(context);vm.runInContext(fs.readFileSync('app/static/intelligence.js','utf8'),context);
+vm.runInContext(`
+const nodes=[{id:'a',name:'<img src=x onerror=alert(1)>',kind:'function',module:'A',attributes:{}},{id:'b',name:'B',kind:'function',module:'B',attributes:{}},{id:'c',name:'C',kind:'function',module:'A',attributes:{}}];
+const edges=[{id:'ab',source:'a',target:'b',kind:'calls'},{id:'ba',source:'b',target:'a',kind:'calls'},{id:'cc',source:'c',target:'c',kind:'calls'}];
+const first=layoutIntelligence(nodes,edges),second=layoutIntelligence(nodes,edges);
+if(JSON.stringify(first)!==JSON.stringify(second))throw Error('Non-deterministic layout');
+if(new Set(first.map(n=>n.x+':'+n.y)).size!==3)throw Error('Overlapping cards');
+if(first.some(n=>!Number.isFinite(n.x)||!Number.isFinite(n.y)))throw Error('Unbounded cycle layout');
+intelligence.catalog={symbols:nodes};intelligence.modules=new Set(['A','B']);
+iq('iqKind').value='';renderIntelligencePicker();
+if(iq('iqPicker').innerHTML.includes('<img'))throw Error('Unescaped source name');
+toggleIntelligenceSelection('a',true);toggleIntelligenceSelection('b',true);
+if(intelligence.selected.size!==2)throw Error('Multi-selection failed');
+toggleIntelligenceSelection('a',false);if(intelligence.selected.has('a'))throw Error('Removal failed');
+intelligence.result={nodes,edges,title:'Connections'};renderIntelligenceMap();
+if(!iq('iqMap').innerHTML.includes('tabindex="0"'))throw Error('Missing keyboard controls');
+if(iq('iqMap').innerHTML.includes('<img'))throw Error('Unescaped graph text');
+const html=contextHtml({node:nodes[0],notes:[],source:{text:'<script>bad()</script>',path:'a.c',match:'verified'},relationships:[],regions:[]});
+if(html.includes('<script>'))throw Error('Unescaped source excerpt');
+`,context);
+assert(context.document.getElementById('iqMap').innerHTML.includes('marker-end'));
+console.log('Intelligence multi-select, cyclic layout, keyboard and escaping checks passed');

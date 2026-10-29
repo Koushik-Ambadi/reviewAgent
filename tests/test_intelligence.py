@@ -29,6 +29,9 @@ def test_connected_selection_and_influence_have_distinct_semantics():
     assert {n["id"] for n in r["nodes"]} == {"root","work","value","other"}
     downstream = explorer.query(mode="downstream",selected=["value"])
     assert {n["id"] for n in downstream["nodes"]} == {"value","other"}
+    assert downstream["edges"][0]["display_relation"] == "may affect a reader"
+    signals = explorer.query(mode="signals", selected=["value"])
+    assert next(e for e in signals["edges"] if e["kind"] == "reads")["display_relation"] == "is read by"
     upstream = explorer.query(mode="upstream",selected=["value"])
     assert {n["id"] for n in upstream["nodes"]} == {"value","work","leaf"}
 

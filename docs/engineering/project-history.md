@@ -1305,3 +1305,26 @@ and third-party artifacts and must not be interpreted as effort or quality.
 - Delivery increments: deterministic query/analytics and evidence loading;
   guided UI/source inspection; verification and reusable skill proposal. Preserve
   existing graph views and prepare a reviewable product PR.
+
+### 2026-10-29 — Resume guided graph workspace
+
+- Resumed existing staged backend on `codex/graph-intelligence-workspace` and
+  committed it as `8d77dc0` after eight focused tests. Saved shared-discussion
+  evidence was already present; new browser access is disabled and web fetch
+  missed. Current request and stored classifications govern scope.
+- Added guided module/multi-node selection, plain-language graph questions,
+  source/region and block-operation inspection, analytics, accessible relationship
+  list, JSON export and preserved legacy tools. Reversed influence relations have
+  explicit display labels to prevent false caller/reader descriptions.
+- Verified 17 modes on actual Shunt/SOC, 67 Python tests and two Node harnesses.
+  Generated and natively audited both SOC source flow bundles; four valid flow
+  attachments are available. Visual acceptance remains open because browser
+  access is disabled. Keep product PR draft until that check is completed.
+- Updated README, exploration contract, module guide, index, testing and retained
+  evidence. Requirements excluded; version comparisons and absent external-input
+  capabilities remain explicit roadmap/evidence gates.
+- Skill-creator guidance used for conditional semantic graph/analytics testing
+  proposal `94c6ba2`, based on approved skills `347bb23`, published on persistent
+  `project/review-agent` as skills PR #7. Consumed project baseline stays b800dfc;
+  new upstream changes are unrelated templates/competency documentation and the
+  proposal is not silently adopted as active policy.

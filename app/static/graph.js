@@ -45,6 +45,7 @@ const graphState = {
 async function showGraphs() {
     showPage("graphsPage");
     updateWorkspaceChrome("graphs");
+    if (typeof openIntelligence === "function") await openIntelligence();
     if (!graphState.catalog.length) await loadGraphCatalog();
     if (!graphState.payload) await loadGraphProjection();
     requestAnimationFrame(resizeGraphCanvas);

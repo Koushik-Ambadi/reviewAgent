@@ -152,6 +152,22 @@ class Workspace:
         location = node.get("location") or {}
         result = {"node": node, "relationships": [e for e in self.explorer.edges if node_id in (e["source"],e["target"])],
                   "source": None, "regions": [], "notes": []}
+        result["explanation"] = [
+            {"kind": e["kind"], "source": self.explorer.nodes[e["source"]]["name"],
+             "target": self.explorer.nodes[e["target"]]["name"], "location": e.get("location"),
+             "label": e.get("attributes", {}).get("label"), "evidence_id": e["id"]}
+            for e in result["relationships"] if e["kind"] != "contains"
+        ]
+        if node["kind"] == "basic_block":
+            operations = sorted((n for n in self.graph["nodes"]
+                if n.get("attributes", {}).get("block") == node_id),
+                key=lambda n: n["attributes"]["order"])
+            result["operations"] = operations
+            located = [n["location"] for n in operations if n.get("location")]
+            if located and len({loc["path"] for loc in located}) == 1:
+                location = {"path": located[0]["path"], "line": min(loc["line"] for loc in located),
+                            "end_line": max(loc["line"] for loc in located)}
+                result["notes"].append("Source spans the mapped operations in this compiler block; synthetic operations may have no source line.")
         if not location.get("path"):
             result["notes"].append("No source location supplied by the compiler")
             return result

@@ -740,5 +740,16 @@ minimal direct-dependency declaration.
 fresh canonical AST+LLVM graph with CFG/DFD projections. Native LLVM 22 provides
 block successors and operands; a fixed-point pass adds bounded local-memory
 flow. This explicit optional compiler pass leaves normal review inventory and
-existing graph UI behavior unchanged. See [flow contract](../contracts/flow-evidence.md)
+stored graph evidence unchanged. See [flow contract](../contracts/flow-evidence.md)
 and [D033](../decisions/D033-llvm-flow-evidence.md) for configuration and limits.
+
+## Guided graph workspace
+
+The Code graphs page loads `intelligence.js` and its scoped stylesheet. Its
+module picker, multi-selection and bounded queries use `/api/intelligence/`;
+the existing graph workspace remains available through the existing-tools
+toggle. The service composes namespaced snapshots and attaches only source-
+and configuration-matched flow bundles. Source inspection exposes compiler
+regions, block operations and explicit evidence limits. Association paths and
+possible influence use different direction rules; neither claims runtime order.
+See [exploration contract](../contracts/intelligence-exploration.md) and D034.

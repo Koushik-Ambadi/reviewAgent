@@ -75,6 +75,9 @@ made trustworthy by adding fields to a symbol table. They require named engines
 or external evidence contracts. Until those inputs exist, corresponding graph
 outputs must remain unavailable rather than empty or inferred as complete.
 
-The opt-in LLVM CFG and bounded DFD are now implemented through the standalone
+The opt-in LLVM CFG and bounded DFD are implemented through the standalone
 flow command. Their exact scope and unavailable memory semantics are owned by
-[flow evidence](flow-evidence.md); default pipeline/UI controls remain unchanged.
+[flow evidence](flow-evidence.md). Matching flow bundles now attach to the
+[guided graph workspace](intelligence-exploration.md) without changing the
+default analysis pipeline. The original graph overview and trace controls
+remain available on the same page.

@@ -110,7 +110,10 @@ class Explorer:
     def influence_edges(self):
         # Calls imply a caller depends on its callee, not an execution chronology.
         return [{**e, "source": e["target"], "target": e["source"],
-                 "direction_reason": "reader depends on value" if e["kind"] == "reads" else "caller depends on callee"}
+                 "direction_reason": {"reads": "reader depends on value", "calls": "caller depends on callee",
+                                      "includes": "including file depends on included file", "resolves_to": "declaration depends on implementation"}[e["kind"]],
+                 "display_relation": {"reads": "may affect a reader", "calls": "may affect a caller",
+                                      "includes": "may affect an including file", "resolves_to": "implements"}[e["kind"]]}
                 if e["kind"] in {"reads", "calls", "includes", "resolves_to"} else e
                 for e in self.semantic if e["kind"] != "references"]
 
@@ -209,7 +212,7 @@ class Explorer:
             edges = self.calls
             nodes = [self.nodes[k] for k in sorted(self.functions)]
         elif mode == "signals":
-            edges = [{**e, "source": e["target"], "target": e["source"], "direction_reason": "value to reader"} if e["kind"] == "reads" else e
+            edges = [{**e, "source": e["target"], "target": e["source"], "direction_reason": "value to reader", "display_relation": "is read by"} if e["kind"] == "reads" else e
                      for e in self.semantic if e["kind"] in {"reads", "writes", "resolves_to"}]
             endpoints = {v for e in edges for v in (e["source"], e["target"])}
             nodes = [n for n in nodes if n["id"] in endpoints]

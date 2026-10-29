@@ -725,4 +725,28 @@ After adding auditor regression coverage, the maintained suite passed **59 tests
 `node tests/graph_trace_logic_test.js` passed cycle/centering assertions. The audit
 checks persisted evidence independently of extraction traversal, but uses the
 same native LLVM reader; source semantics and memory-analysis correctness are
-supported separately by fixture expectations and the stated manual review.
+  supported separately by fixture expectations and the stated manual review.
+
+## Guided exploration acceptance — 2026-10-29
+
+- Maintained Python suite: 67 passed. `node tests/intelligence_ui_test.js`
+  verifies cyclic/disconnected layout, multiple selection/removal, keyboard
+  activation markup and source-text escaping; existing trace harness also passes.
+- FastAPI TestClient startup, home, API schema, new JS/CSS assets and all 17 modes
+  pass against the retained Shunt/SOC snapshots. Two selected Shunt functions
+  return connecting evidence, 202 compiler regions for the larger function,
+  and source-mapped block operations. Truncated views expose omitted/frontier data.
+- Generated fresh SOC bundles under `workspace/runs/intelligence-flow/` for
+  `src/soc.c` and `src/soc_model.c`: 33 function CFGs, 523 blocks and 2,732
+  instructions. Native IR/source/hash audit passes both. Four total Shunt/SOC
+  bundles now attach without warnings. Compact evidence is retained in
+  `docs/examples/intelligence-verification.json`; no original graph was overwritten.
+- Visual browser acceptance is NOT performed: local browser use is disabled
+  in Work settings. Web retrieval of the shared discussion also returned cache
+  miss on resume; saved provenance from the earlier read is retained as recorded
+  evidence, not a claimed fresh reread. This is the outstanding UI review gate.
+- Manual acceptance when browser access is available: open Code graphs; select
+  Shunt and SOC; search/select two functions; Explore connections, upstream and
+  downstream; inspect source; select a flow-backed function and open CFG/DFD;
+  confirm readable labels, keyboard inspection, zoom/scroll, explicit truncation,
+  and the existing-tools toggle. Report pass/fail plus any visible error.
