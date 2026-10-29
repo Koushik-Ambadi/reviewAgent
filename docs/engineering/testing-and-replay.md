@@ -1,5 +1,16 @@
 # Testing, Retained Runs, and Historical Replay
 
+## Current-snapshot exploration checks
+
+`tests/test_intelligence.py` exercises connected multi-selection versus directed
+influence, bounded absence semantics, recursive SCC/depth, 4,000-node stack-safe
+traversal, every query mode's endpoint integrity/determinism, exact multi-module
+resolution and ambiguity rejection, source-path containment, stale-flow rejection
+and CFG/DFD edge preservation. Run with `PYTHONPATH=src;.` and
+`venv313/Scripts/python.exe -m pytest -q tests/test_intelligence.py` on Windows.
+Actual workspace composition finds shunt and soc; two shunt flow bundles match
+their retained compiler inputs. Native flow replay remains the D033 check below.
+
 - Status: living
 - Created: 2026-10-06
 - Last reviewed: 2026-10-26
@@ -714,4 +725,29 @@ After adding auditor regression coverage, the maintained suite passed **59 tests
 `node tests/graph_trace_logic_test.js` passed cycle/centering assertions. The audit
 checks persisted evidence independently of extraction traversal, but uses the
 same native LLVM reader; source semantics and memory-analysis correctness are
-supported separately by fixture expectations and the stated manual review.
+  supported separately by fixture expectations and the stated manual review.
+
+## Guided exploration acceptance — 2026-10-29
+
+- Maintained Python suite: 67 passed. `node tests/intelligence_ui_test.js`
+  verifies cyclic/disconnected layout, multiple selection/removal, keyboard
+  activation markup and source-text escaping; existing trace harness also passes.
+- FastAPI TestClient startup, home, API schema, new JS/CSS assets and all 17 modes
+  pass against the retained Shunt/SOC snapshots. Two selected Shunt functions
+  return connecting evidence, 202 compiler regions for the larger function,
+  and source-mapped block operations. Truncated views expose omitted/frontier data.
+- Generated fresh SOC bundles under `workspace/runs/intelligence-flow/` for
+  `src/soc.c` and `src/soc_model.c`: 33 function CFGs, 523 blocks and 2,732
+  instructions. Native IR/source/hash audit passes both. Four total Shunt/SOC
+  bundles now attach without warnings. Compact evidence is retained in
+  `docs/examples/intelligence-verification.json`; no original graph was overwritten.
+- Browser access was enabled later in the session. In Chrome at local port 8765,
+  both modules loaded with four matching bundles and no attachment warnings.
+  Selecting `Shunt_task` and `Shunt_currentcalculation` showed one direct call
+  with source-backed context for the latter. `Shunt_task` CFG displayed 80 blocks,
+  108 transitions and 41 hidden blocks; DFD displayed 80 values/operations,
+  112 links and 402 hidden items. Dense arrows now suppress repeated labels,
+  retaining branch labels, tooltips and the relationship list. Analytics showed
+  76 function rows, and the existing overview/trace toggle remained functional.
+  The map is scrollable and deliberately bounded; dense whole-function DFDs still
+  require focusing the selection/limit and reading the source inspector or list.

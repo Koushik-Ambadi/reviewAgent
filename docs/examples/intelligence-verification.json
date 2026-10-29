@@ -1,0 +1,156 @@
+{
+  "base_commit": "8d77dc0",
+  "date": "2026-10-29",
+  "flow_bundles": [
+    {
+      "configuration": "87aae25554bd66df1ef367003d08bdc7e8e00f6aa3892c0eb7afe537215b5551",
+      "graph_sha256": "634cf1d6e02fe09628318e9fe548264754402bb940ad81e6872e83fb5310c4dd",
+      "module": "shunt",
+      "source": "src/shunt.c",
+      "source_sha256": "8f2ff34e8690abd3a77ba1131865eece10eebf3e2bf949a26479c9e7030879a0"
+    },
+    {
+      "configuration": "2343cf7440603e383c04c650b6547c14d83ff4ea8f27f3df36795aac9149ef29",
+      "graph_sha256": "5b8fcea19068bc38f985c8a3adc01202e7dcde793be8672def84b747a44c5b7b",
+      "module": "shunt",
+      "source": "src/shunt_model.c",
+      "source_sha256": "ac6fb2d69a82078eded3daa7387fd0fac52295c892bd2adf24f7163e105e237f"
+    },
+    {
+      "configuration": "129f74056a4c637eb68baf9e1049b0fcdc87c402e13258469d75fc19d8f9229d",
+      "graph_sha256": "1d9448c80a8c8053d3d8401f28f04b76255aea0e6d2d57169315b06d4de4a8d1",
+      "module": "soc",
+      "source": "src/soc.c",
+      "source_sha256": "c9a23b622fbf3372810ebdaec4ffa801a772a69e5b79d07bcf4ae3e8eb4081c1"
+    },
+    {
+      "configuration": "051714abf25ed2736b82d550835c840fdd440214096641c4fdcb12cfadfd1225",
+      "graph_sha256": "ac56c92f222211ae9c99486d47055fb34ce2ed4cf6dc54ec75564562f9f32e77",
+      "module": "soc",
+      "source": "src/soc_model.c",
+      "source_sha256": "e99fc687e6976ce7f4c4cf6920dddda98d9a779617a9f29cf85ea0a220568298"
+    }
+  ],
+  "modes": [
+    "connections",
+    "upstream",
+    "downstream",
+    "calls",
+    "signals",
+    "call_depth",
+    "files",
+    "modules",
+    "interfaces",
+    "skeleton",
+    "cfg",
+    "dfd",
+    "reachability",
+    "cycles",
+    "clones",
+    "metrics",
+    "calibrations"
+  ],
+  "modules": [
+    {
+      "module_name": "shunt",
+      "run_id": "20261022_154215_6b44447a"
+    },
+    {
+      "module_name": "soc",
+      "run_id": "20261029_180307_7a5a6786"
+    }
+  ],
+  "soc_native_audits": [
+    {
+      "audit": {
+        "boundary": "Serialization/IR/source-location alignment; semantic source checks and memory-flow tests are separate",
+        "canonical_sha256": "1d9448c80a8c8053d3d8401f28f04b76255aea0e6d2d57169315b06d4de4a8d1",
+        "consistent": true,
+        "edges": {
+          "calls": 21,
+          "contains": 807,
+          "control_flow": 129,
+          "declares": 131,
+          "def_use": 648,
+          "defines": 64,
+          "field_of": 49,
+          "includes": 37,
+          "member_of": 44,
+          "memory_flow": 129,
+          "parameter_of": 37,
+          "reads": 192,
+          "references": 6,
+          "writes": 73
+        },
+        "nodes": {
+          "basic_block": 114,
+          "enum": 7,
+          "enum_constant": 44,
+          "field": 49,
+          "file": 23,
+          "function": 30,
+          "global_variable": 50,
+          "instruction": 477,
+          "ir_value": 155,
+          "local_variable": 12,
+          "macro": 52,
+          "parameter": 37,
+          "struct": 7,
+          "typedef": 35
+        },
+        "source_located_instructions": 442,
+        "verified_blocks": 114,
+        "verified_instruction_operands": 642,
+        "verified_instructions": 477,
+        "verified_successors": 129
+      },
+      "bundle": "workspace/runs/intelligence-flow/soc-soc-20261029"
+    },
+    {
+      "audit": {
+        "boundary": "Serialization/IR/source-location alignment; semantic source checks and memory-flow tests are separate",
+        "canonical_sha256": "ac56c92f222211ae9c99486d47055fb34ce2ed4cf6dc54ec75564562f9f32e77",
+        "consistent": true,
+        "edges": {
+          "calls": 39,
+          "contains": 3004,
+          "control_flow": 531,
+          "declares": 154,
+          "def_use": 3243,
+          "defines": 93,
+          "field_of": 49,
+          "includes": 43,
+          "member_of": 44,
+          "memory_flow": 706,
+          "parameter_of": 112,
+          "reads": 889,
+          "references": 8,
+          "writes": 304
+        },
+        "nodes": {
+          "basic_block": 409,
+          "enum": 7,
+          "enum_constant": 44,
+          "field": 49,
+          "file": 25,
+          "function": 47,
+          "global_variable": 53,
+          "instruction": 2255,
+          "ir_value": 409,
+          "local_variable": 66,
+          "macro": 56,
+          "parameter": 112,
+          "struct": 7,
+          "typedef": 35
+        },
+        "source_located_instructions": 2098,
+        "verified_blocks": 409,
+        "verified_instruction_operands": 3039,
+        "verified_instructions": 2255,
+        "verified_successors": 531
+      },
+      "bundle": "workspace/runs/intelligence-flow/soc-soc_model-20261029"
+    }
+  ],
+  "visual_verification": "chrome_localhost_shunt_soc_multi_select_source_cfg_dfd_analytics_legacy_toggle_passed_20261029"
+}

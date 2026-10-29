@@ -81,6 +81,10 @@ automation map:
   that prevents unsupported graphs from appearing complete.
 - [Compiler flow evidence](contracts/flow-evidence.md) owns opt-in LLVM CFG/DFD
   serialization, provenance, projection and memory-analysis boundaries.
+- [Current-snapshot exploration](contracts/intelligence-exploration.md) owns
+  guided multi-selection, analytics, source inspection and flow attachment.
+- [Retained exploration verification](examples/intelligence-verification.json)
+  records Shunt/SOC snapshots, compiler flow audits and the visual-check boundary.
 - [Generated code-intelligence graph example](examples/code-intelligence-graphs.md)
   renders the checked-in fixture and links to its canonical/projection JSON.
 - [Graph workspace API](contracts/graph-workspace-api.md) defines file, module,
@@ -135,12 +139,14 @@ being reintroduced into the current implementation.
 - Approved shared baseline: [`skills` `main` at `b800dfc`](../skills/README.md),
   reviewed 2026-10-26. The former proposal-only reference `b3a619d` is now
   reachable through approved history and is no longer the project baseline.
-  The locally tracked `origin/main` resolved to this revision, although this
-  session's live fetch could not authenticate; refresh before claiming it is
-  still the remote tip.
-- Persistent contribution branch: `project/review-agent`, currently equal to
-  approved `main`; it is reserved for evidence-backed reusable proposals and is
-  not active policy while it diverges.
+  On 2026-10-29 a live fetch resolved shared `main` to `347bb23`; its intervening
+  template changes do not change the graph workflow's compatibility mapping.
+  Project policy adoption remains pinned to `b800dfc` pending a dedicated review.
+- Persistent contribution branch: `project/review-agent`, at `94c6ba2` on
+  `347bb23`, proposes graph/analytics verification guidance in
+  [draft PR #7](https://github.com/Koushik-Ambadi/skills/pull/7). The proposal is
+  not adopted policy. The project maintainer owns adoption; revisit after merge
+  or when graph verification conventions next change.
 - Decision navigation: conforms. [`decisions.md`](decisions.md) is the canonical
   entry point; D001-D023 retain legacy links until safely migrated, while new
   substantial choices use `decisions/DNNN-short-title.md`.

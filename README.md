@@ -126,3 +126,28 @@ compiler IR, preprocessed source, diagnostics and a hashed manifest. Existing
 review artifacts are preserved. These are host-analysis CFGs and bounded DFDs;
 pointer/global/interprocedural memory flow is unresolved. See the
 [flow contract](docs/contracts/flow-evidence.md). Rendering is not required.
+
+## Explore relationships and analytics
+
+Open **Code graphs** in the developer workspace:
+
+1. Choose one or more modules and search for functions, shared values or files.
+2. Check multiple items, choose a question, then **Explore selection**. Start
+   with “How are my selections connected?” or “What could this affect?”
+3. Inspect a card to see source, relationships and its structure. Add further
+   items to the selection. For functions with verified compiler evidence, choose
+   the decision-flow or value-flow question to inspect CFG/DFD.
+4. Open **Analytics and investigation priorities** for complexity, coupling,
+   call depth, shared writes, exact clones and cycles. Download the current
+   analysis as JSON when sharing evidence.
+
+The interface explains static possibilities, not observed runtime causes.
+Hidden/frontier counts indicate incomplete searches. Existing overview and
+trace tools are retained behind their toggle. Source-matched flow bundles are
+discovered read-only under `workspace/runs/*/*/manifest.json`; use the flow
+command above to generate additional bundles in fresh directories.
+
+Requirements features are excluded. Version comparisons remain on the roadmap.
+State/task, test coverage, model/CAN mapping, target memory/timing and learned
+predictions require evidence absent from these runs and are shown as unavailable.
+See [exploration contract](docs/contracts/intelligence-exploration.md).

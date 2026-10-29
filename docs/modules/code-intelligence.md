@@ -1,5 +1,18 @@
 # Code Intelligence
 
+## Guided exploration service
+
+`app/services/intelligence_service.py` composes selected current module runs with
+hash-verified flow bundles without rewriting stored graphs. The deterministic
+`exploration.py` engine supplies connections, influence, calls/depth, data access,
+file/module/interfaces, CFG/DFD, recursion, clones, metrics, calibration candidates
+and root-bounded reachability. `regions.py` retrieves compiler source structure
+and boundary-test ideas. The [API contract](../contracts/intelligence-exploration.md)
+owns exact semantics and budgets. `tests/test_intelligence.py` covers traversal,
+ambiguity, source containment, stale evidence and projection identity. Original
+graph API and trace canvas remain compatible. This is static evidence, not
+runtime, coverage, alias-complete or target-memory analysis.
+
 ## Navigation
 
 - Project index: [docs README](../README.md)
@@ -144,3 +157,13 @@ The command is a bounded C analysis capability, not full alias/interprocedural
 flow. It does not enable the old UI overlays or modify old run artifacts.
 Verification is in `tests/test_code_intelligence_flow.py` and retained-run evidence
 in [testing and replay](../engineering/testing-and-replay.md).
+
+## Guided exploration presentation
+
+`app/static/intelligence.js` renders the current-snapshot API alongside existing
+graph tools. Modules and up to 20 selections define the question; connecting
+paths, influence, interfaces, CFG/DFD and skeletons share one inspector and
+analytics panel. `intelligence.css` scopes presentation to this workspace.
+Reversed influence edges use their explicit display relation. Source/card labels
+are escaped and keyboard activation matches pointer inspection. Existing graph
+state remains independent behind the legacy-tools toggle.

@@ -110,3 +110,20 @@ changed, unchanged, and missing conversations. It deliberately does not scrape
 or authenticate to ChatGPT. Browser enumeration is still required to discover
 new project chats; a complete export is required before content hashes can be
 used as reliable change detectors.
+
+## 2026-10-29 shared discussion refresh
+
+Read the user-provided shared conversation `Application Features Identified`
+(`6ae36bdc-d418-83e8-9a64-5b3f1ff2ec66`) in the already-open browser tab. This
+is rendered discussion evidence, not an authenticated project enumeration or
+complete export. The original attachment was not imported. Current user direction
+accepts graph/analytics exploration, excludes requirements workflows, and
+explicitly defers version comparisons. Older suggestions to prioritize requirements
+are therefore superseded for this increment. Runtime, tests, model mappings and
+learned predictions still require their stated evidence; no results are invented.
+
+Browser access became available later on 2026-10-29. The exact shared URL was
+opened again and its current-snapshot feature list checked against the guided
+workspace. The rendered discussion and the `Application Features Identified`
+project chat agree on the graph/analytics categories. The attachment remains
+unimported, so this is still a partial capture without a content hash.

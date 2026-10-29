@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link href="/graph.css" rel="stylesheet">
+<link href="/intelligence.css" rel="stylesheet">
 
 <style>
 
@@ -1622,7 +1623,36 @@ html,body{background:var(--bg)}
                 <div id="graphSummary" class="graph-summary" aria-live="polite"></div>
             </header>
 
-            <div class="graph-workspace">
+            <section id="intelligenceWorkspace" aria-label="Understand the code">
+                <header class="iq-heading"><div><span class="eyebrow">Explore · debug · knowledge transfer</span><h3>Understand how the pieces connect</h3><p>Choose modules, select one or more items, and ask a question. Follow inputs, decisions and outputs, then inspect the source behind the answer.</p></div><button id="iqRefresh" type="button">Refresh evidence</button></header>
+                <div class="iq-grid">
+                  <aside class="iq-controls" aria-label="Exploration controls">
+                    <fieldset><legend>1. Choose modules</legend><div id="iqModules"></div></fieldset>
+                    <label>2. Find items<input id="iqSearch" type="search" placeholder="Function, variable or file name"></label>
+                    <label>Item type<select id="iqKind"><option value="function">Functions</option><option value="">All symbols</option><option value="global_variable">Shared values</option><option value="file">Files</option><option value="macro">Constants and macros</option><option value="struct">Structures</option><option value="parameter">Inputs / parameters</option><option value="local_variable">Local values</option></select></label>
+                    <span id="iqPickerCount" class="iq-help"></span><div id="iqPicker" aria-label="Select symbols"></div>
+                    <label>3. Ask a question<select id="iqMode"></select></label>
+                    <label>Maximum hops<input id="iqDepth" type="number" min="1" max="12" value="4"></label>
+                    <label>Maximum map items<input id="iqLimit" type="number" min="1" max="300" value="80"></label>
+                    <details><summary>Architecture constraints</summary><label for="iqRules">Forbidden module dependencies (optional JSON)</label><textarea id="iqRules" rows="3" placeholder='[{"from":"moduleA","to":"moduleB"}]'></textarea><small>Only supplied constraints produce violations.</small></details>
+                    <button class="iq-primary" id="iqRun" type="button">Explore selection</button>
+                  </aside>
+                  <div class="iq-main">
+                    <div class="iq-selection-bar"><strong id="iqSelectionCount">0/20 selected</strong><div id="iqSelections"></div><button id="iqClear" type="button">Clear</button></div>
+                    <div class="iq-status"><h3 id="iqTitle">How are my selections connected?</h3><p id="iqStatus" role="status" aria-live="polite">Ready to load evidence.</p><p id="iqCoverage"></p><p id="iqEvidence"></p></div>
+                    <div class="iq-actions"><label>Zoom <input id="iqZoom" type="range" min="0.4" max="1.8" step="0.1" value="1"></label><button id="iqExport" type="button">Download this analysis</button></div>
+                    <p class="iq-help">Inspect a card with click or Enter. Add it to your selection to compare several items. Arrows describe the labeled relationship; the layout is not a timeline. Scroll the map to explore larger views.</p>
+                    <p id="iqMapHelp" class="iq-help"></p><div id="iqMap" class="iq-map" tabindex="0" aria-label="Relationship map"></div>
+                    <ul id="iqPaths" aria-label="Connecting paths"></ul><div id="iqNotes" class="iq-help"></div>
+                    <details open><summary>Source, structure and explanation</summary><div id="iqInspector"></div></details>
+                    <details><summary>Analytics and investigation priorities</summary><div id="iqMetrics"></div></details>
+                    <details><summary>Accessible relationship list</summary><ul id="iqRelationships"></ul></details>
+                    <details><summary>What needs more evidence?</summary><p>Requirements features are excluded. Comparisons across versions stay on the roadmap until comparable snapshots exist.</p><ul id="iqGates"></ul></details>
+                  </div>
+                </div>
+            </section>
+            <button id="iqLegacy" class="btn secondary" type="button" aria-expanded="false" aria-controls="legacyGraphWorkspace">Show existing overview and trace tools</button>
+            <div class="graph-workspace" id="legacyGraphWorkspace" hidden>
                 <aside class="graph-controls" aria-label="Graph controls">
                     <label class="graph-field"><span>Graph run</span><select id="graphRun"></select></label>
                     <label class="graph-field"><span>Presentation</span><select id="graphViewMode">
@@ -1755,6 +1785,7 @@ html,body{background:var(--bg)}
 
 <script src="/app.js" defer></script>
 <script src="/graph.js" defer></script>
+<script src="/intelligence.js" defer></script>
 <script src="/manager.js" defer></script>
 
 </body>

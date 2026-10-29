@@ -10,15 +10,75 @@
     "Titles, snippets, and selectively inspected messages are provenance evidence, not a complete transcript."
   ],
   "conversations": [
-    {"id": "6a7af9a0-fad4-83ee-8e3b-77e59c7af54c", "title": "Atomic Rule Implementation", "inspection": "listing_only", "content_sha256": null},
-    {"id": "6a72d612-6c38-83e8-b43f-c4278de2391a", "title": "ReportContractAndPolicyOptimisation", "inspection": "listing_only", "content_sha256": null},
-    {"id": "6a1535dc-cea4-8323-9c12-8e6a9fbeee3b", "title": "pipeline stabilisation", "inspection": "listing_only", "content_sha256": null},
-    {"id": "6a3919b7-ddf4-83e8-b6f0-e7891317b78c", "title": "Code Intelligence Design Graphs", "inspection": "selective_read", "content_sha256": null},
-    {"id": "6a4f7a65-ada4-83ee-80bb-b3d790a103b0", "title": "MCP Integration phase 2", "inspection": "listing_only", "content_sha256": null},
-    {"id": "6a4e2da5-9ae8-83e8-95a9-09751cfe2c0d", "title": "MCP Integration phase 1", "inspection": "listing_only", "content_sha256": null},
-    {"id": "6a1d72cc-f040-8322-b946-f932f1a1eda6", "title": "reviewHighLevel", "inspection": "selective_read", "content_sha256": null},
-    {"id": "6a172961-2838-8321-baa5-563485bab52e", "title": "Pipeline Stabilization Strategy", "inspection": "selective_read", "content_sha256": null},
-    {"id": "6a10210c-3040-8322-871e-bebce3b1a32a", "title": "Code Review Pipeline Design", "inspection": "selective_read", "content_sha256": null},
-    {"id": "6a020676-0fbc-8321-82a3-994a3a259194", "title": "Regex Function Counter", "inspection": "listing_only", "content_sha256": null}
+    {
+      "id": "6a7af9a0-fad4-83ee-8e3b-77e59c7af54c",
+      "title": "Atomic Rule Implementation",
+      "inspection": "listing_only",
+      "content_sha256": null
+    },
+    {
+      "id": "6a72d612-6c38-83e8-b43f-c4278de2391a",
+      "title": "ReportContractAndPolicyOptimisation",
+      "inspection": "listing_only",
+      "content_sha256": null
+    },
+    {
+      "id": "6a1535dc-cea4-8323-9c12-8e6a9fbeee3b",
+      "title": "pipeline stabilisation",
+      "inspection": "listing_only",
+      "content_sha256": null
+    },
+    {
+      "id": "6a3919b7-ddf4-83e8-b6f0-e7891317b78c",
+      "title": "Code Intelligence Design Graphs",
+      "inspection": "selective_read",
+      "content_sha256": null
+    },
+    {
+      "id": "6a4f7a65-ada4-83ee-80bb-b3d790a103b0",
+      "title": "MCP Integration phase 2",
+      "inspection": "listing_only",
+      "content_sha256": null
+    },
+    {
+      "id": "6a4e2da5-9ae8-83e8-95a9-09751cfe2c0d",
+      "title": "MCP Integration phase 1",
+      "inspection": "listing_only",
+      "content_sha256": null
+    },
+    {
+      "id": "6a1d72cc-f040-8322-b946-f932f1a1eda6",
+      "title": "reviewHighLevel",
+      "inspection": "selective_read",
+      "content_sha256": null
+    },
+    {
+      "id": "6a172961-2838-8321-baa5-563485bab52e",
+      "title": "Pipeline Stabilization Strategy",
+      "inspection": "selective_read",
+      "content_sha256": null
+    },
+    {
+      "id": "6a10210c-3040-8322-871e-bebce3b1a32a",
+      "title": "Code Review Pipeline Design",
+      "inspection": "selective_read",
+      "content_sha256": null
+    },
+    {
+      "id": "6a020676-0fbc-8321-82a3-994a3a259194",
+      "title": "Regex Function Counter",
+      "inspection": "listing_only",
+      "content_sha256": null
+    },
+    {
+      "id": "6ae36bdc-d418-83e8-9a64-5b3f1ff2ec66",
+      "url": "https://chatgpt.com/share/6ae36bdc-d418-83e8-9a64-5b3f1ff2ec66",
+      "title": "Application Features Identified",
+      "inspection": "visible_shared_conversation_read",
+      "content_sha256": null,
+      "reviewed_on": "2026-10-29",
+      "scope": "Graph/analytics and exploration accepted by current request; requirements excluded, version comparisons deferred",
+      "limitations": "Rendered conversation read; attached source document not imported; no complete export hash"
+    }
   ]
 }
