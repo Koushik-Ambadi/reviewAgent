@@ -1,5 +1,40 @@
 # Engineering Roadmap
 
+## Graph discussion scope — current snapshot and evidence gates (D034)
+
+Current implementation: symbol/module exploration; multiple selection connection
+paths; callers/callees and condensed depth; read/write producers/consumers;
+upstream/downstream structural influence; file/module interfaces; compiler CFG,
+bounded SSA/local-memory DFD; source-region skeletons; recursion/dependency SCCs;
+exact clones; complexity, coupling, current-population outliers, symbol-size and
+testability review signals; explicit architecture rules; calibration/table
+candidates and source-comparison boundary-test ideas. These do not prove defects.
+
+Deferred until a second comparable version: semantic/source diffs, changed-node
+impact, architecture drift, complexity growth, interface changes, historical
+hotspots, defect prediction and history-based regression selection. Acceptance
+requires stable identity/configuration, known renames and retained baseline pairs.
+
+Other discussion capabilities need inputs absent from current runs:
+
+- Test/coverage graphs and regression selection: imported test inventory and
+  source-to-test coverage mappings; test plans alone are not coverage.
+- State transitions and scheduler/task/interrupt graphs: explicit state/task
+  models and mappings. CFGs alone cannot establish application states/tasks.
+- Calibration engineering/lookup interpolation and units: authoritative parameter
+  metadata, ranges, dimensions and table conventions; current globals/macros are
+  discovery candidates only.
+- Signal, CAN/DBC and model-to-code views: dictionaries, model identifiers and
+  verified mapping imports. No name-based invented model traceability.
+- Execution-path observations, MIL/SIL/HIL, timing/stack/linker memory, race and
+  safety claims: target build/runtime/test evidence and explicit assurance gates.
+- Semantic AI summaries, hybrid retrieval and autonomous investigation: evaluated
+  evidence-grounded model/index integration. Deterministic source retrieval ships
+  first; GNN/RDF/A2A infrastructure is not required for current graph queries.
+
+Requirements extraction, requirements traceability and requirement-led test
+workflows are excluded by the current request, not silently implemented here.
+
 - Status: living
 - Created: 2026-10-06
 - Last reviewed: 2026-10-22

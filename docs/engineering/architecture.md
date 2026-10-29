@@ -1,5 +1,16 @@
 # Current Architecture and Module Guide
 
+## Current-snapshot intelligence extension (D034)
+
+`app/api/intelligence.py` delegates read-only run composition to
+`app/services/intelligence_service.py`: existing graphs API preserved, flow
+overlays matched by source/input hashes, symbols namespaced per run, unique public
+compiler identities resolved across modules. `code_intelligence/exploration.py`
+owns bounded queries and deterministic analytics; `regions.py` owns compiler AST
+region retrieval under the retained configuration. No pipeline artifact is
+replaced. See the [contract](../contracts/intelligence-exploration.md) for
+boundaries, fallbacks and source access policy.
+
 - Status: living
 - Created: 2026-10-06
 - Last reviewed: 2026-10-27 for the shared code-analysis boundary

@@ -1,5 +1,18 @@
 # Code Intelligence
 
+## Guided exploration service
+
+`app/services/intelligence_service.py` composes selected current module runs with
+hash-verified flow bundles without rewriting stored graphs. The deterministic
+`exploration.py` engine supplies connections, influence, calls/depth, data access,
+file/module/interfaces, CFG/DFD, recursion, clones, metrics, calibration candidates
+and root-bounded reachability. `regions.py` retrieves compiler source structure
+and boundary-test ideas. The [API contract](../contracts/intelligence-exploration.md)
+owns exact semantics and budgets. `tests/test_intelligence.py` covers traversal,
+ambiguity, source containment, stale evidence and projection identity. Original
+graph API and trace canvas remain compatible. This is static evidence, not
+runtime, coverage, alias-complete or target-memory analysis.
+
 ## Navigation
 
 - Project index: [docs README](../README.md)

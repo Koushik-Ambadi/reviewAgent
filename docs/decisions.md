@@ -44,6 +44,7 @@
 | D031 | Add an expandable trace playground beside overview graphs | Accepted | [Record](decisions/D031-add-expandable-trace-playground.md) |
 | D032 | Use flow-oriented, cycle-safe trace exploration | Accepted | [Record](decisions/D032-use-flow-oriented-cycle-safe-traces.md) |
 | D033 | Add opt-in compiler flow evidence | Accepted, bounded implementation | [Record](decisions/D033-llvm-flow-evidence.md) |
+| D034 | Add evidence-bound current-snapshot exploration | Accepted | [Record](decisions/D034-current-snapshot-exploration.md) |
 
 New substantial decisions use `docs/decisions/DNNN-short-title.md` and are linked
 from this table. Small decisions may be recorded directly here when a separate

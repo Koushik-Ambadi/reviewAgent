@@ -1,5 +1,16 @@
 # Testing, Retained Runs, and Historical Replay
 
+## Current-snapshot exploration checks
+
+`tests/test_intelligence.py` exercises connected multi-selection versus directed
+influence, bounded absence semantics, recursive SCC/depth, 4,000-node stack-safe
+traversal, every query mode's endpoint integrity/determinism, exact multi-module
+resolution and ambiguity rejection, source-path containment, stale-flow rejection
+and CFG/DFD edge preservation. Run with `PYTHONPATH=src;.` and
+`venv313/Scripts/python.exe -m pytest -q tests/test_intelligence.py` on Windows.
+Actual workspace composition finds shunt and soc; two shunt flow bundles match
+their retained compiler inputs. Native flow replay remains the D033 check below.
+
 - Status: living
 - Created: 2026-10-06
 - Last reviewed: 2026-10-26
