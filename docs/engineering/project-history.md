@@ -1242,3 +1242,32 @@ and third-party artifacts and must not be interpreted as effort or quality.
   beginnings and 17 endings. `Shunt_read_inputs` exposes 5 structural inputs,
   6 outputs, and the expected one-way call to `App_get_battstate`. Canonical
   source alignment remains consistent with zero hard or exact-duplicate issues.
+
+### 2026-10-29 — CFG/DFD evidence implementation session
+
+- Start: clean `codex/code-intelligence-graphs` at `75cddc6`; isolated work on
+  `codex/cfg-dfd-evidence`. Preserve both that branch and local `master` history.
+- Goal: compiler-backed CFG and machine-readable data-flow evidence on a retained
+  run repository, source/JSON alignment, compatibility tests, then local integration.
+- Owners triggered: code-intelligence module, graph contract/capability matrix,
+  architecture, decision index, testing/replay, README and this history.
+- Skills: local conversation-context and approved lifecycle baseline `b800dfc`.
+  Shared-skill fetch could not authenticate; local approved baseline unchanged.
+  Private-chat refresh was denied by automatic approval review; saved partial
+  provenance is used without claiming a fresh capture. No LLM extraction planned.
+- Evaluate Clang analyzer CFG dump versus LLVM IR plus LLVM C API. Acceptance:
+  real branch/loop edges, operand def-use, documented memory-flow boundary,
+  deterministic output, source locations and hashes, no old artifact mutation.
+
+- Implemented native LLVM CFG/SSA extraction and fixed-point local-memory flow,
+  opt-in CLI, canonical schema 1.2 extension and exact JSON projections.
+- Corrected CRLF-only replay differences and LLVM 22 switch-case API mapping;
+  retained failed experiment separately. Source inspection matched Shunt lookup,
+  binary-search and arithmetic behavior. Existing files were never overwritten.
+- Verification: 58 maintained tests passed, including 7 compiler flow tests.
+  Unscoped pytest found a stale manual import; registered BUG-008 with scoped
+  test command as workaround, not a fix. No firmware/model calls were required.
+- Updated contracts, D033/index, architecture/module, roadmap, README, testing,
+  known issues and documentation index. Shared baseline compatibility unchanged.
+- Next increment: retain a compact machine-readable source/IR/projection audit,
+  rerun the finalized producer on Shunt, then integrate locally into master.

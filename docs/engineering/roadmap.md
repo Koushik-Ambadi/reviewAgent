@@ -135,9 +135,10 @@ changes. Do not maintain a second project-wide gap inventory here.
 - Readability increment (2026-10-28): file scope now defaults to a function
   skeleton with nested owned declarations, focus/dimming, optional detail-node
   expansion, and inspectable aggregate-edge evidence. Next analysis increment
-  is conservative AST value flow (arguments, initializers/assignments, returns,
-  and call results); CFG/control dependence and alias analysis remain separate
-  gates rather than being inferred from read/write access.
+  was conservative AST value flow. The 2026-10-29 optional LLVM command now
+  supplies lowered CFG, SSA operand and bounded local-memory evidence. Remaining
+  gates are UI integration, target configuration, call bindings, control
+  dependence and alias/interprocedural memory analysis.
 - Interaction increment (2026-10-28): parallel relation lanes, boundary-clipped
   arrows, hover labels, repeated-occurrence aggregation, crossing-reduction
   heuristics, and cross-file symbol inspection are implemented. Toolchain code-

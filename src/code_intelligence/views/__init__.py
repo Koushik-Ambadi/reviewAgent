@@ -11,9 +11,12 @@ from .derived import (
     reachability_graph,
 )
 from .projections import GraphProjection, call_graph, include_graph
+from .flow import control_flow_graph, data_flow_graph
 
 __all__ = [
     "GraphProjection",
+    "control_flow_graph",
+    "data_flow_graph",
     "call_depth_graph",
     "call_graph",
     "complexity_graph",

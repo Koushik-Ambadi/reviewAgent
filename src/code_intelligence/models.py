@@ -17,6 +17,9 @@ class NodeKind(StrEnum):
     FIELD = "field"
     ENUM_CONSTANT = "enum_constant"
     MACRO = "macro"
+    BASIC_BLOCK = "basic_block"
+    INSTRUCTION = "instruction"
+    IR_VALUE = "ir_value"
 
 
 class EdgeKind(StrEnum):
@@ -33,6 +36,9 @@ class EdgeKind(StrEnum):
     WRITES = "writes"
     REFERENCES = "references"
     CLONE_OF = "clone_of"
+    CONTROL_FLOW = "control_flow"
+    DEF_USE = "def_use"
+    MEMORY_FLOW = "memory_flow"
 
 
 class RelationResolution(StrEnum):

@@ -109,3 +109,20 @@ its location, its actual policy rule, and an explicit JSON output format, run:
 
 The script loads the ignored `.env.local` key, prints the model's JSON, and
 highlights the returned remediation. It does not create or modify run artifacts.
+
+## Generate CFG and DFD evidence
+
+With matching Clang/LLVM 22 and the existing Python dependencies, run from the
+repository root (PowerShell):
+
+```powershell
+$env:PYTHONPATH = 'src'
+venv313/Scripts/python.exe -m code_intelligence.flow --repo workspace/runs/20261022_154215_6b44447a/shunt --source workspace/runs/20261022_154215_6b44447a/shunt/src/shunt_model.c --compile-db workspace/runs/20261022_154215_6b44447a/analysis/cmake_build --output workspace/runs/my-flow-evidence --llvm-library 'C:/Program Files/LLVM/bin/LLVM-C.dll'
+```
+
+Choose a **new** output directory. It contains the canonical
+`code-intelligence.json`, derived `control_flow.json` and `data_flow.json`,
+compiler IR, preprocessed source, diagnostics and a hashed manifest. Existing
+review artifacts are preserved. These are host-analysis CFGs and bounded DFDs;
+pointer/global/interprocedural memory flow is unresolved. See the
+[flow contract](docs/contracts/flow-evidence.md). Rendering is not required.

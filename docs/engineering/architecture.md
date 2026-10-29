@@ -344,8 +344,9 @@ The API returns templates; the pipeline owns execution-time loading.
 - The Code graphs tab is the interactive engineering view over canonical run
   artifacts. It combines available overlays across file, module, and
   inter-module scopes, keeps a textual relationship fallback, and drills from
-  high-level nodes to lower scopes. Disabled CFG/data-flow controls explain the
-  missing engine instead of implying an empty result.
+  high-level nodes to lower scopes. Disabled CFG/data-flow controls remain
+  unavailable in this UI; the separate opt-in LLVM flow CLI now provides
+  machine-readable evidence.
 - File graphs are function-centric: parameters and locals remain owned details
   in the inspector unless explicitly expanded. Selection centers one node and
   dims unrelated facts; aggregate module edges expose bounded underlying symbol
@@ -721,3 +722,12 @@ Only FastAPI, Pydantic, PyYAML, and Clang are directly imported by current
 application source. The dependency file includes the former MCP stack and its
 transitive packages, so it behaves more like an environment freeze than a
 minimal direct-dependency declaration.
+
+## Optional compiler flow evidence
+
+`code_intelligence.flow` consumes one compilation-database source and writes a
+fresh canonical AST+LLVM graph with CFG/DFD projections. Native LLVM 22 provides
+block successors and operands; a fixed-point pass adds bounded local-memory
+flow. This explicit optional compiler pass leaves normal review inventory and
+existing graph UI behavior unchanged. See [flow contract](../contracts/flow-evidence.md)
+and [D033](../decisions/D033-llvm-flow-evidence.md) for configuration and limits.

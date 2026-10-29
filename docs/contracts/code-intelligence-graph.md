@@ -1,7 +1,7 @@
 # Code Intelligence Graph Contract
 
 - Status: living, initial extraction contract
-- Schema version: `1.1`
+- Schema version: `1.1` for AST snapshots; `1.2` for opt-in LLVM flow
 - Last reviewed: 2026-10-27
 - Source of truth for: node, edge, identity, resolution, and source-location
   semantics for compiler-derived repository intelligence
@@ -30,6 +30,10 @@ incompatible facts or dangling edges, and sorts all retained facts before
 serialization.
 
 ## Nodes
+
+The optional [flow evidence extension](flow-evidence.md) adds `basic_block`,
+`instruction`, and `ir_value` nodes and `control_flow`, `def_use`, and
+`memory_flow` edges. Existing AST-only serialization remains version 1.1.
 
 Node kinds are `file`, `function`, `struct`, `enum`, `typedef`,
 `global_variable`, `parameter`, `local_variable`, `field`, `enum_constant`, and

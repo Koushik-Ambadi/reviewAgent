@@ -79,6 +79,8 @@ automation map:
 - [Graph capability matrix](contracts/graph-capabilities.md) lists every graph
   discussed, its required evidence, current extraction coverage, and the gate
   that prevents unsupported graphs from appearing complete.
+- [Compiler flow evidence](contracts/flow-evidence.md) owns opt-in LLVM CFG/DFD
+  serialization, provenance, projection and memory-analysis boundaries.
 - [Generated code-intelligence graph example](examples/code-intelligence-graphs.md)
   renders the checked-in fixture and links to its canonical/projection JSON.
 - [Graph workspace API](contracts/graph-workspace-api.md) defines file, module,

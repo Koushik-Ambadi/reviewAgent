@@ -40,8 +40,9 @@ include, explicit-root reachability/call-depth, file-module dependency, and
 changed-node impact projections are available. Exact-token clone, versioned AST
 complexity, and clearly labeled type-size memory estimates are also available.
 The package owns the compilation-database parse primitive and the review stage
-writes `analysis/code-intelligence.json` beside `symbols.json`. A standalone
-graph-only application entry point remains pending.
+writes `analysis/code-intelligence.json` beside `symbols.json`. An opt-in
+standalone LLVM flow entry point now exists; broader graph-only orchestration
+remains pending.
 
 The read-only application adapter projects a run graph at file or module scope
 and aggregates the newest graph-bearing run per module for inter-module views.
@@ -128,3 +129,18 @@ will derive its compatibility inventory from the shared result, while graph
 views and graph-only execution consume the same snapshot. The current branch
 has not completed that migration yet: `repo_review.analysis` still performs its
 legacy parse separately.
+
+## Optional LLVM flow command
+
+`src/code_intelligence/flow.py` owns source selection, compiler invocation,
+provenance and fresh-directory output. `extraction/llvm_api.py` owns verified
+native LLVM 22 module access and disposal. `extraction/llvm_flow.py` joins AST
+functions, traverses blocks/instructions/operands and solves reaching definitions
+for direct non-escaping allocas. `views/flow.py` makes exact CFG/DFD projections.
+The [flow contract](../contracts/flow-evidence.md) owns serialized meanings and
+limitations; [D033](../decisions/D033-llvm-flow-evidence.md) owns engine rationale.
+
+The command is a bounded C analysis capability, not full alias/interprocedural
+flow. It does not enable the old UI overlays or modify old run artifacts.
+Verification is in `tests/test_code_intelligence_flow.py` and retained-run evidence
+in [testing and replay](../engineering/testing-and-replay.md).

@@ -651,3 +651,38 @@ in the application environment. The retained Green Hills failure logs remain
 the manual evidence fixture: deterministic classification identifies the
 unreachable license host, while the model path is tested with a fake structured
 response and remains explicitly unavailable until credentials are supplied.
+
+## Optional LLVM flow verification (2026-10-29)
+
+`venv313/Scripts/python.exe -m pytest -q tests` passed **58 tests** with Python
+3.13, Clang/LLVM 22.1.5 and pytest 9.2.0. Seven real-compiler flow checks cover
+branch joins, loop-carried definitions, switch labels, short-circuit conditions,
+PHI predecessor labels, escaping pointers, exact projections, source locations,
+deterministic nodes/edges, output preservation and malformed IR/source failures.
+An installed anyio pytest plugin emits a deprecation warning; tests still pass.
+
+Unscoped root discovery fails on the stale manual ZIP script, recorded as
+[BUG-008](known-issues.md#bug-008--root-pytest-discovery-imports-stale-manual-zip-script).
+The supported verification command scopes discovery to `tests`. Firmware builds
+and model calls are not needed for this additive analysis command and were not run.
+
+The retained Shunt experiment is under
+`workspace/runs/cfg-dfd-experiment/shunt-model-verified/`. Its 9 emitted function
+CFGs contain 196 blocks, 268 control edges, 966 instructions, 1,258 SSA operand
+edges and 83 local-memory reaching-definition edges (21 eligible allocas).
+Manual comparison checked `src/shunt_model.c`: lookup branches at lines 204/208
+merge before return at 217; binary search at 230 has the branch at 232 and
+backedge after 241; current calculation at 456 lowers to loads, integer/float
+conversion, `llvm.fmuladd.f32`, and the output store. No global-memory reaching
+definition is inferred from that operand chain. These are host-analysis facts.
+
+Initial negative evidence is retained separately: `clang-cfg.txt` demonstrates
+Clang diagnostic CFG feasibility; `shunt-model-flow/manifest.json` records the
+first rejected run caused by file-vs-pipe CRLF differences. This comparison now
+normalizes only line endings. LLVM 22 switch cases require the dedicated C API,
+not indexing generic operands; the switch fixture guards that corrected mapping.
+
+Use the [README command](../../README.md#generate-cfg-and-dfd-evidence) with a
+fresh output directory. The [flow contract](../contracts/flow-evidence.md) defines
+the replay inputs and completeness limits. Real run source/IR remains ignored;
+the public `tests/fixtures/code_intelligence/flow.c` is the portable fixture.

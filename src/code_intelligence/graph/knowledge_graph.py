@@ -93,7 +93,10 @@ class KnowledgeGraph:
     def to_dict(self) -> dict[str, Any]:
         self.validate()
         return {
-            "schema_version": self.schema_version,
+            "schema_version": (
+                "1.2" if any(n.kind.value == "basic_block" for n in self.nodes)
+                else self.schema_version
+            ),
             "translation_units": list(self.translation_units),
             "nodes": [node.to_dict() for node in self.nodes],
             "edges": [edge.to_dict() for edge in self.edges],
