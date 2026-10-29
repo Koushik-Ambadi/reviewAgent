@@ -132,6 +132,34 @@ Re-run the source-alignment check with:
   workspace\runs\20261022_154215_6b44447a\shunt --summary
 ```
 
+### Flow-oriented trace verification — 2026-10-29
+
+Direct invocation of the three focused graph-service tests in `venv313` passed.
+The fixture verifies observed call beginning/ending and transitive before/after
+counts, semantic incoming/outgoing behavior, canonical read-to-input direction,
+parameter-input projection, and the explicit unavailable argument-binding
+status. The static workspace test verifies the new root-mode control, branch
+ancestry guards, compact parameter presentation hooks, and obstacle-scored edge
+routing. `tests/graph_trace_logic_test.js` executes the browser-independent
+cycle guard and proves a parent is centered across uneven left/right children.
+`node --check app/static/graph.js` and Python compilation passed.
+
+The refreshed localhost service returned 200 for the workspace and script. The
+retained 309-node Shunt graph exposes 9 observed call-beginning candidates, 17
+ending candidates, and no recursive functions. `Shunt_read_inputs` reports 1
+unique function before and 4 after, 5 observed interface inputs, 6 observed
+side-effect outputs, and one canonical call flowing to `App_get_battstate`;
+that callee reports 2 functions before, none after, and is an ending candidate.
+The source-alignment verifier still reports 309 nodes, 1,242 edges, zero hard
+issues, and zero exact duplicate occurrences. Its four macro-mediated call-name
+notes are unchanged.
+
+Branch-local cycle suppression and parent-centering are deterministic client
+state/layout behavior. Browser visual acceptance remains manual because local
+browser automation is disabled in Work settings. The routing algorithm samples
+visible node boxes and chooses the least-obstructed deterministic curve; the
+test does not claim a mathematically crossing-free drawing.
+
 The command exits non-zero for hard inconsistencies or exact duplicate
 occurrences. Repeated relations at distinct source locations are informational.
 

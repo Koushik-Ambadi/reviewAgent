@@ -27,3 +27,6 @@
   execution-oriented trace or server-side graph sessions are needed at scale.
 - Implementation references: graph node/neighborhood API projections and
   `app/static/graph.js` trace-instance state.
+- Refinement: [D032](D032-use-flow-oriented-cycle-safe-traces.md) replaces the
+  depth-only cycling defense and depth-column layout with branch-ancestry cycle
+  suppression and interface-oriented bidirectional placement.

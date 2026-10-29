@@ -65,7 +65,12 @@ Choose **Expandable trace playground** to start from any file or symbol and
 progressively expand or collapse incoming/outgoing branches. A canonical symbol
 can appear in
 multiple branches for readability; double-clicking an instance changes only its
-local branch, not the underlying graph evidence.
+local branch, not the underlying graph evidence. The playground labels observed
+reads/parameters as inputs and writes as outputs while preserving their original
+evidence, places incoming roles left and outgoing roles right, and prevents one
+branch from bouncing repeatedly through the same call. Beginning/ending filters
+use observed no-caller/no-callee functions; they are structural candidates, not
+proven runtime entry or termination points.
 
 The supported development launcher is `run.bat`, which activates `venv313`,
 sets `PYTHONPATH=src`, and starts Uvicorn with reload. Reproduction constraints,

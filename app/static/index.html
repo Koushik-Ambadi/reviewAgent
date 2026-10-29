@@ -1636,6 +1636,11 @@ html,body{background:var(--bg)}
                     </select></label>
                     <fieldset id="graphTraceField" class="graph-field" hidden>
                         <legend>Trace root</legend>
+                        <select id="graphTraceRootMode">
+                            <option value="any">Any symbol</option>
+                            <option value="entry">Call beginnings (no callers)</option>
+                            <option value="exit">Call endings (no callees)</option>
+                        </select>
                         <select id="graphTraceRoot"></select>
                         <select id="graphTraceDirection">
                             <option value="both">Incoming + outgoing</option>
@@ -1643,7 +1648,7 @@ html,body{background:var(--bg)}
                             <option value="incoming">Incoming</option>
                         </select>
                         <button id="graphTraceStart" class="btn secondary" type="button">Start trace</button>
-                        <small>Double-click any trace node to expand or collapse that branch.</small>
+                        <small>Double-click a node to expand or collapse it. Inputs and callers appear left; outputs and callees appear right.</small>
                     </fieldset>
                     <label id="graphFileField" class="graph-field" hidden><span>File</span><select id="graphFile"></select></label>
                     <fieldset id="graphModuleField" class="graph-field graph-module-field" hidden>

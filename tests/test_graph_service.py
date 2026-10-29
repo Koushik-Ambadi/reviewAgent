@@ -124,6 +124,12 @@ def test_run_graph_supports_file_and_module_scopes(tmp_path: Path):
         )
         node_index = get_run_graph_nodes("run-a")
         neighborhood = get_run_graph_neighborhood(
+            "run-a", "fn:a", direction="both", layers=["calls", "reads"]
+        )
+        incoming_flow = get_run_graph_neighborhood(
+            "run-a", "fn:a", direction="incoming", layers=["calls", "reads"]
+        )
+        outgoing_flow = get_run_graph_neighborhood(
             "run-a", "fn:a", direction="outgoing", layers=["calls", "reads"]
         )
     finally:
@@ -156,14 +162,53 @@ def test_run_graph_supports_file_and_module_scopes(tmp_path: Path):
         "fn:b",
         "global:signal",
     }
+    indexed_a = next(
+        node for node in node_index["nodes"] if node["id"] == "fn:a"
+    )
+    indexed_b = next(
+        node for node in node_index["nodes"] if node["id"] == "fn:b"
+    )
+    assert indexed_a["call_position"] == {
+        "direct_callers": 0,
+        "direct_callees": 1,
+        "functions_before": 0,
+        "functions_after": 1,
+        "entry_candidate": True,
+        "exit_candidate": False,
+        "recursive": False,
+    }
+    assert indexed_b["call_position"]["exit_candidate"] is True
     assert {node["id"] for node in neighborhood["nodes"]} == {
+        "file:a",
         "fn:a",
         "fn:b",
         "global:signal",
     }
     assert {(edge["kind"], edge["count"]) for edge in neighborhood["edges"]} == {
+        ("contains", 1),
         ("calls", 1),
         ("reads", 2),
+    }
+    read_flow = next(
+        edge for edge in neighborhood["edges"] if edge["kind"] == "reads"
+    )
+    assert read_flow["flow_kind"] == "input"
+    assert read_flow["flow_source"] == "global:signal"
+    assert read_flow["flow_target"] == "fn:a"
+    assert {edge["flow_kind"] for edge in incoming_flow["edges"]} == {
+        "contains",
+        "input",
+    }
+    assert {edge["flow_kind"] for edge in outgoing_flow["edges"]} == {"calls"}
+    assert neighborhood["interface"] == {
+        "inputs": ["signal"],
+        "outputs": [],
+        "parameters": [],
+        "callers": [],
+        "callees": ["step_b"],
+        "return_type": None,
+        "return_lineage_available": False,
+        "argument_bindings_available": False,
     }
     assert {node["label"] for node in module_graph["nodes"]} == {"a.c", "b.c"}
     assert {(edge["kind"], edge["count"]) for edge in module_graph["edges"]} == {
@@ -247,3 +292,47 @@ def test_inter_module_graph_reports_signal_direction(tmp_path: Path):
         "consumer",
         "producer",
     ]
+
+
+def test_trace_neighborhood_exposes_parameter_as_input_without_claiming_binding(
+    tmp_path: Path,
+):
+    file_node = _node("file:a", "file", "a.c", path="src/a.c")
+    function = _node(
+        "fn:a", "function", "step", path="src/a.c", definition=True
+    )
+    parameter = _node(
+        "param:value", "parameter", "value", path="src/a.c", definition=True
+    )
+    _write_run(
+        tmp_path,
+        "run-param",
+        "module-a",
+        [file_node, function, parameter],
+        [
+            _edge("owns", "contains", "file:a", "fn:a"),
+            _edge("parameter", "parameter_of", "fn:a", "param:value"),
+        ],
+    )
+    original_root = run_store.WORKSPACE_ROOT
+    run_store.WORKSPACE_ROOT = tmp_path
+    try:
+        neighborhood = get_run_graph_neighborhood(
+            "run-param", "fn:a", direction="both", layers=["calls"]
+        )
+        index = get_run_graph_nodes("run-param")
+    finally:
+        run_store.WORKSPACE_ROOT = original_root
+
+    parameter_edge = next(
+        edge for edge in neighborhood["edges"] if edge["kind"] == "parameter_of"
+    )
+    assert parameter_edge["canonical_kind"] == "parameter_of"
+    assert parameter_edge["flow_kind"] == "parameter_input"
+    assert parameter_edge["flow_source"] == "param:value"
+    assert parameter_edge["flow_target"] == "fn:a"
+    assert neighborhood["interface"]["parameters"] == ["value"]
+    indexed_parameter = next(
+        node for node in index["nodes"] if node["id"] == "param:value"
+    )
+    assert indexed_parameter["binding_status"] == "argument_binding_unavailable"

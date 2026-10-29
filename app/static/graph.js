@@ -1,5 +1,9 @@
 const graphColors = {
     calls: "#2563eb",
+    input: "#0891b2",
+    output: "#dc2626",
+    parameter_input: "#0e7490",
+    reference: "#d97706",
     includes: "#7c3aed",
     reads: "#0891b2",
     writes: "#dc2626",
@@ -323,23 +327,39 @@ function positionTraceNodes(nodes) {
         }
     });
     children.forEach(group => group.sort((a, b) =>
-        `${a.kind}:${a.label}`.localeCompare(`${b.kind}:${b.label}`)
+        (a.trace_column || 0) - (b.trace_column || 0) ||
+        `${a.trace_role || ""}:${a.kind}:${a.label}`.localeCompare(
+            `${b.trace_role || ""}:${b.kind}:${b.label}`
+        )
     ));
-    const ordered = [];
     const roots = nodes.filter(node => !node.parent_instance_id);
+    let leafY = 70;
+    const positions = new Map();
     const visit = node => {
-        ordered.push(node);
-        (children.get(node.id) || []).forEach(visit);
+        const descendants = children.get(node.id) || [];
+        if (!descendants.length) {
+            positions.set(node.id, leafY);
+            leafY += 82;
+            return;
+        }
+        descendants.forEach(visit);
+        const childYs = descendants.map(child => positions.get(child.id));
+        positions.set(node.id, (Math.min(...childYs) + Math.max(...childYs)) / 2);
     };
     roots.forEach(visit);
-    graphState.positionedNodes = ordered.map((node, index) => ({
-        ...node,
-        x: 90 + (node.trace_depth || 0) * 210,
-        y: 60 + index * 76,
-        radius: 18,
-        width: node.kind === "function" ? 154 : 138,
-        height: node.kind === "function" ? 46 : 40
-    }));
+    const minimumColumn = Math.min(...nodes.map(node => node.trace_column || 0));
+    const originX = 100 + Math.abs(minimumColumn) * 220;
+    graphState.positionedNodes = nodes.map(node => {
+        const compact = node.kind === "parameter";
+        return {
+            ...node,
+            x: originX + (node.trace_column || 0) * 220,
+            y: positions.get(node.id),
+            radius: compact ? 14 : 18,
+            width: compact ? 112 : (node.kind === "function" ? 160 : 138),
+            height: compact ? 30 : (node.kind === "function" ? 48 : 40)
+        };
+    });
 }
 
 function graphBarycenter(node, adjacency, order) {
@@ -407,12 +427,17 @@ function graphEdgeRoutes(positions = new Map(
                 const offsetX = -canonicalDy / canonicalDistance * lane * 26;
                 const offsetY = canonicalDx / canonicalDistance * lane * 26;
                 return { edge, source, target,
-                    ...edgeGeometry(source, target, lane, offsetX, offsetY) };
+                    ...edgeGeometry(
+                        source, target, lane, offsetX, offsetY,
+                        [...positions.values()].filter(node =>
+                            node.id !== source.id && node.id !== target.id
+                        ), edge.id
+                    ) };
             }).filter(Boolean)
     );
 }
 
-function edgeGeometry(source, target, lane, offsetX, offsetY) {
+function edgeGeometry(source, target, lane, offsetX, offsetY, obstacles = [], edgeId = "") {
     if (source.id === target.id) {
         const spread = 58 + Math.abs(lane) * 18;
         const controlX = source.x + (lane >= 0 ? spread : -spread);
@@ -422,12 +447,59 @@ function edgeGeometry(source, target, lane, offsetX, offsetY) {
         return { startX: start.x, startY: start.y, endX: end.x, endY: end.y,
             controlX, controlY };
     }
-    const controlX = (source.x + target.x) / 2 + offsetX;
-    const controlY = (source.y + target.y) / 2 + offsetY;
-    const start = rectangleBoundary(source, controlX, controlY);
-    const end = rectangleBoundary(target, controlX, controlY);
+    const midpointX = (source.x + target.x) / 2;
+    const midpointY = (source.y + target.y) / 2;
+    const dx = target.x - source.x;
+    const dy = target.y - source.y;
+    const distance = Math.max(1, Math.hypot(dx, dy));
+    const baseBend = 24 + Math.min(54, distance * .08);
+    const sign = stableGraphSign(edgeId);
+    const candidates = lane
+        ? [0]
+        : [sign * baseBend, -sign * baseBend, sign * baseBend * 2];
+    let best = null;
+    candidates.forEach(bend => {
+        const controlX = midpointX + offsetX - dy / distance * bend;
+        const controlY = midpointY + offsetY + dx / distance * bend;
+        const start = rectangleBoundary(source, controlX, controlY);
+        const end = rectangleBoundary(target, controlX, controlY);
+        const collisions = edgeObstacleCount(
+            start, end, { x: controlX, y: controlY }, obstacles
+        );
+        if (!best || collisions < best.collisions) {
+            best = { start, end, controlX, controlY, collisions };
+        }
+    });
+    const { start, end, controlX, controlY } = best;
     return { startX: start.x, startY: start.y, endX: end.x, endY: end.y,
         controlX, controlY };
+}
+
+function stableGraphSign(value) {
+    let hash = 0;
+    for (const character of String(value || "edge")) {
+        hash = ((hash << 5) - hash + character.charCodeAt(0)) | 0;
+    }
+    return hash % 2 ? 1 : -1;
+}
+
+function edgeObstacleCount(start, end, control, obstacles) {
+    let collisions = 0;
+    obstacles.forEach(node => {
+        for (let step = 2; step < 19; step += 1) {
+            const t = step / 20;
+            const x = (1 - t) ** 2 * start.x +
+                2 * (1 - t) * t * control.x + t ** 2 * end.x;
+            const y = (1 - t) ** 2 * start.y +
+                2 * (1 - t) * t * control.y + t ** 2 * end.y;
+            if (Math.abs(node.x - x) < node.width / 2 + 8 &&
+                Math.abs(node.y - y) < node.height / 2 + 8) {
+                collisions += 1;
+                break;
+            }
+        }
+    });
+    return collisions;
 }
 
 function rectangleBoundary(node, towardX, towardY) {
@@ -477,7 +549,7 @@ function drawGraphEdge(context, route) {
 
 function edgeLineDash(kind) {
     if (kind === "includes") return [9, 5];
-    if (kind === "reads") return [2, 5];
+    if (kind === "reads" || kind === "input" || kind === "parameter_input") return [2, 5];
     if (kind === "references") return [10, 4, 2, 4];
     return [];
 }
@@ -504,8 +576,14 @@ function drawGraphNode(context, node) {
     context.fillText(truncateGraphLabel(node.label, 21), node.x, node.y - 4);
     context.font = "600 9px Inter, sans-serif";
     context.fillStyle = external ? "#64748b" : "rgba(255,255,255,.78)";
+    const callPosition = node.call_position;
+    const callPositionLabel = callPosition
+        ? `${callPosition.entry_candidate ? "start · " : ""}${callPosition.functions_before}← ${callPosition.functions_after}→${callPosition.exit_candidate ? " · end" : ""}`
+        : null;
     const subtitle = graphState.viewMode === "trace"
-        ? `${node.kind.replaceAll("_", " ")} · ${node.expanded ? "expanded" : "collapsed"}`
+        ? (node.kind === "parameter"
+            ? `parameter input · ${node.expanded ? "open" : "closed"}`
+            : `${node.trace_role || node.kind.replaceAll("_", " ")} · ${callPositionLabel || (node.expanded ? "expanded" : "collapsed")}`)
         : node.kind.replaceAll("_", " ");
     context.fillText(truncateGraphLabel(subtitle, 25), node.x, node.y + 11);
     context.globalAlpha = 1;
@@ -619,10 +697,11 @@ function renderGraphInspector(node) {
     const writes = node.outgoing_interactions
         ? node.outgoing_interactions.filter(item => item.kind === "writes").map(item => item.target_label)
         : outgoing.filter(edge => edge.kind === "writes").map(edge => nodes.get(edge.target)?.label);
-    const inputs = node.inputs || reads;
-    const outputs = node.outputs || writes;
+    const inputs = node.interface?.inputs || node.inputs || reads;
+    const outputs = node.interface?.outputs || node.outputs || writes;
     const owner = node.owner_id ? nodes.get(node.owner_id) : null;
-    const parameters = children.filter(child => child.kind === "parameter").map(formatGraphDeclaration);
+    const parameters = node.interface?.parameters ||
+        children.filter(child => child.kind === "parameter").map(formatGraphDeclaration);
     const locals = children.filter(child => child.kind === "local_variable").map(formatGraphDeclaration);
     const parameterBytes = graphOwnedObjectBytes(children, "parameter");
     const localBytes = graphOwnedObjectBytes(children, "local_variable");
@@ -640,12 +719,15 @@ function renderGraphInspector(node) {
     const observedOutputs = (node.outgoing_interactions || [])
         .filter(interaction => interaction.kind === "writes")
         .map(interaction => formatGraphInteraction(interaction, "outgoing"));
+    const callPosition = node.call_position;
     inspector.innerHTML = `<span class="eyebrow">${escapeHtml(node.kind)}</span>
         <h3>${escapeHtml(node.label)}</h3>
         <dl><dt>Path</dt><dd>${escapeHtml(node.path || "—")}${node.line ? `:${escapeHtml(node.line)}` : ""}</dd>
         ${node.type ? `<dt>Type</dt><dd>${escapeHtml(node.type)}</dd>` : ""}
         ${node.return_type ? `<dt>Returns</dt><dd>${escapeHtml(node.return_type)}</dd>` : ""}
         ${owner ? `<dt>Owned by</dt><dd>${escapeHtml(owner.label)}</dd>` : ""}
+        ${callPosition ? `<dt>Call position</dt><dd>${callPosition.entry_candidate ? "Beginning candidate · " : ""}${callPosition.functions_before} functions before · ${callPosition.functions_after} after${callPosition.exit_candidate ? " · ending candidate" : ""}${callPosition.recursive ? " · recursive" : ""}</dd><dt>Direct callers / callees</dt><dd>${callPosition.direct_callers} / ${callPosition.direct_callees}</dd>` : ""}
+        ${graphState.viewMode === "trace" && node.suppressed_cycles ? `<dt>Cycle links hidden</dt><dd>${node.suppressed_cycles} already traversed on this branch</dd>` : ""}
         ${node.kind === "function" ? `<dt>Parameter object sizes</dt><dd>${parameterBytes} bytes observed</dd><dt>Local object sizes</dt><dd>${localBytes} bytes observed</dd>` : ""}
         <dt>Incoming relationship groups</dt><dd>${incoming.length}</dd><dt>Outgoing relationship groups</dt><dd>${outgoing.length}</dd>${metrics}</dl>
         ${graphSignalList("Declared at", declarations)}
@@ -654,11 +736,11 @@ function renderGraphInspector(node) {
         ${graphSignalList("Local storage (owned)", locals)}
         ${graphSignalList("Called by", callers)}
         ${graphSignalList("Calls", callees)}
-        ${graphSignalList(node.kind === "function" ? "Observed interface inputs" : (node.kind === "module" ? "Inputs" : "Reads"), node.kind === "function" ? observedInputs : inputs)}
-        ${graphSignalList(node.kind === "function" ? "Observed side-effect outputs" : (node.kind === "module" ? "Outputs" : "Writes"), node.kind === "function" ? observedOutputs : outputs)}
+        ${graphSignalList(node.kind === "function" ? "Interface inputs" : (node.kind === "module" ? "Inputs" : "Reads"), node.interface ? inputs : (node.kind === "function" ? observedInputs : inputs))}
+        ${graphSignalList(node.kind === "function" ? "Side-effect outputs" : (node.kind === "module" ? "Outputs" : "Writes"), node.interface ? outputs : (node.kind === "function" ? observedOutputs : outputs))}
         ${node.kind !== "function" && node.kind !== "module" ? graphSignalList("Interacted with by", incomingEvidence) : ""}
         ${node.kind !== "function" && node.kind !== "module" ? graphSignalList("Interacts with", outgoingEvidence) : ""}
-        ${node.kind === "function" ? '<p class="graph-evidence-note">Object-size totals are compiler type-size sums, not code size or an exact stack frame. Code size requires object/map evidence; maximum caller-chain stack requires ABI-aware stack reports plus validated call paths. Argument origins, transformations, return dependencies, and interaction order remain unavailable until value/control-flow evidence exists.</p>' : '<p class="graph-evidence-note">Interactions are source occurrences, not execution order. Control-flow evidence is required before ordering them.</p>'}`;
+        ${node.kind === "function" ? '<p class="graph-evidence-note">Inputs and outputs are structural: parameters and read variables flow in; written variables flow out. Return-value lineage and argument-to-parameter binding remain unavailable until value/control-flow extraction exists. Object-size totals are type-size sums, not code size or an exact stack frame.</p>' : node.kind === "parameter" ? '<p class="graph-evidence-note">This compact parameter port can be expanded to its owner. Its concrete constant, macro, global, return value, or expression origin is not yet extracted, so no binding is invented.</p>' : '<p class="graph-evidence-note">Interactions are source occurrences, not execution order. Control-flow evidence is required before ordering them.</p>'}`;
 }
 
 function formatGraphDeclaration(node) {
@@ -705,7 +787,8 @@ function renderGraphEdgeInspector(edge) {
     inspector.innerHTML = `<span class="eyebrow">${escapeHtml(edge.kind)}</span>
         <h3>${escapeHtml(source)} → ${escapeHtml(target)}</h3>
         <dl><dt>Occurrences</dt><dd>${escapeHtml(edge.count || 1)}</dd>
-        <dt>Direction</dt><dd>Source → target</dd>
+        <dt>Direction</dt><dd>Displayed flow: source → target</dd>
+        ${edge.canonical_kind && edge.canonical_kind !== edge.kind ? `<dt>Canonical evidence</dt><dd>${escapeHtml(edge.canonical_kind)}</dd>` : ""}
         <dt>Resolution</dt><dd>${escapeHtml(edge.resolution || "—")}</dd></dl>
         ${graphSignalList("Named signals", edge.signals || [])}
         ${graphSignalList("Source occurrences", occurrences)}
@@ -729,12 +812,28 @@ async function loadTraceIndex() {
     if (!response.ok) throw new Error(await response.text());
     const payload = await response.json();
     graphState.traceIndex = payload.nodes || [];
+    renderTraceRootOptions();
+}
+
+function renderTraceRootOptions() {
     const select = document.getElementById("graphTraceRoot");
-    select.innerHTML = graphState.traceIndex.map(node =>
-        `<option value="${escapeHtml(node.id)}">${escapeHtml(node.kind)} · ${escapeHtml(node.label)}${node.path ? ` · ${escapeHtml(node.path)}` : ""}</option>`
+    const mode = document.getElementById("graphTraceRootMode").value;
+    const current = select.value;
+    const candidates = graphState.traceIndex.filter(node => {
+        if (mode === "entry") return node.kind === "function" && node.call_position?.entry_candidate;
+        if (mode === "exit") return node.kind === "function" && node.call_position?.exit_candidate;
+        return true;
+    });
+    select.innerHTML = candidates.map(node => {
+        const position = node.call_position;
+        const marker = position
+            ? `${position.entry_candidate ? "START · " : ""}${position.exit_candidate ? "END · " : ""}${position.functions_before} before / ${position.functions_after} after · `
+            : "";
+        return `<option value="${escapeHtml(node.id)}">${escapeHtml(marker)}${escapeHtml(node.kind)} · ${escapeHtml(node.label)}${node.path ? ` · ${escapeHtml(node.path)}` : ""}</option>`;
+    }
     ).join("");
-    const defaultRoot = graphState.traceIndex.find(node => node.kind === "function") ||
-        graphState.traceIndex[0];
+    const defaultRoot = candidates.find(node => node.id === current) ||
+        candidates.find(node => node.kind === "function") || candidates[0];
     if (defaultRoot) select.value = defaultRoot.id;
 }
 
@@ -749,6 +848,11 @@ async function startGraphTrace() {
         canonical_id: root.id,
         parent_instance_id: null,
         trace_depth: 0,
+        trace_column: 0,
+        trace_role: "root",
+        trace_relation_path: [],
+        trace_canonical_path: [root.id],
+        suppressed_cycles: 0,
         expanded: false
     }];
     graphState.traceEdges = [];
@@ -785,30 +889,55 @@ async function toggleTraceNode(positionedNode) {
             trace_depth: node.trace_depth,
         };
         Object.assign(node, center, identity);
+        node.interface = neighborhood.interface;
     }
+    let suppressedCycles = 0;
     (neighborhood.edges || []).forEach(edge => {
         const neighborId = edge.source === node.canonical_id ? edge.target : edge.source;
         const neighbor = canonicalNodes.get(neighborId);
         if (!neighbor) return;
+        if (!traceBranchAllows(node, edge.id, neighborId)) {
+            suppressedCycles += 1;
+            return;
+        }
         graphState.traceCounter += 1;
         const childId = `trace:${graphState.traceCounter}`;
+        const flowSource = edge.flow_source || edge.source;
+        const flowTarget = edge.flow_target || edge.target;
+        const neighborIsSource = flowSource === neighborId;
+        const traceColumn = (node.trace_column || 0) + (neighborIsSource ? -1 : 1);
+        const traceRole = neighborIsSource ? edge.source_role : edge.target_role;
         graphState.traceInstances.push({
             ...neighbor,
             id: childId,
             canonical_id: neighbor.id,
             parent_instance_id: node.id,
             trace_depth: (node.trace_depth || 0) + 1,
+            trace_column: traceColumn,
+            trace_role: traceRole,
+            trace_relation_path: [...(node.trace_relation_path || []), edge.id],
+            trace_canonical_path: [...(node.trace_canonical_path || []), neighbor.id],
+            suppressed_cycles: 0,
             expanded: false
         });
+        const visualSource = flowSource === node.canonical_id ? node.id : childId;
+        const visualTarget = flowTarget === node.canonical_id ? node.id : childId;
         graphState.traceEdges.push({
             ...edge,
             id: `${node.id}:${childId}:${edge.kind}`,
-            source: edge.source === node.canonical_id ? node.id : childId,
-            target: edge.target === node.canonical_id ? node.id : childId
+            kind: edge.flow_kind || edge.kind,
+            source: visualSource,
+            target: visualTarget
         });
     });
+    node.suppressed_cycles = suppressedCycles;
     node.expanded = true;
     syncTracePayload(node.id);
+}
+
+function traceBranchAllows(node, relationshipId, neighborCanonicalId) {
+    return !(node.trace_relation_path || []).includes(relationshipId) &&
+        !(node.trace_canonical_path || []).includes(neighborCanonicalId);
 }
 
 function collapseTraceNode(parentId) {
@@ -848,6 +977,7 @@ function syncTracePayload(focusId = null) {
         },
         limitations: [
             "Trace instances may duplicate one canonical symbol to keep branches readable.",
+            "A canonical symbol may repeat on separate branches, but a branch never revisits a symbol or relationship already in its ancestry.",
             "Expansion follows structural evidence; it is not runtime execution order.",
             ...(graphState.overviewPayload?.limitations || [])
         ]
@@ -938,6 +1068,10 @@ function initializeGraphWorkspace() {
         await loadGraphProjection();
     });
     document.getElementById("graphReset").addEventListener("click", resetGraphView);
+    document.getElementById("graphTraceRootMode").addEventListener("change", async () => {
+        renderTraceRootOptions();
+        await startGraphTrace();
+    });
     document.getElementById("graphTraceStart").addEventListener("click", startGraphTrace);
     const canvas = document.getElementById("graphCanvas");
     canvas.addEventListener("click", event => {

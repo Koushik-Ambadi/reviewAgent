@@ -9,6 +9,7 @@ def test_graph_workspace_shell_exposes_scopes_layers_and_accessible_fallback():
         'id="graphsPage"',
         'id="graphRun"',
         'id="graphViewMode"',
+        'id="graphTraceRootMode"',
         'id="graphTraceRoot"',
         'id="graphTraceStart"',
         'id="graphScope"',
@@ -38,8 +39,17 @@ def test_graph_workspace_shell_exposes_scopes_layers_and_accessible_fallback():
     assert "function rectangleBoundary" in script
     assert "renderGraphEdgeTooltip(edge" in script
     assert "incoming_interactions" in script
-    assert "Code size requires object/map evidence" in script
+    assert (
+        "Return-value lineage and argument-to-parameter binding remain unavailable"
+        in script
+    )
     assert "/graphs/nodes" in script
     assert "/graphs/neighborhood" in script
     assert "function toggleTraceNode" in script
     assert "function collapseTraceNode" in script
+    assert "trace_relation_path" in script
+    assert "trace_canonical_path" in script
+    assert "function renderTraceRootOptions" in script
+    assert "function traceBranchAllows" in script
+    assert "function edgeObstacleCount" in script
+    assert "parameter input" in script

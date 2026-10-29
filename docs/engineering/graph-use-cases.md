@@ -66,3 +66,13 @@
   progressively disclosed investigation. Repeated visual instances reduce
   crossings but always refer back to one canonical symbol; their tree order is
   navigation order, not runtime order.
+- In trace view, `input` means a parameter or conservatively observed read
+  flowing toward a function; `output` means a conservatively observed write
+  flowing away. The canonical read/write relation remains inspectable. This is
+  an interface-oriented projection, not definition-use lineage.
+- Call-beginning and call-ending filters mean no caller or no callee was
+  observed in this retained configuration. Before/after counts are unique
+  transitive call-graph neighbors, not runtime stack depth.
+- A branch will not revisit a canonical node or relation already in its own
+  ancestry. The same symbol can still be duplicated on separate branches when
+  that keeps each flow readable.

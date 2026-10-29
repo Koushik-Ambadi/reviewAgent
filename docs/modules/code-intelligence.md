@@ -66,6 +66,12 @@ The run-wide trace adapter exposes a semantic-node index and one-hop
 neighborhood projection over the same graph. The UI may instantiate one
 canonical symbol more than once in different trace branches; `canonical_id`
 preserves identity and the duplicated instance is never persisted as analysis.
+The adapter adds a presentation-only input/output flow over canonical access
+edges and computes observed call-position summaries. Client instances retain
+canonical ancestry so a branch cannot bounce across the same relationship or
+cycle back to a prior symbol. Parameter ports are expandable to currently known
+ownership/interactions, but concrete argument bindings remain outside the
+extracted contract.
 
 ## Flow and invariants
 

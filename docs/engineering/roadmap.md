@@ -147,6 +147,13 @@ changes. Do not maintain a second project-wide gap inventory here.
   and a run-wide expandable/collapsible trace playground can now follow one
   structural branch at a time. Visual symbol duplication is presentation-only;
   ordered runtime/value traces remain gated on CFG and value-flow evidence.
+- Flow-navigation increment (2026-10-29): the trace playground now derives
+  input/output directions while preserving canonical read/write evidence,
+  prevents branch-local call bounce loops, exposes observed call beginnings/
+  endings and before/after counts, and uses centered bidirectional branch
+  layout. Next extraction remains call-argument/parameter binding, initializer/
+  assignment and return lineage. Project LUT/calibration tables may follow as a
+  versioned evidence adapter when a concrete source contract is supplied.
 - Coverage authority: the [graph capability matrix](../contracts/graph-capabilities.md)
   records all 21 discussed graph types and distinguishes currently extractable
   facts from engine, project-model, and external-evidence dependencies.

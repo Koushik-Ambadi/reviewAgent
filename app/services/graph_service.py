@@ -119,8 +119,15 @@ def get_run_graph(
 def get_run_graph_nodes(run_id: str) -> dict[str, Any]:
     run_path = get_run_path(run_id)
     graph = _load_graph(run_path)
+    source_nodes = {
+        str(node["id"]): node for node in graph.get("nodes") or []
+    }
+    call_positions = _call_positions(source_nodes, graph.get("edges") or [])
     nodes = [
-        _node_payload(node)
+        _node_payload(
+            node,
+            call_position=call_positions.get(str(node["id"])),
+        )
         for node in graph.get("nodes") or []
         if node.get("kind") != "translation_unit"
     ]
@@ -160,22 +167,34 @@ def get_run_graph_neighborhood(
         )
         if kind not in selected_layers and not hierarchy_allowed:
             continue
-        if direction in {"outgoing", "both"} and source == node_id:
+        flow = _trace_flow(edge, nodes)
+        flow_source = str(flow["flow_source"])
+        flow_target = str(flow["flow_target"])
+        if direction in {"outgoing", "both"} and flow_source == node_id:
             selected_edges.append(edge)
-            included.add(target)
-        elif direction in {"incoming", "both"} and target == node_id:
+            included.add(flow_target)
+        elif direction in {"incoming", "both"} and flow_target == node_id:
             selected_edges.append(edge)
-            included.add(source)
+            included.add(flow_source)
     evidence = _node_evidence(nodes, graph.get("edges") or [])
+    call_positions = _call_positions(nodes, graph.get("edges") or [])
+    projected_edges = _aggregate_occurrence_edges(selected_edges, nodes)
+    for edge in projected_edges:
+        edge.update(_trace_flow(edge, nodes))
     return {
         "run_id": run_id,
         "node_id": node_id,
         "direction": direction,
         "nodes": [
-            _node_payload(nodes[identity], evidence=evidence.get(identity))
+            _node_payload(
+                nodes[identity],
+                evidence=evidence.get(identity),
+                call_position=call_positions.get(identity),
+            )
             for identity in sorted(included)
         ],
-        "edges": _aggregate_occurrence_edges(selected_edges, nodes),
+        "edges": projected_edges,
+        "interface": _trace_interface(node_id, projected_edges, nodes),
         "limitations": _projection_limitations(),
     }
 
@@ -476,7 +495,10 @@ def _file_owners(
 
 
 def _node_payload(
-    node: dict[str, Any], *, evidence: dict[str, list[dict[str, Any]]] | None = None
+    node: dict[str, Any],
+    *,
+    evidence: dict[str, list[dict[str, Any]]] | None = None,
+    call_position: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     attributes = node.get("attributes") or {}
     location = node.get("location") or {}
@@ -497,12 +519,140 @@ def _node_payload(
             if key in attributes
         },
     }
+    if call_position is not None:
+        payload["call_position"] = call_position
+    if node.get("kind") == "parameter":
+        payload["binding_status"] = "argument_binding_unavailable"
     if evidence is not None:
         payload["declarations"] = evidence["declarations"]
         payload["definitions"] = evidence["definitions"]
         payload["incoming_interactions"] = evidence["incoming"]
         payload["outgoing_interactions"] = evidence["outgoing"]
     return payload
+
+
+def _call_positions(
+    nodes: dict[str, dict[str, Any]], edges: list[dict[str, Any]]
+) -> dict[str, dict[str, Any]]:
+    functions = {
+        identity
+        for identity, node in nodes.items()
+        if node.get("kind") == "function"
+    }
+    callers: dict[str, set[str]] = {identity: set() for identity in functions}
+    callees: dict[str, set[str]] = {identity: set() for identity in functions}
+    for edge in edges:
+        if edge.get("kind") != "calls":
+            continue
+        source = str(edge.get("source"))
+        target = str(edge.get("target"))
+        if source in functions and target in functions:
+            callees[source].add(target)
+            callers[target].add(source)
+
+    def reachable(start: str, adjacency: dict[str, set[str]]) -> set[str]:
+        found: set[str] = set()
+        pending = list(adjacency[start])
+        while pending:
+            current = pending.pop()
+            if current in found:
+                continue
+            found.add(current)
+            pending.extend(adjacency.get(current, set()) - found)
+        return found
+
+    positions = {}
+    for identity in sorted(functions):
+        before = reachable(identity, callers)
+        after = reachable(identity, callees)
+        positions[identity] = {
+            "direct_callers": len(callers[identity]),
+            "direct_callees": len(callees[identity]),
+            "functions_before": len(before - {identity}),
+            "functions_after": len(after - {identity}),
+            "entry_candidate": not callers[identity],
+            "exit_candidate": not callees[identity],
+            "recursive": identity in before or identity in after,
+        }
+    return positions
+
+
+def _trace_flow(
+    edge: dict[str, Any], nodes: dict[str, dict[str, Any]]
+) -> dict[str, Any]:
+    """Add a human-facing flow without changing canonical edge evidence."""
+    kind = str(edge.get("kind"))
+    source = str(edge.get("source"))
+    target = str(edge.get("target"))
+    flow_source = source
+    flow_target = target
+    source_role = "source"
+    target_role = "target"
+    flow_kind = kind
+    if kind == "calls":
+        source_role, target_role = "caller", "callee"
+    elif kind == "reads":
+        flow_kind = "input"
+        flow_source, flow_target = target, source
+        source_role, target_role = "input", "consumer"
+    elif kind == "writes":
+        flow_kind = "output"
+        source_role, target_role = "producer", "output"
+    elif kind == "parameter_of":
+        flow_kind = "parameter_input"
+        flow_source, flow_target = target, source
+        source_role, target_role = "parameter", "owner"
+    elif kind == "references":
+        flow_kind = "reference"
+        source_role, target_role = "referrer", "referenced"
+    return {
+        "canonical_kind": kind,
+        "flow_kind": flow_kind,
+        "flow_source": flow_source,
+        "flow_target": flow_target,
+        "source_role": source_role,
+        "target_role": target_role,
+    }
+
+
+def _trace_interface(
+    center_id: str,
+    edges: list[dict[str, Any]],
+    nodes: dict[str, dict[str, Any]],
+) -> dict[str, Any]:
+    inputs: set[str] = set()
+    outputs: set[str] = set()
+    callers: set[str] = set()
+    callees: set[str] = set()
+    parameters: set[str] = set()
+    for edge in edges:
+        flow_source = str(edge.get("flow_source"))
+        flow_target = str(edge.get("flow_target"))
+        other_id = flow_source if flow_target == center_id else flow_target
+        label = str((nodes.get(other_id) or {}).get("name") or other_id)
+        flow_kind = str(edge.get("flow_kind"))
+        if flow_kind == "input" and flow_target == center_id:
+            inputs.add(label)
+        elif flow_kind == "output" and flow_source == center_id:
+            outputs.add(label)
+        elif flow_kind == "parameter_input" and flow_target == center_id:
+            parameters.add(label)
+        elif flow_kind == "calls":
+            if flow_target == center_id:
+                callers.add(label)
+            elif flow_source == center_id:
+                callees.add(label)
+    center = nodes[center_id]
+    return {
+        "inputs": sorted(inputs),
+        "outputs": sorted(outputs),
+        "parameters": sorted(parameters),
+        "callers": sorted(callers),
+        "callees": sorted(callees),
+        "return_type": (center.get("attributes") or {}).get("return_type"),
+        "return_lineage_available": False,
+        "argument_bindings_available": False,
+    }
 
 
 def _node_evidence(

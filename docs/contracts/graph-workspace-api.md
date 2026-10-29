@@ -29,12 +29,21 @@ module. Repeated `modules=<name>` parameters select a subset. Repeated `layers`
 parameters use the same overlay vocabulary.
 
 `GET /api/runs/{run_id}/graphs/nodes` returns the searchable graph-node index
-for the expandable trace playground.
+for the expandable trace playground. Function nodes include `call_position`:
+direct caller/callee counts, unique transitive functions before/after, recursive
+membership, and observed beginning/ending-candidate flags.
 
 `GET /api/runs/{run_id}/graphs/neighborhood` accepts `node_id`,
 `direction=incoming|outgoing|both`, and repeated `layers`. It returns the
 canonical center, directly related canonical nodes, and aggregated occurrence
 edges across the whole run graph, independent of an overview file selection.
+Its `direction` applies to derived human-facing flow: read variables and
+parameters flow into a function, written variables flow out, and calls retain
+caller-to-callee direction. Each returned edge preserves canonical source,
+target, and kind and adds `flow_source`, `flow_target`, `flow_kind`, and endpoint
+roles. The response also summarizes the center's observed interface inputs,
+outputs, parameters, callers, callees, and return type without claiming value
+lineage.
 
 Both endpoints are read-only. A missing run or graph returns 404. Unsafe run
 IDs, unknown files, scopes, or unavailable layers return 400.
@@ -79,11 +88,23 @@ are cross-file symbol evidence for inspection, not execution-ordered traces.
 
 The client may create multiple visual instances for one canonical node. Every
 instance carries `canonical_id`; instance IDs are presentation-local and must
-never be persisted as analysis identities. Double-click expansion is bounded to
-depth 20 to prevent accidental cycling, but does not silently truncate a
-neighborhood's relationship groups. Collapsing removes only the instance's
-descendants. Edge direction and occurrence evidence remain canonical even when
-the same symbol appears in several branches.
+never be persisted as analysis identities. Double-click expansion retains depth
+20 as a final safety bound and does not silently truncate a neighborhood's
+relationship groups. Each instance also retains its branch-local canonical-node
+ancestry and traversed canonical relationship IDs. Expansion does not recreate
+a node or relationship already traversed on that branch, preventing caller/
+callee bounce loops; the same canonical node may still appear on independent
+branches. Collapsing removes only the instance's descendants.
+
+Trace presentation uses `input`, `parameter_input`, and `output` labels derived
+from canonical access evidence. Canonical `reads`, `writes`, and `parameter_of`
+remain attached as evidence. Parameters use compact expandable ports. The
+current graph does not bind call arguments to callee parameters or identify a
+parameter's constant, macro, global, expression, or returned-value origin.
+
+Observed no-caller/no-callee functions are selectable as call beginning/ending
+candidates. These are structural candidates within the retained configuration,
+not proven process entry points, runtime stack positions, or termination sites.
 
 `control_flow` and `data_flow` are advertised with `available: false` and an
 evidence-gate explanation. The workspace must render them disabled rather than

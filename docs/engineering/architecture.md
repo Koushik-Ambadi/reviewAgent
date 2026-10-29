@@ -360,6 +360,17 @@ The API returns templates; the pipeline owns execution-time loading.
   overview projections and an expandable trace playground. Trace expansion uses
   run-wide node-index and neighborhood projections; branch-local instance IDs
   may duplicate a canonical symbol visually but always retain `canonical_id`.
+- The trace adapter derives interface-oriented flow without rewriting canonical
+  evidence: reads and parameters point into functions, writes point out, and
+  calls remain caller-to-callee. Branch ancestry prevents repeated backtracking
+  over the same symbol/relation while still permitting duplication on separate
+  branches. Observed call beginnings/endings and transitive before/after counts
+  support root selection but are not runtime-stack evidence.
+- Trace layout places incoming roles left and outgoing roles right, vertically
+  centers a parent over its visible children, renders parameters as compact
+  ports, and chooses curved edge bends with the fewest sampled node-box
+  collisions. It remains a deterministic readability heuristic rather than a
+  crossing-free layout guarantee.
 - Landing and setup use dynamic viewport sizing on normal desktop layouts. The
   setup configuration and activity panels share one height, while the activity
   log flexes inside its panel. Narrow or short displays retain page scrolling as

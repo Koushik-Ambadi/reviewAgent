@@ -1216,3 +1216,29 @@ and third-party artifacts and must not be interpreted as effort or quality.
   identity and the graph artifact remains singular.
 - D031 records the distinction between this structural trace and a future
   runtime-ordered CFG/value-flow trace.
+
+### 2026-10-29 — Make progressive traces flow-oriented and cycle-safe
+
+- Applied the repository's recorded project-lifecycle governance baseline
+  `b800dfc` and local reviewer-conversation refresh policy. The increment keeps
+  one canonical graph, updates contract/decision/architecture/testing owners,
+  and introduces no project-convention drift requiring a compatibility map.
+- Added human-facing input/output/parameter flow over canonical read, write,
+  and ownership evidence without changing the persisted graph.
+- Added no-caller/no-callee root filters plus unique transitive function counts
+  before and after each function. These remain structural configuration facts,
+  not runtime stack positions.
+- Prevented a branch from revisiting its own canonical symbols or relations,
+  while retaining presentation-only duplication across independent branches.
+- Replaced downward depth columns with left-incoming/right-outgoing placement
+  and vertical parent centering. Parameters render as compact expandable ports;
+  edges choose among deterministic curves by sampled node obstruction.
+- Focused graph-service tests, workspace-shell assertions, a Node cycle/centering
+  harness, Python compilation, and JavaScript syntax checks passed. Browser
+  visual acceptance remains manual.
+- D032 records the evidence boundary for argument bindings, return lineage,
+  transformations, LUT evidence, and crossing-free layout claims.
+- A live retained-Shunt smoke returned the 309-node index, 9 observed call
+  beginnings and 17 endings. `Shunt_read_inputs` exposes 5 structural inputs,
+  6 outputs, and the expected one-way call to `App_get_battstate`. Canonical
+  source alignment remains consistent with zero hard or exact-duplicate issues.
