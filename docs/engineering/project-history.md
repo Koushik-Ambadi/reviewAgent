@@ -1271,3 +1271,20 @@ and third-party artifacts and must not be interpreted as effort or quality.
   known issues and documentation index. Shared baseline compatibility unchanged.
 - Next increment: retain a compact machine-readable source/IR/projection audit,
   rerun the finalized producer on Shunt, then integrate locally into master.
+
+### 2026-10-29 — Retain compiler flow audit and integrate
+
+- First implementation increment committed as `e0fa580` on
+  `codex/cfg-dfd-evidence`. Commit was initially delayed when automatic approval
+  review exhausted workspace credits; resumed after the user's continuation.
+- Added a replay auditor and projection-tampering regression. Regenerated the
+  finalized producer on two retained Shunt translation units (21 function CFGs).
+  All 266 blocks, 1,282 instructions and 348 CFG edges align with retained IR;
+  model source branch/loop/arithmetic checks and lookup reaching stores agree.
+- Retained compact evidence in `docs/examples/flow-verification.json`; large
+  generated artifacts stay under ignored `workspace/runs/cfg-dfd-experiment/`.
+  Existing symbols/graph hashes remained unchanged across the second run.
+- Verification: 59 tests and JavaScript trace assertions pass. Native/firmware
+  target builds and graph rendering were intentionally outside this evidence gate.
+- Remote `master` fetched successfully before local integration. Preserve both
+  feature branches; integration uses fast-forward only so no history is lost.

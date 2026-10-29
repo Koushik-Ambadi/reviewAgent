@@ -1,0 +1,125 @@
+{
+  "boundary": "Serialization/IR/source-location alignment; semantic source checks and memory-flow tests are separate",
+  "canonical_sha256": "5b8fcea19068bc38f985c8a3adc01202e7dcde793be8672def84b747a44c5b7b",
+  "consistent": true,
+  "edges": {
+    "calls": 18,
+    "contains": 1338,
+    "control_flow": 268,
+    "declares": 109,
+    "def_use": 1258,
+    "defines": 53,
+    "field_of": 16,
+    "includes": 25,
+    "member_of": 24,
+    "memory_flow": 83,
+    "parameter_of": 24,
+    "reads": 320,
+    "writes": 190
+  },
+  "existing_artifacts_unchanged": {
+    "workspace\\runs\\20261022_154215_6b44447a\\analysis\\code-intelligence.json": "a9b1604a315f48920a3ec8c2eab5b6e07571472531168d4b5faf10c0e3d881f3",
+    "workspace\\runs\\20261022_154215_6b44447a\\analysis\\symbols.json": "db8bade4eed3aa920dd63fe82e93d885e458d658c66c6232c6f33f19d0fd7616"
+  },
+  "manual_source_review": [
+    {
+      "function": "plook_u32u8_bincka",
+      "lines": [
+        204,
+        208,
+        206,
+        210,
+        214,
+        217
+      ],
+      "result": "Two conditional branches; all three assignments reach merged return load; automated line assertion also passed"
+    },
+    {
+      "function": "binsearch_u32u8",
+      "lines": [
+        230,
+        232,
+        241,
+        244
+      ],
+      "result": "Loop predicate, inner branch and backedge agree with source"
+    },
+    {
+      "function": "Shunt_currentcalculation",
+      "lines": [
+        456,
+        457
+      ],
+      "result": "Loads, integer/float conversions, fmuladd, output store and return agree with source; global memory remains unresolved"
+    }
+  ],
+  "nodes": {
+    "basic_block": 196,
+    "enum": 4,
+    "enum_constant": 24,
+    "field": 16,
+    "file": 17,
+    "function": 14,
+    "global_variable": 65,
+    "instruction": 966,
+    "ir_value": 209,
+    "local_variable": 12,
+    "macro": 54,
+    "parameter": 24,
+    "struct": 4,
+    "typedef": 12
+  },
+  "producer_commit": "e0fa580",
+  "run": "workspace/runs/cfg-dfd-experiment/final-shunt-model",
+  "second_translation_unit": {
+    "audit": {
+      "boundary": "Serialization/IR/source-location alignment; semantic source checks and memory-flow tests are separate",
+      "canonical_sha256": "634cf1d6e02fe09628318e9fe548264754402bb940ad81e6872e83fb5310c4dd",
+      "consistent": true,
+      "edges": {
+        "calls": 10,
+        "contains": 519,
+        "control_flow": 80,
+        "declares": 75,
+        "def_use": 451,
+        "defines": 33,
+        "field_of": 16,
+        "includes": 23,
+        "member_of": 24,
+        "memory_flow": 70,
+        "parameter_of": 26,
+        "reads": 109,
+        "references": 9,
+        "writes": 58
+      },
+      "nodes": {
+        "basic_block": 70,
+        "enum": 4,
+        "enum_constant": 24,
+        "field": 16,
+        "file": 17,
+        "function": 18,
+        "global_variable": 5,
+        "instruction": 316,
+        "ir_value": 109,
+        "local_variable": 19,
+        "macro": 53,
+        "parameter": 26,
+        "struct": 4,
+        "typedef": 12
+      },
+      "source_located_instructions": 278,
+      "verified_blocks": 70,
+      "verified_instruction_operands": 433,
+      "verified_instructions": 316,
+      "verified_successors": 80
+    },
+    "run": "workspace/runs/cfg-dfd-experiment/final-shunt-interface",
+    "source": "src/shunt.c"
+  },
+  "source_located_instructions": 936,
+  "verified_blocks": 196,
+  "verified_instruction_operands": 1246,
+  "verified_instructions": 966,
+  "verified_successors": 268
+}

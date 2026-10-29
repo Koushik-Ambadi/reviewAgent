@@ -129,3 +129,21 @@ def test_repeat_is_deterministic_and_invalid_source_retains_failure(evidence, tm
             clang=Path(CLANG), llvm_library=LIBRARY, args=[])
     assert json.loads((output / "manifest.json").read_text())["status"] == "failed"
     assert not (output / "code-intelligence.json").exists()
+
+
+def test_retained_evidence_auditor_rejects_projection_drift(evidence, tmp_path):
+    from scripts.verify_flow_evidence import verify_flow_evidence
+
+    output, _, _ = evidence
+    result = verify_flow_evidence(output, ROOT, LIBRARY)
+    assert result["consistent"]
+    assert result["verified_successors"] > 0
+    assert result["verified_instruction_operands"] > 0
+    copied = tmp_path / "tampered"
+    shutil.copytree(output, copied)
+    path = copied / "control_flow.json"
+    projection = json.loads(path.read_text())
+    projection["edges"].pop()
+    path.write_text(json.dumps(projection), encoding="utf-8")
+    with pytest.raises(ValueError, match="Edge projection drift"):
+        verify_flow_evidence(copied, ROOT, LIBRARY)

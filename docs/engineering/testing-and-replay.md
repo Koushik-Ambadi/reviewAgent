@@ -686,3 +686,32 @@ Use the [README command](../../README.md#generate-cfg-and-dfd-evidence) with a
 fresh output directory. The [flow contract](../contracts/flow-evidence.md) defines
 the replay inputs and completeness limits. Real run source/IR remains ignored;
 the public `tests/fixtures/code_intelligence/flow.c` is the portable fixture.
+
+### Final retained audit
+
+Producer commit `e0fa580` generated `final-shunt-model/` and
+`final-shunt-interface/` beneath `workspace/runs/cfg-dfd-experiment/`.
+The compact [verification JSON](../examples/flow-verification.json) records
+hashes, counts and manual source checks. The model audit verifies all 196 blocks,
+966 instruction texts, 268 successors and 1,246 instruction operand links
+against native LLVM IR. The interface source audit verifies 70 blocks, 316
+instructions, 80 successors and 433 instruction operand links. Both projections
+are exact canonical subsets; source/input hashes and source-line bounds pass.
+The original run's `symbols.json` and `code-intelligence.json` hashes are unchanged.
+
+`plook_u32u8_bincka` additionally has a source-specific check: the load at return
+line 217 has reaching stores from exactly lines 206, 210 and 214. This complements
+the manual branch/loop/arithmetic review; it does not prove alias completeness.
+
+Replay the artifact audit with `PYTHONPATH=src`:
+
+```powershell
+venv313/Scripts/python.exe scripts/verify_flow_evidence.py workspace/runs/cfg-dfd-experiment/final-shunt-model --repo workspace/runs/20261022_154215_6b44447a/shunt --llvm-library 'C:/Program Files/LLVM/bin/LLVM-C.dll'
+```
+
+After adding auditor regression coverage, the maintained suite passed **59 tests**
+(including eight real-compiler flow tests), and
+`node tests/graph_trace_logic_test.js` passed cycle/centering assertions. The audit
+checks persisted evidence independently of extraction traversal, but uses the
+same native LLVM reader; source semantics and memory-analysis correctness are
+supported separately by fixture expectations and the stated manual review.
