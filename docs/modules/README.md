@@ -9,6 +9,7 @@ decision, verification, or operational boundary is in scope.
 - [C/C++ analysis inventory](analysis-inventory.md)
 - [Policy-driven checks](policy-driven-checks.md)
 - [Result contract and reporting](result-contract-and-reporting.md)
+- [Code intelligence](code-intelligence.md)
 
 They complement, rather than replace, [architecture](../engineering/architecture.md),
 [testing and replay](../engineering/testing-and-replay.md), and

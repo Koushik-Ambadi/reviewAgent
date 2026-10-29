@@ -56,6 +56,140 @@ projection over the extractor result already returned in memory; regenerating
 machine-specific CMake/libclang artifacts would be disproportionate. The
 responsive card layout remains a focused visual check at normal browser zoom.
 
+### Code-intelligence AST verification — 2026-10-27
+
+The derived-view fixture in `tests/test_code_intelligence_derived_views.py`
+verifies explicit-root reachability, unreachable classification,
+recursive-SCC call depth, file-as-module dependency aggregation, reverse
+direct/transitive impact, and invalid input rejection. It is a pure graph test
+and does not require libclang.
+
+The expanded AST fixture verifies scoped identities, type sizes, conservative
+read/write classification, function metrics, and exact body-token fingerprints.
+`tests/test_code_intelligence_analysis_views.py` verifies variable-access,
+exact-clone, complexity, and explicitly non-authoritative memory estimates. A
+real detailed-processing parse of `tests/fixtures/code_intelligence/sample.c`
+with the installed libclang produced 13 nodes, 40 edges, 17 access occurrences,
+one exact-clone edge, three complexity nodes, and a four-byte global-storage
+estimate.
+`PYTHONPATH=src python scripts/build_code_intelligence_example.py` regenerates
+the checked-in JSON and Mermaid-backed Markdown example deterministically.
+`tests/test_shared_analysis_stage.py` builds a temporary compilation database
+and verifies that the review inventory and provenance-bearing schema 1.1 graph
+snapshot are produced together from the common parse boundary.
+
+### Graph workspace backend verification — 2026-10-28
+
+`tests/test_graph_service.py` verifies file/module overlay projection and
+cross-module signal direction over two synthetic run artifacts. The retained
+`20261022_154215_6b44447a` shunt source was reparsed without replacing its legacy
+`symbols.json`: two policy-owned translation units produced 309 nodes and 1,242
+edges in 7.542 seconds. The module projection contains nine repository-owned
+file nodes and 32 selected relationships; the original occurrence-level
+`src/shunt.c` projection contained 83 displayed nodes and 236 selected/hierarchy
+rows before repeated relationships were aggregated. Only shunt currently has a
+graph artifact, so the inter-module result honestly contains one module and no
+cross-module relationships.
+
+`tests/test_graph_workspace_static.py` verifies the graph page, three scope
+selectors, layer host, canvas, accessible relationship list, stylesheet/script
+delivery, catalog loading, and double-click drill-down hooks. `node --check`
+passes for `graph.js`, `app.js`, and `manager.js`. A local Uvicorn smoke returned
+200 for the catalog, shunt module/file projections, inter-module projection,
+HTML shell, and graph script. Browser visual verification was not executed
+because local browser use is disabled in Work settings.
+
+The function-centric readability increment adds focused assertions for bounded
+module/inter-module aggregate interaction evidence, owned-detail controls, node
+focus, edge
+inspection, and hierarchy suppression from the default canvas. `node --check`
+and direct invocation of the three focused graph tests passed. The refreshed
+Uvicorn projection returned 7 module nodes/20 selected aggregate relationships.
+After occurrence aggregation, the default `src/shunt.c` projection returns 86
+nodes and 170 selected-plus-hierarchy relationships. Browser binding was
+again blocked by Work settings, so the user-visible localhost tab remains the
+visual acceptance surface.
+
+The parallel-edge and symbol-inspection increment verifies declaration,
+definition, and incoming/outgoing interaction evidence; repeated relationship
+aggregation with retained occurrences; hover and shared route geometry; and
+JavaScript syntax. `scripts/verify_graph_source_alignment.py` separately checks
+canonical endpoints and semantic occurrence locations against retained source.
+On the shunt artifact it checked all 309 nodes and 1,242 edges, including 288
+source-owned node locations and 714 semantic edge locations: zero hard issues,
+zero exact duplicate occurrences, and 173 repeated
+source-target relation groups. Four compiler-resolved calls use macro names at
+the source line (`SHUNT_GET_*`) rather than their resolved target function name;
+these are recorded informationally, not treated as inconsistencies. Visual
+crossing reduction remains manual acceptance because browser automation is
+disabled in Work settings.
+
+Re-run the source-alignment check with:
+
+```powershell
+.\venv313\Scripts\python.exe scripts\verify_graph_source_alignment.py `
+  workspace\runs\20261022_154215_6b44447a\analysis\code-intelligence.json `
+  workspace\runs\20261022_154215_6b44447a\shunt --summary
+```
+
+### Flow-oriented trace verification — 2026-10-29
+
+Direct invocation of the three focused graph-service tests in `venv313` passed.
+The fixture verifies observed call beginning/ending and transitive before/after
+counts, semantic incoming/outgoing behavior, canonical read-to-input direction,
+parameter-input projection, and the explicit unavailable argument-binding
+status. The static workspace test verifies the new root-mode control, branch
+ancestry guards, compact parameter presentation hooks, and obstacle-scored edge
+routing. `tests/graph_trace_logic_test.js` executes the browser-independent
+cycle guard and proves a parent is centered across uneven left/right children.
+`node --check app/static/graph.js` and Python compilation passed.
+
+The refreshed localhost service returned 200 for the workspace and script. The
+retained 309-node Shunt graph exposes 9 observed call-beginning candidates, 17
+ending candidates, and no recursive functions. `Shunt_read_inputs` reports 1
+unique function before and 4 after, 5 observed interface inputs, 6 observed
+side-effect outputs, and one canonical call flowing to `App_get_battstate`;
+that callee reports 2 functions before, none after, and is an ending candidate.
+The source-alignment verifier still reports 309 nodes, 1,242 edges, zero hard
+issues, and zero exact duplicate occurrences. Its four macro-mediated call-name
+notes are unchanged.
+
+Branch-local cycle suppression and parent-centering are deterministic client
+state/layout behavior. Browser visual acceptance remains manual because local
+browser automation is disabled in Work settings. The routing algorithm samples
+visible node boxes and chooses the least-obstructed deterministic curve; the
+test does not claim a mathematically crossing-free drawing.
+
+The command exits non-zero for hard inconsistencies or exact duplicate
+occurrences. Repeated relations at distinct source locations are informational.
+
+The trace-playground increment verifies the run-wide semantic-node index and
+incoming/outgoing neighborhood projection with aggregated occurrences. Static
+checks require the presentation selector, trace root/direction controls, and
+expand/collapse implementation hooks. HTTP smoke covers both new endpoints;
+ordered execution remains explicitly outside this verification claim.
+
+| Check | Result | What it proves |
+|---|---|---|
+| `venv313` direct invocation of the three functions in `tests/test_code_intelligence_ast.py` with temporary roots | Passed | USR-first and fallback identities are deterministic; file/function/global/macro nodes and contains/declares/defines/includes/calls edges are emitted; unresolved calls remain explicit; every edge endpoint exists; external declarations are excluded |
+| `python -m pytest tests/test_code_intelligence_ast.py -q` | Not executed: `venv313` has no `pytest` module | Environment limitation is distinct from product behavior |
+| `python -m black --check ...` | Not executed: `venv313` has no `black` module | Formatting command remains unavailable; focused diff and syntax checks are required before commit |
+| `python -m ruff check ...` | Not executed: `venv313` has no `ruff` module | Lint tooling is unavailable in the supported environment; no lint pass is claimed |
+
+The fixture intentionally uses fake cursor objects so the isolated contract can
+be tested without machine-specific libclang. A real compilation-database
+fixture is required when the runner and snapshot integration are added.
+
+### Code-intelligence graph verification — 2026-10-27
+
+| Check | Result | What it proves |
+|---|---|---|
+| `venv313` direct invocation of the five functions in `tests/test_code_intelligence_graph.py` | Passed | Definition facts win deterministic merge; call/include projections use the canonical graph; identity conflicts and dangling edges fail closed; snapshot bytes are repeatable and atomically replace the target; required replay provenance cannot be omitted |
+| Python AST parse and 88-column scan over `src/code_intelligence` and both focused test modules | Passed | All new Python parses and the repository's configured line-length boundary is met |
+
+Pytest, Black, and Ruff remain unavailable in `venv313`; the focused direct
+assertions and deterministic byte comparison are the executed evidence.
+
 ## Current test inventory
 
 ### `src/repo_review/tests/manual/smoke_test.py`
@@ -517,3 +651,67 @@ in the application environment. The retained Green Hills failure logs remain
 the manual evidence fixture: deterministic classification identifies the
 unreachable license host, while the model path is tested with a fake structured
 response and remains explicitly unavailable until credentials are supplied.
+
+## Optional LLVM flow verification (2026-10-29)
+
+`venv313/Scripts/python.exe -m pytest -q tests` passed **58 tests** with Python
+3.13, Clang/LLVM 22.1.5 and pytest 9.2.0. Seven real-compiler flow checks cover
+branch joins, loop-carried definitions, switch labels, short-circuit conditions,
+PHI predecessor labels, escaping pointers, exact projections, source locations,
+deterministic nodes/edges, output preservation and malformed IR/source failures.
+An installed anyio pytest plugin emits a deprecation warning; tests still pass.
+
+Unscoped root discovery fails on the stale manual ZIP script, recorded as
+[BUG-008](known-issues.md#bug-008--root-pytest-discovery-imports-stale-manual-zip-script).
+The supported verification command scopes discovery to `tests`. Firmware builds
+and model calls are not needed for this additive analysis command and were not run.
+
+The retained Shunt experiment is under
+`workspace/runs/cfg-dfd-experiment/shunt-model-verified/`. Its 9 emitted function
+CFGs contain 196 blocks, 268 control edges, 966 instructions, 1,258 SSA operand
+edges and 83 local-memory reaching-definition edges (21 eligible allocas).
+Manual comparison checked `src/shunt_model.c`: lookup branches at lines 204/208
+merge before return at 217; binary search at 230 has the branch at 232 and
+backedge after 241; current calculation at 456 lowers to loads, integer/float
+conversion, `llvm.fmuladd.f32`, and the output store. No global-memory reaching
+definition is inferred from that operand chain. These are host-analysis facts.
+
+Initial negative evidence is retained separately: `clang-cfg.txt` demonstrates
+Clang diagnostic CFG feasibility; `shunt-model-flow/manifest.json` records the
+first rejected run caused by file-vs-pipe CRLF differences. This comparison now
+normalizes only line endings. LLVM 22 switch cases require the dedicated C API,
+not indexing generic operands; the switch fixture guards that corrected mapping.
+
+Use the [README command](../../README.md#generate-cfg-and-dfd-evidence) with a
+fresh output directory. The [flow contract](../contracts/flow-evidence.md) defines
+the replay inputs and completeness limits. Real run source/IR remains ignored;
+the public `tests/fixtures/code_intelligence/flow.c` is the portable fixture.
+
+### Final retained audit
+
+Producer commit `e0fa580` generated `final-shunt-model/` and
+`final-shunt-interface/` beneath `workspace/runs/cfg-dfd-experiment/`.
+The compact [verification JSON](../examples/flow-verification.json) records
+hashes, counts and manual source checks. The model audit verifies all 196 blocks,
+966 instruction texts, 268 successors and 1,246 instruction operand links
+against native LLVM IR. The interface source audit verifies 70 blocks, 316
+instructions, 80 successors and 433 instruction operand links. Both projections
+are exact canonical subsets; source/input hashes and source-line bounds pass.
+The original run's `symbols.json` and `code-intelligence.json` hashes are unchanged.
+
+`plook_u32u8_bincka` additionally has a source-specific check: the load at return
+line 217 has reaching stores from exactly lines 206, 210 and 214. This complements
+the manual branch/loop/arithmetic review; it does not prove alias completeness.
+
+Replay the artifact audit with `PYTHONPATH=src`:
+
+```powershell
+venv313/Scripts/python.exe scripts/verify_flow_evidence.py workspace/runs/cfg-dfd-experiment/final-shunt-model --repo workspace/runs/20261022_154215_6b44447a/shunt --llvm-library 'C:/Program Files/LLVM/bin/LLVM-C.dll'
+```
+
+After adding auditor regression coverage, the maintained suite passed **59 tests**
+(including eight real-compiler flow tests), and
+`node tests/graph_trace_logic_test.js` passed cycle/centering assertions. The audit
+checks persisted evidence independently of extraction traversal, but uses the
+same native LLVM reader; source semantics and memory-analysis correctness are
+supported separately by fixture expectations and the stated manual review.

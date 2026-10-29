@@ -37,6 +37,25 @@ make an issue fixed. Status changes require dated evidence in the issue entry.
 | BUG-005 | Mechanical naming failures can return unsupported model output | IN_PROGRESS | No | High for remediation reliability and cost | G11 prompt/evaluation remediation |
 | BUG-006 | VPN-dependent build environment is unavailable | OPEN | No | Blocks build/artifact verification | G05 operations and build portability |
 | BUG-007 | Build worker can report failure after producing firmware artifacts | IN_PROGRESS | No | High for build result/artifact routing | G05 build orchestration |
+| BUG-008 | Root pytest discovery imports stale manual ZIP script | OPEN | No | Non-urgent; use explicit tests directory | Test discovery |
+
+## BUG-008 — Root pytest discovery imports stale manual ZIP script
+
+- Status: OPEN; fixed: No. Observed 2026-10-29 on Python 3.13 / pytest 9.2.0.
+- Impact: unscoped `python -m pytest -q` fails during collection. Maintained
+  tests can still run. Non-urgent development-tooling defect; evidence observed.
+- Affected paths: `src/tests/manual/test_zip_pipeline.py`, `pyproject.toml`.
+- Reproduction: from repository root with `PYTHONPATH=src`, run
+  `python -m pytest -q`; import of removed `run_review_from_zip` fails.
+- Workaround: `python -m pytest -q tests` passes the maintained 58-test suite.
+  This scopes discovery; it does not repair the manual script.
+- Unknowns: other legacy manual scripts have not been audited for import-time
+  side effects or current API compatibility.
+- Selected follow-up: isolate manual scripts from automated collection and
+  migrate their entry points behind explicit main guards. Do not execute ZIP
+  workflows merely to collect tests.
+- Closure: fixing commit plus root collection and maintained-suite regression
+  evidence required. No fix/closure commit exists yet.
 
 ## BUG-007 — Build worker can report failure after producing firmware artifacts
 

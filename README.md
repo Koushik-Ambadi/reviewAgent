@@ -4,7 +4,8 @@ Review Agent is a policy-driven repository review service for embedded C
 projects. It accepts a repository ZIP, creates an isolated run workspace,
 generates a CMake compilation database, extracts C symbols with libclang,
 applies repository-structure and naming checks, persists a versioned JSON
-report, and renders the result in a FastAPI-hosted web UI. A separate endpoint
+report plus canonical code graph, and renders the result in a FastAPI-hosted
+web UI. A separate endpoint
 can invoke the uploaded firmware repository's `cmake-build.bat`.
 
 The current checkout documents 31 linear commits from 14 May through
@@ -42,8 +43,34 @@ POST /api/review (ZIP)
   -> orchestrator workspace and ingestion
   -> repo_review structure -> analysis -> naming -> reporting
   -> workspace/runs/<run_id>/report.json
+  -> workspace/runs/<run_id>/analysis/code-intelligence.json
   -> browser or agent-oriented response
 ```
+
+The landing page’s **Explore code graphs** action opens retained graph-bearing
+runs. The developer **Code graphs** tab switches between file, module, and
+inter-module scopes; call/include/read/write/reference overlays can be combined.
+Double-click a module or file node to drill down. Control-flow and true data-flow
+overlays are visible but disabled until their required analysis engines exist.
+File scope starts with functions as the readable skeleton; parameters and locals
+are nested in function inspection and can be expanded explicitly. Selecting a
+node centers and isolates its one-hop neighborhood, while selecting a module
+edge lists the concrete function or signal interactions it summarizes.
+Parallel relationship kinds are separated into styled lanes and explain
+themselves on hover; repeated occurrences aggregate with their count and source
+locations. Function and variable inspectors show recorded declaration,
+definition, incoming, and outgoing evidence. Storage totals are type-size
+estimates; code size and call-chain stack remain toolchain-gated.
+Choose **Expandable trace playground** to start from any file or symbol and
+progressively expand or collapse incoming/outgoing branches. A canonical symbol
+can appear in
+multiple branches for readability; double-clicking an instance changes only its
+local branch, not the underlying graph evidence. The playground labels observed
+reads/parameters as inputs and writes as outputs while preserving their original
+evidence, places incoming roles left and outgoing roles right, and prevents one
+branch from bouncing repeatedly through the same call. Beginning/ending filters
+use observed no-caller/no-callee functions; they are structural candidates, not
+proven runtime entry or termination points.
 
 The supported development launcher is `run.bat`, which activates `venv313`,
 sets `PYTHONPATH=src`, and starts Uvicorn with reload. Reproduction constraints,
@@ -82,3 +109,20 @@ its location, its actual policy rule, and an explicit JSON output format, run:
 
 The script loads the ignored `.env.local` key, prints the model's JSON, and
 highlights the returned remediation. It does not create or modify run artifacts.
+
+## Generate CFG and DFD evidence
+
+With matching Clang/LLVM 22 and the existing Python dependencies, run from the
+repository root (PowerShell):
+
+```powershell
+$env:PYTHONPATH = 'src'
+venv313/Scripts/python.exe -m code_intelligence.flow --repo workspace/runs/20261022_154215_6b44447a/shunt --source workspace/runs/20261022_154215_6b44447a/shunt/src/shunt_model.c --compile-db workspace/runs/20261022_154215_6b44447a/analysis/cmake_build --output workspace/runs/my-flow-evidence --llvm-library 'C:/Program Files/LLVM/bin/LLVM-C.dll'
+```
+
+Choose a **new** output directory. It contains the canonical
+`code-intelligence.json`, derived `control_flow.json` and `data_flow.json`,
+compiler IR, preprocessed source, diagnostics and a hashed manifest. Existing
+review artifacts are preserved. These are host-analysis CFGs and bounded DFDs;
+pointer/global/interprocedural memory flow is unresolved. See the
+[flow contract](docs/contracts/flow-evidence.md). Rendering is not required.

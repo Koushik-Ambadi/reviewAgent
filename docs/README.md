@@ -16,6 +16,9 @@ Current project knowledge lives in [`engineering/`](engineering/):
   prompt/output boundaries, local validation, extension points, and maturity.
 - [Project history](engineering/project-history.md) -- append-only daily and
   commit chronology.
+- [Conversation provenance](engineering/conversation-provenance.md) -- saved
+  project-chat inventory, design evolution, superseded proposals, and refresh
+  completeness boundary.
 - [Decision index](decisions.md) -- canonical IDs, status, and record links.
 - [Legacy decisions and lessons](engineering/decisions-and-lessons.md) --
   compatibility owner for reconstructed D001-D023 records and the mixed
@@ -42,6 +45,7 @@ related decisions. It owns local mechanics; architecture summarizes the whole.
 | C/C++ analysis inventory | [analysis-inventory](modules/analysis-inventory.md) | `analysis/source_index`, `analysis/symbol_inventory`, `analysis/runner.py` | repository, CMake, YAML policy | symbol JSON, checks, inventory | living |
 | Policy-driven checks | [policy-driven-checks](modules/policy-driven-checks.md) | `checks/`, `policies/default.yaml` | structure tree, symbol inventory, policy | typed check results and report stages | living |
 | Result contract and reporting | [result-contract-and-reporting](modules/result-contract-and-reporting.md) | `contracts/`, `reporting/` | stage results and projections | report, API/UI/manager consumers | living |
+| Code intelligence | [code-intelligence](modules/code-intelligence.md) | `code_intelligence/`, `app/services/graph_service.py`, `app/static/graph.js` | compilation database, run graph artifacts, user scope/layer selection | graph snapshots, interactive views, later review/build/agent consumers | initial interactive slice |
 
 The existing [remediation generation](engineering/remediation-generation.md)
 record remains the detailed owner for the model-assisted workflow.
@@ -69,6 +73,20 @@ automation map:
 
 - [Run result contract](contracts/run-result.md) documents the serialized
   Run/Stage/Check/Case hierarchy and current persistence boundary.
+- [Code-intelligence graph contract](contracts/code-intelligence-graph.md)
+  defines compiler-derived nodes, edges, identities, resolution states, and the
+  compatibility boundary with `symbols.json`.
+- [Graph capability matrix](contracts/graph-capabilities.md) lists every graph
+  discussed, its required evidence, current extraction coverage, and the gate
+  that prevents unsupported graphs from appearing complete.
+- [Compiler flow evidence](contracts/flow-evidence.md) owns opt-in LLVM CFG/DFD
+  serialization, provenance, projection and memory-analysis boundaries.
+- [Generated code-intelligence graph example](examples/code-intelligence-graphs.md)
+  renders the checked-in fixture and links to its canonical/projection JSON.
+- [Graph workspace API](contracts/graph-workspace-api.md) defines file, module,
+  inter-module, and selectable-layer behavior.
+- [Graph use cases](engineering/graph-use-cases.md) maps supported problems and
+  evidence-gated insights.
 - [`diagrams/review-agent.drawio`](diagrams/review-agent.drawio) is the editable
   architecture diagram source.
 

@@ -118,6 +118,46 @@ changes. Do not maintain a second project-wide gap inventory here.
 ### G08 — Expand source analysis foundations
 
 - Priority: P2
+- Current state (2026-10-27): active. D026 defines the unified graph contract,
+  and the shared AST slice now emits stable file/symbol nodes plus
+  containment, declaration/definition, include, and call relations. Deterministic
+  fragment merge, invariant validation, provenance-required atomic snapshots,
+  and call/include, explicit-root reachability/depth, file-module dependency,
+  changed-node impact, variable-access, exact-token clone, AST-complexity, and
+  type-size memory-estimate views are implemented. The review analysis pipeline
+  now emits `code-intelligence.json` and `symbols.json` from one libclang parse;
+  graph-only application orchestration and the inventory compatibility adapter
+  remain pending.
+- Workspace state (2026-10-28): an initial read-only developer graph workspace
+  now renders retained file/module/inter-module projections with combined
+  available overlays. Cross-module insight remains evidence-limited until more
+  than one module has a graph-bearing run and stable identities match.
+- Readability increment (2026-10-28): file scope now defaults to a function
+  skeleton with nested owned declarations, focus/dimming, optional detail-node
+  expansion, and inspectable aggregate-edge evidence. Next analysis increment
+  was conservative AST value flow. The 2026-10-29 optional LLVM command now
+  supplies lowered CFG, SSA operand and bounded local-memory evidence. Remaining
+  gates are UI integration, target configuration, call bindings, control
+  dependence and alias/interprocedural memory analysis.
+- Interaction increment (2026-10-28): parallel relation lanes, boundary-clipped
+  arrows, hover labels, repeated-occurrence aggregation, crossing-reduction
+  heuristics, and cross-file symbol inspection are implemented. Toolchain code-
+  size/map ingestion and ABI-aware stack composition remain future evidence
+  adapters, not AST guesses.
+- Progressive-disclosure increment (2026-10-28): the existing overviews remain,
+  and a run-wide expandable/collapsible trace playground can now follow one
+  structural branch at a time. Visual symbol duplication is presentation-only;
+  ordered runtime/value traces remain gated on CFG and value-flow evidence.
+- Flow-navigation increment (2026-10-29): the trace playground now derives
+  input/output directions while preserving canonical read/write evidence,
+  prevents branch-local call bounce loops, exposes observed call beginnings/
+  endings and before/after counts, and uses centered bidirectional branch
+  layout. Next extraction remains call-argument/parameter binding, initializer/
+  assignment and return lineage. Project LUT/calibration tables may follow as a
+  versioned evidence adapter when a concrete source contract is supplied.
+- Coverage authority: the [graph capability matrix](../contracts/graph-capabilities.md)
+  records all 21 discussed graph types and distinguishes currently extractable
+  facts from engine, project-model, and external-evidence dependencies.
 - Goal: provide durable analysis artifacts required by the next rule families.
 - In scope: token/comment inventory; canonical symbol identities with
   declaration, definition, and reference occurrences; include/dependency,

@@ -17,6 +17,31 @@ definitions in [`evidence-index.md`](evidence-index.md).
 Use `git show <hash>` to inspect an entire event. Statistics include generated
 and third-party artifacts and must not be interpreted as effort or quality.
 
+## 2026-10-28 — Validate retained source and expose graph workspace projections
+
+- Ran schema 1.1 extraction against the retained shunt source and compilation
+  database while preserving its existing compatibility inventory.
+- Added read-only file, module, and inter-module API projections with selectable
+  call/include/access overlays and explicit CFG/data-flow evidence gates.
+- Recorded the graph workspace placement decision and a use-case/insight map.
+- Added the developer Code graphs tab with retained-run selection, three scopes,
+  combinable overlays, canvas pan/zoom, node inspection, accessible relationship
+  fallback, and high-level-to-internal double-click drill-down.
+
+## 2026-10-27 — First derived code-graph views
+
+- Added deterministic reachability and recursive-SCC-aware call-depth views.
+- Added file-as-module dependency aggregation backed by call/include evidence.
+- Added changed-node reverse impact traversal over calls, includes, and
+  containment, keeping it explicitly separate from test selection or proof of
+  runtime impact.
+- Extended the shared AST facts with scoped variables, conservative access,
+  type-size estimates, versioned complexity, and exact body-token fingerprints;
+  added their four initial projections and verified a real libclang fixture.
+- Moved libclang setup, compile-argument sanitization, and translation-unit
+  parsing into `code_intelligence`; the review stage now emits the legacy symbol
+  inventory and canonical graph snapshot from the same parsed cursor.
+
 ## 2026-05-14 — Establish repository and AST foundations
 
 ### `bddb1a0` — Initial repository reviewer
@@ -1068,3 +1093,198 @@ and third-party artifacts and must not be interpreted as effort or quality.
   `b800dfc`. Its one-outcome branch guidance applies forward without rewriting
   retained history. Live fetch authentication was unavailable, so currency
   beyond the tracked revision remains unknown.
+
+## 2026-10-27 — Reconcile saved design conversations and start graph foundations
+
+### Time not captured — Establish authenticated conversation provenance
+
+- Opened the project-owner-supplied private ChatGPT project and enumerated ten
+  saved conversations. Selectively inspected the original pipeline design,
+  high-level code-intelligence design, stabilization estimate, and latest graph
+  design threads.
+- Reconciled the evolution from regex/AST inventory through modular review,
+  isolated ingestion, optional build, removed local MCP, policy-guided agent
+  use, remediation, and the current unified knowledge-graph direction.
+- Added PRJ-002 and the repository-local `reviewer-conversation-context` skill.
+  The helper normalizes a user-authorized local export/capture and computes
+  content SHA-256 values; it does not scrape or authenticate to ChatGPT.
+- Current capture is explicitly partial because the project page exposed no
+  export or WebMCP tool. No full transcript, secret, or personal content was
+  copied into the repository, and null content hashes are not presented as
+  change evidence.
+- Next state: validate and commit the provenance increment, then extend the AST
+  as a separate compatibility-safe code-intelligence package before building
+  graph projections.
+
+### Time not captured — Add the compatibility-safe AST graph fact boundary
+
+- Added an independent `code_intelligence` contract and extractor rather than
+  changing the established `symbols.json` shape consumed by naming and report
+  inventory.
+- D026 accepts one canonical node/edge graph with USR-first identities,
+  deterministic fallbacks, repository-relative locations, and explicit
+  compiler-derived, external, and unresolved relation states.
+- The initial extractor covers file, function, struct, enum, typedef, global,
+  and macro nodes plus contains, declares, defines, includes, and calls edges.
+  It keeps named unresolved targets as labeled nodes so no edge dangles.
+- Three focused pure-Python scenarios passed by direct invocation. The supported
+  environment lacks both pytest and Black; those command attempts were recorded
+  as environment limitations rather than passes.
+- Next state: merge translation-unit fragments into one deterministic snapshot,
+  persist it atomically, and implement call/include views over that authority.
+
+### Time not captured — Implement the first unified graph and projections
+
+- Added stable-identity fragment merge with deterministic ordering and explicit
+  failure on incompatible node/edge facts or dangling endpoints. Definition
+  metadata wins over declaration-only metadata for a shared symbol identity.
+- Added canonical snapshot serialization with required source revision, dirty
+  state, producer, and producer-version provenance. Writes flush a sibling
+  temporary file and atomically replace the target; failures remove the partial
+  temporary file.
+- Added call and include projections that select nodes and edges from the
+  canonical graph and expose unresolved-edge totals without writing separate
+  graph authorities.
+- Five focused graph scenarios and the three AST scenarios pass by direct
+  invocation; Python syntax and the configured 88-column boundary also pass.
+- Next state: connect a compilation database and real libclang translation units
+  to the package, capture configuration/tool provenance, then write one graph
+  snapshot under the run analysis directory.
+
+### Time not captured — Inventory all discussed graphs and choose shared analysis ownership
+
+- Re-enumerated the authenticated project conversation list; the same ten
+  conversation IDs remain, so no new thread required import.
+- Consolidated aliases into 21 distinct graph capabilities and recorded the
+  exact source, engine, project-model, or external evidence each requires.
+- Confirmed that reachability, call depth, file-module dependency, and initial
+  dependency impact are derivable from the current canonical graph. Variable
+  access, exact-clone candidates, complexity, and memory estimates require a
+  bounded AST expansion. CFG/data flow, requirements, tests, timing, exact
+  stack, and failure propagation cannot be made complete from symbol fields.
+- D027 assigns compilation-database parsing and normalized AST facts to the
+  shared `code_intelligence` package. Review and graph workflows will consume
+  one analysis result; the existing duplicate review parse remains a truthful
+  migration limitation until compatibility is verified.
+- Next state: commit the capability contract, then implement current-fact views
+  before expanding AST facts and moving compilation-database parsing.
+
+### 2026-10-28 — Refocus graphs on the program skeleton
+
+- User visual review found that equal-rank parameter, local, macro, global, and
+  function nodes plus ownership arrows obscured call and access flow.
+- D029 makes functions the default file-level skeleton. Owned parameters and
+  locals move into the inspector, detail-node expansion is explicit, selection
+  centers and dims to one hop, and aggregate file edges expose the concrete
+  interactions beneath their counts.
+- The layout now uses deterministic dependency ranks and curved lanes to reduce
+  avoidable crossings; it is a heuristic, not a minimum-crossing guarantee.
+- Current facts can explain ownership, direct calls, and conservative reads and
+  writes. Argument origin, transformations, return lineage, branch dependence,
+  and aliases remain evidence-gated for the next AST/CFG increments.
+- Focused graph tests, JavaScript syntax, and live HTTP projections passed.
+  Browser automation remained disabled by Work settings; the user's open local
+  preview is the visual acceptance surface.
+
+### 2026-10-28 — Separate relations and verify graph/source alignment
+
+- Routed relationship kinds between one node pair into deterministic parallel
+  lanes, clipped arrowheads at node boundaries, added type-specific line styles,
+  hover descriptions, and a bounded crossing-reduction heuristic.
+- Aggregated identical source-kind-target occurrences for display while keeping
+  their count and source locations. The apparently repeated moderate-fault
+  reads are four real source occurrences at lines 951, 958, 1242, and 1248.
+- File symbols now retain cross-file declaration/definition sites and direct
+  incoming/outgoing call, read, write, and reference occurrences.
+- Added a source-alignment verifier. The retained shunt artifact has no dangling
+  endpoints, exact duplicate occurrences, missing source locations, or hard
+  target mismatches across 288 node and 714 semantic-edge locations. Four call
+  targets
+  differ textually because `SHUNT_GET_*` macros resolve to compiler-known
+  functions; they remain explicit informational notes.
+- D030 records why these interactions are unordered and why code size, exact
+  frames, and maximum call-chain stack await toolchain and CFG evidence.
+
+### 2026-10-28 — Add progressive expandable traces
+
+- Kept file/module/inter-module overviews and added a separate run-wide trace
+  playground starting from any file or semantic symbol.
+- Each double-click expands or collapses one branch using incoming, outgoing,
+  or combined structural neighbors. Depth and per-expansion breadth are bounded.
+- The same canonical global/function may appear as multiple branch-local visual
+  instances to avoid long fan-out lines; every instance retains canonical
+  identity and the graph artifact remains singular.
+- D031 records the distinction between this structural trace and a future
+  runtime-ordered CFG/value-flow trace.
+
+### 2026-10-29 — Make progressive traces flow-oriented and cycle-safe
+
+- Applied the repository's recorded project-lifecycle governance baseline
+  `b800dfc` and local reviewer-conversation refresh policy. The increment keeps
+  one canonical graph, updates contract/decision/architecture/testing owners,
+  and introduces no project-convention drift requiring a compatibility map.
+- Added human-facing input/output/parameter flow over canonical read, write,
+  and ownership evidence without changing the persisted graph.
+- Added no-caller/no-callee root filters plus unique transitive function counts
+  before and after each function. These remain structural configuration facts,
+  not runtime stack positions.
+- Prevented a branch from revisiting its own canonical symbols or relations,
+  while retaining presentation-only duplication across independent branches.
+- Replaced downward depth columns with left-incoming/right-outgoing placement
+  and vertical parent centering. Parameters render as compact expandable ports;
+  edges choose among deterministic curves by sampled node obstruction.
+- Focused graph-service tests, workspace-shell assertions, a Node cycle/centering
+  harness, Python compilation, and JavaScript syntax checks passed. Browser
+  visual acceptance remains manual.
+- D032 records the evidence boundary for argument bindings, return lineage,
+  transformations, LUT evidence, and crossing-free layout claims.
+- A live retained-Shunt smoke returned the 309-node index, 9 observed call
+  beginnings and 17 endings. `Shunt_read_inputs` exposes 5 structural inputs,
+  6 outputs, and the expected one-way call to `App_get_battstate`. Canonical
+  source alignment remains consistent with zero hard or exact-duplicate issues.
+
+### 2026-10-29 — CFG/DFD evidence implementation session
+
+- Start: clean `codex/code-intelligence-graphs` at `75cddc6`; isolated work on
+  `codex/cfg-dfd-evidence`. Preserve both that branch and local `master` history.
+- Goal: compiler-backed CFG and machine-readable data-flow evidence on a retained
+  run repository, source/JSON alignment, compatibility tests, then local integration.
+- Owners triggered: code-intelligence module, graph contract/capability matrix,
+  architecture, decision index, testing/replay, README and this history.
+- Skills: local conversation-context and approved lifecycle baseline `b800dfc`.
+  Shared-skill fetch could not authenticate; local approved baseline unchanged.
+  Private-chat refresh was denied by automatic approval review; saved partial
+  provenance is used without claiming a fresh capture. No LLM extraction planned.
+- Evaluate Clang analyzer CFG dump versus LLVM IR plus LLVM C API. Acceptance:
+  real branch/loop edges, operand def-use, documented memory-flow boundary,
+  deterministic output, source locations and hashes, no old artifact mutation.
+
+- Implemented native LLVM CFG/SSA extraction and fixed-point local-memory flow,
+  opt-in CLI, canonical schema 1.2 extension and exact JSON projections.
+- Corrected CRLF-only replay differences and LLVM 22 switch-case API mapping;
+  retained failed experiment separately. Source inspection matched Shunt lookup,
+  binary-search and arithmetic behavior. Existing files were never overwritten.
+- Verification: 58 maintained tests passed, including 7 compiler flow tests.
+  Unscoped pytest found a stale manual import; registered BUG-008 with scoped
+  test command as workaround, not a fix. No firmware/model calls were required.
+- Updated contracts, D033/index, architecture/module, roadmap, README, testing,
+  known issues and documentation index. Shared baseline compatibility unchanged.
+- Next increment: retain a compact machine-readable source/IR/projection audit,
+  rerun the finalized producer on Shunt, then integrate locally into master.
+
+### 2026-10-29 — Retain compiler flow audit and integrate
+
+- First implementation increment committed as `e0fa580` on
+  `codex/cfg-dfd-evidence`. Commit was initially delayed when automatic approval
+  review exhausted workspace credits; resumed after the user's continuation.
+- Added a replay auditor and projection-tampering regression. Regenerated the
+  finalized producer on two retained Shunt translation units (21 function CFGs).
+  All 266 blocks, 1,282 instructions and 348 CFG edges align with retained IR;
+  model source branch/loop/arithmetic checks and lookup reaching stores agree.
+- Retained compact evidence in `docs/examples/flow-verification.json`; large
+  generated artifacts stay under ignored `workspace/runs/cfg-dfd-experiment/`.
+  Existing symbols/graph hashes remained unchanged across the second run.
+- Verification: 59 tests and JavaScript trace assertions pass. Native/firmware
+  target builds and graph rendering were intentionally outside this evidence gate.
+- Remote `master` fetched successfully before local integration. Preserve both
+  feature branches; integration uses fast-forward only so no history is lost.

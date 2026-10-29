@@ -2,7 +2,7 @@
 
 - Status: living
 - Created: 2026-10-06
-- Last reviewed: 2026-10-13 for the deferred ZIP-ingestion defect boundary
+- Last reviewed: 2026-10-27 for the shared code-analysis boundary
 - Update trigger: module boundary, interface, data contract, dependency, or
   execution-flow change
 - Source of truth for: current system shape and module responsibilities
@@ -44,7 +44,9 @@ PipelineContext -> structure -> analysis -> naming -> reporting
   |                |            |           |
   |                |            |           `-- report.json (RunResult v2.0)
   |                |            `-- checks read analysis/symbols.json
-  |                `-- cmake_build/compile_commands.json -> symbols.json
+  |                `-- cmake_build/compile_commands.json
+  |                    -> one libclang parse per translation unit
+  |                    -> symbols.json + code-intelligence.json
   `-- stage_results accumulate typed results
   |
   +--> web UI renders stages/checks/cases
@@ -63,10 +65,11 @@ improvements in the history.
 
 ```text
 app/
-  api/                 FastAPI route adapters
-  services/            upload, policy, and agent-response application services
+  api/                 FastAPI route adapters, including read-only graph views
+  services/            upload, policy, graph, and agent-response services
   static/              single-page HTML/CSS/JavaScript client
 src/
+  code_intelligence/     additive compiler-derived graph contracts and extraction
   orchestrator/        run workspace, source ingestion, review/build sequencing
   repo_build/          firmware build execution and result DTO
   repo_review/
@@ -83,6 +86,24 @@ skills/                ignored local lifecycle skill used to maintain records
 workspace/runs/        ignored generated run inputs and evidence
 ```
 
+`code_intelligence` is now an active analysis dependency. It owns libclang
+configuration, compile-argument sanitization, and translation-unit parsing;
+the review analysis stage passes each parsed cursor to both the compatibility
+inventory walker and graph extractor, then merges deterministic graph fragments
+into an invariant-checked canonical graph, atomically writes provenance-bearing
+snapshots, and derives call/include, explicit-root reachability/call-depth,
+file-module dependency, changed-node impact, variable-access, exact-clone,
+complexity, and type-size memory-estimate projections. D026 selects it as
+the eventual shared owner because review, build, and agent workflows may all consume
+repository intelligence. The resulting `code-intelligence.json` snapshot is
+persisted beside `symbols.json`; independent graph-only orchestration is not yet
+wired into the application.
+
+D027 fixes the boundary: `code_intelligence` parses every translation unit once.
+Review inventory and graph extraction currently project the same cursor. The
+legacy inventory cursor walker remains only to preserve `symbols.json`; removing
+it requires a verified graph-to-inventory compatibility adapter.
+
 ## Public interfaces
 
 ### HTTP API
@@ -92,6 +113,9 @@ workspace/runs/        ignored generated run inputs and evidence
 | `POST /api/review` | Multipart `.zip` | `{run_id, report}` where report is serialized `RunResult` | `app/api/review.py` |
 | `POST /api/agent/review` | Multipart `.zip` | Compact failed/skipped summary | `app/api/review.py`, service formatter |
 | `GET /api/agent/review/{run_id}` | Run ID path value | Detailed agent-oriented failure text | `app/api/review.py`, service formatter |
+| `GET /api/graphs/catalog` | None | Latest graph-bearing run per module | `app/api/graphs.py`, `app/services/graph_service.py` |
+| `GET /api/runs/{run_id}/graphs` | Run, file/module scope, optional file and overlays | Read-only graph workspace projection | `app/api/graphs.py`, `app/services/graph_service.py` |
+| `GET /api/graphs/inter-module` | Optional module names and overlays | Latest-per-module interactions and signal directions | `app/api/graphs.py`, `app/services/graph_service.py` |
 | `POST /api/runs/{run_id}/build` | Run ID path value | Final `BuildResult`, or queued job with `background=true` | `app/api/build.py` |
 | `GET /api/runs/{run_id}/build/status` | Run ID path value | Persisted build job state and recent raw output | `app/api/build.py` |
 | `POST /api/runs/{run_id}/remediations` | Scope plus failed check/case IDs | `{run_id, remediation}` | `app/api/remediation.py` |
@@ -118,6 +142,7 @@ other accumulated state.
 | `<module>/` | orchestrator ingestion | analysis, structure checks, build | Ignored generated copy |
 | `analysis/cmake_build/compile_commands.json` | CMake source index | libclang compilation database | Ignored generated evidence |
 | `analysis/symbols.json` | symbol inventory | naming checks, manual inspection | Ignored generated evidence |
+| `analysis/code-intelligence.json` | canonical schema 1.1 graph plus provenance | graph views and future review/build/agent consumers | Ignored generated evidence |
 | `report.json` | reporting stage | UI response, agent GET, build repo resolution | Ignored generated evidence |
 | `remediation.json` | remediation service | Report drawer, later decision workflow | Ignored generated evidence |
 | `remediation-calls.jsonl` | remediation service | Call diagnosis, retry audit, and turn replay | Ignored append-only generated evidence |
@@ -316,6 +341,37 @@ The API returns templates; the pipeline owns execution-time loading.
   is available from both evidence-bearing views. Run/profile metadata is titled
   and collapsed by default because it is supporting context; its summary retains
   the selected profile and module.
+- The Code graphs tab is the interactive engineering view over canonical run
+  artifacts. It combines available overlays across file, module, and
+  inter-module scopes, keeps a textual relationship fallback, and drills from
+  high-level nodes to lower scopes. Disabled CFG/data-flow controls remain
+  unavailable in this UI; the separate opt-in LLVM flow CLI now provides
+  machine-readable evidence.
+- File graphs are function-centric: parameters and locals remain owned details
+  in the inspector unless explicitly expanded. Selection centers one node and
+  dims unrelated facts; aggregate module edges expose bounded underlying symbol
+  interactions. The dependency-ranked layout reduces crossings heuristically,
+  without claiming a minimum-crossing solution.
+- Edges are clipped to node boundaries. Different relationship kinds receive
+  stable parallel lanes, while repeated occurrences of the same relationship
+  aggregate with retained locations. File-projection symbols carry bounded
+  cross-file declaration/definition and incoming/outgoing interaction evidence
+  for side-panel inspection; these facts remain unordered.
+- The graph workspace has two presentations over one canonical artifact:
+  overview projections and an expandable trace playground. Trace expansion uses
+  run-wide node-index and neighborhood projections; branch-local instance IDs
+  may duplicate a canonical symbol visually but always retain `canonical_id`.
+- The trace adapter derives interface-oriented flow without rewriting canonical
+  evidence: reads and parameters point into functions, writes point out, and
+  calls remain caller-to-callee. Branch ancestry prevents repeated backtracking
+  over the same symbol/relation while still permitting duplication on separate
+  branches. Observed call beginnings/endings and transitive before/after counts
+  support root selection but are not runtime-stack evidence.
+- Trace layout places incoming roles left and outgoing roles right, vertically
+  centers a parent over its visible children, renders parameters as compact
+  ports, and chooses curved edge bends with the fewest sampled node-box
+  collisions. It remains a deterministic readability heuristic rather than a
+  crossing-free layout guarantee.
 - Landing and setup use dynamic viewport sizing on normal desktop layouts. The
   setup configuration and activity panels share one height, while the activity
   log flexes inside its panel. Narrow or short displays retain page scrolling as
@@ -666,3 +722,12 @@ Only FastAPI, Pydantic, PyYAML, and Clang are directly imported by current
 application source. The dependency file includes the former MCP stack and its
 transitive packages, so it behaves more like an environment freeze than a
 minimal direct-dependency declaration.
+
+## Optional compiler flow evidence
+
+`code_intelligence.flow` consumes one compilation-database source and writes a
+fresh canonical AST+LLVM graph with CFG/DFD projections. Native LLVM 22 provides
+block successors and operands; a fixed-point pass adds bounded local-memory
+flow. This explicit optional compiler pass leaves normal review inventory and
+existing graph UI behavior unchanged. See [flow contract](../contracts/flow-evidence.md)
+and [D033](../decisions/D033-llvm-flow-evidence.md) for configuration and limits.

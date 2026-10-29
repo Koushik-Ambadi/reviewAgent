@@ -8,6 +8,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="/graph.css" rel="stylesheet">
 
 <style>
 
@@ -1289,6 +1290,10 @@ html,body{background:var(--bg)}
                     <button class="btn" onclick="showManager()">
                         Open manager workspace
                     </button>
+
+                    <button class="btn" onclick="showGraphs()">
+                        Explore code graphs
+                    </button>
                 </div>
 
                 <div class="executive-strip">
@@ -1446,6 +1451,7 @@ html,body{background:var(--bg)}
             <div class="workspace-tabs" role="tablist" aria-label="Run views">
                 <button class="workspace-tab active" data-workspace-tab="report" role="tab" type="button" onclick="showReport()">Review report <span class="tab-badge" data-remediation-count>0 plans</span></button>
                 <button class="workspace-tab" data-workspace-tab="build" role="tab" type="button" onclick="showBuild()">Build &amp; artifacts <span class="tab-badge not-run" data-build-badge>not run</span></button>
+                <button class="workspace-tab" data-workspace-tab="graphs" role="tab" type="button" onclick="showGraphs()">Code graphs <span class="tab-badge passed">live</span></button>
                 <button class="workspace-tab" data-workspace-tab="roadmap" role="tab" type="button" onclick="showRoadmap()">Roadmap <span class="tab-badge planned">planned</span></button>
             </div>
         </nav>
@@ -1512,6 +1518,7 @@ html,body{background:var(--bg)}
                 <div class="workspace-tabs" role="tablist" aria-label="Run views">
                     <button class="workspace-tab" data-workspace-tab="report" role="tab" type="button" onclick="showReport()">Review report <span class="tab-badge" data-remediation-count>0 plans</span></button>
                     <button class="workspace-tab active" data-workspace-tab="build" role="tab" type="button" onclick="showBuild()">Build &amp; artifacts <span class="tab-badge not-run" data-build-badge>not run</span></button>
+                    <button class="workspace-tab" data-workspace-tab="graphs" role="tab" type="button" onclick="showGraphs()">Code graphs <span class="tab-badge passed">live</span></button>
                     <button class="workspace-tab" data-workspace-tab="roadmap" role="tab" type="button" onclick="showRoadmap()">Roadmap <span class="tab-badge planned">planned</span></button>
                 </div>
             </nav>
@@ -1539,6 +1546,7 @@ html,body{background:var(--bg)}
                 <div class="workspace-tabs" role="tablist" aria-label="Run views">
                     <button class="workspace-tab" data-workspace-tab="report" role="tab" type="button" onclick="showReport()">Review report <span class="tab-badge" data-remediation-count>0 plans</span></button>
                     <button class="workspace-tab" data-workspace-tab="build" role="tab" type="button" onclick="showBuild()">Build &amp; artifacts <span class="tab-badge not-run" data-build-badge>not run</span></button>
+                    <button class="workspace-tab" data-workspace-tab="graphs" role="tab" type="button" onclick="showGraphs()">Code graphs <span class="tab-badge passed">live</span></button>
                     <button class="workspace-tab active" data-workspace-tab="roadmap" role="tab" type="button" onclick="showRoadmap()">Roadmap <span class="tab-badge planned">planned</span></button>
                 </div>
             </nav>
@@ -1587,6 +1595,112 @@ html,body{background:var(--bg)}
                 <p>Start with the shunt module: generate a deterministic graph, review one real change, trace its callers and affected modules, connect the available tests and findings, and compare the result with an engineer’s hand-checked impact analysis. Expand to all ten modules only after identity, coverage and provenance hold up.</p>
                 <span class="roadmap-source">Related engineering gates: G02, G08, G09, G11, G12 and proposed G13–G15. These roadmap items describe future work; they are not active controls or delivered compliance evidence.</span>
             </aside>
+        </div>
+    </section>
+
+    <!-- ================================================= -->
+    <!-- CODE GRAPH WORKSPACE -->
+    <!-- ================================================= -->
+
+    <section id="graphsPage" class="page">
+        <div class="graph-layout">
+            <nav class="workspace-nav" aria-label="Developer workspace">
+                <div class="workspace-tabs" role="tablist" aria-label="Run views">
+                    <button class="workspace-tab" data-workspace-tab="report" role="tab" type="button" onclick="showReport()">Review report <span class="tab-badge" data-remediation-count>0 plans</span></button>
+                    <button class="workspace-tab" data-workspace-tab="build" role="tab" type="button" onclick="showBuild()">Build &amp; artifacts <span class="tab-badge not-run" data-build-badge>not run</span></button>
+                    <button class="workspace-tab active" data-workspace-tab="graphs" role="tab" type="button" onclick="showGraphs()">Code graphs <span class="tab-badge passed">live</span></button>
+                    <button class="workspace-tab" data-workspace-tab="roadmap" role="tab" type="button" onclick="showRoadmap()">Roadmap <span class="tab-badge planned">planned</span></button>
+                </div>
+            </nav>
+
+            <header class="graph-header">
+                <div>
+                    <span class="eyebrow">Compiler-derived · read-only</span>
+                    <h2>Code graph workspace</h2>
+                    <p>Move from files to module interactions, combine available overlays, and inspect the evidence behind each relationship.</p>
+                </div>
+                <div id="graphSummary" class="graph-summary" aria-live="polite"></div>
+            </header>
+
+            <div class="graph-workspace">
+                <aside class="graph-controls" aria-label="Graph controls">
+                    <label class="graph-field"><span>Graph run</span><select id="graphRun"></select></label>
+                    <label class="graph-field"><span>Presentation</span><select id="graphViewMode">
+                        <option value="overview" selected>Overview graphs</option>
+                        <option value="trace">Expandable trace playground</option>
+                    </select></label>
+                    <label class="graph-field"><span>Scope</span><select id="graphScope">
+                        <option value="file">File internals</option>
+                        <option value="module" selected>Module internals</option>
+                        <option value="inter_module">Inter-module</option>
+                    </select></label>
+                    <fieldset id="graphTraceField" class="graph-field" hidden>
+                        <legend>Trace root</legend>
+                        <select id="graphTraceRootMode">
+                            <option value="any">Any symbol</option>
+                            <option value="entry">Call beginnings (no callers)</option>
+                            <option value="exit">Call endings (no callees)</option>
+                        </select>
+                        <select id="graphTraceRoot"></select>
+                        <select id="graphTraceDirection">
+                            <option value="both">Incoming + outgoing</option>
+                            <option value="outgoing">Outgoing</option>
+                            <option value="incoming">Incoming</option>
+                        </select>
+                        <button id="graphTraceStart" class="btn secondary" type="button">Start trace</button>
+                        <small>Double-click a node to expand or collapse it. Inputs and callers appear left; outputs and callees appear right.</small>
+                    </fieldset>
+                    <label id="graphFileField" class="graph-field" hidden><span>File</span><select id="graphFile"></select></label>
+                    <fieldset id="graphModuleField" class="graph-field graph-module-field" hidden>
+                        <legend>Modules</legend><div id="graphModules" class="graph-module-options"></div>
+                    </fieldset>
+                    <fieldset class="graph-layer-field">
+                        <legend>Relationships</legend>
+                        <div id="graphLayers" class="graph-layer-options"></div>
+                    </fieldset>
+                    <fieldset class="graph-layer-field">
+                        <legend>Expand owned details</legend>
+                        <div id="graphNodeDetails" class="graph-layer-options">
+                            <label class="graph-layer"><input type="checkbox" value="global_variable"><span><strong>Globals</strong><small>Show shared storage as nodes.</small></span></label>
+                            <label class="graph-layer"><input type="checkbox" value="parameter"><span><strong>Parameters</strong><small>Normally nested in their function.</small></span></label>
+                            <label class="graph-layer"><input type="checkbox" value="local_variable"><span><strong>Locals</strong><small>Normally nested in their function.</small></span></label>
+                            <label class="graph-layer"><input type="checkbox" value="macro"><span><strong>Macros</strong><small>Show referenced definitions as nodes.</small></span></label>
+                        </div>
+                    </fieldset>
+                    <div class="graph-gate-note"><strong>Evidence gates</strong><p>Control flow and definition-use data flow stay disabled until validated engines are connected.</p></div>
+                </aside>
+
+                <main class="graph-stage">
+                    <div class="graph-toolbar">
+                        <div id="graphLegend" class="graph-legend"></div>
+                        <div class="graph-toolbar-actions"><span id="graphScopeHelp" class="graph-scope-help"></span><button id="graphReset" class="btn secondary" type="button">Reset view</button></div>
+                    </div>
+                    <div id="graphCanvasWrap" class="graph-canvas-wrap">
+                        <canvas id="graphCanvas" aria-label="Interactive code graph"></canvas>
+                        <div id="graphEdgeTooltip" class="graph-edge-tooltip" role="tooltip" hidden></div>
+                        <div id="graphLoading" class="graph-loading">Choose a graph to begin.</div>
+                    </div>
+                    <div id="graphLimitations" class="graph-limitations"></div>
+                    <details class="graph-use-cases">
+                        <summary>Problems this workspace can help investigate</summary>
+                        <div class="graph-use-case-grid">
+                            <span>File and module coupling</span><span>Signal producers and consumers</span>
+                            <span>Direct call paths and recursion</span><span>Change-impact candidates</span>
+                            <span>Complexity and exact-clone hotspots</span><span>Dependency direction</span>
+                        </div>
+                    </details>
+                    <details class="graph-text-fallback">
+                        <summary>Accessible relationship list</summary>
+                        <div id="graphRelationships"></div>
+                    </details>
+                </main>
+
+                <aside id="graphInspector" class="graph-inspector" aria-live="polite">
+                    <span class="eyebrow">Selection</span>
+                    <h3>No node selected</h3>
+                    <p>Select a node to isolate and center its direct neighborhood. Owned parameters and locals appear here without cluttering the canvas.</p>
+                </aside>
+            </div>
         </div>
     </section>
 
@@ -1640,6 +1754,7 @@ html,body{background:var(--bg)}
 </aside>
 
 <script src="/app.js" defer></script>
+<script src="/graph.js" defer></script>
 <script src="/manager.js" defer></script>
 
 </body>

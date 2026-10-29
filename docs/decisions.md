@@ -36,6 +36,14 @@
 | D023 | Proposed remediation hardening and evidence ownership | Proposed | [Legacy record](engineering/decisions-and-lessons.md) |
 | D024 | Adopt published shared-skill conformance | Accepted | [Record](decisions/D024-shared-skill-conformance.md) |
 | D025 | Retain duplicate historical commits through archive tags | Accepted | [Record](decisions/D025-retain-duplicate-history.md) |
+| D026 | Adopt a unified code-intelligence graph without changing symbol inventory | Accepted; AST extraction and graph foundation implemented | [Record](decisions/D026-unified-code-intelligence-graph.md) |
+| D027 | Parse source once in a shared code-analysis stage | Accepted; migration in progress | [Record](decisions/D027-shared-code-analysis-stage.md) |
+| D028 | Put layered code graphs in the developer workspace | Accepted | [Record](decisions/D028-layered-graph-workspace.md) |
+| D029 | Make the graph workspace a function-centric program skeleton | Accepted; value-flow extension proposed | [Record](decisions/D029-function-centric-program-skeleton.md) |
+| D030 | Separate structural interaction from runtime-ordered flow | Accepted | [Record](decisions/D030-separate-structural-flow-from-runtime-order.md) |
+| D031 | Add an expandable trace playground beside overview graphs | Accepted | [Record](decisions/D031-add-expandable-trace-playground.md) |
+| D032 | Use flow-oriented, cycle-safe trace exploration | Accepted | [Record](decisions/D032-use-flow-oriented-cycle-safe-traces.md) |
+| D033 | Add opt-in compiler flow evidence | Accepted, bounded implementation | [Record](decisions/D033-llvm-flow-evidence.md) |
 
 New substantial decisions use `docs/decisions/DNNN-short-title.md` and are linked
 from this table. Small decisions may be recorded directly here when a separate

@@ -8,7 +8,8 @@
   `analysis/symbol_inventory/extractor.py`, `analysis/runner.py`
 - Upstream: isolated repository root, YAML compilation/AST policy, CMake,
   compilation database, and libclang.
-- Downstream: `analysis/symbols.json`, typed inventory evidence, and naming checks.
+- Downstream: `analysis/symbols.json`, `analysis/code-intelligence.json`, typed
+  inventory evidence, graph views, and naming checks.
 - Decisions and limits: [D001](../engineering/decisions-and-lessons.md#d001--use-the-real-compilation-database-for-c-analysis), [D002](../engineering/decisions-and-lessons.md#d002--use-ast-plus-targeted-source-text-recovery), and [P001](../engineering/decisions-and-lessons.md#p001--compilerpreprocessor-visibility-changes-what-can-be-reviewed)
 
 ## Responsibility and flow
