@@ -38,15 +38,35 @@ GATES = [
 
 
 class Workspace:
-    def __init__(self, modules=None, root=WORKSPACE_ROOT):
+    def __init__(self, modules=None, runs=None, root=WORKSPACE_ROOT):
         self.root = Path(root).resolve()
         records = _latest_graphs_by_module(self.root)
+        self.run_choices = defaultdict(list)
+        for report_path in sorted(self.root.glob("*/report.json")):
+            graph_path = report_path.parent / "analysis/code-intelligence.json"
+            if not graph_path.is_file(): continue
+            report = read(report_path)
+            metadata = report.get("metadata") or {}
+            module = str(metadata.get("module_name") or report_path.parent.name)
+            self.run_choices[module].append({"run_id": report_path.parent.name,
+                "generated_at": metadata.get("generated_at"), "latest": records.get(module, {}).get("run_id") == report_path.parent.name})
+        for choices in self.run_choices.values():
+            choices.sort(key=lambda r: (r["generated_at"] or "", r["run_id"]), reverse=True)
+        runs = runs or {}
+        if len(runs) > 20 or any(m not in self.run_choices or r not in {c["run_id"] for c in self.run_choices[m]}
+                                  for m, r in runs.items()):
+            raise ValueError("Run selection must name an available graph-bearing run for its module")
+        for module, run_id in runs.items():
+            if records[module]["run_id"] == run_id: continue
+            records[module] = {"run_id": run_id,
+                "graph": read(self.root / run_id / "analysis/code-intelligence.json")}
         if modules is not None and (len(modules) > 20 or any(m not in records for m in modules)):
             raise ValueError("Select at most 20 available modules")
         self.records = {m: r for m, r in records.items() if modules is None or m in modules}
         self.roots, self.bundles, self.evidence, self.warnings = {}, {}, [], []
         nodes, edges = {}, {}
-        manifests = sorted(self.root.glob("*/*/manifest.json"))
+        manifests = sorted({*self.root.glob("*/*/manifest.json"),
+                            *self.root.glob("*/analysis/flow/*/manifest.json")})
         hash_cache = {}
         def cached_sha(path):
             path = Path(path).resolve()
@@ -130,6 +150,7 @@ class Workspace:
 
     def catalog(self):
         return {"modules": [{"module_name": m, "run_id": r["run_id"]} for m,r in self.records.items()],
+                "run_choices": dict(self.run_choices),
                 "modes": [{"id": k, "label": v} for k,v in MODES.items()],
                 "symbols": [n for n in self.graph["nodes"] if n["kind"] not in {"instruction", "basic_block", "ir_value"}],
                 "evidence": self.evidence, "warnings": self.warnings, "gates": GATES}

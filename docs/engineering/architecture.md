@@ -746,13 +746,16 @@ and [D033](../decisions/D033-llvm-flow-evidence.md) for configuration and limits
 ## Guided graph workspace
 
 The Code graphs page loads `intelligence.js` and its scoped stylesheet. Its
-module picker, multi-selection and bounded queries use `/api/intelligence/`;
+module/run picker, multi-selection and bounded queries use `/api/intelligence/`;
 the existing graph workspace remains available through the existing-tools
 toggle. The service composes namespaced snapshots and attaches only source-
 and configuration-matched flow bundles. Source inspection exposes compiler
 regions, block operations and explicit evidence limits. Association paths and
 possible influence use different direction rules; neither claims runtime order.
 See [exploration contract](../contracts/intelligence-exploration.md) and D034.
+Run IDs are selected only from graph-bearing report directories; node IDs retain
+their run namespace, and compiler bundles attach only to the selected run's
+source hashes. The default remains the latest run per module.
 
 The Analysis stage invokes the bounded run-flow adapter after building its
 canonical AST snapshot. Its compiler bundles and summary belong to the run's

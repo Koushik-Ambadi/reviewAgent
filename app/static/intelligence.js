@@ -1,5 +1,5 @@
 /* Guided, read-only exploration. All source-derived text is escaped. */
-const intelligence = {catalog: null, selected: new Set(), modules: new Set(), result: null,
+const intelligence = {catalog: null, selected: new Set(), modules: new Set(), runs: {}, result: null,
     epoch: 0, contextEpoch: 0, zoom: 1, controller: null};
 const iq = id => document.getElementById(id);
 const ie = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -49,16 +49,18 @@ async function openIntelligence() {
     if (!intelligence.catalog) await refreshIntelligence();
 }
 
-async function refreshIntelligence() {
+async function refreshIntelligence(runs=null, preserveModules=null) {
     iq('iqStatus').textContent = 'Reading available module evidence…';
     try {
-        const response = await fetch('/api/intelligence/catalog');
+        const response = await fetch('/api/intelligence/catalog',runs ? {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({runs})} : {});
         if (!response.ok) throw new Error(`Could not load evidence (${response.status})`);
         intelligence.catalog = await response.json();
-        intelligence.modules = new Set(intelligence.catalog.modules.map(m => m.module_name));
+        intelligence.modules = preserveModules || new Set(intelligence.catalog.modules.map(m => m.module_name));
+        intelligence.runs = Object.fromEntries(intelligence.catalog.modules.map(m=>[m.module_name,m.run_id]));
+        intelligence.result=null;
         intelligence.selected.clear();
         iq('iqMode').innerHTML = intelligence.catalog.modes.map(m => `<option value="${ie(m.id)}">${ie(m.label)}</option>`).join('');
-        iq('iqModules').innerHTML = intelligence.catalog.modules.map(m => `<label><input type="checkbox" checked value="${ie(m.module_name)}"> ${ie(m.module_name)}</label>`).join('') || '<p>No modules with analysis yet.</p>';
+        iq('iqModules').innerHTML = intelligence.catalog.modules.map(m => `<label><input type="checkbox" ${intelligence.modules.has(m.module_name)?'checked':''} value="${ie(m.module_name)}"> ${ie(m.module_name)}<select data-run="${ie(m.module_name)}" aria-label="Run for ${ie(m.module_name)}">${(intelligence.catalog.run_choices[m.module_name]||[]).map(c=>`<option value="${ie(c.run_id)}" ${c.run_id===m.run_id?'selected':''}>${c.latest?'Latest · ':''}${ie(c.run_id)}</option>`).join('')}</select></label>`).join('') || '<p>No modules with analysis yet.</p>';
         iq('iqGates').innerHTML = intelligence.catalog.gates.map(g => `<li><strong>${ie(g.feature)}</strong> — ${ie(g.requires)} <small>(${ie(g.status.replaceAll('_',' '))})</small></li>`).join('');
         renderIntelligencePicker(); await queryIntelligence();
     } catch (e) { iq('iqStatus').textContent = e.message; }
@@ -94,7 +96,7 @@ async function queryIntelligence() {
     iq('iqRun').disabled=true; iq('iqStatus').textContent='Connecting evidence…';
     const rules=iq('iqRules').value.trim();
     try {
-        const payload={modules:[...intelligence.modules],selected:[...intelligence.selected], mode:iq('iqMode').value,
+        const payload={modules:[...intelligence.modules],runs:intelligence.runs,selected:[...intelligence.selected], mode:iq('iqMode').value,
             depth:Number(iq('iqDepth').value),limit:Number(iq('iqLimit').value), rules:rules?JSON.parse(rules):[]};
         const response=await fetch('/api/intelligence/query',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),signal:intelligence.controller.signal});
         if (!response.ok) {const error=await response.json();throw new Error(typeof error.detail==='string'?error.detail:'Check the selection and query settings.');}
@@ -166,7 +168,8 @@ async function inspectIntelligence(id) {
     const n=intelligence.result?.nodes.find(n=>n.id===id);
     if(n?.members) {iq('iqInspector').innerHTML=`<h3>${ie(n.name)}</h3><p>${n.members.length} owned symbols. Select individual symbols to explore connections.</p>`;return;}
     iq('iqInspector').textContent='Loading source and structure…';
-    try {const response=await fetch(`/api/intelligence/context?node_id=${encodeURIComponent(id)}`);
+    try {const response=await fetch('/api/intelligence/context',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({node_id:id,runs:intelligence.runs})});
         if(!response.ok)throw new Error('Source context unavailable. Refresh the catalog if the snapshot changed.');
         const c=await response.json(); if(epoch===intelligence.contextEpoch)iq('iqInspector').innerHTML=contextHtml(c);
     }catch(e){if(epoch===intelligence.contextEpoch)iq('iqInspector').textContent=e.message;}
@@ -181,10 +184,13 @@ function exportIntelligence() {
 document.addEventListener('DOMContentLoaded',()=>{
     if(!iq('intelligenceWorkspace'))return;
     iq('iqRun').addEventListener('click',queryIntelligence);
-    iq('iqRefresh').addEventListener('click',refreshIntelligence);
+    iq('iqRefresh').addEventListener('click',()=>refreshIntelligence());
     iq('iqSearch').addEventListener('input',renderIntelligencePicker);
     iq('iqKind').addEventListener('change',renderIntelligencePicker);
-    iq('iqModules').addEventListener('change',e=>{if(e.target.type!=='checkbox')return;
+    iq('iqModules').addEventListener('change',e=>{if(e.target.dataset.run){
+        const runs={...intelligence.runs,[e.target.dataset.run]:e.target.value};
+        refreshIntelligence(runs,new Set(intelligence.modules));return;
+    } if(e.target.type!=='checkbox')return;
         if(e.target.checked)intelligence.modules.add(e.target.value);else intelligence.modules.delete(e.target.value);
         const valid=new Set(intelligence.catalog.symbols.filter(n=>intelligence.modules.has(n.module)).map(n=>n.id));
         intelligence.selected=new Set([...intelligence.selected].filter(id=>valid.has(id)));renderIntelligencePicker();});

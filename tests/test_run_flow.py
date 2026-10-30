@@ -8,6 +8,7 @@ from pathlib import Path
 import pytest
 
 from code_intelligence.run_flow import generate_run_flow
+from app.services.intelligence_service import Workspace
 
 
 def test_missing_toolchain_is_recorded_without_failing_review(tmp_path, monkeypatch):
@@ -24,11 +25,12 @@ def test_run_flow_projections_live_under_analysis_run(tmp_path):
     library = Path(os.environ.get("LLVM_C_LIBRARY", "C:/Program Files/LLVM/bin/LLVM-C.dll"))
     if not clang or not library.is_file():
         pytest.skip("matching clang and LLVM C library required")
-    repo = tmp_path / "repo"
+    run = tmp_path / "runs/run1"
+    repo = run / "A"
     (repo / "src").mkdir(parents=True)
     source = repo / "src/flow.c"
     source.write_bytes((Path(__file__).parent / "fixtures/code_intelligence/flow.c").read_bytes())
-    analysis = tmp_path / "run/analysis"
+    analysis = run / "analysis"
     build = analysis / "cmake_build"
     build.mkdir(parents=True)
     (build / "compile_commands.json").write_text(json.dumps([{
@@ -42,3 +44,9 @@ def test_run_flow_projections_live_under_analysis_run(tmp_path):
     assert json.loads((bundle / "manifest.json").read_text())["status"] == "completed"
     assert json.loads((bundle / "control_flow.json").read_text())["edges"]
     assert json.loads((bundle / "data_flow.json").read_text())["edges"]
+    (run / "report.json").write_text(json.dumps({"metadata": {
+        "module_name": "A", "generated_at": "2026-10-30T00:00:00+00:00"}}))
+    (analysis / "code-intelligence.json").write_text((bundle / "code-intelligence.json").read_text())
+    workspace = Workspace(root=tmp_path / "runs")
+    assert len(workspace.evidence) == 1 and not workspace.warnings
+    assert workspace.query(mode="cfg")["edges"]

@@ -758,3 +758,7 @@ same native LLVM reader; source semantics and memory-analysis correctness are
 summary without failing review and that a real C fixture produces both projections
 under a run's `analysis/flow/` path. The source cap, per-source status, and host
 configuration boundary are in the flow contract.
+The real fixture also places the bundle under a graph-bearing run and verifies
+that the exploration workspace attaches it without warnings. Run-selection
+tests verify latest default, older snapshot IDs, API catalog/query/context and
+rejection of an unknown run path.

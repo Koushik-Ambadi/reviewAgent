@@ -139,7 +139,8 @@ remain available if flow extraction cannot run. For an existing run, use
 
 Open **Code graphs** in the developer workspace:
 
-1. Choose one or more modules and search for functions, shared values or files.
+1. Choose one or more modules, leave the latest run selected or choose an older
+   graph-bearing run per module, then search for functions, shared values or files.
 2. Check multiple items, choose a question, then **Explore selection**. Start
    with “How are my selections connected?” or “What could this affect?”
 3. Inspect a card to see source, relationships and its structure. Add further
