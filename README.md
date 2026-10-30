@@ -146,14 +146,21 @@ Open **Code graphs** in the developer workspace:
 3. Inspect a card to see source, relationships and its structure. Add further
    items to the selection. For functions with verified compiler evidence, choose
    **Control flow (CFG)** or **Data flow (DFD)** to inspect the generated flow.
+   Use **Focus on this item** and its neighbor checkboxes to reveal only the
+   connections you want to pursue, or **Show all map items** to restore the view.
 4. Open **Analytics and investigation priorities** for complexity, coupling,
    call depth, shared writes, exact clones and cycles. Download the current
    analysis as JSON when sharing evidence.
 
+The developer **Analysis** stage also shows a current-run summary and a button
+that opens its graphs. Direct call sites are numbered by position in source;
+branches and loops can change actual execution order.
+
 The interface explains static possibilities, not observed runtime causes.
 Hidden/frontier counts indicate incomplete searches. Existing overview and
 trace tools are retained behind their toggle. Source-matched flow bundles are
-discovered read-only under `workspace/runs/*/*/manifest.json`; use the flow
+discovered read-only under the run's `analysis/flow/*/manifest.json` (and older
+external bundles); use the flow
 command above to generate additional bundles in fresh directories.
 
 Requirements features are excluded. Version comparisons remain on the roadmap.

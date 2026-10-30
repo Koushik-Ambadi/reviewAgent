@@ -761,3 +761,8 @@ The Analysis stage invokes the bounded run-flow adapter after building its
 canonical AST snapshot. Its compiler bundles and summary belong to the run's
 `analysis/flow/` directory. Flow failure is reported there and does not change
 the existing review result. The standalone flow command uses the same engine.
+Report formatting derives a compact `analysis_intelligence` summary from that
+run's canonical graph and flow summary. The developer Analysis stage displays
+it and opens the same run in Code graphs. The map starts with a small subset of
+returned nodes; the user can focus a card, reveal direct neighbors, or restore
+the full bounded result. The relationship list and JSON keep the complete query.

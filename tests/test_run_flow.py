@@ -9,6 +9,8 @@ import pytest
 
 from code_intelligence.run_flow import generate_run_flow
 from app.services.intelligence_service import Workspace
+from repo_review.analysis.runner import run_analysis
+from repo_review.contracts import StageStatus
 
 
 def test_missing_toolchain_is_recorded_without_failing_review(tmp_path, monkeypatch):
@@ -18,6 +20,22 @@ def test_missing_toolchain_is_recorded_without_failing_review(tmp_path, monkeypa
                                 sources=["src/example.c"])
     assert summary["status"] == "unavailable"
     assert json.loads((analysis / "flow/summary.json").read_text()) == summary
+
+
+def test_unexpected_flow_error_keeps_analysis_stage_completed(tmp_path, monkeypatch):
+    monkeypatch.setattr("repo_review.analysis.runner.build_source_index",
+                        lambda **kwargs: {"status": "success"})
+    monkeypatch.setattr("repo_review.analysis.runner.build_symbol_inventory",
+                        lambda **kwargs: {"status": "success", "results": []})
+
+    def fail_flow(**kwargs):
+        raise RuntimeError("compiler unavailable")
+
+    monkeypatch.setattr("code_intelligence.run_flow.generate_run_flow", fail_flow)
+    stage = run_analysis(tmp_path, tmp_path / "run", {})
+    summary = json.loads((tmp_path / "run/analysis/flow/summary.json").read_text())
+    assert stage.status == StageStatus.COMPLETED
+    assert summary["status"] == "failed" and summary["reason"] == "compiler unavailable"
 
 
 def test_run_flow_projections_live_under_analysis_run(tmp_path):

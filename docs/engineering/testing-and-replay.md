@@ -762,3 +762,19 @@ The real fixture also places the bundle under a graph-bearing run and verifies
 that the exploration workspace attaches it without warnings. Run-selection
 tests verify latest default, older snapshot IDs, API catalog/query/context and
 rejection of an unknown run path.
+Call-site ordering tests verify line/column ordering and the explicit limit that
+source order is not a runtime trace. A forced flow-generation error leaves the
+Analysis stage completed and writes a failed flow summary.
+
+The integrated Shunt replay created run `20261030_113628_e787c0e3` with two
+completed source bundles, no failed or skipped sources, and an additive
+`analysis_intelligence` report summary (26 functions, 3 complexity outliers,
+42 shared values). Native `verify_flow_evidence.py` passed both bundles against
+their retained source, IR and compiler input hashes. The live local UI showed
+four Shunt/SOC attachments with no warnings; `Shunt_task` returned 80 CFG items
+and 108 transitions, and 80 DFD items and 84 links under the 80-item bound.
+Focus reduced the CFG map to one step and selecting one neighbor showed two;
+  the older Shunt run selector cleared the prior selection. The maintained suite
+  passed 74 Python tests plus both Node UI harnesses. These checks establish
+artifact consistency and UI behavior, not runtime execution or complete memory
+dependence coverage.

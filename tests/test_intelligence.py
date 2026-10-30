@@ -148,3 +148,17 @@ def test_run_selection_api_catalog_query_and_context(tmp_path, monkeypatch):
     assert client.post("/api/intelligence/query", json=request).json()["selected"] == ["A_run::old"]
     assert client.post("/api/intelligence/context", json={"node_id":"A_run::old","runs":request["runs"]}).status_code == 200
     assert client.post("/api/intelligence/query", json={**request,"runs":{"A":"../invalid"}}).status_code == 400
+
+
+def test_calls_have_source_order_without_runtime_claim(tmp_path):
+    later = edge("later", "calls", "caller", "last")
+    earlier = edge("earlier", "calls", "caller", "first")
+    later["location"] = {"path":"src/a.c","line":20,"column":2}
+    earlier["location"] = {"path":"src/a.c","line":10,"column":4}
+    write_run(tmp_path, "A", [node("caller"),node("first"),node("last")], [later,earlier])
+    workspace = Workspace(root=tmp_path)
+    context = workspace.context("A_run::caller")
+    assert [(c["ordinal"],c["callee"]) for c in context["call_sites"]] == [(1,"first"),(2,"last")]
+    assert any("runtime order" in note for note in context["notes"])
+    viewed = workspace.query(mode="calls", selected=["A_run::caller"])
+    assert {e["source_order"] for e in viewed["edges"]} == {1,2}

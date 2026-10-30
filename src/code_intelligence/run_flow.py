@@ -63,7 +63,8 @@ def generate_run_flow(*, repo_root: Path, analysis_dir: Path, sources: list[str]
                     timeout=int(options.get("timeout_seconds", 120)))
                 summary["sources"].append({"source": relative, "status": "completed", "bundle": f"flow/{name}",
                                            "flow": result["flow"]})
-            except (OSError, RuntimeError, ValueError) as exc:
+            except Exception as exc:
+                # Flow is optional review evidence; retain the failure per source.
                 summary["sources"].append({"source": relative, "status": "failed", "bundle": f"flow/{name}", "reason": str(exc)})
         if len(unique) > max_sources:
             summary["sources"].extend({"source": s, "status": "skipped", "reason": "max_sources limit"} for s in unique[max_sources:])

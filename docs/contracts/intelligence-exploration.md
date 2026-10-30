@@ -45,6 +45,10 @@ Block inspection returns ordered compiler `operations` and their source span
 when locations share a source file. `explanation` lists named relationships with
 evidence IDs. Synthetic operations may have no location. Function regions and
 boundary ideas remain containment/candidate evidence, not runtime traces.
+Function context also lists direct call sites numbered by source path, line and
+column. These are lexical positions, not guaranteed execution order through
+branches, loops, callbacks or concurrency. Call edges in query results carry
+the same derived `source_order` where locations exist.
 
 ## Guided user interface
 
@@ -60,6 +64,10 @@ select a function whose source has a matching flow bundle to see those projectio
 
 The map uses deterministic bounded levels with distinct cards even in cyclic
 or disconnected graphs; it does not imply time or promise crossing-free edges.
+The map initially shows selected items and the first 12 returned items. The
+relationship list and downloaded JSON still contain the full bounded query.
+Inspect a card to choose individual adjacent items, or focus on that card to
+hide the rest of the map. Show all map items restores the full returned view.
 Zoom and scrolling handle larger graphs; a relationship list provides an
 accessible alternative. Above 20 connections, repeated labels are hidden from
 the map to reduce overlap; branch true/false labels remain, and every edge keeps

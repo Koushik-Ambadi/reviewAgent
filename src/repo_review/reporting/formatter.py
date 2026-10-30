@@ -46,9 +46,12 @@ def build_report_data(
         context,
     )
 
-    return serialize(
+    report = serialize(
         context.run_result,
     )
+    from code_intelligence.run_summary import build_run_summary
+    report["analysis_intelligence"] = build_run_summary(context.workspace_path / "analysis")
+    return report
 
 
 def assign_case_ids(run_result):

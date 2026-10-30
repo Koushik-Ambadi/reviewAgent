@@ -147,6 +147,16 @@ class Workspace:
                 e["resolution"] = "unique_public_usr"
         self.graph = {"nodes": list(nodes.values()), "edges": list(edges.values())}
         self.explorer = Explorer(self.graph)
+        call_groups = defaultdict(list)
+        for edge in self.graph["edges"]:
+            if edge["kind"] == "calls" and edge.get("location"):
+                call_groups[edge["source"]].append(edge)
+        self.call_order = {}
+        for calls in call_groups.values():
+            for ordinal, edge in enumerate(sorted(calls, key=lambda e: (
+                e["location"].get("path", ""), e["location"].get("line", 0),
+                e["location"].get("column", 0), e["id"])), 1):
+                self.call_order[edge["id"]] = ordinal
 
     def catalog(self):
         return {"modules": [{"module_name": m, "run_id": r["run_id"]} for m,r in self.records.items()],
@@ -157,6 +167,8 @@ class Workspace:
 
     def query(self, **kwargs):
         result = self.explorer.query(**kwargs)
+        result["edges"] = [{**e, "source_order": self.call_order.get(e["id"])}
+            if e["kind"] == "calls" else e for e in result["edges"]]
         if kwargs.get("mode") == "skeleton" and kwargs.get("selected"):
             contexts = [self.context(k) for k in kwargs["selected"]]
             result["structures"] = contexts
@@ -179,6 +191,13 @@ class Workspace:
              "label": e.get("attributes", {}).get("label"), "evidence_id": e["id"]}
             for e in result["relationships"] if e["kind"] != "contains"
         ]
+        if node["kind"] == "function":
+            result["call_sites"] = [{"ordinal": self.call_order.get(e["id"]),
+                "callee": self.explorer.nodes[e["target"]]["name"], "callee_id": e["target"],
+                "location": e.get("location"), "evidence_id": e["id"]}
+                for e in result["relationships"] if e["kind"] == "calls" and e["source"] == node_id]
+            result["call_sites"].sort(key=lambda c: (c["ordinal"] is None, c["ordinal"] or 0, c["evidence_id"]))
+            result["notes"].append("Call numbers are lexical source positions; branches, loops and callbacks can change runtime order.")
         if node["kind"] == "basic_block":
             operations = sorted((n for n in self.graph["nodes"]
                 if n.get("attributes", {}).get("block") == node_id),
