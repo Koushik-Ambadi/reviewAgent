@@ -111,9 +111,17 @@ build-remediation.json  Redacted build-remediation model trace and result
 evidence-pack.html      Latest self-contained HTML handoff generated on request
 ```
 
-`report.json` remains the canonical `RunResult`. New remediation writes maintain
-one plan root per check. Every failed check case has one ordered `case_results`
-entry with status `not_requested`, `candidate_ready`, `input_required`, or
+`report.json` remains the canonical `RunResult`.
+The report may include additive `analysis_intelligence` (schema 1.0). It points
+to `analysis/code-intelligence.json` and `analysis/flow/summary.json`, reports
+per-source CFG/DFD completion counts, and summarizes current-snapshot functions,
+complexity outliers, recursion, shared values, exact clones and file cycles.
+`status: unavailable` means the graph is absent; static priorities are not
+defect findings or runtime observations. Older reports may omit this field.
+
+New remediation writes maintain one plan root per check. Every failed check case
+has one ordered `case_results` entry with status `not_requested`,
+`candidate_ready`, `input_required`, or
 `unsupported`; absent candidates are JSON `null`, not invented placeholder
 names. A case request updates only that child. A later check request targets
 only `not_requested` children, then merges them into the same plan. The legacy

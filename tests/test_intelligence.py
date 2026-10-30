@@ -114,3 +114,51 @@ def test_flow_projection_retains_branches_and_store_load_identity():
     e=Explorer({"nodes":nodes,"edges":edges})
     assert e.query(mode="cfg",selected=["f"])["edges"]==[edges[0]]
     assert e.query(mode="dfd",selected=["f"])["edges"]==[edges[1]]
+
+
+def test_run_selection_preserves_latest_default_and_namespaces_old_snapshot(tmp_path):
+    write_run(tmp_path, "A", [node("old")], [])
+    old_run = tmp_path / "A_run"
+    new_run = tmp_path / "A_new"
+    (new_run / "analysis").mkdir(parents=True)
+    (new_run / "A").mkdir()
+    (new_run / "report.json").write_text(json.dumps({"metadata": {
+        "module_name": "A", "generated_at": "2026-10-30T00:00:00+00:00"}}))
+    (new_run / "analysis/code-intelligence.json").write_text(json.dumps({
+        "nodes": [node("new")], "edges": []}))
+    latest = Workspace(root=tmp_path)
+    assert latest.records["A"]["run_id"] == "A_new"
+    assert {n["id"] for n in latest.graph["nodes"]} == {"A_new::new"}
+    previous = Workspace(runs={"A": old_run.name}, root=tmp_path)
+    assert {n["id"] for n in previous.graph["nodes"]} == {"A_run::old"}
+    assert {c["run_id"] for c in previous.catalog()["run_choices"]["A"]} == {"A_run", "A_new"}
+    with pytest.raises(ValueError): Workspace(runs={"A": "../other"}, root=tmp_path)
+
+
+def test_run_selection_api_catalog_query_and_context(tmp_path, monkeypatch):
+    from fastapi.testclient import TestClient
+    from app.main import app
+    write_run(tmp_path, "A", [node("old")], [])
+    monkeypatch.setattr("app.api.intelligence.Workspace",
+        lambda modules=None, runs=None: Workspace(modules, runs, root=tmp_path))
+    client = TestClient(app)
+    assert client.get("/api/intelligence/catalog").json()["run_choices"]["A"][0]["run_id"] == "A_run"
+    request = {"modules": ["A"], "runs": {"A": "A_run"}, "selected": ["A_run::old"]}
+    assert client.post("/api/intelligence/catalog", json=request).status_code == 200
+    assert client.post("/api/intelligence/query", json=request).json()["selected"] == ["A_run::old"]
+    assert client.post("/api/intelligence/context", json={"node_id":"A_run::old","runs":request["runs"]}).status_code == 200
+    assert client.post("/api/intelligence/query", json={**request,"runs":{"A":"../invalid"}}).status_code == 400
+
+
+def test_calls_have_source_order_without_runtime_claim(tmp_path):
+    later = edge("later", "calls", "caller", "last")
+    earlier = edge("earlier", "calls", "caller", "first")
+    later["location"] = {"path":"src/a.c","line":20,"column":2}
+    earlier["location"] = {"path":"src/a.c","line":10,"column":4}
+    write_run(tmp_path, "A", [node("caller"),node("first"),node("last")], [later,earlier])
+    workspace = Workspace(root=tmp_path)
+    context = workspace.context("A_run::caller")
+    assert [(c["ordinal"],c["callee"]) for c in context["call_sites"]] == [(1,"first"),(2,"last")]
+    assert any("runtime order" in note for note in context["notes"])
+    viewed = workspace.query(mode="calls", selected=["A_run::caller"])
+    assert {e["source_order"] for e in viewed["edges"]} == {1,2}

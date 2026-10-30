@@ -50,8 +50,10 @@ POST /api/review (ZIP)
 The landing page’s **Explore code graphs** action opens retained graph-bearing
 runs. The developer **Code graphs** tab switches between file, module, and
 inter-module scopes; call/include/read/write/reference overlays can be combined.
-Double-click a module or file node to drill down. Control-flow and true data-flow
-overlays are visible but disabled until their required analysis engines exist.
+Double-click a module or file node to drill down. Those original overlay
+controls remain limited; the guided workspace on the same page provides
+compiler-backed **Control flow (CFG)** and **Data flow (DFD)** questions when
+a matching flow bundle exists for the selected function.
 File scope starts with functions as the readable skeleton; parameters and locals
 are nested in function inspection and can be expanded explicitly. Selecting a
 node centers and isolates its one-hop neighborhood, while selecting a module
@@ -127,24 +129,38 @@ review artifacts are preserved. These are host-analysis CFGs and bounded DFDs;
 pointer/global/interprocedural memory flow is unresolved. See the
 [flow contract](docs/contracts/flow-evidence.md). Rendering is not required.
 
+New review runs also attempt CFG/DFD generation during Analysis. Check
+`workspace/runs/<run_id>/analysis/flow/summary.json` for completed, skipped or
+failed sources; successful source bundles sit beside that summary. Review results
+remain available if flow extraction cannot run. For an existing run, use
+`python -m code_intelligence.run_flow --repo <run-repo> --analysis <run>/analysis`.
+
 ## Explore relationships and analytics
 
 Open **Code graphs** in the developer workspace:
 
-1. Choose one or more modules and search for functions, shared values or files.
+1. Choose one or more modules, leave the latest run selected or choose an older
+   graph-bearing run per module, then search for functions, shared values or files.
 2. Check multiple items, choose a question, then **Explore selection**. Start
    with “How are my selections connected?” or “What could this affect?”
 3. Inspect a card to see source, relationships and its structure. Add further
    items to the selection. For functions with verified compiler evidence, choose
-   the decision-flow or value-flow question to inspect CFG/DFD.
+   **Control flow (CFG)** or **Data flow (DFD)** to inspect the generated flow.
+   Use **Focus on this item** and its neighbor checkboxes to reveal only the
+   connections you want to pursue, or **Show all map items** to restore the view.
 4. Open **Analytics and investigation priorities** for complexity, coupling,
    call depth, shared writes, exact clones and cycles. Download the current
    analysis as JSON when sharing evidence.
 
+The developer **Analysis** stage also shows a current-run summary and a button
+that opens its graphs. Direct call sites are numbered by position in source;
+branches and loops can change actual execution order.
+
 The interface explains static possibilities, not observed runtime causes.
 Hidden/frontier counts indicate incomplete searches. Existing overview and
 trace tools are retained behind their toggle. Source-matched flow bundles are
-discovered read-only under `workspace/runs/*/*/manifest.json`; use the flow
+discovered read-only under the run's `analysis/flow/*/manifest.json` (and older
+external bundles); use the flow
 command above to generate additional bundles in fresh directories.
 
 Requirements features are excluded. Version comparisons remain on the roadmap.

@@ -1,5 +1,5 @@
 /* Guided, read-only exploration. All source-derived text is escaped. */
-const intelligence = {catalog: null, selected: new Set(), modules: new Set(), result: null,
+const intelligence = {catalog: null, selected: new Set(), modules: new Set(), runs: {}, visible: new Set(), result: null,
     epoch: 0, contextEpoch: 0, zoom: 1, controller: null};
 const iq = id => document.getElementById(id);
 const ie = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -49,16 +49,23 @@ async function openIntelligence() {
     if (!intelligence.catalog) await refreshIntelligence();
 }
 
-async function refreshIntelligence() {
+async function openIntelligenceRun(module,runId) {
+    await showGraphs();
+    await refreshIntelligence({...intelligence.runs,[module]:runId},new Set([module]));
+}
+
+async function refreshIntelligence(runs=null, preserveModules=null) {
     iq('iqStatus').textContent = 'Reading available module evidence…';
     try {
-        const response = await fetch('/api/intelligence/catalog');
+        const response = await fetch('/api/intelligence/catalog',runs ? {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({runs})} : {});
         if (!response.ok) throw new Error(`Could not load evidence (${response.status})`);
         intelligence.catalog = await response.json();
-        intelligence.modules = new Set(intelligence.catalog.modules.map(m => m.module_name));
+        intelligence.modules = preserveModules || new Set(intelligence.catalog.modules.map(m => m.module_name));
+        intelligence.runs = Object.fromEntries(intelligence.catalog.modules.map(m=>[m.module_name,m.run_id]));
+        intelligence.result=null;
         intelligence.selected.clear();
         iq('iqMode').innerHTML = intelligence.catalog.modes.map(m => `<option value="${ie(m.id)}">${ie(m.label)}</option>`).join('');
-        iq('iqModules').innerHTML = intelligence.catalog.modules.map(m => `<label><input type="checkbox" checked value="${ie(m.module_name)}"> ${ie(m.module_name)}</label>`).join('') || '<p>No modules with analysis yet.</p>';
+        iq('iqModules').innerHTML = intelligence.catalog.modules.map(m => `<label><input type="checkbox" ${intelligence.modules.has(m.module_name)?'checked':''} value="${ie(m.module_name)}"> ${ie(m.module_name)}<select data-run="${ie(m.module_name)}" aria-label="Run for ${ie(m.module_name)}">${(intelligence.catalog.run_choices[m.module_name]||[]).map(c=>`<option value="${ie(c.run_id)}" ${c.run_id===m.run_id?'selected':''}>${c.latest?'Latest · ':''}${ie(c.run_id)}</option>`).join('')}</select></label>`).join('') || '<p>No modules with analysis yet.</p>';
         iq('iqGates').innerHTML = intelligence.catalog.gates.map(g => `<li><strong>${ie(g.feature)}</strong> — ${ie(g.requires)} <small>(${ie(g.status.replaceAll('_',' '))})</small></li>`).join('');
         renderIntelligencePicker(); await queryIntelligence();
     } catch (e) { iq('iqStatus').textContent = e.message; }
@@ -94,7 +101,7 @@ async function queryIntelligence() {
     iq('iqRun').disabled=true; iq('iqStatus').textContent='Connecting evidence…';
     const rules=iq('iqRules').value.trim();
     try {
-        const payload={modules:[...intelligence.modules],selected:[...intelligence.selected], mode:iq('iqMode').value,
+        const payload={modules:[...intelligence.modules],runs:intelligence.runs,selected:[...intelligence.selected], mode:iq('iqMode').value,
             depth:Number(iq('iqDepth').value),limit:Number(iq('iqLimit').value), rules:rules?JSON.parse(rules):[]};
         const response=await fetch('/api/intelligence/query',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),signal:intelligence.controller.signal});
         if (!response.ok) {const error=await response.json();throw new Error(typeof error.detail==='string'?error.detail:'Check the selection and query settings.');}
@@ -106,6 +113,7 @@ async function queryIntelligence() {
 
 function renderIntelligenceResult() {
     const r=intelligence.result, c=r.coverage, a=r.analytics;
+    intelligence.visible=new Set([...intelligence.selected,...r.nodes.slice(0,12).map(n=>n.id)]);
     iq('iqTitle').textContent=r.title;
     iq('iqStatus').textContent=`${c.displayed} items · ${r.edges.length} connections · ${c.omitted} hidden · ${c.frontier.length} beyond search boundary`;
     iq('iqCoverage').textContent=c.complete_within_scope?'All eligible results in this query are shown. Source analysis may still be partial.':'Partial view: increase depth or item limit, or narrow your selection. Missing paths are not proof that items are unrelated.';
@@ -122,7 +130,7 @@ function renderIntelligenceResult() {
         <h4>File cycles</h4>${groupsHtml(a.file_cycles,new Map(a.file_nodes.map(n=>[n.id,n.name])))}
         <p>Architecture rules: ${ie(a.architecture.status)} · ${a.architecture.findings.length} matching forbidden dependencies.</p>
         <pre>${ie(JSON.stringify(a.architecture.findings,null,2))}</pre></details>`;
-    iq('iqRelationships').innerHTML=r.edges.map(e=>`<li><button data-inspect="${ie(e.source)}">${ie(names.get(e.source))}</button> ${ie(edgeLabel(e))} <button data-inspect="${ie(e.target)}">${ie(names.get(e.target))}</button>${e.count?` (${e.count} observations)`:''}</li>`).join('')||'<li>No relationships in this view.</li>';
+    iq('iqRelationships').innerHTML=r.edges.map(e=>`<li><button data-inspect="${ie(e.source)}">${ie(names.get(e.source))}</button> ${ie(edgeLabel(e))} <button data-inspect="${ie(e.target)}">${ie(names.get(e.target))}</button>${e.source_order?` · source call #${e.source_order}`:''}${e.count?` (${e.count} observations)`:''}</li>`).join('')||'<li>No relationships in this view.</li>';
     renderIntelligenceMap();
     iq('iqInspector').innerHTML=(r.structures||[]).map(contextHtml).join('') || '<p>Inspect a map item to see its source, inputs, outputs and compiler evidence. Use “Add to selection” to combine it with other items.</p>';
 }
@@ -131,12 +139,15 @@ function groupsHtml(groups,names) {return `<ul>${groups.map(g=>`<li>${g.map(id=>
 
 function renderIntelligenceMap() {
     const r=intelligence.result; if(!r)return;
-    const dense=r.edges.length>20;
-    iq('iqMapHelp').textContent=dense ?
-        'Dense map: repeated arrow labels are hidden for readability. Decision branches still show true/false. Inspect a card or open the relationship list for every labeled connection.' : '';
-    const nodes=layoutIntelligence(r.nodes,r.edges), byId=new Map(nodes.map(n=>[n.id,n]));
+    const shown=r.nodes.filter(n=>intelligence.visible.has(n.id));
+    const shownIds=new Set(shown.map(n=>n.id));
+    const shownEdges=r.edges.filter(e=>shownIds.has(e.source)&&shownIds.has(e.target));
+    const dense=shownEdges.length>20;
+    iq('iqMapHelp').textContent=`Showing ${shown.length} of ${r.nodes.length} returned map items. Inspect a card to choose which connected items to pursue; Show all restores this view. ` +
+        (dense?'Repeated arrow labels are hidden for readability. Branch labels remain; inspect an arrow or open the relationship list for details.':'');
+    const nodes=layoutIntelligence(shown,shownEdges), byId=new Map(nodes.map(n=>[n.id,n]));
     const width=Math.max(800,...nodes.map(n=>n.x+270)),height=Math.max(350,...nodes.map(n=>n.y+110));
-    const edges=r.edges.map((e,index)=>{const s=byId.get(e.source),t=byId.get(e.target);if(!s||!t)return '';
+    const edges=shownEdges.map((e,index)=>{const s=byId.get(e.source),t=byId.get(e.target);if(!s||!t)return '';
         const x=s.x+230,y=s.y+40,tx=t.x,ty=t.y+40;
         const curve=s.id===t.id?`M ${x-30} ${y-40} C ${x+70} ${y-110}, ${x+100} ${y+80}, ${x} ${y+20}`:
             `M ${x} ${y} C ${x+55} ${y+(tx<=x?65:0)}, ${tx-55} ${ty+(tx<=x?65:0)}, ${tx} ${ty}`;
@@ -150,15 +161,29 @@ function contextHtml(c) {
     const n=c.node,a=n.attributes||{};
     return `<article class="iq-context"><h3>${ie(flowTitle(n))}</h3><p>${ie(n.name)} · ${ie(n.kind)} · ${ie(n.module)}</p>
       <button data-add="${ie(n.id)}">Add to selection</button>
+      ${neighborControls(n.id)}
       <p>${(c.notes||[]).map(ie).join(' ')}</p>
       ${a.memory_boundary?`<p>Memory evidence: ${ie(a.memory_boundary.replaceAll('_',' '))}</p>`:''}
       ${c.source?`<p>${ie(c.source.path)} · ${ie(c.source.match)}${c.source.truncated?' · excerpt shortened':''}</p><pre>${ie(c.source.text)}</pre>`:'<p>No source excerpt available.</p>'}
       ${a.ir?`<details><summary>Compiler operation</summary><pre>${ie(a.ir)}</pre></details>`:''}
       ${(c.explanation||[]).length?`<h4>Relationships in plain language</h4><ul>${c.explanation.map(e=>`<li>${ie(e.source)} ${ie(relationWords[e.kind]||e.kind)} ${ie(e.target)}${e.label?` · ${ie(e.label)}`:''}${e.location?.line?` (line ${e.location.line})`:''}</li>`).join('')}</ul>`:''}
+      ${(c.call_sites||[]).length?`<h4>Calls in source order</h4><p>This is reading order in the C file, not guaranteed runtime order across branches or loops.</p><ol>${c.call_sites.map(site=>`<li><button data-inspect="${ie(site.callee_id)}">${ie(site.callee)}</button>${site.location?.line?` · line ${site.location.line}${site.location.column?`, column ${site.location.column}`:''}`:''}${site.ordinal?` · position ${site.ordinal}`:' · position unknown'}</li>`).join('')}</ol>`:''}
       ${(c.operations||[]).length?`<h4>Operations in this step</h4><ol>${c.operations.map(op=>`<li><button data-inspect="${ie(op.id)}">${ie(flowTitle(op))}</button><details><summary>Compiler evidence</summary><pre>${ie(op.attributes.ir)}</pre></details></li>`).join('')}</ol>`:''}
       ${(c.regions||[]).length?`<h4>Inside this function</h4><p>Nested structure, not execution order.${c.regions_truncated?' Some regions omitted.':''}</p><ol>${c.regions.map(region=>`<li style="margin-left:${Math.min(region.guard_context.length,6)*12}px"><details><summary>${ie(region.name)} · lines ${region.line}–${region.end_line}</summary><pre>${ie(region.text)}</pre></details></li>`).join('')}</ol>`:''}
       ${(c.boundary_test_ideas||[]).length?`<details><summary>Boundary test ideas — not executed</summary><ul>${c.boundary_test_ideas.map(t=>`<li><code>${ie(t.expression)}</code><p>${ie(t.suggestion)}</p></li>`).join('')}</ul></details>`:''}
       <details><summary>${c.relationships?.length||0} source relationships</summary><pre>${ie(JSON.stringify(c.relationships||[],null,2))}</pre></details></article>`;
+}
+
+function neighborControls(id) {
+    const r=intelligence.result;
+    if(!r)return '';
+    const names=new Map(r.nodes.map(n=>[n.id,n.name]));
+    const neighbors=[...new Set(r.edges.filter(e=>e.source===id||e.target===id)
+        .map(e=>e.source===id?e.target:e.source).filter(other=>other!==id&&names.has(other)))].sort();
+    return `<details open><summary>Choose connected items to pursue (${neighbors.length})</summary>
+        <button type="button" data-focus="${ie(id)}">Focus on this item</button>
+        <div class="iq-neighbors">${neighbors.slice(0,50).map(other=>`<label><input type="checkbox" data-show-node="${ie(other)}" ${intelligence.visible.has(other)?'checked':''}>${ie(names.get(other))}</label>`).join('')||'<p>No direct connection in this returned view.</p>'}</div>
+        ${neighbors.length>50?'<p>Showing the first 50 connections; narrow the question to see more.</p>':''}</details>`;
 }
 
 async function inspectIntelligence(id) {
@@ -166,7 +191,8 @@ async function inspectIntelligence(id) {
     const n=intelligence.result?.nodes.find(n=>n.id===id);
     if(n?.members) {iq('iqInspector').innerHTML=`<h3>${ie(n.name)}</h3><p>${n.members.length} owned symbols. Select individual symbols to explore connections.</p>`;return;}
     iq('iqInspector').textContent='Loading source and structure…';
-    try {const response=await fetch(`/api/intelligence/context?node_id=${encodeURIComponent(id)}`);
+    try {const response=await fetch('/api/intelligence/context',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({node_id:id,runs:intelligence.runs})});
         if(!response.ok)throw new Error('Source context unavailable. Refresh the catalog if the snapshot changed.');
         const c=await response.json(); if(epoch===intelligence.contextEpoch)iq('iqInspector').innerHTML=contextHtml(c);
     }catch(e){if(epoch===intelligence.contextEpoch)iq('iqInspector').textContent=e.message;}
@@ -181,21 +207,30 @@ function exportIntelligence() {
 document.addEventListener('DOMContentLoaded',()=>{
     if(!iq('intelligenceWorkspace'))return;
     iq('iqRun').addEventListener('click',queryIntelligence);
-    iq('iqRefresh').addEventListener('click',refreshIntelligence);
+    iq('iqRefresh').addEventListener('click',()=>refreshIntelligence());
     iq('iqSearch').addEventListener('input',renderIntelligencePicker);
     iq('iqKind').addEventListener('change',renderIntelligencePicker);
-    iq('iqModules').addEventListener('change',e=>{if(e.target.type!=='checkbox')return;
+    iq('iqModules').addEventListener('change',e=>{if(e.target.dataset.run){
+        const runs={...intelligence.runs,[e.target.dataset.run]:e.target.value};
+        refreshIntelligence(runs,new Set(intelligence.modules));return;
+    } if(e.target.type!=='checkbox')return;
         if(e.target.checked)intelligence.modules.add(e.target.value);else intelligence.modules.delete(e.target.value);
         const valid=new Set(intelligence.catalog.symbols.filter(n=>intelligence.modules.has(n.module)).map(n=>n.id));
         intelligence.selected=new Set([...intelligence.selected].filter(id=>valid.has(id)));renderIntelligencePicker();});
     iq('iqPicker').addEventListener('change',e=>{if(e.target.dataset.symbol)toggleIntelligenceSelection(e.target.dataset.symbol,e.target.checked);});
     iq('iqClear').addEventListener('click',()=>{intelligence.selected.clear();renderIntelligencePicker();});
     iq('iqExport').addEventListener('click',exportIntelligence);
+    iq('iqShowAll').addEventListener('click',()=>{intelligence.visible=new Set(intelligence.result?.nodes.map(n=>n.id)||[]);renderIntelligenceMap();});
     iq('iqZoom').addEventListener('input',e=>{intelligence.zoom=Number(e.target.value);renderIntelligenceMap();});
     iq('iqLegacy').addEventListener('click',()=>{const old=iq('legacyGraphWorkspace');old.hidden=!old.hidden;iq('iqLegacy').setAttribute('aria-expanded',String(!old.hidden));if(!old.hidden)requestAnimationFrame(resizeGraphCanvas);});
-    iq('intelligenceWorkspace').addEventListener('click',e=>{const target=e.target.closest('[data-inspect],[data-add],[data-remove]');if(!target)return;
+    iq('intelligenceWorkspace').addEventListener('click',e=>{const target=e.target.closest('[data-inspect],[data-add],[data-remove],[data-focus]');if(!target)return;
         if(target.dataset.inspect)inspectIntelligence(target.dataset.inspect);
         if(target.dataset.add)toggleIntelligenceSelection(target.dataset.add,true);
-        if(target.dataset.remove)toggleIntelligenceSelection(target.dataset.remove,false);});
+        if(target.dataset.remove)toggleIntelligenceSelection(target.dataset.remove,false);
+        if(target.dataset.focus){intelligence.visible=new Set([target.dataset.focus]);renderIntelligenceMap();
+            iq('iqInspector').querySelectorAll('[data-show-node]').forEach(box=>box.checked=false);}});
+    iq('iqInspector').addEventListener('change',e=>{if(!e.target.dataset.showNode)return;
+        if(e.target.checked)intelligence.visible.add(e.target.dataset.showNode);else intelligence.visible.delete(e.target.dataset.showNode);
+        renderIntelligenceMap();});
     iq('iqMap').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.dataset.inspect){e.preventDefault();inspectIntelligence(e.target.dataset.inspect);}});
 });

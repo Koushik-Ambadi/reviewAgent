@@ -1,9 +1,13 @@
 # Current-snapshot exploration API
 
 `GET /api/intelligence/catalog` lists latest graph-bearing runs, symbols, modes,
-flow attachments and gates. `POST /api/intelligence/query` accepts `modules`
+flow attachments and gates. It also lists every graph-bearing run for each
+module. `POST /api/intelligence/catalog` accepts `runs: {module: run_id}` to
+rebuild the picker for chosen snapshots. `POST /api/intelligence/query` accepts `modules`
 (names, at most 20), `mode`, `selected` (at most 20 catalog IDs), `depth` (1–12),
-`limit` (1–300), and optional forbidden dependencies `rules: [{"from":"A","to":"B"}]`.
+`limit` (1–300), the same optional `runs` map, and optional forbidden dependencies
+`rules: [{"from":"A","to":"B"}]`. `POST /api/intelligence/context` accepts
+`node_id` and `runs`; the original GET context remains latest-only.
 Empty modules selects nothing; omitted modules selects all.
 
 Schema `1.0` returns nodes, edges, paths, analytics, coverage, notes, snapshot
@@ -41,6 +45,10 @@ Block inspection returns ordered compiler `operations` and their source span
 when locations share a source file. `explanation` lists named relationships with
 evidence IDs. Synthetic operations may have no location. Function regions and
 boundary ideas remain containment/candidate evidence, not runtime traces.
+Function context also lists direct call sites numbered by source path, line and
+column. These are lexical positions, not guaranteed execution order through
+branches, loops, callbacks or concurrency. Call edges in query results carry
+the same derived `source_order` where locations exist.
 
 ## Guided user interface
 
@@ -48,10 +56,18 @@ The Code graphs page starts with `intelligence.js` / `intelligence.css` and a
 question-led workspace. Choose modules, search symbol kinds, check up to 20 items,
 then explore. Clicking or pressing Enter on a card loads context; Add to selection
 combines it with others. Selections persist across query modes and are cleared
-on catalog refresh. Module changes discard out-of-scope selections.
+on catalog refresh. Each module defaults to its latest run and has a run selector;
+changing a run rebuilds symbols and clears stale selections. Module changes
+discard out-of-scope selections.
+The question menu names **Control flow (CFG)** and **Data flow (DFD)** explicitly;
+select a function whose source has a matching flow bundle to see those projections.
 
 The map uses deterministic bounded levels with distinct cards even in cyclic
 or disconnected graphs; it does not imply time or promise crossing-free edges.
+The map initially shows selected items and the first 12 returned items. The
+relationship list and downloaded JSON still contain the full bounded query.
+Inspect a card to choose individual adjacent items, or focus on that card to
+hide the rest of the map. Show all map items restores the full returned view.
 Zoom and scrolling handle larger graphs; a relationship list provides an
 accessible alternative. Above 20 connections, repeated labels are hidden from
 the map to reduce overlap; branch true/false labels remain, and every edge keeps

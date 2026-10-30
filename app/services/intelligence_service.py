@@ -38,15 +38,35 @@ GATES = [
 
 
 class Workspace:
-    def __init__(self, modules=None, root=WORKSPACE_ROOT):
+    def __init__(self, modules=None, runs=None, root=WORKSPACE_ROOT):
         self.root = Path(root).resolve()
         records = _latest_graphs_by_module(self.root)
+        self.run_choices = defaultdict(list)
+        for report_path in sorted(self.root.glob("*/report.json")):
+            graph_path = report_path.parent / "analysis/code-intelligence.json"
+            if not graph_path.is_file(): continue
+            report = read(report_path)
+            metadata = report.get("metadata") or {}
+            module = str(metadata.get("module_name") or report_path.parent.name)
+            self.run_choices[module].append({"run_id": report_path.parent.name,
+                "generated_at": metadata.get("generated_at"), "latest": records.get(module, {}).get("run_id") == report_path.parent.name})
+        for choices in self.run_choices.values():
+            choices.sort(key=lambda r: (r["generated_at"] or "", r["run_id"]), reverse=True)
+        runs = runs or {}
+        if len(runs) > 20 or any(m not in self.run_choices or r not in {c["run_id"] for c in self.run_choices[m]}
+                                  for m, r in runs.items()):
+            raise ValueError("Run selection must name an available graph-bearing run for its module")
+        for module, run_id in runs.items():
+            if records[module]["run_id"] == run_id: continue
+            records[module] = {"run_id": run_id,
+                "graph": read(self.root / run_id / "analysis/code-intelligence.json")}
         if modules is not None and (len(modules) > 20 or any(m not in records for m in modules)):
             raise ValueError("Select at most 20 available modules")
         self.records = {m: r for m, r in records.items() if modules is None or m in modules}
         self.roots, self.bundles, self.evidence, self.warnings = {}, {}, [], []
         nodes, edges = {}, {}
-        manifests = sorted(self.root.glob("*/*/manifest.json"))
+        manifests = sorted({*self.root.glob("*/*/manifest.json"),
+                            *self.root.glob("*/analysis/flow/*/manifest.json")})
         hash_cache = {}
         def cached_sha(path):
             path = Path(path).resolve()
@@ -127,15 +147,28 @@ class Workspace:
                 e["resolution"] = "unique_public_usr"
         self.graph = {"nodes": list(nodes.values()), "edges": list(edges.values())}
         self.explorer = Explorer(self.graph)
+        call_groups = defaultdict(list)
+        for edge in self.graph["edges"]:
+            if edge["kind"] == "calls" and edge.get("location"):
+                call_groups[edge["source"]].append(edge)
+        self.call_order = {}
+        for calls in call_groups.values():
+            for ordinal, edge in enumerate(sorted(calls, key=lambda e: (
+                e["location"].get("path", ""), e["location"].get("line", 0),
+                e["location"].get("column", 0), e["id"])), 1):
+                self.call_order[edge["id"]] = ordinal
 
     def catalog(self):
         return {"modules": [{"module_name": m, "run_id": r["run_id"]} for m,r in self.records.items()],
+                "run_choices": dict(self.run_choices),
                 "modes": [{"id": k, "label": v} for k,v in MODES.items()],
                 "symbols": [n for n in self.graph["nodes"] if n["kind"] not in {"instruction", "basic_block", "ir_value"}],
                 "evidence": self.evidence, "warnings": self.warnings, "gates": GATES}
 
     def query(self, **kwargs):
         result = self.explorer.query(**kwargs)
+        result["edges"] = [{**e, "source_order": self.call_order.get(e["id"])}
+            if e["kind"] == "calls" else e for e in result["edges"]]
         if kwargs.get("mode") == "skeleton" and kwargs.get("selected"):
             contexts = [self.context(k) for k in kwargs["selected"]]
             result["structures"] = contexts
@@ -158,6 +191,13 @@ class Workspace:
              "label": e.get("attributes", {}).get("label"), "evidence_id": e["id"]}
             for e in result["relationships"] if e["kind"] != "contains"
         ]
+        if node["kind"] == "function":
+            result["call_sites"] = [{"ordinal": self.call_order.get(e["id"]),
+                "callee": self.explorer.nodes[e["target"]]["name"], "callee_id": e["target"],
+                "location": e.get("location"), "evidence_id": e["id"]}
+                for e in result["relationships"] if e["kind"] == "calls" and e["source"] == node_id]
+            result["call_sites"].sort(key=lambda c: (c["ordinal"] is None, c["ordinal"] or 0, c["evidence_id"]))
+            result["notes"].append("Call numbers are lexical source positions; branches, loops and callbacks can change runtime order.")
         if node["kind"] == "basic_block":
             operations = sorted((n for n in self.graph["nodes"]
                 if n.get("attributes", {}).get("block") == node_id),

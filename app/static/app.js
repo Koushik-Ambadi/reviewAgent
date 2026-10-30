@@ -194,6 +194,17 @@ function renderStageInventory(inventory, items, groups) {
         ${hasRegister ? `<div class="inventory-register-heading"><h3>Artifact audit register</h3><p>Open a group to inspect every extracted record and its parser evidence.</p></div><div class="inventory-groups">${groups.filter(group => (group.artifacts || []).length).map(renderInventoryGroup).join("")}</div>` : ""}
     </div>`;
 }
+function renderAnalysisIntelligence(info, report) {
+    if (!info || info.status !== 'available') return '';
+    const top = info.top_functions || [];
+    return `<div class="inventory-summary" aria-label="Code intelligence in this run">
+        <div class="inventory-summary-heading"><h3>Code understanding and investigation priorities</h3><p>Static signals from this run. A high score is a review priority, not a defect.</p></div>
+        <div class="inventory-coverage"><span><strong>${info.functions}</strong> functions</span><span><strong>${info.complexity_outliers}</strong> complexity outliers</span><span><strong>${info.shared_values}</strong> shared values</span><span><strong>${info.recursive_groups}</strong> recursive groups</span></div>
+        <p>CFG/DFD: ${escapeHtml(info.flow_status)} · ${info.flow_completed_sources} source bundles completed · ${info.flow_failed_sources} failed · ${info.flow_skipped_sources} skipped.</p>
+        <ol>${top.map(f=>`<li>${escapeHtml(f.name)} · complexity ${f.complexity??'unknown'} · ${f.callers} callers · ${f.callees} callees · review score ${f.review_score}</li>`).join('')}</ol>
+        <button class="btn secondary" type="button" data-open-run-graphs="${escapeHtml(report.run_id)}" data-module="${escapeHtml(report.metadata?.module_name||'')}">Explore this run's graphs</button>
+    </div>`;
+}
 function filterInventoryGroups(groups, query, stageMatchesQuery) {
     if (!query || stageMatchesQuery) return groups;
     return groups.map(group => {
@@ -359,7 +370,8 @@ function renderStages(report) {
         const stageDetail = hasInventory
             ? `${identified} extracted records · ${inventory.parsed_files || 0} parsed files · ${inventory.skipped_files || 0} skipped files`
             : `${summary.failed || 0} failed · ${summary.skipped || 0} skipped · ${summary.passed || 0} passed`;
-        const content = (showInventory ? renderStageInventory(inventory, matchingInventory, matchingGroups) : "") + renderedChecks;
+        const insightContent = stage.stage_id === 'analysis' && !query && !wantedStatuses.size && !wantedChecks.size ? renderAnalysisIntelligence(report.analysis_intelligence, report) : '';
+        const content = (showInventory ? renderStageInventory(inventory, matchingInventory, matchingGroups) : "") + insightContent + renderedChecks;
         if (!content) return "";
         return `<section class="stage-card" data-stage-id="${escapeHtml(stage.stage_id)}"><div class="stage-heading"><div><h2>${escapeHtml(stage.title)}</h2><div class="section-sub">${stageDetail}</div></div><span class="pill ${hasFailures ? "failed" : "passed"}">${hasFailures ? "Failed" : (hasInventory ? "Inventory ready" : "Completed")}</span></div><div class="check-list">${content}</div></section>`;
     }).filter(Boolean);
@@ -625,6 +637,8 @@ document.getElementById("stageFilter").addEventListener("change", () => {
     if (window.currentReport) { refreshCheckFilter(window.currentReport); renderStages(window.currentReport); }
 });
 document.getElementById("stages").addEventListener("click", event => {
+    const graphs = event.target.closest('[data-open-run-graphs]');
+    if (graphs) { if (typeof openIntelligenceRun === 'function') openIntelligenceRun(graphs.dataset.module,graphs.dataset.openRunGraphs); return; }
     const button = event.target.closest("[data-remediation-scope]");
     if (!button) return;
     event.preventDefault();

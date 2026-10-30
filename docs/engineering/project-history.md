@@ -1334,3 +1334,19 @@ and third-party artifacts and must not be interpreted as effort or quality.
   flow maps, so the follow-up presentation increment keeps branch labels and
   hides repeated text above 20 edges. Source inspection, multi-selection,
   CFG/DFD, analytics and the legacy toggle were checked in Chrome.
+
+### 2026-10-30 — Run-integrated flow and investigation workspace
+
+- Continued on `codex/integrated-flow-workspace` after preserving the prior
+  documentation clarification as `842aa06`. `61fa80b` generates bounded CFG/DFD
+  bundles in each new Analysis run and also exposes the standalone run adapter.
+  `678e178` adds latest/selected graph-bearing run composition per module.
+- The follow-up increment adds a compact current-run Analysis summary, direct
+  navigation to that run's graphs, lexical call-site order, and selective map
+  focus/reveal. Current-snapshot analytics remain deterministic. Version-diff
+  analytics and features requiring external test/runtime/model evidence stay
+  gated in the roadmap; requirements remain excluded.
+- Replayed the complete review on retained Shunt. Its new run completed two
+  native-audited flow bundles and reported source-matched CFG/DFD evidence in
+  the web UI. Focused source/neighbor inspection and an older run selection were
+  checked in Chrome. 74 maintained Python tests and both Node UI harnesses pass.

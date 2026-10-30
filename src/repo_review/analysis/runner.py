@@ -223,6 +223,29 @@ def run_analysis(
             or "Failed to generate symbols.json"
         )
 
+    from code_intelligence.run_flow import generate_run_flow
+
+    try:
+        generate_run_flow(
+            repo_root=repo_root,
+            analysis_dir=analysis_dir,
+            sources=[item["file"] for item in symbol_result["results"]],
+            policy=policy,
+        )
+    except Exception as exc:
+        # The graph is supplemental evidence; preserve the established review.
+        import json
+
+        flow_dir = analysis_dir / "flow"
+        flow_dir.mkdir(parents=True, exist_ok=True)
+        (flow_dir / "summary.json").write_text(
+            json.dumps(
+                {"schema_version": "1.0", "status": "failed", "reason": str(exc), "sources": []},
+                indent=2,
+            ) + "\n",
+            encoding="utf-8",
+        )
+
     return StageResult(
         title="Analysis",
         stage_id="analysis",
