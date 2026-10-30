@@ -49,6 +49,8 @@ question-led workspace. Choose modules, search symbol kinds, check up to 20 item
 then explore. Clicking or pressing Enter on a card loads context; Add to selection
 combines it with others. Selections persist across query modes and are cleared
 on catalog refresh. Module changes discard out-of-scope selections.
+The question menu names **Control flow (CFG)** and **Data flow (DFD)** explicitly;
+select a function whose source has a matching flow bundle to see those projections.
 
 The map uses deterministic bounded levels with distinct cards even in cyclic
 or disconnected graphs; it does not imply time or promise crossing-free edges.

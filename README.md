@@ -50,8 +50,10 @@ POST /api/review (ZIP)
 The landing page’s **Explore code graphs** action opens retained graph-bearing
 runs. The developer **Code graphs** tab switches between file, module, and
 inter-module scopes; call/include/read/write/reference overlays can be combined.
-Double-click a module or file node to drill down. Control-flow and true data-flow
-overlays are visible but disabled until their required analysis engines exist.
+Double-click a module or file node to drill down. Those original overlay
+controls remain limited; the guided workspace on the same page provides
+compiler-backed **Control flow (CFG)** and **Data flow (DFD)** questions when
+a matching flow bundle exists for the selected function.
 File scope starts with functions as the readable skeleton; parameters and locals
 are nested in function inspection and can be expanded explicitly. Selecting a
 node centers and isolates its one-hop neighborhood, while selecting a module
@@ -136,7 +138,7 @@ Open **Code graphs** in the developer workspace:
    with “How are my selections connected?” or “What could this affect?”
 3. Inspect a card to see source, relationships and its structure. Add further
    items to the selection. For functions with verified compiler evidence, choose
-   the decision-flow or value-flow question to inspect CFG/DFD.
+   **Control flow (CFG)** or **Data flow (DFD)** to inspect the generated flow.
 4. Open **Analytics and investigation priorities** for complexity, coupling,
    call depth, shared writes, exact clones and cycles. Download the current
    analysis as JSON when sharing evidence.
