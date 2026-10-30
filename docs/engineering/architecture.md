@@ -753,3 +753,8 @@ and configuration-matched flow bundles. Source inspection exposes compiler
 regions, block operations and explicit evidence limits. Association paths and
 possible influence use different direction rules; neither claims runtime order.
 See [exploration contract](../contracts/intelligence-exploration.md) and D034.
+
+The Analysis stage invokes the bounded run-flow adapter after building its
+canonical AST snapshot. Its compiler bundles and summary belong to the run's
+`analysis/flow/` directory. Flow failure is reported there and does not change
+the existing review result. The standalone flow command uses the same engine.

@@ -167,3 +167,8 @@ analytics panel. `intelligence.css` scopes presentation to this workspace.
 Reversed influence edges use their explicit display relation. Source/card labels
 are escaped and keyboard activation matches pointer inspection. Existing graph
 state remains independent behind the legacy-tools toggle.
+
+The review Analysis stage writes per-source CFG/DFD bundles and a summary below
+each run's `analysis/flow/`. Sources omitted by the cap or unavailable toolchain
+are explicit in that summary. The standalone run and single-source commands
+use the same compiler engine and do not change the inventory authority.

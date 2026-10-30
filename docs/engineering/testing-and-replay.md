@@ -751,3 +751,10 @@ same native LLVM reader; source semantics and memory-analysis correctness are
   76 function rows, and the existing overview/trace toggle remained functional.
   The map is scrollable and deliberately bounded; dense whole-function DFDs still
   require focusing the selection/limit and reading the source inspector or list.
+
+## Run-local flow generation — 2026-10-30
+
+`tests/test_run_flow.py` verifies that a missing toolchain creates an unavailable
+summary without failing review and that a real C fixture produces both projections
+under a run's `analysis/flow/` path. The source cap, per-source status, and host
+configuration boundary are in the flow contract.

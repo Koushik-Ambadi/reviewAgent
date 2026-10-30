@@ -129,6 +129,12 @@ review artifacts are preserved. These are host-analysis CFGs and bounded DFDs;
 pointer/global/interprocedural memory flow is unresolved. See the
 [flow contract](docs/contracts/flow-evidence.md). Rendering is not required.
 
+New review runs also attempt CFG/DFD generation during Analysis. Check
+`workspace/runs/<run_id>/analysis/flow/summary.json` for completed, skipped or
+failed sources; successful source bundles sit beside that summary. Review results
+remain available if flow extraction cannot run. For an existing run, use
+`python -m code_intelligence.run_flow --repo <run-repo> --analysis <run>/analysis`.
+
 ## Explore relationships and analytics
 
 Open **Code graphs** in the developer workspace:

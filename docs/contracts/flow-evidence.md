@@ -71,5 +71,13 @@ operations retain operands without inferred hidden effects.
 IR is lowered: source constructs may fold/expand even at O0. This is neither a
 runtime trace nor a source-level CFG, frequency estimate or safety proof.
 C++ exceptions, other LLVM majors and target builds have not been validated.
-The normal pipeline and graphical CFG/DFD controls remain unchanged; the CLI
-and JSON projections are the implemented delivery surface.
+The normal Analysis stage now invokes `code_intelligence.run_flow` after the
+shared symbol/AST pass. It writes `analysis/flow/summary.json` and one fresh
+bundle per processed C source under `analysis/flow/<stem>-<path-hash>/` inside
+that run. Each bundle has the canonical graph, both projections and provenance.
+The source cap defaults to 32 (policy `flow.max_sources`, maximum 128); omitted
+and failed sources are explicit. Missing Clang/LLVM records `unavailable`
+without failing the existing review. `flow.enabled: false` records `disabled`.
+Host C99 evidence remains separate from target-build claims. The single-source
+CLI remains; `python -m code_intelligence.run_flow --repo ... --analysis ...`
+can populate an existing run separately.
