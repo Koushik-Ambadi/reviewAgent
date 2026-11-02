@@ -795,3 +795,25 @@ The map initially exposed eight items per internal flow, linked to the function.
 The older trace playground also showed calls, CFG and definition-use edges for
 the same function, and its obsolete disabled-engine message was absent. These
 are bounded static projections, not observed call or branch execution order.
+
+## Source-backed CFG branch presentation — 2026-11-02
+
+The retained Shunt run `20261030_113628_e787c0e3` was inspected against
+`src/shunt_model.c:470–529`. Its function-flow response for
+`Shunt_currentstatus` returned 13 canonical CFG blocks and 16 transitions.
+The source-bound summaries recovered the four successive comparisons with
+L1 fault, L2 fault, current error and current valid constants, plus the five
+corresponding status assignments including the final default. The first L1
+comparison's threshold declaration has initializer `2U`; this is source
+initialization evidence, not a proven runtime value. The newer
+selected Shunt run `20261102_150554_d838251b` was then checked in the local
+browser: one function card expanded to a labeled CFG container with the
+condition on each decision card, assignment on each outcome card, and Yes/No
+siblings. Ten of 14 map items were initially visible; compiler-only joins and
+exit remained in the relationship list and JSON for inspection.
+
+The maintained `tests/` suite passed 77 tests, and both Node UI harnesses
+passed. A root-level pytest discovery attempt still fails on the already
+registered stale manual ZIP script (BUG-008); it is outside the maintained
+suite and was not changed in this increment. These checks confirm source/IR
+alignment and static presentation, not runtime branch coverage.
