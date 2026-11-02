@@ -12,6 +12,8 @@ def test_graph_workspace_shell_exposes_scopes_layers_and_accessible_fallback():
         'id="graphTraceRootMode"',
         'id="graphTraceRoot"',
         'id="graphTraceStart"',
+        'id="graphTraceFlow"',
+        'id="graphTraceFlowLimit"',
         'id="graphScope"',
         'id="graphFile"',
         'id="graphModules"',
@@ -29,7 +31,8 @@ def test_graph_workspace_shell_exposes_scopes_layers_and_accessible_fallback():
     assert 'option value="module"' in html
     assert 'option value="inter_module"' in html
     assert "control_flow" not in html
-    assert "Control flow and definition-use data flow stay disabled" in html
+    assert "Verified CFG and bounded DFD appear" in html
+    assert "Control flow and definition-use data flow stay disabled" not in html
     assert 'canvas.addEventListener("dblclick"' in script
     assert 'fetch("/api/graphs/catalog")' in script
     assert "focusGraphNode(node)" in script
@@ -39,10 +42,8 @@ def test_graph_workspace_shell_exposes_scopes_layers_and_accessible_fallback():
     assert "function rectangleBoundary" in script
     assert "renderGraphEdgeTooltip(edge" in script
     assert "incoming_interactions" in script
-    assert (
-        "Return-value lineage and argument-to-parameter binding remain unavailable"
-        in script
-    )
+    assert "Expand this function for verified static CFG/DFD evidence" in script
+    assert "/graphs/function-flow" in script
     assert "/graphs/nodes" in script
     assert "/graphs/neighborhood" in script
     assert "function toggleTraceNode" in script

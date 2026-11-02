@@ -355,9 +355,8 @@ The API returns templates; the pipeline owns execution-time loading.
 - The Code graphs tab is the interactive engineering view over canonical run
   artifacts. It combines available overlays across file, module, and
   inter-module scopes, keeps a textual relationship fallback, and drills from
-  high-level nodes to lower scopes. Disabled CFG/data-flow controls remain
-  unavailable in this UI; the separate opt-in LLVM flow CLI now provides
-  machine-readable evidence.
+  high-level nodes to lower scopes. Source-matched run-local compiler CFG/DFD
+  can be expanded inside function call traces or inspected as separate views.
 - File graphs are function-centric: parameters and locals remain owned details
   in the inspector unless explicitly expanded. Selection centers one node and
   dims unrelated facts; aggregate module edges expose bounded underlying symbol
@@ -756,6 +755,12 @@ See [exploration contract](../contracts/intelligence-exploration.md) and D034.
 Run IDs are selected only from graph-bearing report directories; node IDs retain
 their run namespace, and compiler bundles attach only to the selected run's
 source hashes. The default remains the latest run per module.
+The legacy trace and guided call graph both request bounded per-function
+internals through `GET /api/runs/{run_id}/graphs/function-flow`. That adapter
+uses the same Workspace manifest and input-hash verification as separate CFG/
+DFD queries. Call edges remain distinct from `control_flow`, `def_use` and
+`memory_flow`; visual parent links are derived `contains` edges. Missing flow
+leaves calls visible with an explicit limitation.
 
 The Analysis stage invokes the bounded run-flow adapter after building its
 canonical AST snapshot. Its compiler bundles and summary belong to the run's

@@ -9,6 +9,7 @@ from app.services.graph_service import (
     get_run_graph,
     get_run_graph_neighborhood,
     get_run_graph_nodes,
+    get_run_function_flow,
 )
 from orchestrator.run_store import RunNotFoundError, RunStoreError
 
@@ -71,6 +72,21 @@ async def read_run_graph_neighborhood(
         return get_run_graph_neighborhood(
             run_id, node_id, direction=direction, layers=layers
         )
+    except (RunNotFoundError, GraphArtifactNotFoundError) as error:
+        raise HTTPException(status_code=404, detail=str(error)) from error
+    except (RunStoreError, ValueError) as error:
+        raise HTTPException(status_code=400, detail=str(error)) from error
+
+
+@router.get("/runs/{run_id}/graphs/function-flow")
+async def read_run_function_flow(
+    run_id: str,
+    node_id: str,
+    mode: str,
+    limit: int = 24,
+):
+    try:
+        return get_run_function_flow(run_id, node_id, mode=mode, limit=limit)
     except (RunNotFoundError, GraphArtifactNotFoundError) as error:
         raise HTTPException(status_code=404, detail=str(error)) from error
     except (RunStoreError, ValueError) as error:

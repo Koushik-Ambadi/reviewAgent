@@ -778,3 +778,20 @@ Focus reduced the CFG map to one step and selecting one neighbor showed two;
   passed 74 Python tests plus both Node UI harnesses. These checks establish
 artifact consistency and UI behavior, not runtime execution or complete memory
 dependence coverage.
+
+## Inline function flow acceptance — 2026-11-02
+
+The run-local function-flow adapter is checked against the real C fixture bundle
+for both CFG and DFD; a function with no source-matched bundle is rejected. The
+guided UI harness checks that an expanded CFG attaches to its function, appears
+in the map and can be removed. The trace harness checks CFG/DFD instances,
+control-flow and parent edges, and branch collapse. The maintained suite passed
+75 Python tests and both Node harnesses.
+
+In the local browser, `Shunt_task` in **Who calls whom?** retained eight call
+nodes while CFG and DFD were expanded independently. Each returned 48 internal
+items; coverage disclosed 73 more CFG and 434 more DFD items beyond each bound.
+The map initially exposed eight items per internal flow, linked to the function.
+The older trace playground also showed calls, CFG and definition-use edges for
+the same function, and its obsolete disabled-engine message was absent. These
+are bounded static projections, not observed call or branch execution order.

@@ -36,7 +36,7 @@
 | GR-002 | Call graph | Function identities and direct/indirect call sites | Direct calls and named unresolved calls; indirect target sets absent | IMPLEMENTED | Add indirect-call evidence and configuration coverage |
 | GR-003 | Reachability / dead-code graph | Call graph plus explicit roots/exported entry points and configuration | Explicit-root projection classifies reachable/unreachable functions and exposes unresolved boundaries | IMPLEMENTED | Add project entry-point/configuration discovery |
 | GR-004 | Call-depth graph | Call graph, roots, recursion/SCC handling | Explicit-root projection condenses recursive SCCs and reports bounded depth | IMPLEMENTED | Add project entry-point/configuration discovery |
-| GR-005 | Control-flow graph (CFG) | Per-function basic blocks, branch/loop/switch/return edges, exceptional/unreachable exits | Opt-in LLVM 22 lowered block/successor projection, validated on retained Shunt | IMPLEMENTED | Integrate optional UI and target-configuration coverage; see flow-evidence.md |
+| GR-005 | Control-flow graph (CFG) | Per-function basic blocks, branch/loop/switch/return edges, exceptional/unreachable exits | LLVM 22 lowered block/successor projection in run-local bundles; separate and inline views for matched sources | IMPLEMENTED | Extend target-configuration coverage; see flow-evidence.md |
 | GR-006 | Data-flow / lineage graph | Definitions, uses, assignments, aliases, pointer targets, interprocedural flow, configuration | Exact SSA operand graph and may-reaching definitions for direct non-escaping locals; no alias/interprocedural memory model | IMPLEMENTED (bounded) | Extend validated memory model; see flow-evidence.md |
 | GR-007 | Variable-access / data-access graph | Variable identities, function scope, read/write/read-write/reference occurrences | Parameters, locals, fields, globals, and conservative AST-context access edges | IMPLEMENTED | Validate pointer/member and macro-heavy access classification on project fixtures |
 | GR-008 | Include graph | Source file, include spelling, resolved target, configuration | Resolved, external, and unresolved include edges | IMPLEMENTED | Add translation-unit/configuration coverage summaries |
@@ -75,9 +75,8 @@ made trustworthy by adding fields to a symbol table. They require named engines
 or external evidence contracts. Until those inputs exist, corresponding graph
 outputs must remain unavailable rather than empty or inferred as complete.
 
-The opt-in LLVM CFG and bounded DFD are implemented through the standalone
-flow command. Their exact scope and unavailable memory semantics are owned by
-[flow evidence](flow-evidence.md). Matching flow bundles now attach to the
-[guided graph workspace](intelligence-exploration.md) without changing the
-default analysis pipeline. The original graph overview and trace controls
-remain available on the same page.
+The LLVM CFG and bounded DFD run in the review Analysis stage and through a
+standalone command. Their exact scope and memory limits are owned by
+[flow evidence](flow-evidence.md). Matching bundles appear in separate modes,
+inside guided call graphs, and in the expandable trace playground. The original
+overview relationship overlays remain on the same page.

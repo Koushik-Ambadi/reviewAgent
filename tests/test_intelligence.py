@@ -162,3 +162,12 @@ def test_calls_have_source_order_without_runtime_claim(tmp_path):
     assert any("runtime order" in note for note in context["notes"])
     viewed = workspace.query(mode="calls", selected=["A_run::caller"])
     assert {e["source_order"] for e in viewed["edges"]} == {1,2}
+
+
+def test_inline_flow_requires_source_matched_bundle(tmp_path, monkeypatch):
+    from app.services.graph_service import get_run_function_flow
+
+    write_run(tmp_path, "A", [node("f", location={"path": "src/a.c", "line": 1})], [])
+    monkeypatch.setattr("orchestrator.run_store.WORKSPACE_ROOT", tmp_path)
+    with pytest.raises(ValueError, match="No source-matched compiler flow"):
+        get_run_function_flow("A_run", "f", mode="cfg")

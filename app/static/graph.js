@@ -8,6 +8,9 @@ const graphColors = {
     reads: "#0891b2",
     writes: "#dc2626",
     references: "#d97706",
+    control_flow: "#7c3aed",
+    def_use: "#0891b2",
+    memory_flow: "#b45309",
     contains: "#94a3b8",
     parameter_of: "#94a3b8",
     field_of: "#94a3b8",
@@ -203,7 +206,7 @@ function renderGraphPayload() {
     renderGraphRelationshipList();
     renderGraphInspector(null);
     document.getElementById("graphScopeHelp").textContent = graphState.viewMode === "trace"
-        ? "Double-click to expand/collapse. Repeated symbols may appear per branch for readability."
+        ? "Double-click to expand/collapse. Function expansion shows calls plus bounded CFG/DFD internals when verified evidence exists."
         : graphState.scope === "file"
         ? "Functions are primary; owned declarations stay in the inspector."
         : graphState.scope === "module"
@@ -730,7 +733,10 @@ function renderGraphInspector(node) {
         ${callPosition ? `<dt>Call position</dt><dd>${callPosition.entry_candidate ? "Beginning candidate · " : ""}${callPosition.functions_before} functions before · ${callPosition.functions_after} after${callPosition.exit_candidate ? " · ending candidate" : ""}${callPosition.recursive ? " · recursive" : ""}</dd><dt>Direct callers / callees</dt><dd>${callPosition.direct_callers} / ${callPosition.direct_callees}</dd>` : ""}
         ${graphState.viewMode === "trace" && node.suppressed_cycles ? `<dt>Cycle links hidden</dt><dd>${node.suppressed_cycles} already traversed on this branch</dd>` : ""}
         ${node.kind === "function" ? `<dt>Parameter object sizes</dt><dd>${parameterBytes} bytes observed</dd><dt>Local object sizes</dt><dd>${localBytes} bytes observed</dd>` : ""}
+        ${node.flow_view ? `<dt>Internal flow</dt><dd>${escapeHtml(node.flow_view.toUpperCase())} · ${escapeHtml(node.flow_label || node.label)}</dd>` : ""}
         <dt>Incoming relationship groups</dt><dd>${incoming.length}</dd><dt>Outgoing relationship groups</dt><dd>${outgoing.length}</dd>${metrics}</dl>
+        ${node.kind === "function" && node.flow_notes?.length ? `<p class="graph-evidence-note">${node.flow_notes.map(escapeHtml).join(" ")}</p>` : ""}
+        ${node.flow_ir ? `<details><summary>Compiler operation</summary><pre>${escapeHtml(node.flow_ir)}</pre></details>` : ""}
         ${graphSignalList("Declared at", declarations)}
         ${graphSignalList("Defined at", definitions)}
         ${graphSignalList("Parameters (owned)", parameters)}
@@ -741,7 +747,7 @@ function renderGraphInspector(node) {
         ${graphSignalList(node.kind === "function" ? "Side-effect outputs" : (node.kind === "module" ? "Outputs" : "Writes"), node.interface ? outputs : (node.kind === "function" ? observedOutputs : outputs))}
         ${node.kind !== "function" && node.kind !== "module" ? graphSignalList("Interacted with by", incomingEvidence) : ""}
         ${node.kind !== "function" && node.kind !== "module" ? graphSignalList("Interacts with", outgoingEvidence) : ""}
-        ${node.kind === "function" ? '<p class="graph-evidence-note">Inputs and outputs are structural: parameters and read variables flow in; written variables flow out. Return-value lineage and argument-to-parameter binding remain unavailable until value/control-flow extraction exists. Object-size totals are type-size sums, not code size or an exact stack frame.</p>' : node.kind === "parameter" ? '<p class="graph-evidence-note">This compact parameter port can be expanded to its owner. Its concrete constant, macro, global, return value, or expression origin is not yet extracted, so no binding is invented.</p>' : '<p class="graph-evidence-note">Interactions are source occurrences, not execution order. Control-flow evidence is required before ordering them.</p>'}`;
+        ${node.kind === "function" ? '<p class="graph-evidence-note">Inputs and outputs are structural. Expand this function for verified static CFG/DFD evidence where a matching compiler bundle exists. Call positions do not establish runtime order; object-size totals are not exact stack frames.</p>' : node.flow_view ? '<p class="graph-evidence-note">Compiler-derived static flow. Inspect edges and source positions; this is not an observed runtime trace.</p>' : node.kind === "parameter" ? '<p class="graph-evidence-note">This compact parameter port can be expanded to its owner. Its concrete constant, macro, global, return value, or expression origin is not yet extracted, so no binding is invented.</p>' : '<p class="graph-evidence-note">Interactions are source occurrences, not execution order.</p>'}`;
 }
 
 function formatGraphDeclaration(node) {
@@ -860,9 +866,89 @@ async function startGraphTrace() {
     syncTracePayload("trace:1");
 }
 
+function graphFlowLabel(node, mode) {
+    if (node.kind === "basic_block") {
+        return `${mode.toUpperCase()} step ${Number(node.attributes?.order ?? 0) + 1}: ${node.name}`;
+    }
+    if (node.kind === "instruction") {
+        return `${mode.toUpperCase()} operation${node.location?.line ? ` · line ${node.location.line}` : ""}`;
+    }
+    return `${mode.toUpperCase()} value: ${node.name}`;
+}
+
+function appendTraceFunctionFlow(parent, flow) {
+    const identities = new Map();
+    flow.nodes.forEach((item, index) => {
+        graphState.traceCounter += 1;
+        const id = `trace:${graphState.traceCounter}`;
+        identities.set(item.id, id);
+        graphState.traceInstances.push({
+            id,
+            canonical_id: item.id,
+            parent_instance_id: parent.id,
+            trace_depth: (parent.trace_depth || 0) + 1,
+            trace_column: (parent.trace_column || 0) + (flow.mode === "cfg" ? 2 : 3),
+            trace_role: `${flow.mode.toUpperCase()} ${String(index + 1).padStart(2, "0")}`,
+            trace_relation_path: parent.trace_relation_path || [],
+            trace_canonical_path: [...(parent.trace_canonical_path || []), item.id],
+            kind: item.kind,
+            label: graphFlowLabel(item, flow.mode),
+            flow_label: item.name,
+            flow_view: flow.mode,
+            flow_ir: item.attributes?.ir,
+            path: item.location?.path,
+            line: item.location?.line,
+            expanded: false,
+        });
+    });
+    if (flow.nodes.length) {
+        graphState.traceEdges.push({
+            id: `${parent.id}:${flow.mode}:inside`, kind: "contains",
+            source: parent.id, target: identities.get(flow.nodes[0].id),
+            count: 1, resolution: "verified_compiler_flow",
+        });
+    }
+    flow.edges.forEach(edge => {
+        if (!identities.has(edge.source) || !identities.has(edge.target)) return;
+        graphState.traceEdges.push({
+            ...edge, id: `${parent.id}:${flow.mode}:${edge.id}`,
+            source: identities.get(edge.source), target: identities.get(edge.target),
+            count: 1,
+        });
+    });
+}
+
+async function loadTraceFunctionFlow(parent) {
+    const choice = document.getElementById("graphTraceFlow").value;
+    if (choice === "none") return;
+    const modes = choice === "both" ? ["cfg", "dfd"] : [choice];
+    parent.flow_notes = [];
+    for (const mode of modes) {
+        const params = new URLSearchParams({
+            node_id: parent.canonical_id,
+            mode,
+            limit: document.getElementById("graphTraceFlowLimit").value,
+        });
+        try {
+            const response = await fetch(
+                `/api/runs/${encodeURIComponent(graphState.runId)}/graphs/function-flow?${params}`
+            );
+            if (!response.ok) throw new Error(`No verified ${mode.toUpperCase()} for this function`);
+            const flow = await response.json();
+            appendTraceFunctionFlow(parent, flow);
+            parent.flow_notes.push(flow.nodes.length
+                ? `${mode.toUpperCase()}: ${flow.nodes.length} items shown; ${flow.coverage.omitted} omitted by the limit.`
+                : `${mode.toUpperCase()}: no matching compiler flow evidence for this function.`);
+        } catch (error) {
+            parent.flow_notes.push(String(error));
+        }
+    }
+}
+
 async function toggleTraceNode(positionedNode) {
     const node = graphState.traceInstances.find(item => item.id === positionedNode.id);
     if (!node) return;
+    if (node.flow_view) return;
     if (node.expanded) {
         collapseTraceNode(node.id);
         node.expanded = false;
@@ -870,70 +956,80 @@ async function toggleTraceNode(positionedNode) {
         return;
     }
     if ((node.trace_depth || 0) >= 20) return;
-    const params = new URLSearchParams({
-        node_id: node.canonical_id,
-        direction: document.getElementById("graphTraceDirection").value
-    });
-    graphState.layers.forEach(layer => params.append("layers", layer));
-    const response = await fetch(
-        `/api/runs/${encodeURIComponent(graphState.runId)}/graphs/neighborhood?${params}`
-    );
-    if (!response.ok) throw new Error(await response.text());
-    const neighborhood = await response.json();
-    const canonicalNodes = new Map(neighborhood.nodes.map(item => [item.id, item]));
-    const center = canonicalNodes.get(node.canonical_id);
-    if (center) {
-        const identity = {
-            id: node.id,
-            canonical_id: node.canonical_id,
-            parent_instance_id: node.parent_instance_id,
-            trace_depth: node.trace_depth,
-        };
-        Object.assign(node, center, identity);
-        node.interface = neighborhood.interface;
-    }
-    let suppressedCycles = 0;
-    (neighborhood.edges || []).forEach(edge => {
-        const neighborId = edge.source === node.canonical_id ? edge.target : edge.source;
-        const neighbor = canonicalNodes.get(neighborId);
-        if (!neighbor) return;
-        if (!traceBranchAllows(node, edge.id, neighborId)) {
-            suppressedCycles += 1;
-            return;
+    if (node.expanding) return;
+    node.expanding = true;
+    try {
+        const params = new URLSearchParams({
+            node_id: node.canonical_id,
+            direction: document.getElementById("graphTraceDirection").value
+        });
+        graphState.layers.forEach(layer => params.append("layers", layer));
+        const response = await fetch(
+            `/api/runs/${encodeURIComponent(graphState.runId)}/graphs/neighborhood?${params}`
+        );
+        if (!response.ok) throw new Error(await response.text());
+        const neighborhood = await response.json();
+        const canonicalNodes = new Map(neighborhood.nodes.map(item => [item.id, item]));
+        const center = canonicalNodes.get(node.canonical_id);
+        if (center) {
+            const identity = {
+                id: node.id,
+                canonical_id: node.canonical_id,
+                parent_instance_id: node.parent_instance_id,
+                trace_depth: node.trace_depth,
+            };
+            Object.assign(node, center, identity);
+            node.interface = neighborhood.interface;
         }
-        graphState.traceCounter += 1;
-        const childId = `trace:${graphState.traceCounter}`;
-        const flowSource = edge.flow_source || edge.source;
-        const flowTarget = edge.flow_target || edge.target;
-        const neighborIsSource = flowSource === neighborId;
-        const traceColumn = (node.trace_column || 0) + (neighborIsSource ? -1 : 1);
-        const traceRole = neighborIsSource ? edge.source_role : edge.target_role;
-        graphState.traceInstances.push({
-            ...neighbor,
-            id: childId,
-            canonical_id: neighbor.id,
-            parent_instance_id: node.id,
-            trace_depth: (node.trace_depth || 0) + 1,
-            trace_column: traceColumn,
-            trace_role: traceRole,
-            trace_relation_path: [...(node.trace_relation_path || []), edge.id],
-            trace_canonical_path: [...(node.trace_canonical_path || []), neighbor.id],
-            suppressed_cycles: 0,
-            expanded: false
+        let suppressedCycles = 0;
+        (neighborhood.edges || []).forEach(edge => {
+            const neighborId = edge.source === node.canonical_id ? edge.target : edge.source;
+            const neighbor = canonicalNodes.get(neighborId);
+            if (!neighbor) return;
+            if (!traceBranchAllows(node, edge.id, neighborId)) {
+                suppressedCycles += 1;
+                return;
+            }
+            graphState.traceCounter += 1;
+            const childId = `trace:${graphState.traceCounter}`;
+            const flowSource = edge.flow_source || edge.source;
+            const flowTarget = edge.flow_target || edge.target;
+            const neighborIsSource = flowSource === neighborId;
+            const traceColumn = (node.trace_column || 0) + (neighborIsSource ? -1 : 1);
+            const traceRole = neighborIsSource ? edge.source_role : edge.target_role;
+            graphState.traceInstances.push({
+                ...neighbor,
+                id: childId,
+                canonical_id: neighbor.id,
+                parent_instance_id: node.id,
+                trace_depth: (node.trace_depth || 0) + 1,
+                trace_column: traceColumn,
+                trace_role: traceRole,
+                trace_relation_path: [...(node.trace_relation_path || []), edge.id],
+                trace_canonical_path: [...(node.trace_canonical_path || []), neighbor.id],
+                suppressed_cycles: 0,
+                expanded: false
+            });
+            const visualSource = flowSource === node.canonical_id ? node.id : childId;
+            const visualTarget = flowTarget === node.canonical_id ? node.id : childId;
+            graphState.traceEdges.push({
+                ...edge,
+                id: `${node.id}:${childId}:${edge.kind}`,
+                kind: edge.flow_kind || edge.kind,
+                source: visualSource,
+                target: visualTarget
+            });
         });
-        const visualSource = flowSource === node.canonical_id ? node.id : childId;
-        const visualTarget = flowTarget === node.canonical_id ? node.id : childId;
-        graphState.traceEdges.push({
-            ...edge,
-            id: `${node.id}:${childId}:${edge.kind}`,
-            kind: edge.flow_kind || edge.kind,
-            source: visualSource,
-            target: visualTarget
-        });
-    });
-    node.suppressed_cycles = suppressedCycles;
-    node.expanded = true;
-    syncTracePayload(node.id);
+        node.suppressed_cycles = suppressedCycles;
+        if (node.kind === "function") await loadTraceFunctionFlow(node);
+        node.expanded = true;
+        syncTracePayload(node.id);
+    } catch (error) {
+        node.flow_notes = [`Expansion failed: ${String(error)}`];
+        syncTracePayload(node.id);
+    } finally {
+        node.expanding = false;
+    }
 }
 
 function traceBranchAllows(node, relationshipId, neighborCanonicalId) {

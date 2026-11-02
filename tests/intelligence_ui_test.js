@@ -27,6 +27,19 @@ intelligence.visible=new Set(['a']);renderIntelligenceMap();
 if(!iq('iqMapHelp').textContent.includes('1 of 3')||iq('iqMap').innerHTML.includes('Inspect B'))throw Error('Node focus did not reduce map');
 if(!neighborControls('a').includes('data-show-node="b"'))throw Error('Connected item cannot be chosen');
 intelligence.visible.add('b');renderIntelligenceMap();
+intelligence.baseResult={nodes,edges,title:'Calls',mode:'calls',coverage:{displayed:3,complete_within_scope:true}};
+intelligence.expandedFlows.set('a',new Map([['cfg',{nodes:[
+    {id:'step',name:'entry',kind:'basic_block',module:'A',attributes:{order:0}}],edges:[],coverage:{displayed:1,omitted:2}}]]));
+intelligence.expandedFlows.set('b',new Map([['dfd',{nodes:[
+    {id:'value',name:'input',kind:'ir_value',module:'B',attributes:{}}],edges:[],coverage:{displayed:1,omitted:0}}]]));
+composeInlineFlow();
+if(!intelligence.result.edges.some(e=>e.kind==='contains'&&e.source==='a'&&e.target==='step'))throw Error('Inline CFG not connected to call graph');
+if(!iq('iqMap').innerHTML.includes('CFG inside'))throw Error('Inline CFG card missing');
+if(!contextHtml({node:nodes[0],notes:[],relationships:[],regions:[]}).includes('Expand DFD'))throw Error('Function expansion controls missing');
+if(!intelligence.result.edges.some(e=>e.kind==='contains'&&e.source==='b'&&e.target==='value'))throw Error('Second function flow missing');
+intelligence.expandedFlows.delete('a');composeInlineFlow();
+if(intelligence.result.nodes.some(n=>n.id==='step')||!intelligence.result.nodes.some(n=>n.id==='value'))throw Error('Hiding one flow removed another');
+intelligence.expandedFlows.clear();composeInlineFlow();
 const html=contextHtml({node:nodes[0],notes:[],source:{text:'<script>bad()</script>',path:'a.c',match:'verified'},relationships:[],regions:[]});
 if(html.includes('<script>'))throw Error('Unescaped source excerpt');
 `,context);

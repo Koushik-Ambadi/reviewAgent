@@ -1,5 +1,6 @@
 /* Guided, read-only exploration. All source-derived text is escaped. */
 const intelligence = {catalog: null, selected: new Set(), modules: new Set(), runs: {}, visible: new Set(), result: null,
+    baseResult: null, expandedFlows: new Map(),
     epoch: 0, contextEpoch: 0, zoom: 1, controller: null};
 const iq = id => document.getElementById(id);
 const ie = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -22,10 +23,12 @@ function flowTitle(node) {
 }
 
 function layoutIntelligence(nodes, edges) {
+    const base = nodes.filter(n => !n.inline_owner);
+    const internals = nodes.filter(n => n.inline_owner);
     // Shortest levels from entries; disconnected/cyclic components remain finite.
-    const byId = new Map(nodes.map(n => [n.id, n]));
-    const outgoing = new Map(nodes.map(n => [n.id, new Set()]));
-    const incoming = new Map(nodes.map(n => [n.id, 0]));
+    const byId = new Map(base.map(n => [n.id, n]));
+    const outgoing = new Map(base.map(n => [n.id, new Set()]));
+    const incoming = new Map(base.map(n => [n.id, 0]));
     edges.forEach(e => {if (byId.has(e.source) && byId.has(e.target) && e.source !== e.target && !outgoing.get(e.source).has(e.target)) {
         outgoing.get(e.source).add(e.target); incoming.set(e.target, incoming.get(e.target)+1);
     }});
@@ -37,11 +40,18 @@ function layoutIntelligence(nodes, edges) {
             levels.set(target, Math.min(8, levels.get(queue[i])+1)); queue.push(target);
         }
     }
-    nodes.filter(n => incoming.get(n.id) === 0 || n.attributes?.entry).forEach(n => visit(n.id));
-    nodes.forEach(n => visit(n.id));
+    base.filter(n => incoming.get(n.id) === 0 || n.attributes?.entry).forEach(n => visit(n.id));
+    base.forEach(n => visit(n.id));
     const rows = new Map();
-    return nodes.map(n => {const level=levels.get(n.id), row=rows.get(level)||0; rows.set(level,row+1);
+    const positioned = base.map(n => {const level=levels.get(n.id), row=rows.get(level)||0; rows.set(level,row+1);
         return {...n,x:40+level*290,y:45+row*125};});
+    const groups = new Map();
+    internals.forEach(n => {const key=`${n.inline_owner}:${n.inline_mode}`;
+        if(!groups.has(key))groups.set(key,[]);groups.get(key).push(n);});
+    const right=Math.max(40,...positioned.map(n=>n.x))+290;
+    [...groups.values()].forEach((group,index)=>group.forEach((n,row)=>
+        positioned.push({...n,x:right+index*290,y:45+row*125})));
+    return positioned;
 }
 
 async function openIntelligence() {
@@ -55,6 +65,7 @@ async function openIntelligenceRun(module,runId) {
 }
 
 async function refreshIntelligence(runs=null, preserveModules=null) {
+    ++intelligence.epoch;
     iq('iqStatus').textContent = 'Reading available module evidence…';
     try {
         const response = await fetch('/api/intelligence/catalog',runs ? {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({runs})} : {});
@@ -63,6 +74,7 @@ async function refreshIntelligence(runs=null, preserveModules=null) {
         intelligence.modules = preserveModules || new Set(intelligence.catalog.modules.map(m => m.module_name));
         intelligence.runs = Object.fromEntries(intelligence.catalog.modules.map(m=>[m.module_name,m.run_id]));
         intelligence.result=null;
+        intelligence.baseResult=null; intelligence.expandedFlows.clear();
         intelligence.selected.clear();
         iq('iqMode').innerHTML = intelligence.catalog.modes.map(m => `<option value="${ie(m.id)}">${ie(m.label)}</option>`).join('');
         iq('iqModules').innerHTML = intelligence.catalog.modules.map(m => `<label><input type="checkbox" ${intelligence.modules.has(m.module_name)?'checked':''} value="${ie(m.module_name)}"> ${ie(m.module_name)}<select data-run="${ie(m.module_name)}" aria-label="Run for ${ie(m.module_name)}">${(intelligence.catalog.run_choices[m.module_name]||[]).map(c=>`<option value="${ie(c.run_id)}" ${c.run_id===m.run_id?'selected':''}>${c.latest?'Latest · ':''}${ie(c.run_id)}</option>`).join('')}</select></label>`).join('') || '<p>No modules with analysis yet.</p>';
@@ -106,6 +118,7 @@ async function queryIntelligence() {
         const response=await fetch('/api/intelligence/query',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),signal:intelligence.controller.signal});
         if (!response.ok) {const error=await response.json();throw new Error(typeof error.detail==='string'?error.detail:'Check the selection and query settings.');}
         const result=await response.json(); if (epoch!==intelligence.epoch) return;
+        intelligence.baseResult=result; intelligence.expandedFlows.clear();
         intelligence.result=result; renderIntelligenceResult();
     } catch(e) {if(e.name!=='AbortError' && epoch===intelligence.epoch) iq('iqStatus').textContent=e.message;}
     finally {if(epoch===intelligence.epoch) iq('iqRun').disabled=false;}
@@ -130,9 +143,59 @@ function renderIntelligenceResult() {
         <h4>File cycles</h4>${groupsHtml(a.file_cycles,new Map(a.file_nodes.map(n=>[n.id,n.name])))}
         <p>Architecture rules: ${ie(a.architecture.status)} · ${a.architecture.findings.length} matching forbidden dependencies.</p>
         <pre>${ie(JSON.stringify(a.architecture.findings,null,2))}</pre></details>`;
-    iq('iqRelationships').innerHTML=r.edges.map(e=>`<li><button data-inspect="${ie(e.source)}">${ie(names.get(e.source))}</button> ${ie(edgeLabel(e))} <button data-inspect="${ie(e.target)}">${ie(names.get(e.target))}</button>${e.source_order?` · source call #${e.source_order}`:''}${e.count?` (${e.count} observations)`:''}</li>`).join('')||'<li>No relationships in this view.</li>';
+    renderIntelligenceRelationships();
     renderIntelligenceMap();
     iq('iqInspector').innerHTML=(r.structures||[]).map(contextHtml).join('') || '<p>Inspect a map item to see its source, inputs, outputs and compiler evidence. Use “Add to selection” to combine it with other items.</p>';
+}
+
+function renderIntelligenceRelationships() {
+    const r=intelligence.result, names=new Map([...intelligence.catalog.symbols,...r.nodes].map(n=>[n.id,n.name]));
+    iq('iqRelationships').innerHTML=r.edges.map(e=>`<li><button data-inspect="${ie(e.source)}">${ie(names.get(e.source))}</button> ${ie(edgeLabel(e))} <button data-inspect="${ie(e.target)}">${ie(names.get(e.target))}</button>${e.source_order?` · source call #${e.source_order}`:''}${e.count?` (${e.count} observations)`:''}</li>`).join('')||'<li>No relationships in this view.</li>';
+}
+
+function composeInlineFlow() {
+    const base=intelligence.baseResult;
+    const nodes=new Map(base.nodes.map(n=>[n.id,n]));
+    const edges=new Map(base.edges.map(e=>[e.id,e]));
+    for(const [owner, modes] of intelligence.expandedFlows)for(const [mode, flow] of modes) {
+        flow.nodes.forEach(n=>nodes.set(n.id,{...n,inline_owner:owner,inline_mode:mode}));
+        flow.edges.forEach(e=>edges.set(e.id,e));
+        if(flow.nodes.length)edges.set(`inline:${owner}:${mode}`,{
+            id:`inline:${owner}:${mode}`,kind:'contains',source:owner,target:flow.nodes[0].id,
+            display_relation:`has ${mode.toUpperCase()} internals`,resolution:'verified_compiler_flow'});
+    }
+    intelligence.result={...base,nodes:[...nodes.values()],edges:[...edges.values()],
+        inline_flow:[...intelligence.expandedFlows].flatMap(([owner,modes])=>[...modes].map(([mode,flow])=>({owner,mode,coverage:flow.coverage})))};
+    const flows=intelligence.result.inline_flow;
+    const internalCount=flows.reduce((total,item)=>total+item.coverage.displayed,0);
+    iq('iqStatus').textContent=`${base.coverage.displayed} call-graph items · ${internalCount} internal flow items · ${intelligence.result.edges.length} connections.`;
+    iq('iqCoverage').textContent=flows.length
+        ? `Call view and ${flows.length} expanded flow${flows.length===1?'':'s'} are bounded. ${flows.reduce((total,item)=>total+item.coverage.omitted,0)} internal items remain beyond the selected limits; missing paths are not proof of absence.`
+        : base.coverage.complete_within_scope?'All eligible results in this query are shown. Source analysis may still be partial.':'Partial view: increase depth or item limit, or narrow your selection.';
+    intelligence.visible=new Set([...intelligence.visible].filter(id=>nodes.has(id)));
+    for(const modes of intelligence.expandedFlows.values())for(const flow of modes.values())
+        flow.nodes.slice(0,8).forEach(n=>intelligence.visible.add(n.id));
+    renderIntelligenceRelationships(); renderIntelligenceMap();
+}
+
+async function toggleInlineFlow(id,mode) {
+    if(intelligence.result?.mode!=='calls')return;
+    const node=intelligence.baseResult.nodes.find(n=>n.id===id);
+    if(node?.kind!=='function')return;
+    const modes=intelligence.expandedFlows.get(id)||new Map();
+    if(modes.has(mode)){modes.delete(mode);if(!modes.size)intelligence.expandedFlows.delete(id);
+        composeInlineFlow(); inspectIntelligence(id);return;}
+    const epoch=intelligence.epoch;
+    iq('iqStatus').textContent=`Loading ${mode.toUpperCase()} inside ${node.name}…`;
+    try {
+        const params=new URLSearchParams({node_id:node.canonical_id,mode,limit:'48'});
+        const response=await fetch(`/api/runs/${encodeURIComponent(node.run_id)}/graphs/function-flow?${params}`);
+        if(!response.ok)throw new Error('Verified compiler flow is unavailable for this function.');
+        const flow=await response.json();if(epoch!==intelligence.epoch)return;
+        if(!flow.nodes.length)throw new Error(`No ${mode.toUpperCase()} internals matched this function.`);
+        modes.set(mode,flow);intelligence.expandedFlows.set(id,modes);composeInlineFlow();
+        inspectIntelligence(id);
+    }catch(error){if(epoch===intelligence.epoch)iq('iqStatus').textContent=error.message;}
 }
 
 function groupsHtml(groups,names) {return `<ul>${groups.map(g=>`<li>${g.map(id=>ie(names.get(id)||id)).join(' ↔ ')}</li>`).join('')||'<li>None observed.</li>'}</ul>`;}
@@ -151,16 +214,23 @@ function renderIntelligenceMap() {
         const x=s.x+230,y=s.y+40,tx=t.x,ty=t.y+40;
         const curve=s.id===t.id?`M ${x-30} ${y-40} C ${x+70} ${y-110}, ${x+100} ${y+80}, ${x} ${y+20}`:
             `M ${x} ${y} C ${x+55} ${y+(tx<=x?65:0)}, ${tx-55} ${ty+(tx<=x?65:0)}, ${tx} ${ty}`;
-        const label=edgeLabel(e), showLabel=!dense || (e.kind==='control_flow' && (label==='if true'||label==='if false'));
+        const label=edgeLabel(e), showLabel=!dense || (e.kind==='control_flow' && (label==='if true'||label==='if false')) || e.id.startsWith('inline:');
         return `<g><path d="${curve}" class="iq-edge ${e.kind==='memory_flow'?'iq-memory':''}" marker-end="url(#iqArrow)"><title>${ie(s.name)} ${ie(label)} ${ie(t.name)}</title></path>${showLabel?`<text x="${(x+tx)/2}" y="${(y+ty)/2-8-(index%2)*12}" class="iq-edge-label">${ie(label)}</text>`:''}</g>`;}).join('');
-    const cards=nodes.map(n=>`<g class="iq-node ${intelligence.selected.has(n.id)?'selected':''}" data-inspect="${ie(n.id)}" role="button" tabindex="0" aria-label="Inspect ${ie(flowTitle(n))}" transform="translate(${n.x},${n.y})"><rect width="230" height="85" rx="12"/><text x="12" y="23">${ie(flowTitle(n).slice(0,29))}</text><text x="12" y="44" class="iq-node-kind">${ie(n.kind.replaceAll('_',' '))} · ${ie(n.module||'')}</text><text x="12" y="66" class="iq-node-kind">${ie((n.location?.path||n.attributes?.ir||'Inspect for details').slice(0,34))}</text><title>${ie(n.name)}</title></g>`).join('');
+    const cards=nodes.map(n=>`<g class="iq-node ${intelligence.selected.has(n.id)?'selected':''} ${n.inline_mode?'inline-'+n.inline_mode:''}" data-inspect="${ie(n.id)}" role="button" tabindex="0" aria-label="Inspect ${ie(flowTitle(n))}" transform="translate(${n.x},${n.y})"><rect width="230" height="85" rx="12"/><text x="12" y="23">${ie(flowTitle(n).slice(0,29))}</text><text x="12" y="44" class="iq-node-kind">${ie(n.inline_mode?n.inline_mode.toUpperCase()+' inside '+(r.nodes.find(owner=>owner.id===n.inline_owner)?.name||'function'):n.kind.replaceAll('_',' ')+' · '+(n.module||''))}</text><text x="12" y="66" class="iq-node-kind">${ie((n.location?.path||n.attributes?.ir||'Inspect for details').slice(0,34))}</text><title>${ie(n.name)}</title></g>`).join('');
     iq('iqMap').innerHTML=nodes.length?`<svg width="${width*intelligence.zoom}" height="${height*intelligence.zoom}" viewBox="0 0 ${width} ${height}" role="img" aria-label="${ie(r.title)}"><defs><marker id="iqArrow" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#6b829f"/></marker></defs>${edges}${cards}</svg>`:'<p class="iq-empty">No graph evidence for this selection. Select a function with a verified flow bundle for decisions and values.</p>';
 }
 
 function contextHtml(c) {
     const n=c.node,a=n.attributes||{};
+    const inline=intelligence.result?.mode==='calls'&&n.kind==='function';
+    const active=intelligence.expandedFlows.get(n.id)||new Map();
     return `<article class="iq-context"><h3>${ie(flowTitle(n))}</h3><p>${ie(n.name)} · ${ie(n.kind)} · ${ie(n.module)}</p>
       <button data-add="${ie(n.id)}">Add to selection</button>
+      ${inline?`<div class="iq-inline-controls"><strong>Show this function's internals in the call graph</strong>
+        <button type="button" data-inline-flow="cfg" data-function="${ie(n.id)}" aria-pressed="${active.has('cfg')}">${active.has('cfg')?'Hide':'Expand'} CFG</button>
+        <button type="button" data-inline-flow="dfd" data-function="${ie(n.id)}" aria-pressed="${active.has('dfd')}">${active.has('dfd')?'Hide':'Expand'} DFD</button>
+        ${[...active].map(([mode,flow])=>`<small>${mode.toUpperCase()}: ${flow.nodes.length} shown; ${flow.coverage.omitted} beyond the bound.</small>`).join('')}
+        <small>Compiler-derived static flow; call order remains source position, not a runtime trace.</small></div>`:''}
       ${neighborControls(n.id)}
       <p>${(c.notes||[]).map(ie).join(' ')}</p>
       ${a.memory_boundary?`<p>Memory evidence: ${ie(a.memory_boundary.replaceAll('_',' '))}</p>`:''}
@@ -223,8 +293,9 @@ document.addEventListener('DOMContentLoaded',()=>{
     iq('iqShowAll').addEventListener('click',()=>{intelligence.visible=new Set(intelligence.result?.nodes.map(n=>n.id)||[]);renderIntelligenceMap();});
     iq('iqZoom').addEventListener('input',e=>{intelligence.zoom=Number(e.target.value);renderIntelligenceMap();});
     iq('iqLegacy').addEventListener('click',()=>{const old=iq('legacyGraphWorkspace');old.hidden=!old.hidden;iq('iqLegacy').setAttribute('aria-expanded',String(!old.hidden));if(!old.hidden)requestAnimationFrame(resizeGraphCanvas);});
-    iq('intelligenceWorkspace').addEventListener('click',e=>{const target=e.target.closest('[data-inspect],[data-add],[data-remove],[data-focus]');if(!target)return;
+    iq('intelligenceWorkspace').addEventListener('click',e=>{const target=e.target.closest('[data-inspect],[data-add],[data-remove],[data-focus],[data-inline-flow]');if(!target)return;
         if(target.dataset.inspect)inspectIntelligence(target.dataset.inspect);
+        if(target.dataset.inlineFlow){toggleInlineFlow(target.dataset.function,target.dataset.inlineFlow);return;}
         if(target.dataset.add)toggleIntelligenceSelection(target.dataset.add,true);
         if(target.dataset.remove)toggleIntelligenceSelection(target.dataset.remove,false);
         if(target.dataset.focus){intelligence.visible=new Set([target.dataset.focus]);renderIntelligenceMap();
