@@ -61,7 +61,9 @@ The read-only application adapter projects a run graph at file or module scope
 and aggregates the newest graph-bearing run per module for inter-module views.
 It never rewrites the canonical artifact. Available overlays are calls, includes,
 and conservative reads/writes/references; CFG and definition-use data flow remain
-explicitly disabled evidence gates.
+available only when a selected run has a source-matched, hash-verified LLVM
+bundle. The function-flow adapter adds source-bound comparison and assignment
+display hints to CFG blocks without replacing their canonical compiler IDs.
 
 The UI projection is deliberately function-centric. Ownership facts still
 travel in the payload, but parameters and locals are nested under their function

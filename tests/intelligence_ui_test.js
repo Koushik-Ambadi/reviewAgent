@@ -37,6 +37,21 @@ if(!intelligence.result.edges.some(e=>e.kind==='contains'&&e.source==='a'&&e.tar
 if(!iq('iqMap').innerHTML.includes('CFG inside'))throw Error('Inline CFG card missing');
 if(!contextHtml({node:nodes[0],notes:[],relationships:[],regions:[]}).includes('Expand DFD'))throw Error('Function expansion controls missing');
 if(!intelligence.result.edges.some(e=>e.kind==='contains'&&e.source==='b'&&e.target==='value'))throw Error('Second function flow missing');
+const branchNodes=[
+ {id:'root',name:'entry',kind:'basic_block',attributes:{entry:true},flow_summary:{condition:'input > 0',condition_line:6,effects:[],structural_join:false}},
+ {id:'yes',name:'if.then',kind:'basic_block',attributes:{order:1},flow_summary:{condition:null,effects:[{source:'value = input + 1',line:7}],structural_join:false}},
+ {id:'no',name:'if.else',kind:'basic_block',attributes:{order:2},flow_summary:{condition:null,effects:[{source:'value = input - 1',line:9}],structural_join:false}},
+ {id:'join',name:'if.end',kind:'basic_block',attributes:{order:3},flow_summary:{condition:null,effects:[],structural_join:true}}];
+const branchEdges=[{id:'true',source:'root',target:'yes',kind:'control_flow',attributes:{label:'true'}},
+ {id:'false',source:'root',target:'no',kind:'control_flow',attributes:{label:'false'}},
+ {id:'merge',source:'yes',target:'join',kind:'control_flow',attributes:{label:'successor'}}];
+intelligence.expandedFlows.set('a',new Map([['cfg',{nodes:branchNodes,edges:branchEdges,coverage:{displayed:3,omitted:0}}]]));
+composeInlineFlow();
+if(intelligence.visible.has('join')||!intelligence.result.nodes.some(n=>n.id==='join'))throw Error('Compiler-only join should be retained but initially hidden');
+const placed=layoutIntelligence(intelligence.result.nodes,intelligence.result.edges);
+const byId=new Map(placed.map(n=>[n.id,n]));
+if(byId.get('yes').y!==byId.get('no').y||byId.get('yes').x===byId.get('no').x||byId.get('root').y>=byId.get('yes').y)throw Error('True and false are not sibling paths');
+if(!iq('iqMap').innerHTML.includes('If input &gt; 0')||!iq('iqMap').innerHTML.includes('value = input + 1')||!iq('iqMap').innerHTML.includes('>Yes</text>')||!iq('iqMap').innerHTML.includes('iq-flow-box'))throw Error('CFG conditions, effects or containment missing');
 intelligence.expandedFlows.delete('a');composeInlineFlow();
 if(intelligence.result.nodes.some(n=>n.id==='step')||!intelligence.result.nodes.some(n=>n.id==='value'))throw Error('Hiding one flow removed another');
 intelligence.expandedFlows.clear();composeInlineFlow();

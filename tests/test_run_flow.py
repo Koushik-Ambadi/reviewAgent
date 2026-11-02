@@ -10,8 +10,42 @@ import pytest
 from code_intelligence.run_flow import generate_run_flow
 from app.services.intelligence_service import Workspace
 from app.services.graph_service import get_run_function_flow
+from app.services.function_flow_presentation import describe_cfg
 from repo_review.analysis.runner import run_analysis
 from repo_review.contracts import StageStatus
+
+
+def test_cfg_display_does_not_bind_other_file_debug_line(tmp_path):
+    source = tmp_path / "flow.c"
+    source.write_text("if (value > 0)\n    result = 1;\n")
+    block = {"id": "block", "kind": "basic_block", "name": "entry",
+             "attributes": {"entry": True, "exit": False}}
+    graph = {"nodes": [
+        {"id": "branch", "kind": "instruction", "location": {"path": "other.c", "line": 1},
+         "attributes": {"block": "block", "order": 0, "ir": "br i1 %cmp, label %a, label %b"}},
+        {"id": "store", "kind": "instruction", "location": {"path": "other.c", "line": 2},
+         "attributes": {"block": "block", "order": 1, "ir": "store i32 1, ptr %result"}},
+    ]}
+    summary = describe_cfg([block], graph, source, "flow.c")[0]["flow_summary"]
+    assert summary["condition"] is None
+    assert summary["effects"][0]["source"] is None
+
+
+def test_cfg_display_traces_condition_to_declared_initializer(tmp_path):
+    source = tmp_path / "flow.c"
+    source.write_text("static int threshold = 2;\nif (value > threshold)\n    result = 1;\n")
+    block = {"id": "block", "kind": "basic_block", "name": "entry",
+             "attributes": {"entry": True, "exit": False}}
+    graph = {"nodes": [
+        {"id": "threshold", "kind": "global_variable", "name": "threshold",
+         "location": {"path": "flow.c", "line": 1}, "attributes": {}},
+        {"id": "branch", "kind": "instruction", "location": {"path": "flow.c", "line": 2},
+         "attributes": {"block": "block", "order": 0, "ir": "br i1 %cmp, label %a, label %b"}},
+    ]}
+    summary = describe_cfg([block], graph, source, "flow.c")[0]["flow_summary"]
+    assert summary["condition"] == "value > threshold"
+    assert summary["condition_inputs"] == [{"name": "threshold",
+                                            "declaration": "static int threshold = 2", "line": 1}]
 
 
 def test_missing_toolchain_is_recorded_without_failing_review(tmp_path, monkeypatch):
@@ -78,3 +112,10 @@ def test_run_flow_projections_live_under_analysis_run(tmp_path, monkeypatch):
         identities = {n["id"] for n in inline["nodes"]}
         assert all(e["source"] in identities and e["target"] in identities
                    for e in inline["edges"])
+        if mode == "cfg":
+            conditions = [n["flow_summary"]["condition"] for n in inline["nodes"]
+                          if n.get("flow_summary", {}).get("condition")]
+            assert "input > 0" in conditions
+            effects = [effect["source"] for n in inline["nodes"]
+                       for effect in n.get("flow_summary", {}).get("effects", [])]
+            assert any(effect and "value = input + 1" in effect for effect in effects)

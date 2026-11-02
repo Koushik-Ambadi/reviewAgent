@@ -148,7 +148,11 @@ Open **Code graphs** in the developer workspace:
    **Control flow (CFG)** or **Data flow (DFD)** to inspect the generated flow.
    In **Who calls whom?**, inspect a function and use **Expand CFG** or
    **Expand DFD** to place its internals beside the call arrows. You can expand
-   several functions and hide either flow independently.
+   several functions and hide either flow independently. Expanded CFG decisions
+   show the source comparison and available declared initializers; Yes and No
+   paths appear as siblings, with each path's source assignment on its card.
+   Click a step for the full source and compiler evidence. Compiler-only joins
+   start hidden in the map; **Show all map items** reveals them.
    Use **Focus on this item** and its neighbor checkboxes to reveal only the
    connections you want to pursue, or **Show all map items** to restore the view.
 4. Open **Analytics and investigation priorities** for complexity, coupling,

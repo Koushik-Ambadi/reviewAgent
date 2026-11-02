@@ -52,6 +52,13 @@ edges, coverage/omitted counts, evidence and attachment warnings. The endpoint
 rejects non-functions and functions without a matching verified bundle. Trace
 instances remain presentation-local; the response retains namespaced canonical
 IDs and never rewrites stored graph evidence.
+For CFG, each returned basic block also has `flow_summary`: `condition` and
+`condition_line` from the source line mapped by the LLVM branch terminator,
+`effects` with source statements and retained store IR, `branch_ir`, and a
+`structural_join` display hint. `condition_inputs` links compared variable names
+to same-source declarations and optional initializers, explicitly without
+claiming their runtime value. A missing condition or statement remains null;
+the original block, instruction, and edge identities remain authoritative.
 
 Both endpoints are read-only. A missing run or graph returns 404. Unsafe run
 IDs, unknown files, scopes, or unavailable layers return 400.

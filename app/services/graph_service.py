@@ -208,6 +208,11 @@ def get_run_function_flow(run_id: str, node_id: str, *, mode: str,
     if (module, source) not in workspace.bundles:
         raise ValueError("No source-matched compiler flow bundle for this function")
     result = workspace.query(mode=mode, selected=[function_id], limit=limit)
+    if mode == "cfg":
+        from app.services.function_flow_presentation import describe_cfg
+
+        result["nodes"] = describe_cfg(result["nodes"], workspace.graph,
+                                       workspace.roots[module] / source, source)
     return {"run_id": run_id, "function_id": function_id, "mode": mode,
             "nodes": result["nodes"], "edges": result["edges"],
             "coverage": result["coverage"], "notes": result["notes"],

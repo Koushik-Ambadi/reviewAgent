@@ -67,12 +67,23 @@ map; multiple functions may be expanded independently. Internal nodes remain
 linked to their owning function, use the selected run, and carry per-flow
 omitted counts. The initial map reveals eight internal items per expansion;
 the full bounded result remains in the relationship list and JSON export.
+For CFG, the initial map instead reveals up to 16 decision/outcome blocks and
+suppresses compiler-only joins and the exit block. The original blocks and
+edges remain in the relationship list and JSON; Show all exposes them. The
+function's CFG is enclosed in a labeled group, with source-backed conditions
+and available declared initializers on decision cards, source assignments on
+outcome cards, and Yes/No branches as siblings at each depth. Missing source
+mappings stay explicit and never
+become invented comparisons or effects.
 Hiding an expansion removes only its visual/internal query additions. A
 source-matched bundle is required; an absent bundle is reported, not drawn as
 an empty complete flow.
 
-The map uses deterministic bounded levels with distinct cards even in cyclic
-or disconnected graphs; it does not imply time or promise crossing-free edges.
+The call map uses deterministic bounded levels; expanded CFG groups use
+deterministic branch depth and sibling placement. Cyclic and disconnected
+graphs remain finite and distinct, but a compiler CFG is not a pure tree:
+joins, loops and crossing edges can reappear in Show all. Neither layout
+implies time or promises crossing-free edges.
 The map initially shows selected items and the first 12 returned items. The
 relationship list and downloaded JSON still contain the full bounded query.
 Inspect a card to choose individual adjacent items, or focus on that card to

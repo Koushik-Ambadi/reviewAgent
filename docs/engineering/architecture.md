@@ -761,6 +761,11 @@ uses the same Workspace manifest and input-hash verification as separate CFG/
 DFD queries. Call edges remain distinct from `control_flow`, `def_use` and
 `memory_flow`; visual parent links are derived `contains` edges. Missing flow
 leaves calls visible with an explicit limitation.
+  A read-only presentation step binds LLVM branch and store source locations
+  to the verified selected-run source. It adds optional decision/effect labels
+  while preserving canonical CFG identities. The guided UI groups each
+  function's internals and lays branch siblings at the same depth; compiler-only
+  joins start hidden to keep the decision paths readable.
 
 The Analysis stage invokes the bounded run-flow adapter after building its
 canonical AST snapshot. Its compiler bundles and summary belong to the run's

@@ -1364,3 +1364,21 @@ and third-party artifacts and must not be interpreted as effort or quality.
   alias/interprocedural claim was added. The stale gate text and contract were
   corrected. Real Shunt browser checks and 75 Python tests plus two Node
   harnesses passed.
+
+### 2026-11-02 — Source-backed CFG decisions and branch layout
+
+- Follow-up on `codex/structured-cfg-branches` after the user reported
+  overlapping arrows, unexplained `if.else9` labels, and missing conditions
+  and effects in `Shunt_currentstatus`. The selected-run compiler bundle had
+  the correct edges and debug locations; the guided UI had displayed neither
+  source expressions nor a branch hierarchy.
+- The function-flow response now binds branch and store locations to its
+  hash-verified source, retaining nulls when a mapping is unavailable. It also
+  shows same-source declared initializers as origin hints without treating
+  them as runtime values. The
+  guided call view places CFG internals in a labeled function group, with
+  source conditions, status assignments, Yes/No siblings and initially hidden
+  compiler-only joins. Canonical nodes, edges and coverage remain intact.
+- The Shunt source and newer selected-run UI were inspected. The maintained
+  77-test suite and both Node harnesses pass; root discovery remains the
+  previously registered BUG-008.
