@@ -1350,3 +1350,17 @@ and third-party artifacts and must not be interpreted as effort or quality.
   native-audited flow bundles and reported source-matched CFG/DFD evidence in
   the web UI. Focused source/neighbor inspection and an older run selection were
   checked in Chrome. 74 maintained Python tests and both Node UI harnesses pass.
+
+### 2026-11-02 — Inline CFG/DFD inside function call views
+
+- Isolated the follow-up on `codex/inline-function-flow`. A user-visible legacy
+  gate still said CFG/DFD engines were unavailable despite verified run bundles.
+  The trace playground now offers CFG, DFD, both or calls/interfaces alone when
+  expanding a function. The guided call graph can expand and hide either flow
+  independently for several functions, retaining canonical call edges and
+  source-matched evidence identities.
+- Bounded per-function flow uses the existing run selection and bundle/hash
+  verifier. Missing compiler evidence stays explicit; no runtime or complete
+  alias/interprocedural claim was added. The stale gate text and contract were
+  corrected. Real Shunt browser checks and 75 Python tests plus two Node
+  harnesses passed.

@@ -45,6 +45,14 @@ roles. The response also summarizes the center's observed interface inputs,
 outputs, parameters, callers, callees, and return type without claiming value
 lineage.
 
+`GET /api/runs/{run_id}/graphs/function-flow` accepts a canonical function
+`node_id`, `mode=cfg|dfd`, and `limit=1..80`. It uses the selected run's
+source-matched compiler bundle and returns bounded internal nodes, directed
+edges, coverage/omitted counts, evidence and attachment warnings. The endpoint
+rejects non-functions and functions without a matching verified bundle. Trace
+instances remain presentation-local; the response retains namespaced canonical
+IDs and never rewrites stored graph evidence.
+
 Both endpoints are read-only. A missing run or graph returns 404. Unsafe run
 IDs, unknown files, scopes, or unavailable layers return 400.
 
@@ -106,18 +114,22 @@ Observed no-caller/no-callee functions are selectable as call beginning/ending
 candidates. These are structural candidates within the retained configuration,
 not proven process entry points, runtime stack positions, or termination sites.
 
-`control_flow` and `data_flow` are advertised with `available: false` and an
-evidence-gate explanation. The workspace must render them disabled rather than
-return an empty graph that could be mistaken for complete analysis. Current
-reads/writes are conservative syntax-context facts, not definition-use data
-flow.
+The overview relationship overlays remain calls/includes/reads/writes/references.
+The trace playground has a separate **Function internals** choice: CFG, DFD,
+both, or calls/interfaces alone. Double-clicking a function expands its call
+neighborhood and selected compiler internals inside the same diagram. The item
+limit applies separately to each flow, and the inspector reports omitted counts.
+Collapse removes only that visual branch. A missing matched bundle leaves the
+call neighborhood intact with an explicit unavailable message. Current AST
+reads/writes are distinct from compiler definition-use and memory-flow edges.
 
 ## Completeness boundary
 
 - Only canonical schema 1.1 graph artifacts are consumed.
 - Cross-module matching requires identical stable symbol IDs. Missing matches
   are unavailable evidence, not proof that modules are isolated.
-- Indirect calls, alternate preprocessor/build configurations, CFG, aliases,
-  pointer targets, and runtime signal values remain incomplete or unavailable.
+- Indirect calls, alternate preprocessor/build configurations, complete alias
+  and interprocedural flow, pointer targets, and runtime values remain incomplete
+  or unavailable. CFG/DFD cover only verified source/configuration bundles.
 - Every response carries graph provenance or identifies the selected run so the
   source artifact remains inspectable.

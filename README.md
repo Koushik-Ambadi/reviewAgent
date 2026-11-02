@@ -146,6 +146,9 @@ Open **Code graphs** in the developer workspace:
 3. Inspect a card to see source, relationships and its structure. Add further
    items to the selection. For functions with verified compiler evidence, choose
    **Control flow (CFG)** or **Data flow (DFD)** to inspect the generated flow.
+   In **Who calls whom?**, inspect a function and use **Expand CFG** or
+   **Expand DFD** to place its internals beside the call arrows. You can expand
+   several functions and hide either flow independently.
    Use **Focus on this item** and its neighbor checkboxes to reveal only the
    connections you want to pursue, or **Show all map items** to restore the view.
 4. Open **Analytics and investigation priorities** for complexity, coupling,
@@ -158,7 +161,9 @@ branches and loops can change actual execution order.
 
 The interface explains static possibilities, not observed runtime causes.
 Hidden/frontier counts indicate incomplete searches. Existing overview and
-trace tools are retained behind their toggle. Source-matched flow bundles are
+trace tools are retained behind their toggle. In the expandable trace, choose
+**Function internals** and double-click a function to show calls plus its
+CFG/DFD. Source-matched flow bundles are
 discovered read-only under the run's `analysis/flow/*/manifest.json` (and older
 external bundles); use the flow
 command above to generate additional bundles in fresh directories.

@@ -1677,8 +1677,19 @@ html,body{background:var(--bg)}
                             <option value="outgoing">Outgoing</option>
                             <option value="incoming">Incoming</option>
                         </select>
+                        <label>Function internals <select id="graphTraceFlow">
+                            <option value="both">CFG + DFD</option>
+                            <option value="cfg">CFG only</option>
+                            <option value="dfd">DFD only</option>
+                            <option value="none">Calls and interfaces only</option>
+                        </select></label>
+                        <label>Items per flow <select id="graphTraceFlowLimit">
+                            <option value="12">12</option>
+                            <option value="24" selected>24</option>
+                            <option value="48">48</option>
+                        </select></label>
                         <button id="graphTraceStart" class="btn secondary" type="button">Start trace</button>
-                        <small>Double-click a node to expand or collapse it. Inputs and callers appear left; outputs and callees appear right.</small>
+                        <small>Double-click a function to show calls and its verified CFG/DFD inside this trace. Inputs and callers appear left; outputs and callees appear right.</small>
                     </fieldset>
                     <label id="graphFileField" class="graph-field" hidden><span>File</span><select id="graphFile"></select></label>
                     <fieldset id="graphModuleField" class="graph-field graph-module-field" hidden>
@@ -1697,7 +1708,7 @@ html,body{background:var(--bg)}
                             <label class="graph-layer"><input type="checkbox" value="macro"><span><strong>Macros</strong><small>Show referenced definitions as nodes.</small></span></label>
                         </div>
                     </fieldset>
-                    <div class="graph-gate-note"><strong>Evidence gates</strong><p>Control flow and definition-use data flow stay disabled until validated engines are connected.</p></div>
+                    <div class="graph-gate-note"><strong>Flow evidence</strong><p>Verified CFG and bounded DFD appear when a function has a matching compiler bundle. Full alias, interprocedural and runtime flow remain outside this evidence.</p></div>
                 </aside>
 
                 <main class="graph-stage">

@@ -9,6 +9,7 @@ import pytest
 
 from code_intelligence.run_flow import generate_run_flow
 from app.services.intelligence_service import Workspace
+from app.services.graph_service import get_run_function_flow
 from repo_review.analysis.runner import run_analysis
 from repo_review.contracts import StageStatus
 
@@ -38,7 +39,7 @@ def test_unexpected_flow_error_keeps_analysis_stage_completed(tmp_path, monkeypa
     assert summary["status"] == "failed" and summary["reason"] == "compiler unavailable"
 
 
-def test_run_flow_projections_live_under_analysis_run(tmp_path):
+def test_run_flow_projections_live_under_analysis_run(tmp_path, monkeypatch):
     clang = shutil.which("clang")
     library = Path(os.environ.get("LLVM_C_LIBRARY", "C:/Program Files/LLVM/bin/LLVM-C.dll"))
     if not clang or not library.is_file():
@@ -68,3 +69,12 @@ def test_run_flow_projections_live_under_analysis_run(tmp_path):
     workspace = Workspace(root=tmp_path / "runs")
     assert len(workspace.evidence) == 1 and not workspace.warnings
     assert workspace.query(mode="cfg")["edges"]
+    function = next(n for n in workspace.catalog()["symbols"]
+                    if n["kind"] == "function" and n["location"]["path"] == "src/flow.c")
+    monkeypatch.setattr("orchestrator.run_store.WORKSPACE_ROOT", tmp_path / "runs")
+    for mode in ("cfg", "dfd"):
+        inline = get_run_function_flow("run1", function["canonical_id"], mode=mode, limit=24)
+        assert inline["edges"] and inline["evidence"]
+        identities = {n["id"] for n in inline["nodes"]}
+        assert all(e["source"] in identities and e["target"] in identities
+                   for e in inline["edges"])

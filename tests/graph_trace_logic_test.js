@@ -46,4 +46,22 @@ vm.runInContext(
     context
 );
 
-console.log("trace cycle and centering assertions passed");
+vm.runInContext(`
+    const parent={id:'trace:1',canonical_id:'run::function',kind:'function',trace_depth:0,trace_column:0,
+        trace_relation_path:[],trace_canonical_path:['run::function']};
+    graphState.traceInstances=[parent];graphState.traceEdges=[];graphState.traceCounter=1;
+    appendTraceFunctionFlow(parent,{mode:'cfg',nodes:[
+        {id:'run::b0',kind:'basic_block',name:'entry',attributes:{order:0}},
+        {id:'run::b1',kind:'basic_block',name:'exit',attributes:{order:1}}],
+        edges:[{id:'run::next',kind:'control_flow',source:'run::b0',target:'run::b1'}]});
+    appendTraceFunctionFlow(parent,{mode:'dfd',nodes:[
+        {id:'run::v0',kind:'instruction',name:'load',attributes:{ir:'%0 = load i32'}}],edges:[]});
+    if(graphState.traceInstances.length!==4 ||
+       !graphState.traceEdges.some(e=>e.kind==='control_flow') ||
+       !graphState.traceEdges.some(e=>e.kind==='contains'))throw Error('Inline flow missing from trace');
+    if(!graphState.traceInstances.some(n=>n.flow_view==='dfd'&&n.flow_ir))throw Error('DFD operation missing');
+    collapseTraceNode(parent.id);
+    if(graphState.traceInstances.length!==1 || graphState.traceEdges.length)throw Error('Collapse left flow internals');
+`,context);
+
+console.log("trace cycle, centering and inline flow assertions passed");

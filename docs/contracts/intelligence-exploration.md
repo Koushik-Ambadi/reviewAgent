@@ -61,6 +61,15 @@ changing a run rebuilds symbols and clears stale selections. Module changes
 discard out-of-scope selections.
 The question menu names **Control flow (CFG)** and **Data flow (DFD)** explicitly;
 select a function whose source has a matching flow bundle to see those projections.
+In **Who calls whom?**, inspecting a function offers **Expand CFG** and
+**Expand DFD**. Either or both can be shown alongside call arrows in the same
+map; multiple functions may be expanded independently. Internal nodes remain
+linked to their owning function, use the selected run, and carry per-flow
+omitted counts. The initial map reveals eight internal items per expansion;
+the full bounded result remains in the relationship list and JSON export.
+Hiding an expansion removes only its visual/internal query additions. A
+source-matched bundle is required; an absent bundle is reported, not drawn as
+an empty complete flow.
 
 The map uses deterministic bounded levels with distinct cards even in cyclic
 or disconnected graphs; it does not imply time or promise crossing-free edges.

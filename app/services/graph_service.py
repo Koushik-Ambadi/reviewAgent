@@ -42,18 +42,6 @@ _LAYER_CATALOG = [
         "available": True,
         "description": "Address-taking and other non-read/write references.",
     },
-    {
-        "id": "control_flow",
-        "label": "Control flow inside functions",
-        "available": False,
-        "description": "Requires a validated CFG engine; not inferred from syntax.",
-    },
-    {
-        "id": "data_flow",
-        "label": "Definition-use data flow",
-        "available": False,
-        "description": "Requires CFG, alias, and interprocedural data-flow evidence.",
-    },
 ]
 
 
@@ -197,6 +185,33 @@ def get_run_graph_neighborhood(
         "interface": _trace_interface(node_id, projected_edges, nodes),
         "limitations": _projection_limitations(),
     }
+
+
+def get_run_function_flow(run_id: str, node_id: str, *, mode: str,
+                          limit: int = 24) -> dict[str, Any]:
+    """Return verified, bounded function internals for trace expansion."""
+    if mode not in {"cfg", "dfd"} or not 1 <= limit <= 80:
+        raise ValueError("Function flow requires cfg or dfd and a limit of 1–80")
+    run_path = get_run_path(run_id)
+    report = load_report(run_id)
+    module = str((report.get("metadata") or {}).get("module_name") or run_id)
+    # Imported here because the intelligence service already uses the graph
+    # catalog; the run-local adapter must share its manifest verification.
+    from app.services.intelligence_service import Workspace
+
+    workspace = Workspace(modules=[module], runs={module: run_id}, root=run_path.parent)
+    function_id = f"{run_id}::{node_id}"
+    function = workspace.explorer.nodes.get(function_id)
+    if not function or function["kind"] != "function":
+        raise ValueError("Select a function in the chosen run")
+    source = (function.get("location") or {}).get("path")
+    if (module, source) not in workspace.bundles:
+        raise ValueError("No source-matched compiler flow bundle for this function")
+    result = workspace.query(mode=mode, selected=[function_id], limit=limit)
+    return {"run_id": run_id, "function_id": function_id, "mode": mode,
+            "nodes": result["nodes"], "edges": result["edges"],
+            "coverage": result["coverage"], "notes": result["notes"],
+            "evidence": result["evidence"], "warnings": result["warnings"]}
 
 
 def get_inter_module_graph(
@@ -808,7 +823,7 @@ def _summary(nodes: Iterable[str], edges: list[dict[str, Any]]) -> dict[str, int
 def _projection_limitations() -> list[str]:
     return [
         "Reads and writes are conservative syntax-context facts, not full data flow.",
-        "Control flow is unavailable until a validated CFG engine is integrated.",
+        "Source-matched CFG and bounded DFD can be expanded inside a function; this overview shows structural relationships.",
         "Indirect calls and configuration coverage remain incomplete.",
     ]
 
